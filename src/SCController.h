@@ -32,7 +32,6 @@
 #import <Sc21/SCEventHandler.h>
 #import <Sc21/SCDrawable.h>
 
-class SoDirectionalLight;
 class SoSceneManager;
 @class SCEventConverter;
 @class SCControllerP;
