@@ -42,6 +42,7 @@ class SoGetBoundingBoxAction;
 /*" Initializing an SCController "*/
 - (id) init;
 - (void) awakeFromNib;
+- (void) disconnect;
 
 /*" Getting the view associated with the controller "*/
 - (SCView *) view;
@@ -82,6 +83,10 @@ class SoGetBoundingBoxAction;
 
 /*" Delegate methods implemented by SCController "*/
 - (void) openPanelDidEnd:(NSOpenPanel*)panel returnCode:(int)rc contextInfo:(void *) ctx;
+
+#if 0
+- (void)foo:(NSNotification *)notification;
+#endif
 
 @end
 

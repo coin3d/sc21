@@ -1,6 +1,8 @@
 #import "SCController.h"
 #import "SCView.h"
 
+// #import <InterfaceBuilder/IBApplicationAdditions.h>
+
 #import <Inventor/SoDB.h>
 #import <Inventor/SoInteraction.h>
 #import <Inventor/SoSceneManager.h>
@@ -55,12 +57,13 @@ static BOOL _coinInitialized = NO;
  "*/
 
 
-/*" Initializes Coin. Call this method if you want to use Coin functionality before
-    actually instantiating an SCController in your application (e.g. if you want to
-    read a 3D models using SoDB::readAll() and load the nib file containing your
-    SCView and SCController only if the file was read successfully). SCController's
-    initializer automatically calls this function if needed.
-    This method calls SoDB::init(), SoInteraction::init() and SoNodeKit::init().
+/*" Initializes Coin. Call this method if you want to use Coin
+    functionality before actually instantiating an SCController in your
+    application (e.g. if you want to read a 3D models using SoDB::readAll()
+    and load the nib file containing your SCView and SCController only
+    if the file was read successfully). SCController's initializer
+    automatically calls this function if needed. This method calls
+    SoDB::init(), SoInteraction::init() and SoNodeKit::init().
 "*/
 
 + (void) initCoin
@@ -153,14 +156,50 @@ static BOOL _coinInitialized = NO;
   return self;
 }
 
+- (void) disconnect
+{
+  [_timer invalidate];
+}
+
+
+#if 0
+- (void)foo:(NSNotification *)notification
+{
+  id bar  = [notification object];
+  NSLog(@"Notification received: %@", [notification name]);
+}
+
+- (void) stopTimer:(NSNotification *) notification
+{
+  NSLog(@"Notification received: %@", [notification name]);
+  [_timer invalidate];
+}
+
+#endif
+
 /*" Sets up and activates a Coin scene manager. Sets up and schedules
     a timer for animation. Adds default entries to the context menu.
     Called after the object has been loaded from an Interface Builder
-    archive or nib file. 
+    archive or nib file.
 "*/
 
 - (void) awakeFromNib
 {
+
+#if 0
+  NSLog(@"Register for notification");
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(foo:)
+                                               name:IBDidBeginTestingInterfaceNotification
+                                             object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(stopTimer:)
+                                               name:IBWillEndTestingInterfaceNotification
+                                             object:nil];
+
+
+#endif
+  
   _scenemanager = new SoSceneManager;
   _scenemanager->setRenderCallback(redraw_cb, (void*) view);
   _scenemanager->setBackgroundColor(SbColor(0.0f, 0.0f, 0.0f));
@@ -173,7 +212,7 @@ static BOOL _coinInitialized = NO;
     [self setSceneGraph:root];
   }
     
-  _timer = [[NSTimer scheduledTimerWithTimeInterval:0 target:self
+  _timer = [[NSTimer scheduledTimerWithTimeInterval:0.01 target:self
     selector:@selector(_idle:) userInfo:nil repeats:YES] retain];
   [[NSRunLoop currentRunLoop] addTimer:_timer
                                forMode:NSModalPanelRunLoopMode];
@@ -190,6 +229,9 @@ static BOOL _coinInitialized = NO;
 /* Clean up after ourselves. */
 - (void) dealloc
 {
+#if 0
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+#endif 
   [_timer invalidate];
   [_timer release];
   [_eventconverter release];

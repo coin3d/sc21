@@ -149,7 +149,13 @@
 }
 
 
-// ------------------------- OpenGL setup ---------------------------
+- (void) dealloc
+{
+  [controller disconnect];
+  [super dealloc];  
+}
+
+  // ------------------------- OpenGL setup ---------------------------
 
 /*" Recreate OpenGL context with the current settings. Returns
     !{TRUE} if the reinitialization was successful, and !{FALSE}
