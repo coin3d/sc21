@@ -46,8 +46,8 @@
 }
 
 /*" Positioning the camera "*/
-- (void)reorient:(SbRotation)rot;
-- (void)translate:(SbVec3f)v;
+- (void)reorient:(SbRotation)rotation;
+- (void)translate:(SbVec3f)vector;
 - (void)zoom:(float)delta;
 - (void)viewAll:(SCSceneGraph *)scenegraph;
 
