@@ -1,14 +1,7 @@
 {
     IBClasses = (
         {
-            ACTIONS = {
-                dumpSceneGraph = id; 
-                fullScreen = id; 
-                open = id; 
-                showDebugInfo = id; 
-                toggleHeadlight = id; 
-                viewAll = id; 
-            }; 
+            ACTIONS = {enterFullScreenMode = id; open = id; showDebugInfo = id; viewAll = id; }; 
             CLASS = AppController; 
             LANGUAGE = ObjC; 
             OUTLETS = {coincontroller = SCController; filenametext = NSTextField; view = SCView; }; 

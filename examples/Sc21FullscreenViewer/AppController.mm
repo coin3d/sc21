@@ -37,13 +37,9 @@
 #import <OpenGL/gl.h>
 #import <OpenGL/OpenGL.h>
 
-// Redeclare "private" debugging method to avoid compiler warning. 
-@interface SCDebug (InternalAPI)
-+ (NSString *)infoForSCOpenGLPixelFormat:(SCOpenGLPixelFormat *)scpformat 
-                     NSOpenGLPixelFormat:(NSOpenGLPixelFormat *)nspformat;
-@end
-
 @implementation AppController
+
+#pragma mark -- initialization --
 
 - (id)init
 {
@@ -56,82 +52,29 @@
   [filenametext setStringValue:@"None"];
 }
 
-- (IBAction)showDebugInfo:(id)sender
+
+#pragma mark -- SCDrawable conformance --
+
+- (void)display
 {
-  NSString * info = [SCDebug openGLInfo];
-  NSWindow * panel = NSGetInformationalAlertPanel(@"Debug info",
-                                                  info, @"Dismiss", nil, nil);
-  [NSApp runModalForWindow:panel];
-  [panel close];
-  NSReleaseAlertPanel(panel);
+  [coincontroller render];
+  [fullScreenContext flushBuffer];
 }
 
-// Switches the headlight on and off.
-
-- (IBAction)toggleHeadlight:(id)sender
+- (NSRect)frame
 {
-  SoLight * light = [[coincontroller sceneGraph] headlight];
-  if (light) {
-    NSLog(@"Toggling headlight");
-    light->on.setValue(!light->on.getValue());
+  if (fullScreenContext) {
+    return NSMakeRect(0, 0, 
+                      CGDisplayPixelsWide(displayid), 
+                      CGDisplayPixelsHigh(displayid));
   } else {
-    NSLog(@"Tried to toggle headlight, but there is no headlight in scene.");
-  }
-  
-}
-
-// Displays a standard file open dialog. The sender argument is ignored. 
-
-- (IBAction)open:(id)sender
-{
-  NSOpenPanel * panel = [NSOpenPanel openPanel];
-  [panel beginSheetForDirectory:nil
-         file:nil
-         types:[NSArray arrayWithObjects:@"wrl", @"iv", nil]
-         modalForWindow:[view window]
-         modalDelegate:self
-         didEndSelector:@selector(openPanelDidEnd:returnCode:contextInfo:)
-         contextInfo:nil];
-}
-
-- (IBAction)viewAll:(id)sender
-{
-  [[coincontroller sceneGraph] viewAll];
-}
-
-- (IBAction)dumpSceneGraph:(id)sender
-{
-  [SCDebug dumpSceneGraph:[coincontroller sceneManager]->getSceneGraph()];
-}
-
-// Delegate method for NSOpenPanel used in open:
-// Tries to read scene data from the file and sets the scenegraph to
-// the read root node. If reading fails for some reason, an error message
-// is displayed, and the current scene graph is not changed.
-
-- (void)openPanelDidEnd:(NSOpenPanel*)panel returnCode:(int)rc contextInfo:(void *)ctx
-{
-  if (rc == NSOKButton) {
-    [[coincontroller sceneGraph] readFromFile:[panel filename]];
-    [[coincontroller sceneGraph] viewAll];
-    [filenametext setStringValue:[panel filename]];
+    return [view frame];
   }
 }
 
-// Delegate implementation to quit application when window is being closed:
-// This is not a document-based implementation, so you cannot close the main
-// window and open a new one at will without doing more setup work.
+#pragma mark -- fullscreen mode --
 
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)nsapp
-{
-  return YES;
-}
-
-//FIXME:
-// CGShieldingWindowLevel()
-// screenRect = [[NSScreen mainScreen] frame];
-
-- (IBAction)fullScreen:(id)sender
+- (IBAction)enterFullScreenMode:(id)sender
 {
   CGLContextObj cglContext;
   CGDisplayErr err;
@@ -139,53 +82,51 @@
   long newSwapInterval;
 
   SCOpenGLPixelFormat * oldformat = [view pixelFormat];
-  NSOpenGLPixelFormat * oldnsformat = [oldformat pixelFormat];
-  NSLog([SCDebug infoForSCOpenGLPixelFormat:oldformat 
-                        NSOpenGLPixelFormat:oldnsformat]);
-  
   SCOpenGLPixelFormat * newformat = [[oldformat copy] autorelease];
   [newformat setAttribute:NSOpenGLPFAFullScreen];
 
   NSScreen * screen = [[view window] screen];
-  _displayid = (CGDirectDisplayID)
+  displayid = (CGDirectDisplayID)
     [[[screen deviceDescription] objectForKey:@"NSScreenNumber"] intValue];
-  CGOpenGLDisplayMask displaymask = CGDisplayIDToOpenGLDisplayMask(_displayid);
+  CGOpenGLDisplayMask displaymask = CGDisplayIDToOpenGLDisplayMask(displayid);
 
   [newformat setAttribute:NSOpenGLPFAScreenMask
              toValue:displaymask];
-//   [newformat setAttribute:NSOpenGLPFAScreenMask
-//              toValue:displaymask];
   NSOpenGLPixelFormat *newnsformat = [newformat pixelFormat];
 
-  NSLog([SCDebug infoForSCOpenGLPixelFormat:newformat 
-                        NSOpenGLPixelFormat:newnsformat]);
+  fullScreenContext = [[NSOpenGLContext alloc] initWithFormat:newnsformat 
+                       shareContext:nil];
 
+  // FIXME: We really should share the context here, to "inherit" all
+  // OpenGL objects (textures, display lists) etc. Issue: Find "compatible
+  // pixelformat. kyrah 20040916
+  // fullScreenContext = [[NSOpenGLContext alloc] initWithFormat:newnsformat 
+  // shareContext:[view openGLContext]];
   
-  // Create an NSOpenGLContext with the FullScreen pixel format.  By specifying the non-FullScreen context as our "shareContext", we automatically inherit all of the textures, display lists, and other OpenGL objects it has defined.
-  _fullScreenContext = [[NSOpenGLContext alloc] initWithFormat:newnsformat 
-                                                shareContext:nil];
-  
-//   _fullScreenContext = 
-//     [[NSOpenGLContext alloc] initWithFormat:newnsformat 
-//                              shareContext:[view openGLContext]];
-  
-  if (_fullScreenContext == nil) {
-    NSLog(@"Failed to create fullScreenContext");
+  if (fullScreenContext == nil) {
+    NSRunAlertPanel(@"Error", @"Failed to create fullScreenContext", 
+                    @"OK", nil, nil);
     return;
   }
   
   // Take control of the display where we're about to go FullScreen.
-  err = CGDisplayCapture(_displayid);
+  // CGDisplayCapture will do two things:
+  // 1. Create a window that lies on a level guaranteed to be higher
+  //    than all existing windows.
+  // 2  Lock drawing to that window.
+  err = CGDisplayCapture(displayid);
   if (err != CGDisplayNoErr) {
-    [_fullScreenContext release];
-    _fullScreenContext = nil;
+    NSRunAlertPanel(@"Error", @"Failed to capture display", 
+                    @"OK", nil, nil);
+    [fullScreenContext release];
+    fullScreenContext = nil;
     return;
   }
 
-  // Enter FullScreen mode and make our FullScreen context the active 
+  // Enter FullScreen mode and make our FullScreen context the active
   // context for OpenGL commands.
-  [_fullScreenContext setFullScreen];
-  [_fullScreenContext makeCurrentContext];
+  [fullScreenContext setFullScreen];
+  [fullScreenContext makeCurrentContext];
 
   glEnable(GL_DEPTH_TEST);
   SoGLRenderAction * gra = [coincontroller sceneManager]->getGLRenderAction();
@@ -201,11 +142,12 @@
 
   [coincontroller setDrawable:self];
 
-  // Now that we've got the screen, we enter a loop in which we alternately 
-  // process input events and computer and render the next frame of our 
-  // animation.  The shift here is from a model in which we passively receive 
-  // events handed to us by the AppKit to one in which we are actively driving 
-  // event processing.
+  // Now that we've got the screen, we enter a loop in which we
+  // alternately process input events and computer and render the next
+  // frame of our animation. The shift here is from a model in which
+  // we passively receive events handed to us by the AppKit to one in
+  // which we are actively driving event processing.
+
   BOOL stayInFullScreenMode = YES;
   while (stayInFullScreenMode) {
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -238,9 +180,6 @@
       if (stayInFullScreenMode) {
         handled = [coincontroller handleEvent:event];
       }
-      if (!handled) {
-        NSLog(@"Event: %d", [event type]);
-      }
     }
     
     // Clean up any autoreleased objects that were created this 
@@ -253,42 +192,77 @@
   // untidy flash of garbage.)
   glClearColor(0.0, 0.0, 0.0, 0.0);
   glClear(GL_COLOR_BUFFER_BIT);
-  [_fullScreenContext flushBuffer];
+  [fullScreenContext flushBuffer];
   glClear(GL_COLOR_BUFFER_BIT);
-  [_fullScreenContext flushBuffer];
+  [fullScreenContext flushBuffer];
   
   // Restore the previously set swap interval.
   CGLSetParameter(cglContext, kCGLCPSwapInterval, &oldSwapInterval);
   
   // Exit fullscreen mode and release our FullScreen NSOpenGLContext.
   [NSOpenGLContext clearCurrentContext];
-  [_fullScreenContext clearDrawable];
-  [_fullScreenContext release];
-  _fullScreenContext = nil;
+  [fullScreenContext clearDrawable];
+  [fullScreenContext release];
+  fullScreenContext = nil;
   
   // Release control of the display.
-  CGDisplayRelease(_displayid);
+  CGDisplayRelease(displayid);
   
   [coincontroller setDrawable:view];
   gra->setCacheContext(oldcachecontext);
 }
 
-  // Render a frame, and swap the front and back buffers.
-- (void)display
+#pragma mark -- menu actions --
+
+- (IBAction)open:(id)sender
 {
-  [coincontroller render];
-  [_fullScreenContext flushBuffer];
+  NSOpenPanel * panel = [NSOpenPanel openPanel];
+  [panel beginSheetForDirectory:nil
+         file:nil
+         types:[NSArray arrayWithObjects:@"wrl", @"iv", nil]
+         modalForWindow:[view window]
+         modalDelegate:self
+         didEndSelector:@selector(openPanelDidEnd:returnCode:contextInfo:)
+         contextInfo:nil];
 }
 
-- (NSRect)frame
+- (IBAction)viewAll:(id)sender
 {
-  if (_fullScreenContext) {
-    return NSMakeRect(0, 0, 
-                      CGDisplayPixelsWide(_displayid), 
-                      CGDisplayPixelsHigh(_displayid));
-  } else {
-    return [view frame];
+  [[coincontroller sceneGraph] viewAll];
+}
+
+- (IBAction)showDebugInfo:(id)sender
+{
+  NSString * info = [SCDebug openGLInfo];
+  NSWindow * panel = NSGetInformationalAlertPanel(@"Debug info",
+                     info, @"Dismiss", nil, nil);
+  [NSApp runModalForWindow:panel];
+  [panel close];
+  NSReleaseAlertPanel(panel);
+}
+
+#pragma -- delegate methods -- 
+
+// Delegate method for NSOpenPanel used in open:
+// Tries to read scene data from the file and sets the scenegraph to
+// the read root node. 
+
+- (void)openPanelDidEnd:(NSOpenPanel*)panel returnCode:(int)rc 
+  contextInfo:(void *)ctx
+{
+  if (rc == NSOKButton) {
+    [[coincontroller sceneGraph] readFromFile:[panel filename]];
+    [[coincontroller sceneGraph] viewAll];
+    [filenametext setStringValue:[panel filename]];
   }
 }
+
+// Delegate implementation to quit application when window is closed.
+
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)nsapp
+{
+  return YES;
+}
+
 
 @end

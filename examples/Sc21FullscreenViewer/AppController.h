@@ -27,22 +27,27 @@
 
 #import <Sc21/Sc21.h>
 
+/*
+  This is a viewer similar to Sc21Viewer, which demonstrates how to
+  use Coin and Sc21 in fullscreen mode.
+*/
+
 @interface AppController : NSObject <SCDrawable>
 {
   IBOutlet SCController * coincontroller;
   IBOutlet SCView * view;
   IBOutlet NSTextField * filenametext;
-  NSOpenGLContext *_fullScreenContext;
-  CGDirectDisplayID _displayid;
+  NSOpenGLContext * fullScreenContext;
+  CGDirectDisplayID displayid;
 }
 - (IBAction)open:(id)sender;
-- (IBAction)toggleHeadlight:(id)sender;
 - (IBAction)viewAll:(id)sender;
 - (IBAction)showDebugInfo:(id)sender;
-- (IBAction)dumpSceneGraph:(id)sender;
-- (IBAction)fullScreen:(id)sender;
-- (void)openPanelDidEnd:(NSOpenPanel *)panel returnCode:(int)rc contextInfo:(void *)ctx;
+- (IBAction)enterFullScreenMode:(id)sender;
+- (void)openPanelDidEnd:(NSOpenPanel *)panel returnCode:(int)rc 
+  contextInfo:(void *)ctx;
 
+// SCDrawable conformance
 - (void)display;
 - (NSRect)frame;
 @end
