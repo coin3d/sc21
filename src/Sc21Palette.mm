@@ -126,40 +126,6 @@
 
 // --------------- IB workarounds --------------
 
-// Due to a bug in Interface Builder, custom NSOpenGLViews are not
-// displayed in IB's "design" mode (they are shown in the same
-// gray as the window background, basically making them invisible
-// when not selected.
-// The following is a workaround for this problem. When loaded from
-// the palette, the drawRect implementation from the category below
-// will be used instead of SCView's drawRect, allowing us to do our
-// own custom drawing when running in IB.
-// Note: "Overriding" class methods in categories is a generally
-// discouraged practice (see Hillegrass et al.) but Ken (Apple
-// OpenGL group) actually suggested this workaround and says we
-// can assume that the category method will be called instead of
-// class' regular implementation in all cases.
-
-@interface SCView (IBTest)
-- (void)drawRect:(NSRect)frame;
-@end
-
-@implementation SCView (IBTest)
-- (void)drawRect:(NSRect)frame
-{
-  SC21_DEBUG(@"Sc21Palette: SCView.drawRect:");
-  [[NSColor blackColor] set];
-  NSRectFill(frame);
-
-  // FIXME: figure out how to draw string centered
-  //[@"SCView" drawInRect:frame withAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-  //  [NSColor grayColor], NSForegroundColorAttributeName,
-  //  [NSFont systemFontOfSize:24], NSFontAttributeName,
-  //  nil]];
-}
-@end
-
-
 // FIXME: Another hack: For some reason, IB crashes if we are trying to
 // render while not in test-interface mode. Weird, but until I find
 // out what's going on, I'll just disable rendering unless we

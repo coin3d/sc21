@@ -142,7 +142,15 @@
   "*/
 - (void)drawRect:(NSRect)rect
 {
-  // SC21_DEBUG(@"SCView.drawRect");
+   SC21_DEBUG(@"SCView.drawRect");
+  // draw Interface Builder representation: black filled rectangle
+  if ([[self class] respondsToSelector:@selector(isInInterfaceBuilder)] 
+      && [[self class] isInInterfaceBuilder]) {    
+    [[NSColor blackColor] set];
+    NSRectFill(rect);
+    return;
+  } 
+
   // Note: As NSView's implementation of this method, #drawRect: is
   // intended to be completely overridden by each subclass that
   // performs drawing, do _not_ invoke [super drawRect] here!
