@@ -278,6 +278,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   if (SELF->scenegraph) SELF->scenegraph->unref();
   if (SELF->superscenegraph) SELF->superscenegraph->unref();
   SELF->scenegraph = SELF->superscenegraph = NULL;
+  SELF->headlight = NULL;
+  [self setHeadlightIsOn:NO];
 
   if (scenegraph == NULL) {
     SELF->superscenegraph = SELF->scenegraph = new SoSeparator;
