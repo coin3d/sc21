@@ -32,7 +32,7 @@
 			<key>IFPkgFlagPackageLocation</key>
 			<string>CoinTools.pkg</string>
 			<key>IFPkgFlagPackageSelection</key>
-			<string>selected</string>
+			<string>unselected</string>
 		</dict>
 		<dict>
 			<key>IFPkgFlagPackageLocation</key>
