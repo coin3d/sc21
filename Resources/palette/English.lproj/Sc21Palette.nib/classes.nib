@@ -1,0 +1,37 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = SC21; LANGUAGE = ObjC; SUPERCLASS = NSView; }, 
+        {
+            CLASS = SC21Palette; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                controllerbutton = NSButton; 
+                examinerbutton = NSButton; 
+                viewbutton = NSButton; 
+            }; 
+            SUPERCLASS = IBPalette; 
+        }, 
+        {
+            ACTIONS = {open = id; toggleModes = id; }; 
+            CLASS = SCController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {view = SCView; }; 
+            SUPERCLASS = NSResponder; 
+        }, 
+        {
+            ACTIONS = {toggleCameraType = id; toggleHeadlight = id; viewAll = id; }; 
+            CLASS = SCExaminerController; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = SCController; 
+        }, 
+        {
+            ACTIONS = {debugInfo = id; }; 
+            CLASS = SCView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {controller = SCController; }; 
+            SUPERCLASS = NSOpenGLView; 
+        }
+    ); 
+    IBVersion = 1; 
+}
