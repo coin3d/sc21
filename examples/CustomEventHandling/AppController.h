@@ -30,6 +30,14 @@
 #import <Sc21/Sc21.h>
 #import <Inventor/actions/SoBoxHighlightRenderAction.h>
 
+/*
+  This example demonstrates how to implement a custom Sc21 event
+  handler. It also shows you how to emulate the "viewing"
+  vs. "picking" concept used in the So@GUI@ libraries (i.e. having two
+  separate modes: either handling events in the viewer or sending them
+  down the scenegraph).
+*/
+
 @interface AppController : NSObject
 {
   IBOutlet SCController * coincontroller;

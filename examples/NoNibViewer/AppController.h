@@ -28,6 +28,13 @@
 #import <Cocoa/Cocoa.h>
 #import <Sc21/SCView.h>
 
+/*
+  This is a very simple example showing how to instantiate an
+  SCController from Objective-C instead of in a nib file.  Note that
+  this way of developing applications is not recommended and this
+  example is present here just as a proof of concept.
+*/
+
 @interface AppController : NSObject
 {
   SCView * view;

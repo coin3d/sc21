@@ -29,6 +29,13 @@
 #import <Cocoa/Cocoa.h>
 #import <Sc21/Sc21.h>
 
+/*
+  This is a very simple viewer demonstrating how you can use Sc21.  It
+  shows you how to open an Inventor or VRML file from disk and display
+  it. It also demonstrates some ways to interact with the SCController
+  via context menu actions.
+*/
+
 @interface AppController : NSObject
 {
   IBOutlet SCController * coincontroller;
