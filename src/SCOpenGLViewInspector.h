@@ -28,7 +28,7 @@
 
 #import <InterfaceBuilder/InterfaceBuilder.h>
 
-@interface SC21Inspector : IBInspector
+@interface SCOpenGLViewInspector : IBInspector
 {
   IBOutlet NSMatrix *renderer;
   IBOutlet NSPopUpButton *coloralpha;
