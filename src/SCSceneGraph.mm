@@ -400,13 +400,6 @@ and !{NO} otherwise.
   return self;
 }
 
-- (id)retain
-{
-  id obj = [super retain];
-  SC21_DEBUG(@"SCSceneGraph.retain: %d", [self retainCount]);
-  return obj;
-}
-
 @end
 
 @implementation SCSceneGraph (InternalAPI)
