@@ -41,15 +41,15 @@
   IBOutlet SCController * controller;
 }
 
-/*" Initializing an SCView. "*/
+/*" Initializing an SCView"*/
 - (id)initWithFrame:(NSRect)rect pixelFormat:(SCOpenGLPixelFormat *)format;
 - (id)initWithFrame:(NSRect)rect;
 
-/*" Accessors methods. "*/
+/*" Accessing the controller"*/
 - (SCController *)controller;
-- (void)setController:(SCController *)controller;
+- (void)setController:(SCController *)newcontroller;
 
-/*" Event handling. "*/
+/*" Event handling "*/
 - (void)mouseMoved:(NSEvent *)event;
 - (void)mouseDown:(NSEvent *)event;
 - (void)mouseUp:(NSEvent *)event;

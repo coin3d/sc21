@@ -53,16 +53,24 @@
 @implementation SCView
 
 /*"
-  An SCView displays a Coin scene graph.
-  
-  This class is a subclass of SCOpenGLView, its main purpose being
-  forwarding of draw and user events to its controller.
 
-  All actual Coin scene management, rendering, event translation etc.
-  is done by the SCController class.
-  Connect SCView's !{controller} outlet to a valid SCController instance
-  to use SCView.
-  "*/
+  #{SCView and SCDrawable} 
+
+  SCView conforms to the SCDrawable protocol, which means it can be
+  used to display a Coin scenegraph through using an SCController,
+  which will do all actual Coin scene management, rendering, event
+  handling &c.
+
+  Note: When connecting SCView's !{controller} outlet, the controller's
+  drawable will automatically be set to the SCView.
+
+  #{Event handling}
+
+  Instead of handling events directly, SCView forwards them to its
+  SCController's !{handleEvent:} method. Refer to the SCEventHandler
+  documentation for more information.
+
+"*/
 
 #pragma mark --- static methods ----
 
@@ -84,7 +92,8 @@
   Initializes a newly allocated SCView with rect as its frame
   rectangle. Sets up an OpenGL context with the given pixel format.
   The format parameter is passed on to its superclass.
-  "*/
+"*/
+
 - (id)initWithFrame:(NSRect)rect pixelFormat:(SCOpenGLPixelFormat *)format
 {
   if (self = [super initWithFrame:rect pixelFormat:format]) {
@@ -96,10 +105,8 @@
 }
 
 /*"
-  Initializer.
-
-  Equivalent to calling [self initWithFrame:rect format:nil].
-  "*/
+  Equivalent to calling !{[self initWithFrame:rect format:nil]}.
+"*/
 - (id)initWithFrame:(NSRect)rect
 {
   return [self initWithFrame:rect pixelFormat:nil];
@@ -127,7 +134,7 @@ Returns the currently used SCController.
 
 
 /*" 
-Sets the controller to newcontroller. newcontroller is retained.
+  Sets the SCController to newcontroller. newcontroller is retained.
 "*/
 - (void)setController:(SCController *)newcontroller
 {
@@ -201,10 +208,9 @@ Sets the controller to newcontroller. newcontroller is retained.
 #pragma mark --- event handling ---
 
 
-/*" 
-  Forwards event to %controller by sending it the #handleEvent:
-  message. If the event is not handled by the controller, it will
-  be forwarded through the responder chain as usual.
+/*" Forwards event to the controller by sending it the !{handleEvent:}
+  message. If the event is not handled by the controller, it will be
+  forwarded through the responder chain as usual.
 
   Note: NSWindow.setAcceptsMouseMovedEvents: must be called to enable
   NSMouseMoved events.
@@ -218,7 +224,7 @@ Sets the controller to newcontroller. newcontroller is retained.
 }
 
 /*" 
-  Forwards event to %controller by sending it the #handleEvent:
+  Forwards event to the controller by sending it the !{handleEvent:}
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual.
 
@@ -238,7 +244,7 @@ Sets the controller to newcontroller. newcontroller is retained.
 }
 
 /*" 
-  Forwards event to %controller by sending it the #handleEvent:
+  Forwards event to the controller by sending it the !{handleEvent:}
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual. 
   "*/
@@ -250,7 +256,7 @@ Sets the controller to newcontroller. newcontroller is retained.
 }
 
 /*" 
-  Forwards event to %controller by sending it the #handleEvent: 
+  Forwards event to the controller by sending it the !{handleEvent:}
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual.
   
@@ -267,15 +273,15 @@ Sets the controller to newcontroller. newcontroller is retained.
 }
 
 /*"
-  Forwards event to %controller by sending it the #handleEvent: 
+  Forwards event to the controller by sending it the !{handleEvent:}
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual.
-  
-  FIXME: Unhandled right-clicks will usually result in NSView displaying
-  a context menu. In this case, the corresponding rightMouseUp: will
-  never reach us but be sent to the context menu. This will confuse
-  any state machines implemented in the controller (kintel 20040502).
-  "*/
+"*/
+
+// FIXME: Unhandled right-clicks will usually result in NSView displaying
+// a context menu. In this case, the corresponding rightMouseUp: will
+// never reach us but be sent to the context menu. This will confuse
+// any state machines implemented in the controller (kintel 20040502).
 - (void)rightMouseDown:(NSEvent *)event
 {
   if (![self->controller handleEvent:event]) {
@@ -285,7 +291,7 @@ Sets the controller to newcontroller. newcontroller is retained.
 
 
 /*" 
-  Forwards event to %controller by sending it the #handleEvent: 
+  Forwards event to the controller by sending it the !{handleEvent:}
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual.
   "*/
@@ -297,12 +303,12 @@ Sets the controller to newcontroller. newcontroller is retained.
 }
 
 /*"
-  Forwards event to %controller by sending it the #handleEvent: 
+  Forwards event to the controller by sending it the !{handleEvent:}
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual.
   
   Note that when processing "mouse dragged" events, Coin does not
-  distinguish between left and right mouse button. If you interested
+  distinguish between left and right mouse button. If you are interested
   in that information, you have to evaluate the last mouseDown that
   occured before the dragging.
   "*/
@@ -314,7 +320,7 @@ Sets the controller to newcontroller. newcontroller is retained.
 }
 
 /*" 
-  Forwards event to %controller by sending it the #handleEvent: 
+  Forwards event to the controller by sending it the !{handleEvent:}
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual 
   "*/
@@ -326,7 +332,7 @@ Sets the controller to newcontroller. newcontroller is retained.
 }
 
 /*" 
-  Forwards event to %controller by sending it the #handleEvent: 
+  Forwards event to the controller by sending it the !{handleEvent:}
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual. 
   "*/
@@ -338,12 +344,12 @@ Sets the controller to newcontroller. newcontroller is retained.
 }
 
 /*" 
-  Forwards event to %controller by sending it the #handleEvent: 
+  Forwards event to the controller by sending it the !{handleEvent:}
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual.
   
   Note that when processing "mouse dragged" events, Coin does not
-  distinguish between left and right mouse button. If you interested
+  distinguish between left and right mouse button. If you are interested
   in that information, you have to evaluate the last mouseDown that
   occured before the dragging.
   "*/
@@ -355,7 +361,7 @@ Sets the controller to newcontroller. newcontroller is retained.
 }
 
 /*" 
-  Forwards event to %controller by sending it the #handleEvent: 
+  Forwards event to the controller by sending it the !{handleEvent:}
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual.
   "*/
@@ -366,11 +372,10 @@ Sets the controller to newcontroller. newcontroller is retained.
   }
 }
 
-/*" 
-  Forwards event to %controller by sending it the #handleEvent:InView:
-  message. If the event is not handled by the controller, it will
-  be forwarded through the responder chain as usual.
-  "*/
+/*" Forwards event to the controller by sending it the
+  !{handleEvent:} message. If the event is not handled by the
+  controller, it will be forwarded through the responder chain as
+  usual. "*/
 - (void)keyDown:(NSEvent *)event 
 {
   if ([event isARepeat]) return;
@@ -381,7 +386,7 @@ Sets the controller to newcontroller. newcontroller is retained.
 
 
 /*" 
-  Forwards event to %controller by sending it the #handleEvent:
+  Forwards event to the controller by sending it the !{handleEvent:}
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual.
   "*/
@@ -392,7 +397,7 @@ Sets the controller to newcontroller. newcontroller is retained.
   } 
 }
 
-/*" Forwards event to %controller by sending it the #handleEvent:
+/*" Forwards event to the controller by sending it the !{handleEvent:}
     message. If the event is not handled by the controller, it will
     be forwarded through the responder chain as usual.
  "*/
