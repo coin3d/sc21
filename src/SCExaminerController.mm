@@ -170,8 +170,12 @@
  /*" Sets the scene graph that shall be rendered. The reference count of
     sg will be increased by 1 before use, so you there is no need to 
     !{ref()} the node before passing it to this method.
-    A headlight is added before the scenegraph.    
-    If sg does not contain a camera, one will be added automatically.
+
+    A headlight is added before the scenegraph. If a light is present in the
+    scenegraph, this headlight will be turned off by default; you can enable
+    it by calling #setHeadlightIsOn:
+
+    A camera is added before the scenegraph, if it does not contain one.
  "*/
 
 - (void) setSceneGraph:(SoSeparator *)sg
@@ -193,11 +197,15 @@
   userscenegraph = sg;     // store user-supplied SG
   userscenegraph->ref();   // must ref() before applying action
 
-  if (![self findLightInSceneGraph:userscenegraph]) {
-    headlight = new SoDirectionalLight;
-    root->addChild(headlight);
-  } 
-  
+  headlight = new SoDirectionalLight;
+  root->addChild(headlight);
+
+  // If there was a light in the user scenegraph, turn off headlight
+  // by default. We are adding one anyway, since you might want to
+  // be able to view the whole model (regardless if lights are present
+  // or not.
+  [self setHeadlightIsOn: ([self findLightInSceneGraph:userscenegraph]) ? NO : YES];
+ 
   root->addChild(userscenegraph);
   userscenegraph->unref();
 
@@ -256,13 +264,10 @@
 }
 
 /*" Menu validation: Enable/disable default menu items depending on state.
-    The default implementation disables 'toggle headlight' and 'toggle camera mode'
-    if the headlight resp. camera are part of the user-supplied scenegraph. "*/
+    The default implementation disables 'toggle camera mode' if the camera
+    is part of the user-supplied scenegraph. "*/
 
 - (BOOL)validateMenuItem:(NSMenuItem *) item {
-  if ([[item title] isEqualToString:@"toggle headlight"] && headlight == NULL) {
-    return NO;
-  }
   if ([[item title] isEqualToString:@"toggle camera type"]
      && ![camera controllerHasCreatedCamera]) {
     return NO;
