@@ -98,20 +98,6 @@
   }
 }
 
-// Displays a standard file open dialog. The sender argument is ignored. 
-
-- (IBAction)open:(id)sender
-{
-  NSOpenPanel * panel = [NSOpenPanel openPanel];
-  [panel beginSheetForDirectory:nil
-         file:nil
-         types:[NSArray arrayWithObjects:@"wrl", @"iv", nil]
-         modalForWindow:[view window]
-         modalDelegate:self
-         didEndSelector:@selector(openPanelDidEnd:returnCode:contextInfo:)
-         contextInfo:nil];
-}
-
 - (IBAction)viewAll:(id)sender
 {
   [[coincontroller sceneGraph] viewAll];
@@ -122,21 +108,30 @@
   SCDumpSceneGraph([coincontroller sceneManager]->getSceneGraph());
 }
 
+// Displays a standard file open dialog. The sender argument is ignored. 
+
+- (IBAction)open:(id)sender
+{
+  NSOpenPanel * panel = [NSOpenPanel openPanel];
+  [panel beginSheetForDirectory:nil
+                           file:nil
+                          types:[NSArray arrayWithObjects:@"wrl", @"iv", nil]
+                 modalForWindow:[view window]
+                  modalDelegate:self
+                 didEndSelector:@selector(openPanelDidEnd:returnCode:contextInfo:)
+                    contextInfo:nil];
+}
+
 // Delegate method for NSOpenPanel used in open:
 // Tries to read scene data from the file and sets the scenegraph to
-// the read root node. If reading fails for some reason, an error message
-// is displayed, and the current scene graph is not changed.
+// the read root node. 
 
 - (void)openPanelDidEnd:(NSOpenPanel*)panel returnCode:(int)rc contextInfo:(void *)ctx
 {
   if (rc == NSOKButton) {
-    SCSceneGraph * sg = [[SCSceneGraph alloc] initWithContentsOfFile:[panel filename]];
-    if (sg) {
-      [coincontroller setSceneGraph:sg];
-      [self viewAll:self];
-      [filenametext setStringValue:[panel filename]];
-    }
-    [sg release];
+    [[coincontroller sceneGraph] readFromFile:[panel filename]];
+    [[coincontroller sceneGraph] viewAll];
+    [filenametext setStringValue:[panel filename]];
   }
 }
 
