@@ -35,26 +35,29 @@
   SCExaminerHandlerP * _sc_examinerhandler;
 }
 
-- (BOOL)panButtonIsEnabled;
+/*" Mouse- and keybindings for rotate mode "*/
+- (void)setRotateButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
+- (void)getRotateButton:(int*)buttonNumber modifier:(unsigned int*)modifierFlags;
+- (void)disableRotateButton;
 - (BOOL)rotateButtonIsEnabled;
+
+/*" Mouse- and keybindings for pan mode "*/
+- (void)setPanButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
+- (void)getPanButton:(int*)buttonNumber modifier:(unsigned int*)modifierFlags;
+- (void)disablePanButton;
+- (BOOL)panButtonIsEnabled;
+
+/*" Mouse- and keybindings for zoom mode "*/
+- (void)setZoomButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
+- (void)getZoomButton:(int*)buttonNumber modifier:(unsigned int*)modifierFlags;
+- (void)disableZoomButton;
 - (BOOL)zoomButtonIsEnabled;
 
-- (void)disablePanButton;
-- (void)disableRotateButton;
-- (void)disableZoomButton;
-
-/*" Mouse- and keybindings for examiner modes "*/
-- (void)setPanButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
-- (void)setRotateButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
-- (void)setZoomButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
-
-- (void)getPanButton:(int*)buttonNumber modifier:(unsigned int*)modifierFlags;
-- (void)getRotateButton:(int*)buttonNumber modifier:(unsigned int*)modifierFlags;
-- (void)getZoomButton:(int*)buttonNumber modifier:(unsigned int*)modifierFlags;
-
-/*" Additional settings "*/
+/*" Controlling "spin" animation "*/
 - (void)setSpinEnabled:(BOOL)enabled;
 - (BOOL)spinEnabled;
+
+/*" Controlling the mouse wheel "*/
 - (void)setScrollWheelZoomEnabled:(BOOL)enabled;
 - (BOOL)scrollWheelZoomEnabled;
 

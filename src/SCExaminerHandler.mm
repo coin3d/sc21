@@ -44,6 +44,14 @@
 
 @implementation SCExaminerHandler
 
+/*" 
+  SCExaminerHandler allows you to inspect the scene by rotating,
+  panning, and zooming in and out. 
+
+  Note that the mouse + modifier key combinations are most easily
+  configured through the associated InterfaceBuilder inspector.
+"*/
+
 #pragma mark --- initialization and cleanup ---
 
 - (id)init
@@ -68,36 +76,56 @@
 
 #pragma mark --- mouse- and keybindings --- 
 
+/*" Returns !{YES} if panning by clicking and dragging is enabled. "*/
+
 - (BOOL)panButtonIsEnabled
 {
   return SELF->panbuttonenabled;
 }
+
+/*" Returns !{YES} if rotating by clicking and dragging is enabled. "*/
 
 - (BOOL)rotateButtonIsEnabled
 {
   return SELF->rotatebuttonenabled;
 }
 
+/*" 
+  Returns !{YES} if zooming by clicking and dragging is enabled. 
+
+  Note that this does not affect zooming via the mouse wheel.
+"*/
 - (BOOL)zoomButtonIsEnabled
 {
   return SELF->zoombuttonenabled;
 }
+
+/*" Disable panning by clicking and dragging. "*/
 
 - (void)disablePanButton
 {
   SELF->panbuttonenabled = NO;
 }
 
+/*" Disable rotating by clicking and dragging. "*/
+
 - (void)disableRotateButton
 {
   SELF->rotatebuttonenabled = NO;
 }
+
+/*" 
+  Disable zooming by clicking and dragging. 
+
+  Note that this does not affect zooming via the mouse wheel.
+"*/
 
 - (void)disableZoomButton
 {
   SELF->zoombuttonenabled = NO;
 }
 
+/*" Set the mouse button and modifier key(s) used for panning. "*/
 - (void)setPanButton:(int)buttonNumber modifier:(unsigned int)modifierFlags
 {
   SELF->panbutton = buttonNumber;
@@ -105,6 +133,7 @@
   SELF->panbuttonenabled = YES;
 }
 
+/*" Set the mouse button and modifier key(s) used for rotating. "*/
 - (void)setRotateButton:(int)buttonNumber modifier:(unsigned int)modifierFlags
 {
   SELF->rotatebutton = buttonNumber;
@@ -112,6 +141,7 @@
   SELF->rotatebuttonenabled = YES;
 }
 
+/*" Set the mouse button and modifier key(s) used for zooming. "*/
 - (void)setZoomButton:(int)buttonNumber modifier:(unsigned int)modifierFlags
 {
   SELF->zoombutton = buttonNumber;
@@ -119,18 +149,21 @@
   SELF->zoombuttonenabled = YES;  
 }
 
+/*" Get the mouse button and modifier key(s) used for panning. "*/
 - (void)getPanButton:(int*)button modifier:(unsigned int*)modifierFlags
 {
   *button = SELF->panbutton;
   *modifierFlags = SELF->panmodifier;
 }
 
+/*" Get the mouse button and modifier key(s) used for rotating. "*/
 - (void)getRotateButton:(int*)button modifier:(unsigned int*)modifierFlags
 {
   *button = SELF->rotatebutton;
   *modifierFlags = SELF->rotatemodifier; 
 }
 
+/*" Get the mouse button and modifier key(s) used for zooming. "*/
 - (void)getZoomButton:(int*)button modifier:(unsigned int*)modifierFlags
 {
   *button = SELF->zoombutton;
@@ -139,20 +172,39 @@
 
 #pragma mark --- additional settings ---
 
+/*" 
+  Pass !{YES} to enable "spinning" (i.e. starting a continuous
+  animation by dragging and then releasing). 
+"*/
 - (void)setSpinEnabled:(BOOL)enabled
 {
   SELF->spinenabled = enabled;
 }
+
+/*" Returns !{YES} if spinning is enabled, and !{NO} otherwise. "*/
 
 - (BOOL)spinEnabled
 {
   return SELF->spinenabled;
 }
 
+/*" 
+  Pass !{YES} to enable scrolling by using the mouse wheel (if 
+  present).
+"*/
 - (void)setScrollWheelZoomEnabled:(BOOL)enabled
 {
   SELF->scrollwheelzoomenabled = enabled;
 }
+
+/*" 
+  Returns !{YES} if the mouse wheel can be used for zooming, and !{NO}
+  otherwise.
+
+  Note that this only reports whether Sc21 is %{set up} to use the
+  mouse wheel. You cannot use this method to check if a mouse wheel is
+  present at runtime or not.
+"*/
 
 - (BOOL)scrollWheelZoomEnabled
 {
