@@ -27,7 +27,6 @@
  
 #import <Sc21/SCView.h>
 #import <Sc21/SCController.h>
-#import <Sc21/SCExaminerController.h>
 #import "SCUtil.h"
 #import "SCOpenGLViewP.h"
 #import <Inventor/actions/SoGLRenderAction.h>
