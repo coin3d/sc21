@@ -56,7 +56,7 @@
     reorienting the camera.
  "*/
 
-// ---------------- Initialisation and cleanup -------------------------
+#pragma mark --- initialization and cleanup ---
 
 /*" Initializes a newly allocated SCCamera in the scenegraph scenegraph.
     Note that you must set the actual camera in the Coin scenegraph explicitly 
@@ -107,15 +107,17 @@
 
 - (SCCameraType)type
 {
-  if (SELF->camera == NULL) return SCCameraNone;
+  if (SELF->camera == NULL) { return SCCameraNone; }
   
   if (SELF->camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
     return SCCameraPerspective;
-  } else if (SELF->camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
+  } 
+  
+  if (SELF->camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
     return SCCameraOrthographic;
-  } else {
-    return SCCameraUnknown;
-  }
+  } 
+
+  return SCCameraUnknown;
 }
 
 
@@ -140,6 +142,12 @@
 
 - (BOOL)convertToType:(SCCameraType)type
 {
+  // FIXME: The actual camera conversion code is copied from
+  // SoQt. Morten mentioned recently[*] that there might be a 
+  // bug in this conversion code. We should either look at this ourselves, 
+  // or at least sync with SoQt when it is fixed there.  kyrah 20040729
+  // [*] Message-ID: <Pine.LNX.4.58.0407262004550.6340@valhalla.trh.sim.no> 
+  
   BOOL ok = NO;
 
   if (SELF->camera == NULL) {
@@ -147,15 +155,18 @@
   }
   else {
     switch (type) {
-    case SCCameraOrthographic:
-      ok = [self _SC_convertToType:SoOrthographicCamera::getClassTypeId()];
-      break;
-    case SCCameraPerspective:
-      ok =[self _SC_convertToType:SoPerspectiveCamera::getClassTypeId()];
-      break;
-    default:
-      SC21_DEBUG(@"Unknown camera type.");
-      break;
+      case SCCameraNone:
+        SC21_DEBUG(@"Cannot convert camera to type SCCameraNone.");
+        break;
+      case SCCameraOrthographic:
+        ok = [self _SC_convertToType:SoOrthographicCamera::getClassTypeId()];
+        break;
+      case SCCameraPerspective:
+        ok =[self _SC_convertToType:SoPerspectiveCamera::getClassTypeId()];
+        break;
+      default:
+        SC21_DEBUG(@"Unknown camera type.");
+        break;
     }
     if (ok) {
       [[NSNotificationCenter defaultCenter]
