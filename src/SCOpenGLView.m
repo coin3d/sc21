@@ -247,7 +247,13 @@
   [context makeCurrentContext];
   //FIXME: On Panther, we can do this in prepareOpenGL, on Jaguar
   //we must do this here or in drawRect. (kintel 20040429)
-  glEnable(GL_DEPTH_TEST);
+  static BOOL isInitialized = NO;
+  if (!isInitialized) {
+    glEnable(GL_DEPTH_TEST);
+    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    isInitialized = YES;
+  }
 }
 
 // ----------------- NSCoding compliance --------------------
