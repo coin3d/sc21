@@ -29,6 +29,11 @@
 @interface SCController (InternalAPI)
 - (void) _processTimerQueue:(NSTimer *) t;
 - (void) _processDelayQueue:(NSTimer *) t;
+- (void) _setInternalSceneGraph:(SoGroup *)root;
+- (void) _lightNotFound;
+- (void) _lightFound;
+- (void) _cameraNotFound;
+- (void) _positionCamera;
 @end  
 
 
@@ -218,36 +223,33 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     notifications if you want to warn your users that they will not be
     able to see anything.
  "*/
-    
-- (void) setSceneGraph:(SoGroup *)sg
+
+- (void) setSceneGraph:(SoGroup *)scenegraph
 {
+  if (scenegraph == _scenegraph) return;
+  if (scenegraph == NULL) scenegraph = new SoSeparator;
 
-  // Check if somebody passes the scenegraph that is already set.
-  if (sg != NULL && sg == _scenegraph) {
-    NSLog(@"setSceneGraph called with the same root as already set");
-    return;
-  }
-  
-  if (sg == NULL) sg = new SoSeparator;
-  
-  _scenegraph = sg;
-  if (_scenemanager) _scenemanager->setSceneGraph(_scenegraph);
+  [self _setInternalSceneGraph:scenegraph];
 
-  SoCamera * scenecamera = [self findCameraInSceneGraph:_scenegraph];
-  if (scenecamera) {
-    [_camera setSoCamera:scenecamera];
-    [_camera setControllerHasCreatedCamera:NO];
+  if (![self findLightInSceneGraph:scenegraph]) {
+    [self _lightNotFound];
   } else {
-    [[NSNotificationCenter defaultCenter]
-      postNotificationName:SCNoCameraFoundInSceneNotification object:self];
+    [self _lightFound];
   }
-  
-  if (![self findLightInSceneGraph:_scenegraph]) {
-    [[NSNotificationCenter defaultCenter]
-      postNotificationName:SCNoLightFoundInSceneNotification object:self];
+
+  SoCamera * scenecamera  = [self findCameraInSceneGraph:scenegraph];
+  if (scenecamera == NULL) {
+    [self _cameraNotFound];
+  } else {
+    [_camera setSoCamera:scenecamera deleteOldCamera:NO];
+    [_camera setControllerHasCreatedCamera:NO]; 
   }
   [_camera updateClippingPlanes:_scenegraph];
-  [view setNeedsDisplay:YES];
+
+  if (_scenemanager) {
+    _scenemanager->setSceneGraph(_scenegraph);
+    [self _positionCamera];
+  }
 
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCSceneGraphChangedNotification object:self];
@@ -335,7 +337,7 @@ otherwise NULL.
 
 - (void) setCamera:(SoCamera *) cam
 {
-  [_camera setSoCamera:cam];
+  [_camera setSoCamera:cam deleteOldCamera:YES];
 }
 
 /*" Returns the current SoCamera used for viewing. "*/
@@ -661,7 +663,7 @@ otherwise NULL.
 // ------------------------ Autoclipping -------------------------------------
 
 /*" Determines the best value for the near clipping plane. Negative and very
-small near clipping plane distances are disallowed.
+    small near clipping plane distances are disallowed.
 "*/
 - (float) bestValueForNearPlane:(float)near farPlane:(float) far
 {
@@ -726,6 +728,36 @@ small near clipping plane distances are disallowed.
 - (void) _processDelayQueue:(NSTimer *)t
 {
   SoDB::getSensorManager()->processDelayQueue(FALSE);
+}
+
+
+// Methods below are called by setScenegraph
+
+- (void) _setInternalSceneGraph:(SoGroup *)root
+{
+  _scenegraph = root;
+}
+
+- (void) _lightNotFound
+{
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:SCNoLightFoundInSceneNotification object:self];
+}
+
+- (void) _lightFound
+{
+  // do nothing
+}
+
+- (void) _cameraNotFound
+{
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:SCNoCameraFoundInSceneNotification object:self];
+}
+
+- (void) _positionCamera
+{
+  // do nothing.
 }
 
 @end

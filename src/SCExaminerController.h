@@ -26,7 +26,6 @@ class SoDirectionalLight;
 
 /*" Coin rendering and related functionality "*/
 - (void) render;
-- (void) setSceneGraph:(SoGroup *)scenegraph;
 - (void) setCameraType:(SCCameraType)type;
 - (void) viewAll;
 

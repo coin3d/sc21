@@ -42,7 +42,7 @@ typedef enum _SCCameraType {
 /*" Accessors "*/ 
 - (void) setController:(SCController *)ctrl;
 - (SCController *) controller;
-- (void) setSoCamera:(SoCamera *)c;
+- (void) setSoCamera:(SoCamera *)c deleteOldCamera:(BOOL)deletecamera;
 - (SoCamera *) soCamera;
 - (void) setControllerHasCreatedCamera:(BOOL)yn;
 - (BOOL) controllerHasCreatedCamera;

@@ -71,7 +71,6 @@ class SoSceneManager;
 - (void) setDelayQueueInterval:(NSTimeInterval)interval;
 - (NSTimeInterval) delayQueueInterval;
 
-
   /*" Autoclipping "*/
 - (float) bestValueForNearPlane:(float)near farPlane:(float)far;
 

@@ -23,8 +23,13 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 
 @interface SCExaminerController (InternalAPI)
-  - (void) _spin;
-  - (void) _pan;
+- (void) _spin;
+- (void) _pan;
+- (void) _setInternalSceneGraph:(SoGroup *)root;
+- (void) _lightNotFound;
+- (void) _lightFound;
+- (void) _cameraNotFound;
+- (void) _positionCamera;
 @end
 
 @implementation SCExaminerController
@@ -144,7 +149,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 }
 
 
- /*" Sets the scene graph that shall be rendered. You do not need to
+ /* Sets the scene graph that shall be rendered. You do not need to
      !{ref()} the node before passing it to this method.  If sg is
      NULL, an empty scenegraph consisting of a single SoSeparator node will
      be created and set.
@@ -154,60 +159,9 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
      it by calling #setHeadlightIsOn:
 
      A camera is added before the scenegraph, if it does not contain one.
- "*/
+ */
+// No setSceneGraph implementation - uses superclass.
 
-- (void) setSceneGraph:(SoGroup *)sg
-{
-  // Check if somebody passes the scenegraph that is already set.
-  if (sg != NULL && sg == _userscenegraph) {
-    NSLog(@"setSceneGraph called with the same root as already set");
-    return;
-  }
-
-  // Do not insert camera and headlight if scenegraph is NULL.
-  if (sg == NULL) {
-    [super setSceneGraph:NULL];
-    return;
-  }
-
-  _userscenegraph = sg;     // store user-supplied SG
-  
-  SoSeparator * root = new SoSeparator;
-  _headlight = new SoDirectionalLight;
-  root->ref();
-  root->addChild(_headlight);
-  root->addChild(_userscenegraph);
-  
-  // If there was a light in the user scenegraph, turn off headlight
-  // by default. We are adding one anyway, since you might want to
-  // be able to view the whole model (regardless if lights are present
-  // or not.
-  [self setHeadlightIsOn: ([self findLightInSceneGraph:_userscenegraph]) ? NO : YES];
-
-  // Look for camera in scengraph. Make our own if we find none
-  SoCamera * scenecamera = [self findCameraInSceneGraph:_userscenegraph];
-  if (!scenecamera) {
-    scenecamera = new SoPerspectiveCamera;
-    [_camera setSoCamera:scenecamera];
-    [_camera setControllerHasCreatedCamera:YES];
-    root->insertChild(scenecamera, 1);
-  } else {
-    [_camera setSoCamera:scenecamera];
-    [_camera setControllerHasCreatedCamera:NO];
-  }
-
-  if (_scenemanager) {
-    _scenemanager->setSceneGraph(root);
-  }
-
-  _scenegraph = root;
-
-  if (_scenemanager && [_camera controllerHasCreatedCamera]) [self viewAll];
-  [view setNeedsDisplay:YES];
-  
-  [[NSNotificationCenter defaultCenter]
-    postNotificationName:SCSceneGraphChangedNotification object:self];
-}
 
 /*" Sets the type of the camera we are using for viewing the scene.
     Currently supported types are %SCCameraPerspective and
@@ -538,6 +492,44 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   r.invert();
 
   [_camera reorient:r];
+}
+
+// Methods below are called by setSceneGraph
+
+- (void) _setInternalSceneGraph:(SoGroup *)scenegraph
+{
+  _userscenegraph = scenegraph;
+  _scenegraph = new SoSeparator;
+  _headlight = new SoDirectionalLight;
+  _scenegraph->ref();
+  _scenegraph->addChild(_headlight);
+  _scenegraph->addChild(_userscenegraph);
+}
+
+- (void) _lightNotFound
+{
+  [self setHeadlightIsOn:YES];
+}
+
+- (void) _lightFound
+{
+  [self setHeadlightIsOn:NO];
+}
+
+- (void) _cameraNotFound
+{
+  SoCamera * scenecamera = new SoPerspectiveCamera;
+  [_camera setSoCamera:scenecamera deleteOldCamera:NO];
+  [_camera setControllerHasCreatedCamera:YES];
+  _scenegraph->insertChild(scenecamera, 1);
+}
+
+- (void) _positionCamera
+{
+  if ([_camera controllerHasCreatedCamera]) {
+    [self viewAll];
+    [view setNeedsDisplay:YES];
+  }
 }
 
 @end

@@ -267,12 +267,13 @@
     Note that cam is expected to be part of the scenegraph already;
     it is not inserted into it.
  "*/
- 
-- (void) setSoCamera:(SoCamera *)camera
+
+- (void) setSoCamera:(SoCamera *)camera deleteOldCamera:(BOOL)deletecamera
 {
   if (camera == NULL) return;
 
-  if (_controllerhascreatedcamera) { // delete camera if we created it
+  // delete camera if we created it and if requested
+  if (_controllerhascreatedcamera && deletecamera) { 
     SoGroup * camparent = [self _getParentOfNode:_camera
       inSceneGraph:(SoGroup*)[_controller sceneGraph]];
     camparent->removeChild(_camera);
@@ -398,8 +399,8 @@
   SoGroup * camparent = [self _getParentOfNode:_camera
                                  inSceneGraph:(SoGroup *)[_controller sceneGraph]];
   camparent->insertChild(newcam, camparent->findChild(_camera));
-  
-  [self setSoCamera:newcam];
+
+  [self setSoCamera:newcam deleteOldCamera:YES];
   [self setControllerHasCreatedCamera:YES];
   return YES;
 }
