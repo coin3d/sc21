@@ -25,10 +25,6 @@ class SoGetBoundingBoxAction;
   SoSceneManager * _scenemanager;
   BOOL _handleseventsinviewer;
   float _autoclipvalue;
-  enum AutoClipStrategy {
-    CONSTANT_NEAR_PLANE,
-    VARIABLE_NEAR_PLANE
-  } _autoclipstrategy;
 }
 
 /*" Static initialization "*/
@@ -81,7 +77,6 @@ class SoGetBoundingBoxAction;
 - (id) initWithCoder:(NSCoder *) coder;
 
   /*" Autoclipping "*/
-- (void) setAutoClippingStrategy:(AutoClipStrategy)strategy value:(float)v;
 - (float) bestValueForNearPlane:(float)near farPlane:(float) far;
 
 @end

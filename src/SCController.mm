@@ -99,7 +99,6 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   if (self = [super init]) {
     _camera = [[SCCamera alloc] init];
     [_camera setController:self];
-    _autoclipstrategy = VARIABLE_NEAR_PLANE;
     _autoclipvalue = 0.6;
     _handleseventsinviewer = YES;
     _eventconverter = [[SCEventConverter alloc] initWithController:self];
@@ -640,30 +639,12 @@ otherwise NULL.
 
 // ------------------------ Autoclipping -------------------------------------
 
-/*" Set the autoclipping strategy. Possible values for strategy are:
-
-!{CONSTANT_NEAR_PLANE
-  VARIABLE_NEAR_PLANE}
-
-The default strategy is VARIABLE_NEAR_PLANE.
-"*/
-- (void) setAutoClippingStrategy:(AutoClipStrategy)strategy value:(float)v
-{
-
-  // FIXME: Make it possible to turn autoclipping off. kyrah 20030621.
-  // NSLog(@"setting autoclip strategy");
-  _autoclipstrategy = strategy;
-  _autoclipvalue = v;
-  [self render];
-}
-
-
 /*" Determines the best value for the near clipping plane. Negative and very
 small near clipping plane distances are disallowed.
 "*/
 - (float) bestValueForNearPlane:(float)near farPlane:(float) far
 {
-  // FIXME: Send notification when doing plane calculation, instead of
+  // FIXME: Use delegate for doing plane calculation, instead of
   // using strategy. kyrah 20030621.
   float nearlimit, r;
   int usebits;
@@ -671,20 +652,13 @@ small near clipping plane distances are disallowed.
 
   if (![_camera isPerspective]) return near;
 
-  switch (_autoclipstrategy) {
-    case CONSTANT_NEAR_PLANE:
-      nearlimit = _autoclipvalue;
-      break;
-    case VARIABLE_NEAR_PLANE:
-      glGetIntegerv(GL_DEPTH_BITS, _depthbits);
-      usebits = (int) (float(_depthbits[0]) * (1.0f - _autoclipvalue));
-      r = (float) pow(2.0, (double) usebits);
-      nearlimit = far / r;
-      break;
-    default:
-      NSLog(@"Unknown autoclip strategy: %d", _autoclipstrategy);
-      break;
-  }
+  // For simplicity, we are using what SoQt calls the
+  // VARIABLE_NEAR_PLANE strategy. As stated in the FIXME above,
+  // we should have a delegate for this in general.
+  glGetIntegerv(GL_DEPTH_BITS, _depthbits);
+  usebits = (int) (float(_depthbits[0]) * (1.0f - _autoclipvalue));
+  r = (float) pow(2.0, (double) usebits);
+  nearlimit = far / r;
 
   // If we end up with a bogus value, use an empirically determined
   // magic value that's supposed to work will (taken from SoQtViewer.cpp).
@@ -713,7 +687,6 @@ small near clipping plane distances are disallowed.
   if (self = [super initWithCoder:coder]) {
     _camera = [[SCCamera alloc] init];
     [_camera setController:self];
-    _autoclipstrategy = VARIABLE_NEAR_PLANE;
     _autoclipvalue = 0.6;
     _handleseventsinviewer = YES;
     _eventconverter = [[SCEventConverter alloc] initWithController:self];
