@@ -34,8 +34,17 @@ class SoGroup;
 class SoLight;
 class SoSceneManager;
 
-// FIXME: Why inherit from NSResponder? (kintel 20040407)
-// If we change it, we might need to fix initWithCoder, incl. versioning
+// FIXME: If we still want to inherit from NSResponder (e.g. to
+// use put the controller into the responder chain for situations
+// like full-screen mode), we have to implement the event handling
+// methods from NSResponder (mouseUp, keyDown etc) here instead
+// of collecting all events into a single call.
+// Note that this might become tricky wrt. the inView: parameter
+// to handleEvent: w/friends.
+// If we change this from NSResponder to NSObject, we might need to fix
+// initWithCoder, incl. versioning to be able to read objects created with
+// the public beta (See SCView).
+// (kintel 20040502)
 @interface SCController : NSResponder
 {
   id _redrawhandler;
