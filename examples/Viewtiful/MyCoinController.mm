@@ -31,7 +31,7 @@
 
 // Sets the viewer in "pick mode" if the user presses the 'm' key
 // FIXME: Should notify the rest of the app so we can set the checkbox correctly (kintel 20031112)
-- (BOOL)handleEventAsViewerEvent:(NSEvent *)event inView:(NSView *)view
+- (BOOL)handleEvent:(NSEvent *)event
 {
   BOOL handled = NO;
 
@@ -48,15 +48,15 @@
           break;
       }
     }
-  }
+  } 
 
-  if (!handled) return [super handleEventAsViewerEvent:event inView:view];
+  if (!handled) return [super handleEvent:event];
   return YES;
 }
 
 - (IBAction)viewAll:(id)sender
 {
-  [[[self sceneGraph] camera] viewAll];
+  [[self sceneGraph] viewAll];
 }
 
 
