@@ -371,76 +371,167 @@
 
 // ----------- Mouse and keyboard event handling --------------------------
 
-/*" Shows the current context menu in response to right mouse button
-    click.
+/*" Forwards event to %controller by sending it the #handleEvent:
+    message.  If the event is not handled by the controller, it will
+    be forwarded through the responder chain as usual.
+
+    Note that if you press the left mouse button while holding
+    down the ctrl key, you will not receive a mouseDown event.
+    Instead, the view's default context menu will be shown. (This
+    behavior is inherited from NSView.) If you want to handle
+    ctrl-click yourself, you have to subclass SCView and override
+    #{- (NSMenu *)menuForEvent:(NSEvent *)event} to return nil and
+    pass on the event to the controller:
+    %{[controller handleEvent:event]}.
+ "*/
+
+- (void) mouseDown:(NSEvent *)event
+{
+  if (![controller handleEvent:event]) {
+    [[self nextResponder] mouseDown:event];
+  }
+}
+
+
+/*" Forwards event to %controller by sending it the #handleEvent:
+    message.  If the event is not handled by the controller, it will
+    be forwarded through the responder chain as usual. 
+ "*/
+
+- (void) mouseUp:(NSEvent *)event
+{
+  if (![controller handleEvent:event]) {
+    [[self nextResponder] mouseUp:event];
+  }
+}
+
+
+/*" Forwards event to %controller by sending it the #handleEvent: 
+    message. If the event is not handled by the controller, it will
+    be forwarded through the responder chain as usual.
+
+    Note that when processing "mouse dragged" events, Coin does not
+    distinguish between left and right mouse button. If you interested
+    in that information, you have to evaluate the last mouseDown that
+    occured before the dragging.
+ "*/
+
+- (void) mouseDragged:(NSEvent *)event
+{
+  if (![controller handleEvent:event]) {
+    [[self nextResponder] mouseDragged:event];
+  }
+}
+
+
+/*" Forwards event to %controller by sending it the #handleEvent: 
+    message. If the event is not handled by the controller, it will
+    be forwarded through the responder chain as usual.
  "*/
 
 - (void) rightMouseDown:(NSEvent *)event
 {
-  [NSMenu popUpContextMenu:[self menu] withEvent:event forView:self];
+  if (![controller handleEvent:event]) {
+    [[self nextResponder] rightMouseDown:event];
+  }
 }
 
 
-/*" Forwards event to %controller by sending it the #handleEvent: message. "*/
+/*" Forwards event to %controller by sending it the #handleEvent: 
+    message. If the event is not handled by the controller, it will
+    be forwarded through the responder chain as usual.
+ "*/
 
-- (void) mouseDown:(NSEvent *)event
+- (void) rightMouseUp:(NSEvent *)event
 {
-  [controller handleEvent:event];
+  if (![controller handleEvent:event]) {
+    [[self nextResponder] rightMouseUp:event];
+  }
 }
 
+/*" Forwards event to %controller by sending it the #handleEvent: 
+    message. If the event is not handled by the controller, it will
+    be forwarded through the responder chain as usual.
 
-/*" Forwards event to %controller by sending it the #handleEvent: message. "*/
+    Note that when processing "mouse dragged" events, Coin does not
+    distinguish between left and right mouse button. If you interested
+    in that information, you have to evaluate the last mouseDown that
+    occured before the dragging.
+ "*/
 
-- (void) mouseUp:(NSEvent *)event
+- (void) rightMouseDragged:(NSEvent *)event
 {
-  [controller handleEvent:event];
+  if (![controller handleEvent:event]) {
+    [[self nextResponder] rightMouseDragged:event];
+  }
 }
 
 
-/*" Forwards event to %controller by sending it the #handleEvent: message. "*/
-
-- (void) mouseDragged:(NSEvent *)event
-{
-  [controller handleEvent:event];
-}
-
-
-/*" Forwards event to %controller by sending it the #handleEvent: message. "*/
+/*" Forwards event to %controller by sending it the #handleEvent: 
+    message.  If the event is not handled by the controller, it will
+    be forwarded through the responder chain as usual 
+ "*/
 
 - (void) otherMouseDown:(NSEvent *)event
 {
-  [controller handleEvent:event];
+  if (![controller handleEvent:event]) {
+    [[self nextResponder] otherMouseDown:event];
+  }
 }
 
 
-/*" Forwards event to %controller by sending it the #handleEvent: message. "*/
+/*" Forwards event to %controller by sending it the #handleEvent: 
+    message.  If the event is not handled by the controller, it will
+    be forwarded through the responder chain as usual. 
+ "*/
 
 - (void) otherMouseUp:(NSEvent *)event
 {
-  [controller handleEvent:event];
+  if (![controller handleEvent:event]) {
+    [[self nextResponder] otherMouseUp:event];
+  }
 }
 
 
-/*" Forwards event to %controller by sending it the #handleEvent: message. "*/
+/*" Forwards event to %controller by sending it the #handleEvent: 
+    message. If the event is not handled by the controller, it will
+    be forwarded through the responder chain as usual.
+
+    Note that when processing "mouse dragged" events, Coin does not
+    distinguish between left and right mouse button. If you interested
+    in that information, you have to evaluate the last mouseDown that
+    occured before the dragging.
+ "*/
 
 - (void) otherMouseDragged:(NSEvent *)event
 {
-  [controller handleEvent:event];
+  if (![controller handleEvent:event]) {
+    [[self nextResponder] otherMouseDragged:event];
+  }
 }
 
-
-/*" Forwards event to %controller by sending it the #handleEvent: message. "*/
+/*" Forwards event to %controller by sending it the #handleEvent: 
+    message.  If the event is not handled by the controller, it will
+    be forwarded through the responder chain as usual.
+ "*/
 
 - (void) scrollWheel:(NSEvent *) event
 {
-  [controller handleEvent:event];
+  if (![controller handleEvent:event]) {
+    [[self nextResponder] scrollWheel:event];
+  }
 }
 
 
-/*" Forwards event to %controller by sending it the #handleEvent: message. "*/
+/*" Forwards event to %controller by sending it the #handleEvent:
+    message.  If the event is not handled by the controller, it will
+    be forwarded through the responder chain as usual.
+ "*/
 
 - (void) keyDown:(NSEvent *) event {
-  [controller handleEvent:event];
+  if (![controller handleEvent:event]) {
+    [[self nextResponder] keyDown:event];
+  } 
 }
 
 
