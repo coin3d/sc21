@@ -321,7 +321,7 @@ void error_cb(const class SoError * error, void * data)
     }
   }
   if (SELF->superscenegraph) SELF->superscenegraph->ref();
-  else SELF->superscenegraph = SELF->root;
+  else SELF->superscenegraph = SELF->scenegraph;
   
   // Set active camera to use in viewer. Note that we have to do this
   // after the delegate had the chance to create its own
