@@ -314,6 +314,7 @@ void error_cb(const class SoError * error, void * data)
 - (BOOL)setRoot:(SoGroup *)root
 {
   SC21_DEBUG(@"SCSceneGraph.setRoot: %p", root);
+  BOOL retval = YES;
 
   // just to be sure we don't accidentally delete root when
   // unref()'ing scenegraph below (in case root == scenegraph)
@@ -373,8 +374,19 @@ void error_cb(const class SoError * error, void * data)
       }
       defaultsupersg->unrefNoDelete();
     }
+
+    // If superscenegraph was correctly set, set scenegraph here since
+    // it may be accessed from a notification handler below.
     if (SELF->superscenegraph) {
       SELF->superscenegraph->ref();
+      SELF->scenegraph = root;
+    }
+    // If superscenegraph == NULL at this point, it is because the
+    // delegate returned NULL for superscenegraph. We regard that as a
+    // sign that something is very wrong. No scenegraph has been set
+    // and we return NO.
+    else {
+      retval = NO; // The only reason why we may fail
     }
 
     //
@@ -403,20 +415,6 @@ void error_cb(const class SoError * error, void * data)
     }
   }
     
-  // If root != NULL and superscenegraph == NULL at this point, it is
-  // because the delegate returned NULL for superscenegraph. We regard
-  // that as a sign that something is very wrong.  No scenegraph has
-  // been set and we return NO.
-  BOOL retval;
-  if (root && !SELF->superscenegraph) {
-    SELF->scenegraph = NULL;
-    retval = NO;
-  }
-  else {
-    SELF->scenegraph = root;
-    retval = YES;
-  }
-  
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCRootChangedNotification object:self];
   
