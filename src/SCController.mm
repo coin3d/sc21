@@ -212,7 +212,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 - (void)dealloc
 {
   [self stopTimers];
-  [view setController:nil];
+  [view release];
   [_eventconverter release];
   [_camera release];
   delete _scenemanager;
@@ -226,8 +226,8 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 - (void)setView:(SCView *)newview
 {
-  // We intentionally do not retain the view here, to avoid
-  // circular references.
+  [newview retain];
+  [view release];
   view = newview;
 }
 
@@ -524,10 +524,14 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 - (void)stopTimers
 {
-  if ([_timerqueuetimer isValid]) [_timerqueuetimer invalidate];
-  _timerqueuetimer = nil;
-  if ([_delayqueuetimer isValid]) [_delayqueuetimer invalidate];
-  _delayqueuetimer = nil;
+  if (_timerqueuetimer && [_timerqueuetimer isValid]) {
+    [_timerqueuetimer invalidate];
+    _timerqueuetimer = nil;
+  }
+  if (_delayqueuetimer && [_delayqueuetimer isValid]) {
+    [_delayqueuetimer invalidate];
+    _delayqueuetimer = nil;
+  }
   SoDB::getSensorManager()->setChangedCallback(NULL, NULL);
 }
 
