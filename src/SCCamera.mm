@@ -25,6 +25,7 @@
 #import <Inventor/nodes/SoOrthographicCamera.h>
 
 @interface SCCamera (InternalAPI)
+  - (void) _convertToType:(SoType) type;
   - (SoGroup *) getParentOfNode:(SoNode *)node inSceneGraph:(SoGroup *)root;
 @end
 
@@ -142,76 +143,29 @@
 }
 
 /*" Converts from perspective to orthographic camera and vice versa.
-    Possible values for type are !{SoPerspectiveCamera::getTypeId()}
-    and !{SoOrthographicCamera::getClassTypeId()}.
-    
-    A new camera of the intended type is created and initialized 
-    with the values of the current camera. It is then inserted in 
-    the scenegraph and set to be the new current camera by calling 
+    Possible values for type are !SCCameraPerspective and
+    !SCCameraOrthographic.
+
+    A new camera of the intended type is created and initialized
+    with the values of the current camera. It is then inserted in
+    the scenegraph and set to be the new current camera by calling
     the #setSoCamera: method.
  "*/
 
-- (void) convertToType:(SoType) type
+
+- (void) convertToType:(SCCameraType) type
 {
-  // FIXME: Maybe a better solution would be to have a switch
-  // node containing both a perspective and an orthographic
-  // camera whose fields are connected, and then just change
-  // whichChild, instead of inserting and removing cameras every
-  // time we change? kyrah 20030713
-  
-  if (_camera == NULL) return;
-
-  // FIXME: Check how SoQt handles this - maybe it should be possible to 
-  // change camera type if even the cam is part of user SG? kyrah 20030711
-  if (!_controllerhascreatedcamera) {
-    NSLog(@"Camera is part of user scenegraph, cannot convert.");
-    return; 
+  switch (type) {
+    case SCCameraOrthographic:
+      [self _convertToType:SoOrthographicCamera::getClassTypeId()];
+      break;
+    case SCCameraPerspective:
+      [self _convertToType:SoPerspectiveCamera::getClassTypeId()];
+      break;
+    default:
+      NSLog(@"Unknown camera type.");
+      break;
   }
-  
-  BOOL settoperspective = type.isDerivedFrom(SoPerspectiveCamera::getClassTypeId());
-  
-  if (([self isPerspective] && settoperspective) ||
-      (![self isPerspective] && !settoperspective)) return;
-
-  SoCamera * newcam = (SoCamera *) type.createInstance();
-  
-  if (settoperspective)
-    [self cloneFromOrthographicCamera:(SoPerspectiveCamera *)newcam];
-  else
-    [self cloneFromPerspectiveCamera:(SoOrthographicCamera *)newcam];
-
-  
-  // insert into SG
-  SoGroup * camparent = [self getParentOfNode:_camera
-    inSceneGraph:(SoGroup *)[_controller sceneGraph]];
-  camparent->insertChild(newcam, camparent->findChild(_camera));
-
-#if 0
-  // Store the current home position, as it will be implicitly reset
-  // by setCamera().
-  SoOrthographicCamera * homeo = new SoOrthographicCamera;
-  SoPerspectiveCamera * homep = new SoPerspectiveCamera;
-  homeo->ref();
-  homep->ref();
-  homeo->copyContents(PRIVATE(this)->storedortho, FALSE);
-  homep->copyContents(PRIVATE(this)->storedperspective, FALSE);
-#endif
-
-  [self setSoCamera:newcam];
-  [self setControllerHasCreatedCamera:YES];
-
-#if 0
-  // Restore home position.
-  PRIVATE(this)->storedortho->copyContents(homeo, FALSE);
-  PRIVATE(this)->storedperspective->copyContents(homep, FALSE);
-  homeo->unref();
-  homep->unref();
-#endif
-
-
-  [[NSNotificationCenter defaultCenter]
-    postNotificationName:SCCameraTypeChangedNotification object:self];
-
 }
 
 
@@ -439,6 +393,79 @@
 
 
 // ----------------------- InternalAPI --------------------------
+
+/* Converts from perspective to orthographic camera and vice versa.
+   Possible values for type are !{SoPerspectiveCamera::getTypeId()}
+   and !{SoOrthographicCamera::getClassTypeId()}.
+
+   A new camera of the intended type is created and initialized
+   with the values of the current camera. It is then inserted in
+   the scenegraph and set to be the new current camera by calling
+   the #setSoCamera: method.
+"*/
+
+- (void) _convertToType:(SoType) type
+{
+  // FIXME: Maybe a better solution would be to have a switch
+  // node containing both a perspective and an orthographic
+  // camera whose fields are connected, and then just change
+  // whichChild, instead of inserting and removing cameras every
+  // time we change? kyrah 20030713
+
+  if (_camera == NULL) return;
+
+  // FIXME: Check how SoQt handles this - maybe it should be possible to
+  // change camera type if even the cam is part of user SG? kyrah 20030711
+  if (!_controllerhascreatedcamera) {
+    NSLog(@"Camera is part of user scenegraph, cannot convert.");
+    return;
+  }
+
+  BOOL settoperspective = type.isDerivedFrom(SoPerspectiveCamera::getClassTypeId());
+
+  if (([self isPerspective] && settoperspective) ||
+      (![self isPerspective] && !settoperspective)) return;
+
+  SoCamera * newcam = (SoCamera *) type.createInstance();
+
+  if (settoperspective)
+    [self cloneFromOrthographicCamera:(SoPerspectiveCamera *)newcam];
+  else
+    [self cloneFromPerspectiveCamera:(SoOrthographicCamera *)newcam];
+
+
+  // insert into SG
+  SoGroup * camparent = [self getParentOfNode:_camera
+                                 inSceneGraph:(SoGroup *)[_controller sceneGraph]];
+  camparent->insertChild(newcam, camparent->findChild(_camera));
+
+#if 0
+  // Store the current home position, as it will be implicitly reset
+  // by setCamera().
+  SoOrthographicCamera * homeo = new SoOrthographicCamera;
+  SoPerspectiveCamera * homep = new SoPerspectiveCamera;
+  homeo->ref();
+  homep->ref();
+  homeo->copyContents(PRIVATE(this)->storedortho, FALSE);
+  homep->copyContents(PRIVATE(this)->storedperspective, FALSE);
+#endif
+
+  [self setSoCamera:newcam];
+  [self setControllerHasCreatedCamera:YES];
+
+#if 0
+  // Restore home position.
+  PRIVATE(this)->storedortho->copyContents(homeo, FALSE);
+  PRIVATE(this)->storedperspective->copyContents(homep, FALSE);
+  homeo->unref();
+  homep->unref();
+#endif
+
+
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:SCCameraTypeChangedNotification object:self];
+
+}
 
 - (SoGroup *) getParentOfNode:(SoNode *)node inSceneGraph:(SoGroup *)root
 {

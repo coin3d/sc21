@@ -13,6 +13,11 @@ class SoGetBoundingBoxAction;
 class SoPerspectiveCamera;
 class SoOrthographicCamera;
 
+typedef enum _SCCameraType {
+  SCCameraPerspective   = 0,
+  SCCameraOrthographic  = 1
+} SCCameraType;
+
 @interface SCCamera : NSObject {
   SCController * _controller;
   SoCamera * _camera;
@@ -26,7 +31,7 @@ class SoOrthographicCamera;
 /*" Switching between orrthographic and perspective mode "*/
 - (BOOL) isPerspective;
 - (BOOL) isOrthographic;
-- (void) convertToType:(SoType)type;
+- (void) convertToType:(SCCameraType) type;
 - (void) cloneFromPerspectiveCamera:(SoOrthographicCamera *) ocam;
 - (void) cloneFromOrthographicCamera:(SoPerspectiveCamera *) pcam;
 
