@@ -7,7 +7,6 @@
                 modeChanged = id; 
                 open = id; 
                 showDebugInfo = id; 
-                toggleCameraType = id; 
                 toggleHeadlight = id; 
                 toggleModes = id; 
                 viewAll = id; 
