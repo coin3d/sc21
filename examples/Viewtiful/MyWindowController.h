@@ -30,7 +30,7 @@
 
 @interface MyWindowController : NSWindowController
 {
-  IBOutlet SCExaminerController *controller;
+  IBOutlet SCController *controller;
   IBOutlet NSTextField *typetext;
   IBOutlet NSTextField *sizetext;
   IBOutlet NSButton *modebutton;
