@@ -31,10 +31,9 @@
 
 @interface AppController : NSObject
 {
-  IBOutlet SCView *view;
-  SCExaminerController *sccontroller;
+  IBOutlet SCView * view;
 }
 
-- (void) openPanelDidEnd:(NSOpenPanel*)panel returnCode:(int)rc contextInfo:(void *) ctx;
+- (void)openPanelDidEnd:(NSOpenPanel *)panel returnCode:(int)rc contextInfo:(void *)ctx;
 
 @end
