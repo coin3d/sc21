@@ -46,7 +46,6 @@
 
 - (void)ok:(id)sender
 {
-  NSLog(@"SCExaminerHandlerInspector.ok:");
   SCExaminerHandler * scexaminerhandler = [self object];
 
   // FIXME: Handle "none" selection - how? kyrah 20040801 
@@ -54,16 +53,7 @@
   // Note: Settings depend on the order of menu items being 
   // "left - right - middle". I intentionally did not use the title
   // to avoid problems if we ever do localization.
-  
-  NSLog(@"rotate_command state: %d (NSOnState: %d, NSOffState: %d", 
-        [rotate_command state], NSOnState, NSOffState);
-  NSLog(@"rotate_alt state: %d (NSOnState: %d, NSOffState: %d", 
-        [rotate_alt state], NSOnState, NSOffState);
-  NSLog(@"rotate_shift state: %d (NSOnState: %d, NSOffState: %d", 
-        [rotate_shift state], NSOnState, NSOffState);
-  NSLog(@"rotate_control state: %d (NSOnState: %d, NSOffState: %d", 
-        [rotate_control state], NSOnState, NSOffState);
-  
+    
   unsigned int rotateflags = 0;
   if ([rotate_command state] ==  NSOnState) rotateflags |= NSCommandKeyMask;
   if ([rotate_alt state] ==  NSOnState) rotateflags |= NSAlternateKeyMask;
@@ -90,15 +80,12 @@
   
   [scexaminerhandler setSpinEnabled:([enableSpin state] == NSOnState)];
   [scexaminerhandler setScrollWheelZoomEnabled:([enableWheel state] == NSOnState)];
-  
-  NSLog(@"rotateflags: %u", rotateflags);
     
   [super ok:sender];
 }
 
 - (void)revert:(id)sender
 {
-  NSLog(@"SCExaminerHandlerInspector.revert:");
   SCExaminerHandler * scexaminerhandler = [self object];
   
   unsigned int rotateflags = [scexaminerhandler _SC_rotateModifier];
