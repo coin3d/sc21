@@ -5,6 +5,74 @@
 	};
 	objectVersion = 39;
 	objects = {
+		3D016A6506B6EBD800AD1116 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCExaminerHandlerInspector.h;
+			path = src/SCExaminerHandlerInspector.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3D016A6606B6EBD800AD1116 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SCExaminerHandlerInspector.m;
+			path = src/SCExaminerHandlerInspector.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3D016A6706B6EBD800AD1116 = {
+			fileRef = 3D016A6506B6EBD800AD1116;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		3D016A6806B6EBD800AD1116 = {
+			fileRef = 3D016A6606B6EBD800AD1116;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		3D016AAD06B6EDE500AD1116 = {
+			children = (
+				3D016AAE06B6EDE500AD1116,
+			);
+			isa = PBXVariantGroup;
+			name = SCExaminerHandlerInspector.nib;
+			path = "";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3D016AAE06B6EDE500AD1116 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.nib;
+			name = English;
+			path = Resources/palette/English.lproj/SCExaminerHandlerInspector.nib;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3D016AAF06B6EDE500AD1116 = {
+			fileRef = 3D016AAD06B6EDE500AD1116;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		3D016B0306B6F29E00AD1116 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.tiff;
+			name = SCExaminerHandler.tiff;
+			path = Resources/palette/SCExaminerHandler.tiff;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3D016B0406B6F29E00AD1116 = {
+			fileRef = 3D016B0306B6F29E00AD1116;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		3D02FB1F06A874CB00B9760F = {
 			fileEncoding = 4;
 			isa = PBXFileReference;
@@ -333,6 +401,8 @@
 			children = (
 				E000676A062598DD00F49FCD,
 				E000676B062598DD00F49FCD,
+				3D016A6506B6EBD800AD1116,
+				3D016A6606B6EBD800AD1116,
 				E09CFA83060249D50000E227,
 				E09CFA84060249D50000E227,
 				E09CFA57060245720000E227,
@@ -1247,7 +1317,7 @@
 		};
 		E0765C62060223120099F78E = {
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			name = Info.plist;
 			path = Resources/framework/Info.plist;
 			refType = 4;
@@ -1415,13 +1485,14 @@
 		E09A0E0206660511003EE738 = {
 			children = (
 				E01100A40605E5B200F93EC1,
+				3D016AAD06B6EDE500AD1116,
 				E000678706259B3000F49FCD,
 				E01100A60605E5B800F93EC1,
 				E09CFAA006024AD40000E227,
 				E09CFAA106024AD40000E227,
-				E09CFAA206024AD40000E227,
 				E09C036A06024BEF0000E227,
 				3D3BEE6906B00E43007A16DC,
+				3D016B0306B6F29E00AD1116,
 				E09CFAA306024AD40000E227,
 			);
 			isa = PBXGroup;
@@ -1484,6 +1555,7 @@
 				E09CFA87060249D50000E227,
 				E09CFA89060249D50000E227,
 				E000676C062598DD00F49FCD,
+				3D016A6706B6EBD800AD1116,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1493,13 +1565,14 @@
 			files = (
 				E09CFAA406024AD40000E227,
 				E09CFAA506024AD40000E227,
-				E09CFAA606024AD40000E227,
 				E09CFAA706024AD40000E227,
 				E01100A70605E5B800F93EC1,
 				E01100A50605E5B200F93EC1,
 				E09C036B06024BEF0000E227,
 				E000678906259B3000F49FCD,
 				3D3BEE6A06B00E43007A16DC,
+				3D016AAF06B6EDE500AD1116,
+				3D016B0406B6F29E00AD1116,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1510,6 +1583,7 @@
 				E09CFA88060249D50000E227,
 				E09CFA8A060249D50000E227,
 				E000676D062598DD00F49FCD,
+				3D016A6806B6EBD800AD1116,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1591,7 +1665,7 @@
 		};
 		E09CFA57060245720000E227 = {
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			name = Info.plist;
 			path = Resources/palette/Info.plist;
 			refType = 4;
@@ -1848,18 +1922,10 @@
 			refType = 4;
 			sourceTree = "<group>";
 		};
-		E09CFAA206024AD40000E227 = {
-			isa = PBXFileReference;
-			lastKnownFileType = image.pict;
-			name = SCExaminerController.pict;
-			path = Resources/palette/SCExaminerController.pict;
-			refType = 4;
-			sourceTree = "<group>";
-		};
 		E09CFAA306024AD40000E227 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			name = palette.table;
 			path = Resources/palette/palette.table;
 			refType = 4;
@@ -1873,12 +1939,6 @@
 		};
 		E09CFAA506024AD40000E227 = {
 			fileRef = E09CFAA106024AD40000E227;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		E09CFAA606024AD40000E227 = {
-			fileRef = E09CFAA206024AD40000E227;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -1981,7 +2041,7 @@
 		E0D1CDEF06343F3100269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			path = Description.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -1989,7 +2049,7 @@
 		E0D1CDF006343F3100269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			path = Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -2034,7 +2094,7 @@
 		E0D1CE0206343F4E00269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			path = Description.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -2042,7 +2102,7 @@
 		E0D1CE0306343F4E00269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			path = Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -2087,7 +2147,7 @@
 		E0D1CE0806343F5B00269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			path = Description.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -2095,7 +2155,7 @@
 		E0D1CE0906343F5B00269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			path = Info.plist;
 			refType = 4;
 			sourceTree = "<group>";

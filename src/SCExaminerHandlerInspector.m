@@ -25,47 +25,43 @@
  |                                                                 |
  * =============================================================== */
  
-#import <InterfaceBuilder/InterfaceBuilder.h>
-#import <Sc21/SCController.h>
+
+#import "SCExaminerHandlerInspector.h"
 #import <Sc21/SCExaminerHandler.h>
-#import <Sc21/SCSceneGraph.h>
-#import <Sc21/SCView.h>
+#import "SCUtil.h"
 
-@interface Sc21Palette : IBPalette
+@implementation SCExaminerHandlerInspector
+
+- (id)init
 {
-  IBOutlet NSImageView * scviewitem;
-  IBOutlet NSImageView * sccontrolleritem;
-  IBOutlet NSImageView * scexaminerhandleritem;
-  IBOutlet NSImageView * scscenegraphitem;
-
-  SCView * scview;
-  SCController * sccontroller;
-  SCExaminerHandler * scexaminerhandler;
-  SCSceneGraph * scscenegraph;
+  SC21_DEBUG(@"SCExaminerHandlerInspector.init");
+  self = [super init];
+  BOOL ok = [NSBundle loadNibNamed:@"SCExaminerHandlerInspector" owner:self];
+  if (ok == NO) {
+    SC21_DEBUG(@"SCExaminerHandlerInspector.init: Failed loading nib");
+    return nil;
+  }
+  return self;
 }
-@end
 
-// -------- IBObjectProtocol ---------
+- (void)ok:(id)sender
+{
+  NSLog(@"SCExaminerHandlerInspector.ok:");
+  SCExaminerHandler * scexaminerhandler = [self object];
 
-@interface SCOpenGLView (Sc21PaletteInspector)
-- (NSString *)inspectorClassName;
-@end
+  // FIXME: Set examinerhandler outlets according to inspector state.
 
-@interface SCView (Sc21PaletteInspector)
-- (NSString *)inspectorClassName;
-@end
+  [super ok:sender];
+}
 
-@interface SCController (Sc21PaletteInspector)
-- (NSString *)inspectorClassName;
-- (NSString *)classInspectorClassName;
-@end
+- (void)revert:(id)sender
+{
+  NSLog(@"SCExaminerHandlerInspector.revert:");
+  SCExaminerHandler * scexaminerhandler = [self object];
+  
+  // FIXME: Set inspector state according to examinerhandler state
 
-@interface SCExaminerHandler (Sc21PaletteInspector)
-- (NSString *)inspectorClassName;
-- (NSString *)classInspectorClassName;
-@end
+  [super revert:sender];
+}
 
-@interface SCSceneGraph (Sc21PaletteInspector)
-- (NSString *)inspectorClassName;
-- (NSString *)classInspectorClassName;
 @end

@@ -36,6 +36,7 @@
 {
   [scview release];
   [sccontroller release];
+  [scexaminerhandler release];
   [scscenegraph release];
   [super dealloc];
 }
@@ -45,6 +46,7 @@
   SC21_DEBUG(@"Sc21Palette.finishInstantiate");
   scview = [[SCView alloc] initWithFrame:[scviewitem bounds]];
   sccontroller = [[SCController alloc] init];
+  scexaminerhandler = [[SCExaminerHandler alloc] init];
   scscenegraph = [[SCSceneGraph alloc] init];
   
   [self associateObject:scview
@@ -54,6 +56,10 @@
   [self associateObject:sccontroller
         ofType:IBObjectPboardType
         withView:sccontrolleritem];
+  
+  [self associateObject:scexaminerhandler
+                 ofType:IBObjectPboardType
+               withView:scexaminerhandleritem];
   
   [self associateObject:scscenegraph
         ofType:IBObjectPboardType
@@ -94,6 +100,19 @@
   // FIXME: Test this by instantiating some common objects
   // from within IB and call this method.
   // (kintel 20040407)
+  return @"IBCustomClassInspector";
+}
+@end
+
+@implementation SCExaminerHandler (Sc21PaletteInspector)
+
+- (NSString *)inspectorClassName
+{
+  return  @"SCExaminerHandlerInspector";
+}
+
+- (NSString *)classInspectorClassName
+{
   return @"IBCustomClassInspector";
 }
 @end

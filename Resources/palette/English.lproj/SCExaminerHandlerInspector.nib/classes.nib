@@ -1,0 +1,12 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = SCExaminerHandlerInspector; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {middleButtonEmulation = NSPopUpButton; rightButtonEmulation = NSPopUpButton; }; 
+            SUPERCLASS = IBInspector; 
+        }
+    ); 
+    IBVersion = 1; 
+}

@@ -25,47 +25,12 @@
  |                                                                 |
  * =============================================================== */
  
+
 #import <InterfaceBuilder/InterfaceBuilder.h>
-#import <Sc21/SCController.h>
-#import <Sc21/SCExaminerHandler.h>
-#import <Sc21/SCSceneGraph.h>
-#import <Sc21/SCView.h>
 
-@interface Sc21Palette : IBPalette
+@interface SCExaminerHandlerInspector : IBInspector
 {
-  IBOutlet NSImageView * scviewitem;
-  IBOutlet NSImageView * sccontrolleritem;
-  IBOutlet NSImageView * scexaminerhandleritem;
-  IBOutlet NSImageView * scscenegraphitem;
-
-  SCView * scview;
-  SCController * sccontroller;
-  SCExaminerHandler * scexaminerhandler;
-  SCSceneGraph * scscenegraph;
+  IBOutlet NSPopUpButton * middleButtonEmulation;
+  IBOutlet NSPopUpButton * rightButtonEmulation;
 }
-@end
-
-// -------- IBObjectProtocol ---------
-
-@interface SCOpenGLView (Sc21PaletteInspector)
-- (NSString *)inspectorClassName;
-@end
-
-@interface SCView (Sc21PaletteInspector)
-- (NSString *)inspectorClassName;
-@end
-
-@interface SCController (Sc21PaletteInspector)
-- (NSString *)inspectorClassName;
-- (NSString *)classInspectorClassName;
-@end
-
-@interface SCExaminerHandler (Sc21PaletteInspector)
-- (NSString *)inspectorClassName;
-- (NSString *)classInspectorClassName;
-@end
-
-@interface SCSceneGraph (Sc21PaletteInspector)
-- (NSString *)inspectorClassName;
-- (NSString *)classInspectorClassName;
 @end
