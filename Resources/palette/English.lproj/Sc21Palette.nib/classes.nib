@@ -2,6 +2,7 @@
     IBClasses = (
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {CLASS = NSObject; LANGUAGE = ObjC; }, 
+        {CLASS = SCCamera; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {CLASS = SCCoinHandler; LANGUAGE = ObjC; SUPERCLASS = SCEventHandler; }, 
         {
             CLASS = SCController; 
@@ -16,6 +17,7 @@
             SUPERCLASS = NSObject; 
         }, 
         {CLASS = SCExaminerHandler; LANGUAGE = ObjC; SUPERCLASS = SCEventHandler; }, 
+        {CLASS = SCOpenGLPixelFormat; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {CLASS = SCOpenGLView; LANGUAGE = ObjC; SUPERCLASS = NSView; }, 
         {
             CLASS = SCSceneGraph; 
