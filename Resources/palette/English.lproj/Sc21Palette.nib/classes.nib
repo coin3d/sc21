@@ -25,12 +25,12 @@
             LANGUAGE = ObjC; 
             SUPERCLASS = SCController; 
         }, 
+        {CLASS = SCOpenGLView; LANGUAGE = ObjC; SUPERCLASS = NSView; }, 
         {
-            ACTIONS = {debugInfo = id; }; 
             CLASS = SCView; 
             LANGUAGE = ObjC; 
             OUTLETS = {controller = SCController; }; 
-            SUPERCLASS = NSOpenGLView; 
+            SUPERCLASS = SCOpenGLView; 
         }
     ); 
     IBVersion = 1; 

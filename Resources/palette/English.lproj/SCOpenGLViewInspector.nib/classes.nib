@@ -1,11 +1,7 @@
 {
     IBClasses = (
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
-        {
-            CLASS = "\U0190ROJECTNAMEASIDENTIFIER\U01c9nspector"; 
-            LANGUAGE = ObjC; 
-            SUPERCLASS = IBInspector; 
-        }
+        {CLASS = SC21Inspector; LANGUAGE = ObjC; SUPERCLASS = IBInspector; }
     ); 
     IBVersion = 1; 
 }
