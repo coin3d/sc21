@@ -36,8 +36,8 @@
 
 - (id)init
 {
-    self = [super init];
-    return self;
+  self = [super init];
+  return self;
 }
 
 - (void)dealloc
@@ -49,36 +49,36 @@
 
 - (NSString *)fileType
 {
-    return _filetype;
+  return _filetype;
 }
 
 // Returns a readable file size string
 - (NSString *)fileSize
 {
-    NSString *sizestr = nil;
-    if (_filesize > 10*1024*1024) {
-        sizestr = [NSString stringWithFormat:@"%.1f MB", (float)_filesize/(1024*1024)];
-    }
-    else if (_filesize > 30*1024) {
-        sizestr = [NSString stringWithFormat:@"%.0f KB", (float)_filesize/1024];
-    }
-    else {
-        sizestr = [NSString stringWithFormat:@"%d", _filesize];
-    }
-    return sizestr;
+  NSString *sizestr = nil;
+  if (_filesize > 10*1024*1024) {
+    sizestr = [NSString stringWithFormat:@"%.1f MB", (float)_filesize/(1024*1024)];
+  }
+  else if (_filesize > 30*1024) {
+    sizestr = [NSString stringWithFormat:@"%.0f KB", (float)_filesize/1024];
+  }
+  else {
+    sizestr = [NSString stringWithFormat:@"%d", _filesize];
+  }
+  return sizestr;
 }
 
 - (SoSeparator *)sceneGraph
 {
-    return _root;
+  return _root;
 }
 
 - (void)setSceneGraph:(SoSeparator *)root
 {
   NSLog(@"MyDocument.setSceneGraph:%p", root);
-  root->unref();
+  if (root) root->ref();
+  if (_root) _root->unref();
   _root = root;
-  if (_root) _root->ref();
 }
 
 // Overridden from NSDocument to read our files using SoInput
@@ -205,7 +205,8 @@ buffer_realloc(void *bufptr, size_t size)
     if (controllers) {
       NSEnumerator *enumerator = [controllers objectEnumerator];
       MyWindowController *controller;
-      while (controller = [enumerator nextObject]) [controller documentChanged:self];
+      while (controller = [enumerator nextObject]) 
+        [controller documentChanged:self];
     }
   }
 }
