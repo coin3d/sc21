@@ -27,7 +27,20 @@
 
 #import <Sc21/SCSceneGraph.h>
 
+@interface _SCSceneGraphP : NSObject
+{
+  SCCamera * camera;
+  SoSeparator * scenegraph;	 
+  SoSeparator * superscenegraph;
+  SoSceneManager * scenemanager;
+  SoDirectionalLight * headlight;  
+  BOOL addedlight, addedcamera;
+}
+@end
+
+
 @interface SCSceneGraph (InternalAPI)
+- (void)_SC_commonInit;
 - (SoLight *)_SC_findLightInSceneGraph:(SoGroup *)root;
 - (SoCamera *)_SC_findCameraInSceneGraph:(SoGroup *)root;
 - (void) _SC_setHasAddedCamera:(BOOL)yn;

@@ -35,6 +35,19 @@
 #import <Inventor/nodes/SoPerspectiveCamera.h>
 #import <Inventor/nodes/SoDirectionalLight.h>
 
+@implementation _SCSceneGraphP
+@end
+
+#define PRIVATE(p) ((p)->scscenegraphpriv)
+#define SELF PRIVATE(self)
+
+// Note: I find it really degoutant that this class should be named
+// SCSceneGraph instead of SCSceneGraph -- scenegraph is one word,
+// for goddess sake! But the folks who designed the original Inventor
+// API Thought Different, and hence are using setSceneGraph() &c.
+// all over the place... so for consistency's sake, let's trudge along.
+// kyrah 20040716
+
 @implementation SCSceneGraph
 
 /*" Initializes the receiver, a newly allocated SCSceneGraph instance, with the contents of the file
@@ -48,8 +61,7 @@
 - (id)initWithContentsOfFile:(NSString *)filename
 {
   if (self = [super init]) {
-    camera = [[SCCamera alloc] initWithSceneGraph:self];
-    addedcamera = NO;
+    [self _SC_commonInit];
     SoSeparator * s = nil;
     SoInput in;
     if (!in.openFile([filename cString])) {  
@@ -80,13 +92,17 @@
 
 - (id)initWithContentsOfURL:(NSURL *)url
 {
-  // FIXME: Implement.
-  return [super init]; 
+  if (self = [super init]) {
+    [self _SC_commonInit];
+    // FIXME: Implement reading file from URL.
+  }
+  return self;
 }
 
 - (void) dealloc
 {
-  [camera release]; 
+  [SELF->camera release]; 
+  [SELF release];
 }
 
 /*" Returns the name assigned to the scenegraph, or nil if no name has been assigned. This name 
@@ -116,7 +132,7 @@
 
 - (SoSeparator *)root
 {
-  return scenegraph;
+  return SELF->scenegraph;
 }
 
 /*" Returns the root node in the receiver's _actually rendered_ Open 
@@ -129,7 +145,7 @@
 
 - (SoSeparator *)superSceneGraph
 {
-  return superscenegraph;
+  return SELF->superscenegraph;
 }
 
 /*" Sets the receiver's scenegraph to root. Note that no checking will be done whether root is
@@ -142,24 +158,24 @@
     // FIXME: Post notification?
     return; 
   }
+  root->ref();
   
   // Clean up existing scenegraph
-  if (scenegraph) { scenegraph->unref(); }
-  if (superscenegraph) { superscenegraph->unref(); }
-  scenegraph = superscenegraph = NULL;  
-  
-  headlight = NULL;
-  addedlight = NO;
-  root->ref();
+  if (SELF->scenegraph) { SELF->scenegraph->unref(); }
+  if (SELF->superscenegraph) { SELF->superscenegraph->unref(); }
+  SELF->scenegraph = SELF->superscenegraph = NULL;  
+
+  SELF->headlight = NULL;
+  SELF->addedlight = NO;
   
   // FIXME: Give delegate chance to handle this.
   // (Please note the FIXME comment in the #ifdef'ed code 
   // in SCController at the same place.)
-  superscenegraph = [self _SC_createSuperSceneGraph:root];
+  SELF->superscenegraph = [self _SC_createSuperSceneGraph:root];
   
-  if (superscenegraph) { // Successful superscenegraph creation
-    scenegraph = root;
-    superscenegraph->ref();
+  if (SELF->superscenegraph) { // Successful superscenegraph creation
+    SELF->scenegraph = root;
+    SELF->superscenegraph->ref();
   } else {
     // NULL super scene graph => leave everything at NULL
     root->unrefNoDelete();
@@ -168,12 +184,12 @@
 
 - (void) setSceneManager:(SoSceneManager *)sm
 {
-  scenemanager = sm;
+  SELF->scenemanager = sm;
 }
 
 - (SoSceneManager *)sceneManager
 {
-  return scenemanager;
+  return SELF->scenemanager;
 }
 
 /*" Sets the SoCamera used for viewing the scene to cam.
@@ -186,7 +202,7 @@
 
 - (SCCamera *)camera
 {
-  return camera; 
+  return SELF->camera; 
 }
 
 // Note that I removed the methods for getting and setting the
@@ -199,7 +215,7 @@
 "*/
 - (BOOL) hasAddedCamera
 {
-  return addedcamera;
+  return SELF->addedcamera;
 }
 
 
@@ -217,7 +233,7 @@
 
 - (SoDirectionalLight *)headlight
 {
-  return (addedlight) ? headlight : NULL;
+  return (SELF->addedlight) ? SELF->headlight : NULL;
 }
 
 /*" Returns !{YES} if a light was added in the superscenegraph,
@@ -225,12 +241,21 @@
 "*/
 - (BOOL) hasAddedLight
 {
-  return addedlight;
+  return SELF->addedlight;
 }
 
 @end
 
 @implementation SCSceneGraph (InternalAPI)
+
+      
+    
+- (void)_SC_commonInit
+{
+  SELF = [[_SCSceneGraphP alloc] init];
+  SELF->camera = [[SCCamera alloc] initWithSceneGraph:self];
+  SELF->addedcamera = NO;  
+}
 
 /* Find light in root. Returns a pointer to the light, if found,
    otherwise NULL.
@@ -288,7 +313,7 @@
 */
 - (void) _SC_setHasAddedCamera:(BOOL)yn
 {
-  addedcamera = yn;
+  SELF->addedcamera = yn;
 }
 
 - (SoSeparator *)_SC_createSuperSceneGraph:(SoGroup *)sg
@@ -297,23 +322,23 @@
   
   // Handle lighting
   if (![self _SC_findLightInSceneGraph:sg]) {
-    headlight = new SoDirectionalLight;
-    supersg->addChild(headlight);
-    addedlight = YES;
+    SELF->headlight = new SoDirectionalLight;
+    supersg->addChild(SELF->headlight);
+    SELF->addedlight = YES;
   } else {
-    addedlight = NO;
+    SELF->addedlight = NO;
   }
   
   // Handle camera
   SoCamera * scenecamera  = [self _SC_findCameraInSceneGraph:sg];
   if (scenecamera == NULL) {
     scenecamera = new SoPerspectiveCamera;
-    [camera setSoCamera:scenecamera deleteOldCamera:NO];
-    addedcamera = YES;
+    [SELF->camera setSoCamera:scenecamera deleteOldCamera:NO];
+    SELF->addedcamera = YES;
     supersg->addChild(scenecamera);
   } else {
-    [camera setSoCamera:scenecamera deleteOldCamera:NO];
-    addedcamera = NO;
+    [SELF->camera setSoCamera:scenecamera deleteOldCamera:NO];
+    SELF->addedcamera = NO;
   }
   
   supersg->addChild(sg);

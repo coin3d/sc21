@@ -33,22 +33,11 @@
 #import <Inventor/nodes/SoSeparator.h>
 #import <Inventor/nodes/SoDirectionalLight.h>
 
-// Note: I find it really degoutant that this class should be named
-// SCSceneGraph instead of SCSceneGraph -- scenegraph is one word,
-// for goddess sake! But the folks who designed the original Inventor
-// API Thought Different, and hence are using setSceneGraph() &c.
-// all over the place... so for consistency's sake, let's trudge along.
-// kyrah 20040716
+@class _SCSceneGraphP;
 
 @interface SCSceneGraph : NSObject {
-  // FIXME: Pimplify.
   @protected
-  SCCamera * camera;
-  SoSeparator * scenegraph;	 
-  SoSeparator * superscenegraph;
-  SoSceneManager * scenemanager;
-  SoDirectionalLight * headlight;  
-  BOOL addedlight, addedcamera;
+  _SCSceneGraphP * scscenegraphpriv;
 }
 
   /*" Initialization "*/
