@@ -65,6 +65,7 @@
 {
   NSLog(@"MyWindowController.awakeFromNib");
   [self documentChanged:self];
+  [controller setEventHandler:[[[SCExaminerHandler alloc] init] autorelease]];
 }
 
 - (void)windowWillLoad
@@ -138,7 +139,7 @@
   [sg setRoot:[doc sceneGraph]];
   [controller setSceneGraph:sg];
   [sg release];
-  [controller viewAll];
+  [[[controller sceneGraph] camera] viewAll];
 
   [typetext setStringValue:[doc fileType]];
   [sizetext setStringValue:[doc fileSize]];
