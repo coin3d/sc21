@@ -225,8 +225,13 @@
   display frustum.
 
   -reshape is called when:
-  o after init
+  o after init (FIXME: Is this correct? kintel 20040505)
   o window size changes (i.e. after an NSViewFrameDidChangeNotification)
+
+  FIXME: Using NSOpenGLView, reshape is called when a scrollview is
+  scrolled. This does not happen with SCOpenGLView. The reason seems to
+  be that for our view, NSView.translateOriginToPoint: is not called.
+  Test this with "OpenGL scroller"/"NSOpenGL scroller". (kintel 20040505)
 
   FIXME: Should we make sure that we have a valid context before calling reshape?
   FIXME: Should we call reshape after creating a context (i.e. after prepareOpenGL) ?
@@ -269,7 +274,9 @@
   NSOpenGLContext * context = [self openGLContext];
   [super lockFocus];
   
-  if ([context view] != self) [context setView:self];
+  if ([context view] != self) {
+    [context setView:self];
+  }
   [context makeCurrentContext];
 }
 
@@ -323,7 +330,7 @@
     selector:@selector(_reshapeNeeded:) 
     name:NSViewFrameDidChangeNotification 
     object:self];
-  [self reshape];
+  //  [self reshape]; //FIXME: Not sure if NSOpenGLView does this (kintel 20040505)
 }
 
 - (void)_updateNeeded:(NSNotification *)notification
