@@ -30,7 +30,11 @@
 class SoNode;
 
 @interface SCDebug : NSObject
+{ }
+
+/*" Information about the OpenGL subsystem "*/
 + (NSString *)descriptionForRendererID:(int)rendererID;
 + (NSString *)openGLInfo;
+/*" Saving a scenegraph to disk "*/
 + (BOOL)dumpSceneGraph:(SoNode *)scenegraph;
 @end

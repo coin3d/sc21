@@ -40,7 +40,9 @@
 
 @implementation SCDebug
 
-/*" Returns a human-readable string for the renderer name "*/
+/*" Collection of useful debugging methods. "*/
+
+/*" Returns a human-readable description of the renderer rendererID. "*/
 + (NSString *)descriptionForRendererID:(int)rendererID
 {
   NSString *renderer = nil;
@@ -146,12 +148,11 @@
 }
 
 /*" 
-  Writes the given scenegraph to a file. The filename will be
-  XXX-dump.iv, where XXX is a number calculated based on the
-  current time. The file will be stored in the current working
-  directory. Returns !{NO} if there was an error writing the file,
-  !{YES} otherwise.
-  "*/
+  Writes the given scenegraph to a file. The file will be stored in
+  the current working directory. The filename will be XXX-dump.iv,
+  where XXX is a number calculated based on the current time. Returns
+  !{NO} if there was an error writing the file, !{YES} otherwise. 
+"*/
 
 + (BOOL) dumpSceneGraph:(SoNode *)scenegraph
 {
