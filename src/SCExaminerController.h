@@ -46,7 +46,6 @@ class SoDirectionalLight;
 - (void) render;
 - (void) setSceneGraph:(SoSeparator *)sg;
 
-
 /*" Automatic headlight configuration "*/
 - (SoDirectionalLight *) headlight;
 - (BOOL) headlightIsOn;

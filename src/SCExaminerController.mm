@@ -89,6 +89,7 @@
 - (id) init
 {
   if (self = [super init]) {
+    headlight = NULL;
     SbViewVolume volume;
     mouselog = [[NSMutableArray alloc] init];
     spinprojector = new SbSphereSheetProjector(SbSphere(SbVec3f(0,0,0),0.8f));
@@ -109,10 +110,7 @@
 {
   // FIXME: Move shared code to commonInit: kyrah 20030621
   if (self = [super initWithCoder:coder]) {
-    camera = [[SCCamera alloc] init];
-    [camera setController:self];
-    autoclipstrategy = VARIABLE_NEAR_PLANE;
-    autoclipvalue = 0.6;
+    headlight = NULL;
     SbViewVolume volume;
     mouselog = [[NSMutableArray alloc] init];
     spinprojector = new SbSphereSheetProjector(SbSphere(SbVec3f(0,0,0),0.8f));
@@ -167,7 +165,8 @@
 //  [camera updateClippingPlanes:userscenegraph];
   [super render];
 }
- 
+
+
  /*" Sets the scene graph that shall be rendered. The reference count of
     sg will be increased by 1 before use, so you there is no need to 
     !{ref()} the node before passing it to this method.
@@ -185,13 +184,22 @@
     return;
   }
 
-  userscenegraph = sg;     // store user-supplied SG
-
-  headlight = new SoDirectionalLight;
+  // Set old headlight to NULL, or otherwise toggling the headlight will
+  // continue to have effect on the headlight of the previous (destroyed)
+  // scenegraph.
+  headlight = NULL;
+  
   root = new SoSeparator;
-  // FIXME: only add headlight if needed? kyrah 20030621
-  root->addChild(headlight);       
+  userscenegraph = sg;     // store user-supplied SG
+  userscenegraph->ref();   // must ref() before applying action
+
+  if (![self findLightInSceneGraph:userscenegraph]) {
+    headlight = new SoDirectionalLight;
+    root->addChild(headlight);
+  } 
+  
   root->addChild(userscenegraph);
+  userscenegraph->unref();
 
   SoCamera * scenecamera = [self findCameraInSceneGraph:userscenegraph];
 
@@ -202,13 +210,6 @@
     [camera setControllerHasCreatedCamera:YES];
     root->insertChild(scenecamera, 1);
   } else {
-    SbVec3f pos = scenecamera->position.getValue();
-    SbRotation rot = scenecamera->orientation.getValue();
-    SbVec3f axis; float angle;
-    rot.getValue(axis, angle);
-    NSLog(@"### ex- Found camera: pos <%f %f %f>, orientation: <%f %f %f>, %f ",
-          pos[0], pos[1], pos[2], axis[0], axis[1], axis[2], angle);
-    
     [camera setSoCamera:scenecamera];
     [camera setControllerHasCreatedCamera:NO];
   }
@@ -234,6 +235,7 @@
 
 - (BOOL) headlightIsOn
 {
+  if (headlight == NULL) return FALSE;
   return (headlight->on.getValue() == TRUE) ? YES : NO;
 }
 
@@ -242,6 +244,7 @@
 
 - (void) setHeadlightIsOn:(BOOL) yn
 {
+  if (headlight == NULL) return;
   headlight-> on = yn ? TRUE : FALSE;
 }
 
@@ -251,6 +254,22 @@
 {
   return headlight;
 }
+
+/*" Menu validation: Enable/disable default menu items depending on state.
+    The default implementation disables 'toggle headlight' and 'toggle camera mode'
+    if the headlight resp. camera are part of the user-supplied scenegraph. "*/
+
+- (BOOL)validateMenuItem:(NSMenuItem *) item {
+  if ([[item title] isEqualToString:@"toggle headlight"] && headlight == NULL) {
+    return NO;
+  }
+  if ([[item title] isEqualToString:@"toggle camera type"]
+     && ![camera controllerHasCreatedCamera]) {
+    return NO;
+  }
+  return YES;
+}
+
 
 // -------------------- Event handling -----------------------
 
