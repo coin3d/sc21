@@ -71,13 +71,14 @@ void error_cb(const class SoError * error, void * data)
   camera if none is found. This is called %{superscenegraph creation}
   can be controlled in several ways:
 
-  (1) !{createSuperSceneGraph} delegate method (if present) - gets
-      called instead of internal default implementation
+  The delegate method !{shouldCreateDefaultSuperSceneGraph} determines
+  whether or not the internal default superscenegraph creation code
+  should be run. If no such delegate method is found, the value of the
+  checkbox in SCSceneGraph's IB inspector is used. The default setting
+  is to create the default superscenegraph.
 
-  (2) else !{shouldCreateDefaultSuperSceneGraph} delegate method (if present)
-
-  (3) else: use the value of SCSceneGraph's IB inspector (default
-      setting is !{YES})
+  In addition, the !{createSuperSceneGraph} delegate method lets you
+  specify your own superscenegraph creation code.
 
   For more information about the delegate methods refer to the 
   #{NSObject(SCSceneGraphDelegate)} documentation.
@@ -601,12 +602,12 @@ void error_cb(const class SoError * error, void * data)
 "*/
 
 /*" 
-  Implement this method to return !{NO} to skip superscenegraph creation. 
+  Implement this method to return !{NO} to skip creation of the
+  internal default superscenegraph.
 
-  Note that this method will not be called if the delegate responds to
-  !{createSuperSceneGraph:} (since creation of the default
-  superscenegraph is always off in this case).
-
+  Note that this does not turn on or off custom superscenegraph
+  creation (done by the !{createSuperSceneGraph:} delegate method, if
+  present).
 "*/
 
 - (BOOL)shouldCreateDefaultSuperSceneGraph
@@ -614,16 +615,29 @@ void error_cb(const class SoError * error, void * data)
   
 }
 
+
 /*" 
-  If present, this method will be called instead of the internal
-  implementation to create a superscenegraph. (Note that in this case,
-  creation of the default superscenegraph is always off, regardless of
-  the settings, and !{shouldCreateDefaultSuperSceneGraph} does not get 
-  called.)
+  If present, this method will be called from setRoot to allow the
+  delegate to do custom superscenegraph creation.
+
+  Note that this does not influence the creation of the default
+  superscenegraph (i.e. the internal behaviour of adding a light and
+  camera if necessary). Use the shouldCreateDefaultSuperSceneGraph:
+  method to control whether the internal superscenegraph creation
+  should be performed.
+
+  Depending on whether an internal superscenegraph has been added,
+  !{createSuperSceneGraph:} will be called either with the original root
+  or (if the default scenegraph was created) with the root of the
+  internal superscenegraph.
 
   The scenegraph argument is the root node of the Coin scene
   graph. The method is expected to return a new node that contains
-  scenegraph as one of its children, or scenegraph itself.
+  scenegraph as one of its children, or scenegraph itself. If the
+  return value is !{NULL}, SCSceneGraph's !{setRoot:} will be aborted and
+  the scenegraph and superscenegraph set to !{NULL}. Note that normally
+  you should never return !{NULL} from this method - use this only to
+  indicate unexpected error conditions.
 "*/
 
 - (SoGroup *)createSuperSceneGraph:(SoGroup *)scenegraph
