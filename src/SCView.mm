@@ -28,7 +28,6 @@
 #import <Sc21/SCView.h>
 #import <Sc21/SCController.h>
 #import <Sc21/SCExaminerController.h>
-#import <Sc21/SCCursors.h>
 #import "SCOpenGLViewP.h"
 
 @interface _SCViewP : NSObject
@@ -392,6 +391,9 @@
   Here we decode the old instance variables, colorbits and depthbits,
   and copy all relevant settings from the old view.
 
+  FIXME: We somehow still lose outlet connections and size settings when
+  reading old nib files...
+
   FIXME: We should remove this after a grace period (say Sc21 V1.0.1)
   (kintel 20040404)
 */
@@ -408,8 +410,8 @@
     // colorbits, depthbits, pixel format attributes
     // (kintel 20040404)
     if (self = [self initWithFrame:[SELF->oldview frame]]) {
-      //FIXME: Bad bad: Accessing private data in NSView. Fix! (kintel 20040604)
-      _superview = [SELF->oldview superview];
+      NSView * superview = [SELF->oldview superview];
+      [superview replaceSubview:SELF->oldview with:self];
       [self setMenu:[SELF->oldview menu]];
       [self setInterfaceStyle:[SELF->oldview interfaceStyle]];
       [self setHidden:[SELF->oldview isHidden]];
@@ -441,10 +443,11 @@
   // FIXME: We should remove this after a grace period (say Sc21 V1.0.1)
   // (kintel 20040404)
   if ([coder versionForClassName:@"SCView"] == 0) {
+    [self _SC_commonInit];
     SELF->oldview = [[NSOpenGLView alloc] initWithCoder:coder];
     return self;
   }
-  else self = [super initWithCoder:coder];
+  else self = [super initWithCoder:coder]; // Will call _SC_commonInit
 
   return self;
 }
