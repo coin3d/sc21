@@ -89,29 +89,11 @@
   return [self initWithSceneGraph:nil];
 }
 
-- (id)initWithCoder:(NSCoder *)coder
-{
- if (self = [super init]) {
-    [self _SC_commonInit];
-    if ([coder allowsKeyedCoding]) {
-      SELF->autoclipvalue = [coder decodeFloatForKey:@"SC_autoclipvalue"];
-    }
-  }
-  return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)coder
-{
-  if ([coder allowsKeyedCoding]) {
-    [coder encodeFloat:SELF->autoclipvalue forKey:@"SC_autoclipvalue"];
-  }
-}
-
 - (void)dealloc
 {
-  [SELF->scenegraph release];
+  [self setSceneGraph:nil];
   if (SELF->camera) SELF->camera->unref();
-  if (SELF->autoclipboxaction) delete SELF->autoclipboxaction;
+  delete SELF->autoclipboxaction;
   [SELF release];
   [super dealloc];
 }
@@ -125,11 +107,15 @@
 
 - (SCCameraType)type
 {
-  if (SELF->camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId()))
+  if (SELF->camera == NULL) return SCCameraNone;
+  
+  if (SELF->camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
     return SCCameraPerspective;
-  else if (SELF->camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId()))
+  } else if (SELF->camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
     return SCCameraOrthographic;
-  else return SCCameraUnknown;
+  } else {
+    return SCCameraUnknown;
+  }
 }
 
 
@@ -155,7 +141,12 @@
 - (BOOL)convertToType:(SCCameraType)type
 {
   BOOL ok = NO;
-  switch (type) {
+
+  if (SELF->camera == NULL) {
+    SC21_DEBUG(@"No camera.");
+  }
+  else {
+    switch (type) {
     case SCCameraOrthographic:
       ok = [self _SC_convertToType:SoOrthographicCamera::getClassTypeId()];
       break;
@@ -165,13 +156,13 @@
     default:
       SC21_DEBUG(@"Unknown camera type.");
       break;
+    }
+    if (ok) {
+      [[NSNotificationCenter defaultCenter]
+        postNotificationName:SCCameraTypeChangedNotification object:self];
+    }
   }
-  if (ok) {
-    [[NSNotificationCenter defaultCenter]
-      postNotificationName:SCCameraTypeChangedNotification object:self];
-    return YES;
-  }
-  return NO;
+  return ok;
 }
 
 
@@ -328,15 +319,17 @@
 
 /*" Returns the actual camera used in the scene graph. "*/
 
-- (SoCamera *)soCamera { 
+- (SoCamera *)soCamera
+{
   return SELF->camera; 
 }
 
 - (void)setSceneGraph:(SCSceneGraph *)scenegraph
 {
-  if (SELF->scenegraph == scenegraph) { return; }
-  [SELF->scenegraph release];
-  SELF->scenegraph = [scenegraph retain];
+  if (SELF->scenegraph != scenegraph) {
+    [SELF->scenegraph release];
+    SELF->scenegraph = [scenegraph retain];
+  }
 }
 
 // FIXME: Do we really need this? I mean, it's a very internal
@@ -400,7 +393,6 @@
 - (void)_SC_commonInit
 {
   SELF = [[_SCCameraP alloc] init];
-  SELF->camera = nil;
 }
 
 /* Converts from perspective to orthographic camera and vice versa.
