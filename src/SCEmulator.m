@@ -43,14 +43,25 @@
 
 - (void)emulateButton:(int)buttonNumber usingModifier:(unsigned int)modifierFlags;
 {
-  [emulationdict setObject:[NSNumber numberWithUnsignedInt:modifierFlags]
+ [emulationdict setObject:[NSNumber numberWithUnsignedInt:modifierFlags]
                           forKey:[NSNumber numberWithInt:buttonNumber]];
+}
+
+- (void)removeEmulationForButton:(int)buttonNumber
+{
+  [emulationdict removeObjectForKey:[NSNumber numberWithInt:buttonNumber]];
+}
+
+- (BOOL)emulatesButton:(int)button
+{
+  // Do we have an entry for button in the dictionary?
+  return ([emulationdict objectForKey:[NSNumber numberWithInt:button]] != nil);
 }
 
 - (unsigned int)modifierToEmulateButton:(int)buttonNumber
 {
   NSNumber * modifiervalue = 
-  [emulationdict objectForKey:[NSNumber numberWithInt:buttonNumber]];
+    [emulationdict objectForKey:[NSNumber numberWithInt:buttonNumber]];
   if (modifiervalue) return [modifiervalue unsignedIntValue];
   else return 0;
 }

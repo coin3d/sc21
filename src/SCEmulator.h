@@ -34,7 +34,9 @@
 
 /*" Mouse button emulation "*/
 - (void)emulateButton:(int)button usingModifier:(unsigned int)modifierFlags;
+- (void)removeEmulationForButton:(int)button;
 
+- (BOOL)emulatesButton:(int)button;
 - (unsigned int)modifierToEmulateButton:(int)buttonNumber;
 - (int)emulatedButtonForButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
 
