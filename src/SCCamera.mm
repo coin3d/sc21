@@ -175,7 +175,7 @@
 
 - (void) zoom:(float)delta
 {
-  // FIXME: Actually use delta to determine zoom distance.
+  // FIXME: Actually use delta to determine zoom distance?
   // kyrah 20030621.
   
   float factor = (delta > 0) ? 1.1 : 0.9;
