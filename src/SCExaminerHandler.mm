@@ -25,7 +25,6 @@
     [self setSpinEnabled:YES];
     [self setScrollWheelZoomEnabled:YES];
     SELF->emulator = [[SCEmulator alloc] init];
-    [SELF->emulator emulateButton:2 usingModifier:NSAlternateKeyMask];
   }
   return self;
 }
@@ -96,19 +95,6 @@
   return SELF->scrollwheelzoomenabled;
 }
 
-#pragma mark --- mouse button emulation ---
-
-- (SCEmulator *)emulator
-{
-  return SELF->emulator;
-}
-
-- (void)setEmulator:(SCEmulator *)emulator
-{
-  if (emulator != SELF->emulator) [SELF->emulator release];
-  SELF->emulator = [emulator retain];
-}
-
 #pragma mark --- SCEventHandler conformance ---
 
 - (BOOL)handleEvent:(NSEvent *)event
@@ -151,6 +137,7 @@
   else if (eventtype == NSLeftMouseDown ||
            eventtype == NSRightMouseDown ||
            eventtype == NSOtherMouseDown) {
+    
     // Check for emulations
     int effectivebutton = [SELF->emulator emulatedButtonForButton:[event buttonNumber] 
                                                          modifier:modifierflags];
@@ -297,6 +284,19 @@
   }
   
   return matchedmode;
+}
+
+#pragma mark --- mouse button emulation ---
+
+- (SCEmulator *)_SC_emulator
+{
+  return SELF->emulator;
+}
+
+- (void)_SC_setEmulator:(SCEmulator *)emulator
+{
+  if (emulator != SELF->emulator) [SELF->emulator release];
+  SELF->emulator = [emulator retain];
 }
 
 @end
