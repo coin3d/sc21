@@ -70,18 +70,6 @@
 
 "*/
 
-#pragma mark --- static methods ----
-
-+ (void)initialize
-{
-  // The version is set to 1 to be able to distinguish between objects
-  // created with the public beta (version=0) and newer objects.
-  // FIXME: It is expected that we'll stop supporting the public beta
-  // from Sc21 V1.0.1 and versioning is probably not needed later since
-  // we only support keyed archiving.
-  [SCView setVersion:1];
-}
-
 #pragma mark --- initialization ---
 
 /*"
