@@ -55,7 +55,7 @@
                                         object:nil];
 
   // To avoid garbage when no scenegraph is loaded
-  [coincontroller setSceneGraph:new SoSeparator];
+  //coincontroller setSceneGraph:new SoSeparator];
 }
 
 
@@ -89,8 +89,8 @@
 
 - (IBAction)toggleCameraType:(id)sender
 {
-  [coincontroller 
-    setCameraType:([coincontroller cameraType] == SCCameraPerspective ? 
+  [coincontroller
+    setCameraType:([[coincontroller sceneGraph] cameraType] == SCCameraPerspective ? 
                    SCCameraOrthographic : SCCameraPerspective)];
 }
 
@@ -99,7 +99,8 @@
 
 - (IBAction)toggleHeadlight:(id)sender
 {
-  [coincontroller setHeadlightIsOn:([coincontroller headlightIsOn] ? NO : YES)];
+  // FIXME: Fix this so it works again w/SCScenegraph abstraction. kyrah 20040716
+  //[coincontroller setHeadlightIsOn:([coincontroller headlightIsOn] ? NO : YES)];
 }
 
 // Displays a standard file open dialog. The sender argument is ignored. 
@@ -134,16 +135,13 @@
 - (void)openPanelDidEnd:(NSOpenPanel*)panel returnCode:(int)rc contextInfo:(void *)ctx
 {
   if (rc == NSOKButton) {
-    NSString * path = [panel filename];
-    SoInput in;
-    if (in.openFile([path cString])) {
-      SoSeparator * sg = SoDB::readAll(&in);
-      in.closeFile();
-      if (sg) {
-        [coincontroller setSceneGraph:sg];
-        [filenametext setStringValue:path];
-      }
+    SCSceneGraph * sg = [[SCSceneGraph alloc] initWithContentsOfFile:[panel filename]];
+    if (sg) {
+      [coincontroller setSceneGraph:sg];
+      [coincontroller viewAll];
+      [filenametext setStringValue:[panel filename]];
     }
+    [sg release];
   }
 }
 
