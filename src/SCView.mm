@@ -109,9 +109,6 @@
 {
   SC21_DEBUG(@"SCView.dealloc");
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [self->controller setDrawable:nil];
-  // FIXME: Do we have to manually stop the timers? kyrah 20040809
-  // [self->controller _SC_stopTimerss];
   [self setController:nil];
   [SELF release];
   [super dealloc];
@@ -141,8 +138,8 @@ Sets the controller to newcontroller. newcontroller is retained.
     [[NSNotificationCenter defaultCenter] removeObserver:self 
                                           name:SCCursorChangedNotification 
                                           object:self->controller];
+    [self->controller setDrawable:nil];
     [self->controller release];
-    //FIXME: Remove old drawable? (kintel 20040804)
   }
 
   self->controller = [newcontroller retain];
