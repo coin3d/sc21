@@ -73,10 +73,11 @@
 
   (2) !{shouldCreateDefaultSuperSceneGraph} delegate method (if present)
 
-  (3) !{createSuperSceneGraph} delegate method (if present)
+  (3) !{createSuperSceneGraph} delegate method (called instead of
+      internal default if present)
 
   For more information about the delegate methods refer to the 
-  !{NSObject(SCSceneGraphDelegate)} documentation.
+  #{NSObject(SCSceneGraphDelegate)} documentation.
 "*/
  
 #pragma mark --- initialization and cleanup ---
@@ -186,6 +187,8 @@ Sets the SoCamera used for viewing the scene to cam. It is first
   return SELF->camera; 
 }
 
+/*" Positions the current camera so that the whole scene is visible. "*/
+
 - (void)viewAll
 {
   [SELF->camera viewAll:self];
@@ -223,7 +226,7 @@ method returns this headlight. Otherwise, NULL is returned. "*/
   otherwise, a perspective camera will be added before the scenegraph.
 
   After a scene graph is set, the delegate method -didSetSceneGraph:
-  is called with the super scene graph as parameter.
+  is called with the superscenegraph as parameter.
  
   Both the passed and the actual scene graph will be !{ref()}'ed.
 "*/
@@ -288,18 +291,6 @@ method returns this headlight. Otherwise, NULL is returned. "*/
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCRootChangedNotification object:self];  
 }
-
-- (void)setSceneManager:(SoSceneManager *)scenemanager
-{
-  SELF->scenemanager = scenemanager;
-}
-
-- (SoSceneManager *)sceneManager
-{
-  return SELF->scenemanager;
-}
-
-
 
 #pragma mark --- delegate handling ---
 
@@ -487,6 +478,17 @@ method returns this headlight. Otherwise, NULL is returned. "*/
 {
   return SELF->superscenegraph;
 }
+
+- (void)_SC_setSceneManager:(SoSceneManager *)scenemanager
+{
+  SELF->scenemanager = scenemanager;
+}
+
+- (SoSceneManager *)_SC_sceneManager
+{
+  return SELF->scenemanager;
+}
+
 @end
 
 // Dummy implementations to force AutoDoc to generate documentation for 

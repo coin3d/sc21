@@ -369,7 +369,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
     SELF->scenemanager->activate();
     if (sceneGraph) {
       SELF->scenemanager->setSceneGraph([sceneGraph _SC_superSceneGraph]);
-      [sceneGraph setSceneManager:SELF->scenemanager];
+      [sceneGraph _SC_setSceneManager:SELF->scenemanager];
     }
   }
 }
@@ -605,7 +605,7 @@ Returns YES if the depth buffer is automatically cleared
   // SoSceneManager must know the the SCSceneGraph's superscenegraph,
   // which might have changed in SCSceneGraph's setRoot: 
   
-  [sceneGraph setSceneManager:SELF->scenemanager];
+  [sceneGraph _SC_setSceneManager:SELF->scenemanager];
   if (SELF->scenemanager) {
     SELF->scenemanager->setSceneGraph([sceneGraph _SC_superSceneGraph]);
   }

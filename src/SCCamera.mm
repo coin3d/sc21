@@ -172,11 +172,11 @@ Translate camera relative to its own coordinate system.
 
 - (void)viewAll:(SCSceneGraph *)sceneGraph
 {
-  assert ([sceneGraph sceneManager]);
+  assert ([sceneGraph _SC_sceneManager]);
   
   if (SELF->camera == NULL || sceneGraph == nil) return;
   SELF->camera->viewAll((SoNode *)([sceneGraph root]),
-                        [sceneGraph sceneManager]->getViewportRegion());
+                        [sceneGraph _SC_sceneManager]->getViewportRegion());
 
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCViewAllNotification object:self];
@@ -205,9 +205,9 @@ Translate camera relative to its own coordinate system.
   // action to the SG creates a valid bounding box cache, needed
   // for caching. kyrah 20030622
 
-  assert ([sceneGraph sceneManager]);
+  assert ([sceneGraph _SC_sceneManager]);
   
-  SbViewportRegion viewport = [sceneGraph sceneManager]->getViewportRegion();
+  SbViewportRegion viewport = [sceneGraph _SC_sceneManager]->getViewportRegion();
   if (SELF->autoclipboxaction == NULL) {
     SELF->autoclipboxaction = new 
     SoGetBoundingBoxAction(viewport);
