@@ -30,9 +30,11 @@
 #import <Sc21/SCDebug.h>
 #import <Inventor/SoInput.h>
 #import <Inventor/nodes/SoSeparator.h>
+#import <Inventor/nodes/SoDirectionalLight.h>
 #import <Inventor/SoSceneManager.h>
 #import <Inventor/actions/SoGLRenderAction.h>
 #import <Inventor/elements/SoGLCacheContextElement.h>
+#import <OpenGL/gl.h>
 #import <OpenGL/OpenGL.h>
 
 // Redeclare "private" debugging method to avoid compiler warning. 

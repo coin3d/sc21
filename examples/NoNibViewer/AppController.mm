@@ -67,7 +67,6 @@
     SCController * sccontroller = [[[SCController alloc] init] autorelease];
     [view setController:sccontroller]; // retained by view
     [sccontroller setSceneGraph:scenegraph];
-    [sccontroller setHandlesEventsInViewer:YES];
     [sccontroller setEventHandler:[[[SCExaminerHandler alloc] init] autorelease]];
     [scenegraph viewAll];
 

@@ -26,7 +26,6 @@
  * =============================================================== */
 
 #import <Cocoa/Cocoa.h>
-#import <Sc21/SCExaminerController.h>
 #import <Sc21/SCView.h>
 
 @interface AppController : NSObject
