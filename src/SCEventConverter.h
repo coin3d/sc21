@@ -11,14 +11,14 @@
 }
 
 /*" Initializing an SCEventConverter "*/
-- (id) initWithController:(SCController *)ctrl;
+- (id) initWithController:(SCController *)controller;
 
 /*" Event conversion "*/
 - (SoEvent *) createSoEvent:(NSEvent *)event;
 - (SoKeyboardEvent *) createSoKeyboardEventWithString:(NSString *)s;
 
 /*" Setting the controller component "*/
-- (void) setController:(SCController *) controller;
+- (void) setController:(SCController *)controller;
 - (SCController *) controller;
 
 @end

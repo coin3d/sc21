@@ -50,12 +50,12 @@
     class. Returns !{self}.
  "*/
 
-- (id) initWithSoCamera:(SoCamera *) c controller:(SCController *) controller
+- (id) initWithSoCamera:(SoCamera *)camera controller:(SCController *)controller
 {
   if (self = [super init]) {
     _controllerhascreatedcamera = NO;
     _controller = controller;
-    _camera = c;
+    _camera = camera;
     if (_camera) _camera->ref();
   }
   return self;
@@ -99,46 +99,46 @@
 }
 
 
-/*" Initializes ocam to have the same settings as the current camera.
+/*" Initializes orthocam to have the same settings as the current camera.
     Note: The current camera must be a perspective camera.
  "*/
 
-- (void) cloneFromPerspectiveCamera:(SoOrthographicCamera *)ocam
+- (void) cloneFromPerspectiveCamera:(SoOrthographicCamera *)orthocam
 {
   assert(_camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId()));
   SoPerspectiveCamera * pcam = (SoPerspectiveCamera *) _camera;
 
-  ocam->aspectRatio.setValue(pcam->aspectRatio.getValue());
-  ocam->focalDistance.setValue(pcam->focalDistance.getValue());
-  ocam->orientation.setValue(pcam->orientation.getValue());
-  ocam->position.setValue(pcam->position.getValue());
-  ocam->viewportMapping.setValue(pcam->viewportMapping.getValue());
+  orthocam->aspectRatio.setValue(pcam->aspectRatio.getValue());
+  orthocam->focalDistance.setValue(pcam->focalDistance.getValue());
+  orthocam->orientation.setValue(pcam->orientation.getValue());
+  orthocam->position.setValue(pcam->position.getValue());
+  orthocam->viewportMapping.setValue(pcam->viewportMapping.getValue());
   float focaldist = pcam->focalDistance.getValue();
-  ocam->height = 2.0f * focaldist * (float)tan(pcam->heightAngle.getValue() / 2.0);
+  orthocam->height = 2.0f * focaldist * (float)tan(pcam->heightAngle.getValue() / 2.0);
 }
 
 
-/*" Initializes pcam to have the same settings as the current camera.
+/*" Initializes perspectivecam to have the same settings as the current camera.
     Note: The current camera must be an orthographic camera.
  "*/
  
-- (void) cloneFromOrthographicCamera:(SoPerspectiveCamera *) pcam
+- (void) cloneFromOrthographicCamera:(SoPerspectiveCamera *) perspectivecam
 {
   assert(_camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId()));
   SoOrthographicCamera * ocam = (SoOrthographicCamera *) _camera;
 
-  pcam->aspectRatio.setValue(ocam->aspectRatio.getValue());
-  pcam->focalDistance.setValue(ocam->focalDistance.getValue());
-  pcam->orientation.setValue(ocam->orientation.getValue());
-  pcam->position.setValue(ocam->position.getValue());
-  pcam->viewportMapping.setValue(ocam->viewportMapping.getValue());
+  perspectivecam->aspectRatio.setValue(ocam->aspectRatio.getValue());
+  perspectivecam->focalDistance.setValue(ocam->focalDistance.getValue());
+  perspectivecam->orientation.setValue(ocam->orientation.getValue());
+  perspectivecam->position.setValue(ocam->position.getValue());
+  perspectivecam->viewportMapping.setValue(ocam->viewportMapping.getValue());
   float focaldist = ocam->focalDistance.getValue();
   if (focaldist != 0.0f) {
-    pcam->heightAngle = 2.0f *
+    perspectivecam->heightAngle = 2.0f *
     (float)atan(ocam->height.getValue() / 2.0 / focaldist);
   }
   else { // scene empty -> use default value of 45 degrees.
-    pcam->heightAngle = (float)(M_PI / 4.0);
+    perspectivecam->heightAngle = (float)(M_PI / 4.0);
   }
 }
 
@@ -153,7 +153,7 @@
  "*/
 
 
-- (void) convertToType:(SCCameraType) type
+- (void) convertToType:(SCCameraType)type
 {
   switch (type) {
     case SCCameraOrthographic:
@@ -173,7 +173,7 @@
 
 /*" Zooms in if delta is > 0, else zooms out. "*/
 
-- (void) zoom:(float) delta
+- (void) zoom:(float)delta
 {
   // FIXME: Actually use delta to determine zoom distance.
   // kyrah 20030621.
@@ -231,7 +231,7 @@
     (the greater the ratio far/near, the less effective the depth buffer).
  "*/
  
-- (void) updateClippingPlanes:(SoGroup *) scenegraph
+- (void) updateClippingPlanes:(SoGroup *)scenegraph
 {
   // FIXME: Need autoclipcb callback function? Investigate.
   // kyrah 20030509
@@ -293,9 +293,9 @@
     it is not inserted into it.
  "*/
  
-- (void) setSoCamera:(SoCamera *)cam
+- (void) setSoCamera:(SoCamera *)camera
 {
-  if (cam == NULL) return;
+  if (camera == NULL) return;
 
   if (_controllerhascreatedcamera) { // delete camera if we created it
     SoGroup * camparent = [self getParentOfNode:_camera
@@ -304,7 +304,7 @@
     _controllerhascreatedcamera = NO;
   }
   if (_camera) _camera->unref();
-  _camera = cam;
+  _camera = camera;
   _camera->ref();
 #if 0
   saveHomePosition;
@@ -325,7 +325,7 @@
     old camera should be deleted or not.   
  "*/
     
-- (void) setControllerHasCreatedCamera:(BOOL) yn { 
+- (void) setControllerHasCreatedCamera:(BOOL)yn { 
   _controllerhascreatedcamera = yn; 
 }
 
@@ -340,14 +340,17 @@
 
 /*" Sets the SCCamera's SCController component to controller. "*/
 
-- (void) setController:(SCController *) controller
+- (void) setController:(SCController *)controller
 {
   _controller = controller;
 }
 
 /*" Returns the SCCamera's SCController component. "*/
 
-- (SCController *) controller { return _controller; }
+- (SCController *) controller
+{
+  return _controller;
+}
 
 /*" Reorients the camera by rot. Note that this does not
     replace the previous values but is accumulative: rot
@@ -402,9 +405,9 @@
    with the values of the current camera. It is then inserted in
    the scenegraph and set to be the new current camera by calling
    the #setSoCamera: method.
-"*/
+*/
 
-- (void) _convertToType:(SoType) type
+- (void) _convertToType:(SoType)type
 {
   // FIXME: Maybe a better solution would be to have a switch
   // node containing both a perspective and an orthographic
@@ -460,7 +463,6 @@
   homeo->unref();
   homep->unref();
 #endif
-
 
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCCameraTypeChangedNotification object:self];

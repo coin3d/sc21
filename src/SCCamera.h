@@ -31,24 +31,24 @@ typedef enum _SCCameraType {
 /*" Switching between orrthographic and perspective mode "*/
 - (BOOL) isPerspective;
 - (BOOL) isOrthographic;
-- (void) convertToType:(SCCameraType) type;
-- (void) cloneFromPerspectiveCamera:(SoOrthographicCamera *) ocam;
-- (void) cloneFromOrthographicCamera:(SoPerspectiveCamera *) pcam;
+- (void) convertToType:(SCCameraType)type;
+- (void) cloneFromPerspectiveCamera:(SoOrthographicCamera *)orthocam;
+- (void) cloneFromOrthographicCamera:(SoPerspectiveCamera *)perspectivecam;
 
 /*" Positioning the camera "*/
 - (void) zoom:(float) delta;
 - (void) reorient:(SbRotation)rot;
 - (void) viewAll;
-- (void) updateClippingPlanes:(SoGroup *) scenegraph;
+- (void) updateClippingPlanes:(SoGroup *)scenegraph;
 
 // internal
-- (void) getCameraCoordinateSystem:(SbMatrix &)matrix inverse:(SbMatrix &) inverse;
+- (void) getCameraCoordinateSystem:(SbMatrix &)matrix inverse:(SbMatrix &)inverse;
 
 /*" Accessors "*/ 
-- (void) setController:(SCController *) ctrl;
+- (void) setController:(SCController *)ctrl;
 - (SCController *) controller;
-- (void) setSoCamera:(SoCamera *) c;
+- (void) setSoCamera:(SoCamera *)c;
 - (SoCamera *) soCamera;
-- (void) setControllerHasCreatedCamera:(BOOL) yn;
+- (void) setControllerHasCreatedCamera:(BOOL)yn;
 - (BOOL) controllerHasCreatedCamera;
 @end

@@ -1,19 +1,6 @@
-
-/* Just for reference, some doc regarding events:
-these messages are valid for all events:
-- (NSEventType)type;
-- (NSPoint)locationInWindow;
-- (unsigned int)modifierFlags;
-- (NSTimeInterval)timestamp;
-- (NSWindow *)window;
-- (int)windowNumber;
-- (NSGraphicsContext*)context;
-*/
-
 #import "SCEventConverter.h"
 #import "SCController.h"
 #import "SCView.h"
-
 
 struct key1map {
   unichar nsvalue;
@@ -70,7 +57,8 @@ static struct key1map KeyMap[] = {
   { '[', '[', SoKeyboardEvent::BRACKETLEFT },
   { ']', ']', SoKeyboardEvent::BRACKETRIGHT },
   { '`', '`', SoKeyboardEvent::GRAVE },
-  // ---------------- now it gets really ugly :( -----------------------
+  // Now it gets really ugly :( -- the original OpenInventor
+  // never considered the concept of having non-US keyboards.
   { ')', ')', SoKeyboardEvent::NUMBER_0 },
   { '!', '!', SoKeyboardEvent::NUMBER_1 },
   { '@', '@', SoKeyboardEvent::NUMBER_2 },
@@ -92,7 +80,6 @@ static struct key1map KeyMap[] = {
   { '}', '}', SoKeyboardEvent::BRACKETRIGHT },
   { '|', '|', SoKeyboardEvent::BACKSLASH },
   { '~', '~', SoKeyboardEvent::GRAVE },
-    // --------- and back to just normally ugly: -------------------
   { NSUpArrowFunctionKey, '.', SoKeyboardEvent::UP_ARROW },
   { NSDownArrowFunctionKey, '.', SoKeyboardEvent::DOWN_ARROW },
   { NSLeftArrowFunctionKey, '.', SoKeyboardEvent::LEFT_ARROW },
@@ -141,10 +128,10 @@ static struct key1map KeyMap[] = {
     class. Returns !{self}.
  "*/
 
-- (id) initWithController:(SCController *)ctrl
+- (id) initWithController:(SCController *)controller
 {
   if (self = [super init]) {
-    _controller = ctrl;
+    _controller = controller;
     _keydict = new SbDict;
     _printabledict = new SbDict;
     int i=0;
@@ -189,7 +176,7 @@ static struct key1map KeyMap[] = {
      position, modifier keys, and time when the event occurred.
   "*/
   
-- (SoEvent *) createSoEvent:(NSEvent *) event
+- (SoEvent *) createSoEvent:(NSEvent *)event
 {
   NSPoint q = [[_controller view] convertPoint:[event locationInWindow] fromView:nil];
   unsigned int flags = [event modifierFlags];
@@ -296,7 +283,7 @@ static struct key1map KeyMap[] = {
 
 /*" Sets the SCEventConverter's SCController component to controller. "*/
 
-- (void) setController:(SCController *) controller
+- (void) setController:(SCController *)controller
 {
   _controller = controller;
 }
@@ -307,6 +294,5 @@ static struct key1map KeyMap[] = {
 {
   return _controller;
 }
-
 
 @end

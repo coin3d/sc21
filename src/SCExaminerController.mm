@@ -250,19 +250,6 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   return _headlight;
 }
 
-/*" Menu validation: Enable/disable default menu items depending on state.
-    The default implementation disables 'toggle camera mode' if the camera
-    is part of the user-supplied scenegraph. "*/
-
-- (BOOL)validateMenuItem:(NSMenuItem *) item {
-  if ([[item title] isEqualToString:@"toggle camera type"]
-     && ![_camera controllerHasCreatedCamera]) {
-    return NO;
-  }
-  return YES;
-}
-
-
 // -------------------- Event handling -----------------------
 
 /*" Handles event as viewer event, i.e. does not send it to the scene
