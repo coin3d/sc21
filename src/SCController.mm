@@ -50,9 +50,8 @@ static BOOL _coinInitialized = NO;
 
 NSString * SCModeChangedNotification = @"SCModeChangedNotification";
 NSString * SCSceneGraphChangedNotification = @"SCSceneGraphChangedNotification";
-
-
-
+NSString * SCNoCameraFoundInSceneNotification = @"SCNoCameraFoundInSceneNotification";
+NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotification";
 
 @implementation SCController
 
@@ -83,67 +82,6 @@ NSString * SCSceneGraphChangedNotification = @"SCSceneGraphChangedNotification";
   _coinInitialized = YES;
 }
  
- 
-// --------------------- actions -----------------------------
-
-
-/*" Toggles whether events should be interpreted as viewer events, i.e.
-    if they should be regarded as input for controlling the viewer or 
-    sent to the scene graph directly. Calls #setHandlesEventsInViewer:
-
-    The sender argument is ignored.
-"*/
-
-- (IBAction) toggleModes:(id)sender
-{
-  [self setHandlesEventsInViewer:([self handlesEventsInViewer] ? NO : YES)];
-  [[NSNotificationCenter defaultCenter] postNotificationName:SCModeChangedNotification object:self];
-}
-
-
-
-/*" Displays a standard file open dialog. The sender argument is ignored. "*/
-
-- (IBAction)open:(id)sender
-{
-  NSOpenPanel * panel = [NSOpenPanel openPanel];
-  [panel beginSheetForDirectory:nil
-                           file:nil
-                          types:nil
-                 modalForWindow:[view window]
-                  modalDelegate:self
-                 didEndSelector:@selector(openPanelDidEnd:returnCode:contextInfo:)
-                    contextInfo:nil];
-}
-
-/*" Writes the current scenegraph to a file. The filename will be
-    XXX-dump.iv, where XXX is a number calculated based on the
-    current time. The file will be stored in the current working
-    directory.
-
-    The sender argument is ignored.
-"*/
-
-- (IBAction) dumpSceneGraph:(id)sender
-{
-  SoOutput out;
-  SbString filename = SbTime::getTimeOfDay().format();
-  filename += "-dump.iv";
-  SbBool ok = out.openFile(filename.getString());
-  if (!ok) {
-    NSString * error = [NSString stringWithFormat:@"Could not open file '%s'",
-      filename.getString()];
-    [view displayError:error];
-    return;
-  }
-  SoWriteAction wa(&out);
-  wa.apply(_scenegraph);
-  NSString * info = [NSString stringWithFormat:@"Dumped scene to file '%s'",
-    filename.getString()];
-  [view displayInfo:info];
-}
-
-
 
 // ----------------- initialization and cleanup ----------------------
 
@@ -173,7 +111,8 @@ NSString * SCSceneGraphChangedNotification = @"SCSceneGraphChangedNotification";
 
 
 /*" Sets up and activates a Coin scene manager. Sets up and schedules
-    a timer for animation. Adds default entries to the context menu.
+    a timer for animation.
+
     Called after the object has been loaded from an Interface Builder
     archive or nib file.
 "*/
@@ -214,12 +153,6 @@ NSString * SCSceneGraphChangedNotification = @"SCSceneGraphChangedNotification";
   [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSModalPanelRunLoopMode];
   [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSEventTrackingRunLoopMode];
   [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSEventTrackingRunLoopMode];
-
-  [view addMenuEntry:@"open file" target:self action:@selector(open:)];
-  [view addMenuEntry:@"toggle mode" target:self action:@selector(toggleModes:)];
-  [view addMenuEntry:@"show debug info" target:view action:@selector(debugInfo:)];
-  [view addMenuEntry:@"dump SG" target:self action:@selector(dumpSceneGraph:)];
-  
 }
 
 /* Clean up after ourselves. */
@@ -254,6 +187,13 @@ NSString * SCSceneGraphChangedNotification = @"SCSceneGraphChangedNotification";
     set up your own headlight and camera to be able to see anything. For
     automatic setup of a camera and headlight if needed, use the
     #SCExaminerController class.
+
+    If no light is found in the scenegraph, an
+    %SCNoLightFoundInSceneNotification notification is posted. If no
+    camera is found in the scenegraph, an
+    %SCNoCameraFoundInSceneNotification is posted. Register for these
+    notifications if you want to warn your users that they will not be
+    able to see anything.
  "*/
     
 - (void) setSceneGraph:(SoGroup *)sg
@@ -268,11 +208,13 @@ NSString * SCSceneGraphChangedNotification = @"SCSceneGraphChangedNotification";
     [_camera setSoCamera:scenecamera];
     [_camera setControllerHasCreatedCamera:NO];
   } else {
-    NSLog(@"No camera found in scene, you won't be able to see anything");
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:SCNoCameraFoundInSceneNotification object:self];
   }
   
   if (![self findLightInSceneGraph:_scenegraph]) {
-    NSLog(@"No light found in scene, you won't be able to see anything");
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:SCNoLightFoundInSceneNotification object:self];
   }
   [_camera updateClippingPlanes:_scenegraph];
   [view setNeedsDisplay:YES];
@@ -375,6 +317,14 @@ otherwise NULL.
   return [_camera soCamera];
 }
 
+/*" Returns %SCCameraPerspective if the camera is perspective,
+    %SCCameraOrthographic otherwise.
+ "*/
+
+- (SCCameraType) cameraType
+{
+  return ([_camera isPerspective] ? SCCameraPerspective : SCCameraOrthographic);
+}
 
 /*" Renders the scene. "*/
 
@@ -510,6 +460,7 @@ otherwise NULL.
 - (void) setHandlesEventsInViewer:(BOOL)yn
 {
   _handleseventsinviewer = yn;
+  [[NSNotificationCenter defaultCenter] postNotificationName:SCModeChangedNotification object:self];
 }
 
 
@@ -608,35 +559,93 @@ otherwise NULL.
   return [NSString stringWithCString:versionstring];
 }
 
-
-
-// ------------------------ NSApp delegate methods -------------------------
-
-/*" Delegate method for NSOpenPanel used in #open: 
-    Tries to read scene data from the file and sets the scenegraph to 
-    the read root node. If reading fails for some reason, an error message
-    is displayed, and the current scene graph is not changed.
+/*" Collects debugging information about the OpenGL implementation
+    (vendor, renderer, version, available extensions, limitations),
+    the Coin version we are using, and the current OpenGL settings
+    (color depth, z buffer, accumulation buffer). Displays this
+    information by calling %view's #displayInfo: method.
  "*/
- 
-- (void) openPanelDidEnd:(NSOpenPanel*)panel returnCode:(int)rc contextInfo:(void *) ctx
-{
 
-  if (rc == NSOKButton) {
-    NSString * path = [panel filename];
-    SoInput in;
-    if (!in.openFile([path cString])) {
-      [view displayError:[NSString stringWithFormat:@"Could not open file %@", path]];
-      return;
-    }
-    SoSeparator * sg = SoDB::readAll(&in);
-    in.closeFile();
-    if (!sg) {
-      [view displayError:[NSString stringWithFormat:@"Could not read file %@", path]];
-    } else {
-       [self setSceneGraph:sg];    
-    }
-  }
+- (void) debugInfo;
+{
+  GLint depth;
+  GLint colors[4];
+  GLint accum[4];
+  GLint maxviewportdims[2];
+  GLint maxtexsize, maxlights, maxplanes;
+
+  GLboolean doublebuffered;
+  const GLubyte * vendor = glGetString(GL_VENDOR);
+  const GLubyte * renderer = glGetString(GL_RENDERER);
+  const GLubyte * version = glGetString(GL_VERSION);
+  const GLubyte * extensions = glGetString(GL_EXTENSIONS);
+
+  glGetIntegerv(GL_DEPTH_BITS, &depth);
+  glGetIntegerv(GL_RED_BITS, &colors[0]);
+  glGetIntegerv(GL_GREEN_BITS, &colors[1]);
+  glGetIntegerv(GL_BLUE_BITS, &colors[2]);
+  glGetIntegerv(GL_ALPHA_BITS, &colors[3]);
+  glGetIntegerv(GL_ACCUM_RED_BITS, &accum[0]);
+  glGetIntegerv(GL_ACCUM_GREEN_BITS, &accum[1]);
+  glGetIntegerv(GL_ACCUM_BLUE_BITS, &accum[2]);
+  glGetIntegerv(GL_ACCUM_ALPHA_BITS, &accum[3]);
+  glGetIntegerv(GL_MAX_VIEWPORT_DIMS, maxviewportdims);
+  glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxtexsize);
+  glGetIntegerv(GL_MAX_LIGHTS, &maxlights);
+  glGetIntegerv(GL_MAX_CLIP_PLANES, &maxplanes);
+  glGetBooleanv(GL_DOUBLEBUFFER, &doublebuffered);
+
+  NSMutableString * info = [NSMutableString stringWithCapacity:100];
+  [info appendFormat:@"Coin version: %@\n", [self coinVersion]];
+  [info appendFormat:@"Vendor: %s\n", (const char *)vendor];
+  [info appendFormat:@"Renderer: %s\n", (const char *)renderer];
+  [info appendFormat:@"Version: %s\n", (const char *)version];
+  [info appendFormat:@"Color depth (RGBA): %d, %d, %d, %d\n",
+    colors[0], colors[1], colors[2], colors[3]];
+  [info appendFormat:@"Accumulation buffer depth (RGBA): %d, %d, %d, %d\n",
+    accum[0], accum[1], accum[2], accum[3]];
+  [info appendFormat:@"Depth buffer: %d\n", depth];
+  [info appendFormat:@"Doublebuffering: %s\n", doublebuffered ? "on" : "off"];
+  [info appendFormat:@"Maximum viewport dimensions: <%d, %d>\n",
+    maxviewportdims[0], maxviewportdims[1]];
+  [info appendFormat:@"Maximum texture size: %d\n", maxtexsize];
+  [info appendFormat:@"Maximum number of lights: %d\n", maxlights];
+  [info appendFormat:@"Maximum number of clipping planes: %d\n", maxplanes];
+  [info appendFormat:@"OpenGL extensions: %s\n", (const char *)extensions];
+
+  [view displayInfo:info];
 }
+
+
+
+/*" Writes the current scenegraph to a file. The filename will be
+    XXX-dump.iv, where XXX is a number calculated based on the
+    current time. The file will be stored in the current working
+    directory. Successfully writing the file will be indicated
+    by a message to %view's #displayInfo: If there was an error
+    writing the file, an error message will be sent using
+    #displayError:
+"*/
+
+- (void) dumpSceneGraph
+{
+  SoOutput out;
+  SbString filename = SbTime::getTimeOfDay().format();
+  filename += "-dump.iv";
+  SbBool ok = out.openFile(filename.getString());
+  if (!ok) {
+    NSString * error = [NSString stringWithFormat:@"Could not open file '%s'",
+      filename.getString()];
+    [view displayError:error];
+    return;
+  }
+  SoWriteAction wa(&out);
+  wa.apply(_scenegraph);
+  NSString * info = [NSString stringWithFormat:@"Dumped scene to file '%s'",
+    filename.getString()];
+  [view displayInfo:info];
+}
+
 
 
 // ------------------------ Autoclipping -------------------------------------

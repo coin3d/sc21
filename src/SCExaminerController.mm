@@ -58,41 +58,6 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
  "*/
  
 
-// --------------------- actions -----------------------------
-
-/*" Repositions the camera so that we can se the whole scene.
-
-    The sender argument is ignored.
- "*/
-
-- (IBAction) viewAll:(id)sender
-{
-  [_camera viewAll]; // SCViewAllNotification sent by _camera
-}
-
-/*" Toggles between perspective and orthographic camera.
-
-    The sender argument is ignored.
- "*/
-
-- (IBAction) toggleCameraType:(id)sender
-{
-  SoType persp = SoPerspectiveCamera::getClassTypeId();
-  SoType ortho = SoOrthographicCamera::getClassTypeId();
-  [_camera convertToType: ([_camera isPerspective] ? ortho : persp)];
-}
-
-/*" Switches the headlight on and off.
-
-    The sender argument is ignored.
-"*/
-
-- (IBAction) toggleHeadlight:(id)sender
-{
-  [self setHeadlightIsOn:([self headlightIsOn] ? NO : YES)];
-}
-
-
 
 // ----------------- initialization and cleanup ----------------------
 
@@ -151,10 +116,6 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 - (void) awakeFromNib
 {
   [super awakeFromNib];
-
-  [view addMenuEntry:@"view all" target:self action:@selector(viewAll:)];
-  [view addMenuEntry:@"toggle camera type" target:self action:@selector(toggleCameraType:)];
-  [view addMenuEntry:@"toggle headlight" target:self action:@selector(toggleHeadlight:)];
 }
 
 /* Clean up after ourselves. */
@@ -234,7 +195,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   root->unref(); // ref'ed by scenemanager
   _scenegraph = root;
 
-  if ([_camera controllerHasCreatedCamera]) [self viewAll:nil];
+  if ([_camera controllerHasCreatedCamera]) [self viewAll];
   [view setNeedsDisplay:YES];
   
   [[NSNotificationCenter defaultCenter]
@@ -242,8 +203,23 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 }
 
+/*" Sets the type of the camera we are using for viewing the scene.
+    Currently supported types are %SCCameraPerspective and
+    %SCCameraOrthographic (see SCCamera.h).
+ "*/
+
+- (void) setCameraType:(SCCameraType) type
+{
+  [_camera convertToType:type];
+}
 
 
+/*" Repositions the camera so that we can se the whole scene. "*/
+
+- (void) viewAll
+{
+  [_camera viewAll]; // SCViewAllNotification sent by _camera
+}
 
 // ----------------- Automatic headlight configuration -----------------
 

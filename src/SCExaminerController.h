@@ -29,11 +29,6 @@ class SoDirectionalLight;
   BOOL _iswaitingforseek;  
 }
 
-/*" Actions "*/
-- (IBAction) viewAll:(id)sender;
-- (IBAction) toggleCameraType:(id)sender;
-- (IBAction) toggleHeadlight:(id)sender;
-
 /*" Initializing an SCExaminerController "*/
 - (id) init;
 - (void) awakeFromNib;
@@ -41,6 +36,8 @@ class SoDirectionalLight;
 /*" Coin rendering and related functionality "*/
 - (void) render;
 - (void) setSceneGraph:(SoGroup *)sg;
+- (void) setCameraType:(SCCameraType) type;
+- (void) viewAll;
 
 /*" Automatic headlight configuration "*/
 - (SoDirectionalLight *) headlight;

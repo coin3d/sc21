@@ -34,12 +34,6 @@ class SoGetBoundingBoxAction;
 /*" Static methods "*/
 + (void) initCoin;
 
-/*" Actions "*/
-- (IBAction) open:(id)sender; 
-- (IBAction) toggleModes:(id)sender;
-- (IBAction) dumpSceneGraph:(id)sender;
-
-
 /*" Initializing an SCController "*/
 - (id) init;
 - (void) awakeFromNib;
@@ -56,14 +50,18 @@ class SoGetBoundingBoxAction;
 - (NSColor *) backgroundColor;
 - (void) viewSizeChanged:(NSRect)size;
 - (const SbViewportRegion &) viewportRegion;
-- (void) setCamera:(SoCamera *) camera;
-- (SoCamera *) camera;
-- (SoCamera *) findCameraInSceneGraph: (SoGroup *) root;
 - (SoLight *) findLightInSceneGraph:(SoGroup *) root;
 
-/*" Debugging aids. "*/
+/*" Camera handling. "*/
+- (void) setCamera:(SoCamera *) camera;
+- (SoCamera *) camera;
+- (SCCameraType) cameraType;
+- (SoCamera *) findCameraInSceneGraph: (SoGroup *) root;
 
+/*" Debugging aids. "*/
 - (NSString *) coinVersion;
+- (void) debugInfo;
+- (void) dumpSceneGraph;
 
 /*" Event handling "*/
 - (BOOL) handleEvent:(NSEvent *) event;
@@ -87,9 +85,6 @@ class SoGetBoundingBoxAction;
 - (void) setAutoClippingStrategy:(AutoClipStrategy)strategy value:(float)v;
 - (float) bestValueForNearPlane:(float)near farPlane:(float) far;
 
-/*" Delegate methods implemented by SCController "*/
-- (void) openPanelDidEnd:(NSOpenPanel*)panel returnCode:(int)rc contextInfo:(void *) ctx;
-
 @end
 
 
@@ -97,5 +92,7 @@ class SoGetBoundingBoxAction;
 
 extern NSString * SCModeChangedNotification;
 extern NSString * SCSceneGraphChangedNotification;
+extern NSString * SCNoCameraFoundInSceneNotification;
+extern NSString * SCNoLightFoundInSceneNotification;
 
 
