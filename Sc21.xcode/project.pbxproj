@@ -49,7 +49,7 @@
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.nib;
 			name = English;
-			path = Resources/English.lproj/SCControllerInspector.nib;
+			path = Resources/palette/English.lproj/SCControllerInspector.nib;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -408,8 +408,7 @@
 			buildRules = (
 			);
 			buildSettings = {
-				INFOPLIST_FILE = "misc/SC21-framework-Info.plist";
-				INFO_PLIST_FILE = "$(SRCROOT)/packaging/SC21_framework_Info.plist";
+				INFOPLIST_FILE = Resources/framework/Info.plist;
 				PRODUCT_NAME = dummy.txt;
 			};
 			dependencies = (
@@ -497,7 +496,7 @@
 			isa = PBXFileReference;
 			lastKnownFileType = image.tiff;
 			name = curs_rotate.tiff;
-			path = Resources/curs_rotate.tiff;
+			path = Resources/framework/curs_rotate.tiff;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -505,7 +504,7 @@
 			isa = PBXFileReference;
 			lastKnownFileType = image.tiff;
 			name = curs_pan.tiff;
-			path = Resources/curs_pan.tiff;
+			path = Resources/framework/curs_pan.tiff;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -513,7 +512,7 @@
 			isa = PBXFileReference;
 			lastKnownFileType = image.tiff;
 			name = curs_zoom.tiff;
-			path = Resources/curs_zoom.tiff;
+			path = Resources/framework/curs_zoom.tiff;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -759,7 +758,7 @@
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/SC21_Prefix.pch;
-				INFOPLIST_FILE = "misc/SC21-framework-Info.plist";
+				INFOPLIST_FILE = Resources/framework/Info.plist;
 				INSTALL_PATH = /Library/Frameworks;
 				INSTALL_ROOT = "$(DSTROOT)/framework";
 				OTHER_LDFLAGS = "-headerpad_max_install_names -seg1addr 0x2f000000";
@@ -827,7 +826,7 @@
 			isa = PBXFileReference;
 			lastKnownFileType = text.plist.xml;
 			name = "SC21-framework-Info.plist";
-			path = "misc/SC21-framework-Info.plist";
+			path = Resources/framework/Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -928,7 +927,7 @@
 			isa = PBXFileReference;
 			lastKnownFileType = image.pict;
 			name = SCView.pict;
-			path = Resources/SCView.pict;
+			path = Resources/palette/SCView.pict;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -1018,7 +1017,7 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/SC21_Prefix.pch;
-				INFOPLIST_FILE = "misc/SC21-palette-Info.plist";
+				INFOPLIST_FILE = Resources/palette/Info.plist;
 				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Palettes";
 				INSTALL_ROOT = "$(DSTROOT)/palette";
 				OTHER_LDFLAGS = "-bundle";
@@ -1074,7 +1073,7 @@
 			isa = PBXFileReference;
 			lastKnownFileType = text.plist.xml;
 			name = "SC21-palette-Info.plist";
-			path = "misc/SC21-palette-Info.plist";
+			path = Resources/palette/Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -1318,7 +1317,7 @@
 			isa = PBXFileReference;
 			lastKnownFileType = image.png;
 			name = coin.png;
-			path = Resources/coin.png;
+			path = Resources/palette/coin.png;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -1326,7 +1325,7 @@
 			isa = PBXFileReference;
 			lastKnownFileType = image.pict;
 			name = SCController.pict;
-			path = Resources/SCController.pict;
+			path = Resources/palette/SCController.pict;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -1334,7 +1333,7 @@
 			isa = PBXFileReference;
 			lastKnownFileType = image.pict;
 			name = SCExaminerController.pict;
-			path = Resources/SCExaminerController.pict;
+			path = Resources/palette/SCExaminerController.pict;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -1343,7 +1342,7 @@
 			isa = PBXFileReference;
 			lastKnownFileType = text.plist.xml;
 			name = palette.table;
-			path = Resources/palette.table;
+			path = Resources/palette/palette.table;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -1375,7 +1374,7 @@
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.nib;
 			name = English;
-			path = Resources/English.lproj/SCOpenGLViewInspector.nib;
+			path = Resources/palette/English.lproj/SCOpenGLViewInspector.nib;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -1383,7 +1382,7 @@
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.nib;
 			name = English;
-			path = Resources/English.lproj/SC21Palette.nib;
+			path = Resources/palette/English.lproj/SC21Palette.nib;
 			refType = 4;
 			sourceTree = "<group>";
 		};
