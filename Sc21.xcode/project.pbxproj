@@ -569,11 +569,13 @@
 				3D6AF42806AE769B00225657,
 				3D6AF42906AE769B00225657,
 				3D6AF42A06AE769B00225657,
+				E0D6A23106BA6FD900FF8E28,
 				E09CFA8F060249EF0000E227,
 				E09CFA90060249EF0000E227,
 				E0662923065383D600FB6420,
 				E0662924065383D600FB6420,
 				E0E5D14C06B15F61009165C8,
+				E0D6A27006BA74ED00FF8E28,
 				E09CFA91060249EF0000E227,
 				E09CFA92060249EF0000E227,
 				E080C6D906B12B080088958C,
@@ -1332,6 +1334,8 @@
 				E0E5D14706B15E6E009165C8,
 				E0E5D14D06B15F61009165C8,
 				E011760606B67E450042ADED,
+				E0D6A23206BA6FD900FF8E28,
+				E0D6A27106BA74ED00FF8E28,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1457,7 +1461,7 @@
 		};
 		E0765C62060223120099F78E = {
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
+			lastKnownFileType = text.plist.xml;
 			name = Info.plist;
 			path = Resources/framework/Info.plist;
 			refType = 4;
@@ -1817,7 +1821,7 @@
 		};
 		E09CFA57060245720000E227 = {
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
+			lastKnownFileType = text.plist.xml;
 			name = Info.plist;
 			path = Resources/palette/Info.plist;
 			refType = 4;
@@ -2077,7 +2081,7 @@
 		E09CFAA306024AD40000E227 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
+			lastKnownFileType = text.plist.xml;
 			name = palette.table;
 			path = Resources/palette/palette.table;
 			refType = 4;
@@ -2193,7 +2197,7 @@
 		E0D1CDEF06343F3100269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
+			lastKnownFileType = text.plist.xml;
 			path = Description.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -2201,7 +2205,7 @@
 		E0D1CDF006343F3100269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
+			lastKnownFileType = text.plist.xml;
 			path = Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -2246,7 +2250,7 @@
 		E0D1CE0206343F4E00269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
+			lastKnownFileType = text.plist.xml;
 			path = Description.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -2254,7 +2258,7 @@
 		E0D1CE0306343F4E00269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
+			lastKnownFileType = text.plist.xml;
 			path = Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -2299,7 +2303,7 @@
 		E0D1CE0806343F5B00269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
+			lastKnownFileType = text.plist.xml;
 			path = Description.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -2307,7 +2311,7 @@
 		E0D1CE0906343F5B00269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
+			lastKnownFileType = text.plist.xml;
 			path = Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -2339,6 +2343,42 @@
 			};
 			isa = PBXBuildStyle;
 			name = install;
+		};
+		E0D6A23106BA6FD900FF8E28 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCDrawable.h;
+			path = src/SCDrawable.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0D6A23206BA6FD900FF8E28 = {
+			fileRef = E0D6A23106BA6FD900FF8E28;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E0D6A27006BA74ED00FF8E28 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCEventHandling.h;
+			path = src/SCEventHandling.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0D6A27106BA74ED00FF8E28 = {
+			fileRef = E0D6A27006BA74ED00FF8E28;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
 		};
 		E0DD072F0654F9CA009C673A = {
 			buildPhases = (
