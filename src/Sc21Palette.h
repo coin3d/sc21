@@ -26,21 +26,19 @@
  * =============================================================== */
  
 #import <InterfaceBuilder/InterfaceBuilder.h>
+#import <Sc21/SCController.h>
+#import <Sc21/SCSceneGraph.h>
 #import <Sc21/SCView.h>
-#import <Sc21/SCExaminerController.h>
 
 @interface Sc21Palette : IBPalette
 {
-  IBOutlet NSImageView * scopenglviewitem;
   IBOutlet NSImageView * scviewitem;
   IBOutlet NSImageView * sccontrolleritem;
-  IBOutlet NSImageView * scexaminercontrolleritem;
-  IBOutlet NSImageView * testitem;
+  IBOutlet NSImageView * scscenegraphitem;
 
-  SCOpenGLView * scopenglview;
   SCView * scview;
   SCController * sccontroller;
-  SCExaminerController * scexaminercontroller;
+  SCSceneGraph * scscenegraph;
 }
 @end
 
@@ -59,7 +57,7 @@
 - (NSString *)classInspectorClassName;
 @end
 
-@interface SCExaminerController (Sc21PaletteInspector)
+@interface SCSceneGraph (Sc21PaletteInspector)
 - (NSString *)inspectorClassName;
 - (NSString *)classInspectorClassName;
 @end

@@ -38,6 +38,20 @@
 			settings = {
 			};
 		};
+		3D3BEE6906B00E43007A16DC = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.tiff;
+			name = SCSceneGraph.tiff;
+			path = Resources/palette/SCSceneGraph.tiff;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3D3BEE6A06B00E43007A16DC = {
+			fileRef = 3D3BEE6906B00E43007A16DC;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		3D669B2D06AA974F00CB9330 = {
 			fileEncoding = 4;
 			isa = PBXFileReference;
@@ -210,6 +224,7 @@
 				E000676B062598DD00F49FCD,
 				E09CFA83060249D50000E227,
 				E09CFA84060249D50000E227,
+				E09CFA57060245720000E227,
 				E09CFA85060249D50000E227,
 				E09CFA86060249D50000E227,
 			);
@@ -721,6 +736,7 @@
 		};
 		E070FB1F0608992A00A60FCA = {
 			children = (
+				E09A0E0206660511003EE738,
 				E070FB1E0608992200A60FCA,
 				E0AC6A8806060F3300907ED7,
 			);
@@ -1064,7 +1080,6 @@
 		};
 		E09A0E0206660511003EE738 = {
 			children = (
-				E09CFA57060245720000E227,
 				E01100A40605E5B200F93EC1,
 				E000678706259B3000F49FCD,
 				E01100A60605E5B800F93EC1,
@@ -1072,10 +1087,12 @@
 				E09CFAA106024AD40000E227,
 				E09CFAA206024AD40000E227,
 				E09C036A06024BEF0000E227,
+				3D3BEE6906B00E43007A16DC,
 				E09CFAA306024AD40000E227,
 			);
 			isa = PBXGroup;
 			name = Palette;
+			path = "";
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -1148,6 +1165,7 @@
 				E01100A50605E5B200F93EC1,
 				E09C036B06024BEF0000E227,
 				E000678906259B3000F49FCD,
+				3D3BEE6A06B00E43007A16DC,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1556,7 +1574,6 @@
 		E09CFAB206024B510000E227 = {
 			children = (
 				E09A0E0306660514003EE738,
-				E09A0E0206660511003EE738,
 			);
 			isa = PBXGroup;
 			name = Resources;

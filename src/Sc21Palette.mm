@@ -36,22 +36,17 @@
 {
   [scview release];
   [sccontroller release];
-  [scexaminercontroller release];
+  [scscenegraph release];
   [super dealloc];
 }
 
 - (void)finishInstantiate
 {
   SC21_DEBUG(@"Sc21Palette.finishInstantiate");
-  scopenglview = [[SCOpenGLView alloc] initWithFrame:[scopenglviewitem bounds]];
   scview = [[SCView alloc] initWithFrame:[scviewitem bounds]];
   sccontroller = [[SCController alloc] init];
-  scexaminercontroller = [[SCExaminerController alloc] init];
+  scscenegraph = [[SCSceneGraph alloc] init];
   
-  [self associateObject:scopenglview
-        ofType:IBViewPboardType
-        withView:scopenglviewitem];
-
   [self associateObject:scview
         ofType:IBViewPboardType
         withView:scviewitem];
@@ -60,33 +55,28 @@
         ofType:IBObjectPboardType
         withView:sccontrolleritem];
   
-  [self associateObject:scexaminercontroller
+  [self associateObject:scscenegraph
         ofType:IBObjectPboardType
-        withView:scexaminercontrolleritem];
-
-  [self associateObject:scexaminercontroller
-        ofType:IBObjectPboardType
-        withView:testitem];
+        withView:scscenegraphitem];
 }
 
 @end
 
 // ---------- IBObjectProtocol -----------
 
-@implementation SCOpenGLView (Sc21PaletteInspector)
-
-- (NSString *)inspectorClassName
-{
-  return @"SCOpenGLViewInspector";
-}
-
-@end
-
 @implementation SCView (Sc21PaletteInspector)
 
 - (NSString *)inspectorClassName
 {
   return [super inspectorClassName];
+}
+@end
+
+@implementation SCOpenGLView (Sc21PaletteInspector)
+
+- (NSString *)inspectorClassName
+{
+  return @"SCOpenGLViewInspector";
 }
 @end
 
@@ -106,21 +96,19 @@
   // (kintel 20040407)
   return @"IBCustomClassInspector";
 }
-
 @end
 
-@implementation SCExaminerController (Sc21PaletteInspector)
+@implementation SCSceneGraph (Sc21PaletteInspector)
 
 - (NSString *)inspectorClassName
 {
-  return [super inspectorClassName];
+  return  @"SCSceneGraphInspector";
 }
-
+// FIXME: What on Earth is this, and do I need it? kyrah 20040719
 - (NSString *)classInspectorClassName
 {
-  return [super classInspectorClassName];
+  return @"IBCustomClassInspector";
 }
-
 @end
 
 

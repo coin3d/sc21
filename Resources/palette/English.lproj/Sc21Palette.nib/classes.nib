@@ -3,30 +3,34 @@
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {CLASS = NSObject; LANGUAGE = ObjC; }, 
         {
-            CLASS = SC21Palette; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {
-                sccontrolleritem = id; 
-                scexaminercontrolleritem = id; 
-                scopenglviewitem = id; 
-                scviewitem = id; 
-                testitem = id; 
-            }; 
-            SUPERCLASS = IBPalette; 
-        }, 
-        {
             CLASS = SCController; 
             LANGUAGE = ObjC; 
-            OUTLETS = {delegate = id; }; 
+            OUTLETS = {delegate = id; scenegraph = id; }; 
             SUPERCLASS = NSObject; 
         }, 
         {CLASS = SCExaminerController; LANGUAGE = ObjC; SUPERCLASS = SCController; }, 
         {CLASS = SCOpenGLView; LANGUAGE = ObjC; SUPERCLASS = NSView; }, 
         {
+            CLASS = SCSceneGraph; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {delegate = id; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
             CLASS = SCView; 
             LANGUAGE = ObjC; 
             OUTLETS = {controller = SCController; }; 
             SUPERCLASS = SCOpenGLView; 
+        }, 
+        {
+            CLASS = Sc21Palette; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                sccontrolleritem = NSImageView; 
+                scscenegraphitem = NSImageView; 
+                scviewitem = NSImageView; 
+            }; 
+            SUPERCLASS = IBPalette; 
         }
     ); 
     IBVersion = 1; 
