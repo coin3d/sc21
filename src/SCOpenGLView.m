@@ -135,7 +135,6 @@
 - (void)prepareOpenGL
 {
   NSLog(@"SCOpenGLView.prepareOpenGL");
-
 }
 
 /*!
@@ -239,13 +238,16 @@
 */
 - (void)lockFocus
 {
-  NSLog(@"SCOpenGLView.lockFocus");
+  // NSLog(@"SCOpenGLView.lockFocus");
 
   NSOpenGLContext * context = [self openGLContext];
   [super lockFocus];
   
   if ([context view] != self) [context setView:self];
   [context makeCurrentContext];
+  //FIXME: On Panther, we can do this in prepareOpenGL, on Jaguar
+  //we must do this here or in drawRect. (kintel 20040429)
+  glEnable(GL_DEPTH_TEST);
 }
 
 // ----------------- NSCoding compliance --------------------

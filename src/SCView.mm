@@ -234,18 +234,10 @@
 
 - (void)drawRect:(NSRect)rect
 {
-  NSLog(@"SCview.drawRect");
+  // NSLog(@"SCView.drawRect");
   // Note: As NSView's implementation of this method, #drawRect: is
   // intended to be completely overridden by each subclass that
   // performs drawing, do _not_ invoke [super drawRect] here!
-  
-  // FIXME: Remove: This is done by SoSceneManager::render()
-  // FIXME: Make clearing configurable, as in So@Gui@ ? (kintel 20040406)
-  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); 
-  // FIXME: do this only once, after creating a context and binding it
-  // (kintel 20040323)
-  glEnable(GL_DEPTH_TEST);
-  glEnable(GL_LIGHTING);
   [controller render];
   [[self openGLContext] flushBuffer];
 }
