@@ -75,6 +75,7 @@ class SoSceneManager;
 - (void)setCamera:(SoCamera *)camera;
 - (SoCamera *)camera;
 - (SCCameraType)cameraType; // see SCCamera.h for SCCameraType enum
+- (void)viewAll;
 
 /*" Automatic headlight configuration "*/
 - (SoDirectionalLight *)headlight;

@@ -146,14 +146,6 @@
   [PRIVATE(self)->camera convertToType:type];
 }
 
-
-/*" Repositions the camera so that we can se the whole scene. "*/
-
-- (void)viewAll
-{
-  [PRIVATE(self)->camera viewAll]; // SCViewAllNotification sent by _camera
-}
-
 // -------------------- Event handling -----------------------
 
 /*" Handles event as viewer event, i.e. does not send it to the scene

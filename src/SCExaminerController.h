@@ -49,7 +49,6 @@ class SoDirectionalLight;
 /*" Coin rendering and related functionality "*/
 - (void)render;
 - (void)setCameraType:(SCCameraType)type;
-- (void)viewAll;
 
 /*" Interaction with the viewer. "*/
 - (void)startDraggingWithPoint:(NSPoint)point;
