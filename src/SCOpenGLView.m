@@ -159,16 +159,19 @@
   Returns the NSOpenGLContext associated with the receiver. If the
   receiver has no associated context, a new NSOpenGLContext is created
   and returned. The new NSOpenGLContext is initialized with the
-  receiver's pixelFormat.
+  receiver's -pixelFormat. If this function returns nil,
+  a new pixelformat is created using +defaultPixelFormat.
 */
-// FIXME: really do this? If pixelFormat is nil, create one using +defaultPixelFormat before creating context. Should we in case store the pixelformat?
 - (NSOpenGLContext *)openGLContext
 {
   if (!_openGLContext) {
     NSLog(@"SCOpenGLView.openGLContext: Creating new context");
     
     SCOpenGLPixelFormat * format = [self pixelFormat];
-    if (!format) format = [SCOpenGLView defaultPixelFormat];
+    if (!format) {
+      format = [SCOpenGLView defaultPixelFormat];
+      [self setPixelFormat:format];
+    }
     _openGLContext = 
       [[NSOpenGLContext alloc] initWithFormat:[format pixelFormat]
                                shareContext:nil];
