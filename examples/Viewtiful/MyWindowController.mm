@@ -132,7 +132,12 @@
 - (IBAction)documentChanged:(id)sender
 {
   MyDocument *doc = [self document];
-  [controller setSceneGraph:[doc sceneGraph]];
+  // FIXME: MyDocument should contain an SCSceneGraph instance
+  // instead of an SoGroup. kyrah 20040723.
+  SCSceneGraph * sg = [[SCSceneGraph alloc] init];
+  [sg setRoot:[doc sceneGraph]];
+  [controller setSceneGraph:sg];
+  [sg release];
   [controller viewAll];
 
   [typetext setStringValue:[doc fileType]];
