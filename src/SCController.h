@@ -26,13 +26,13 @@
  * ============================================================== */
  
 #import <Cocoa/Cocoa.h>
-#import <SC21/SCEventConverter.h>
 #import <SC21/SCCamera.h>
 
 class SoCamera;
 class SoGroup;
 class SoLight;
 class SoSceneManager;
+@class SCEventConverter;
 
 // FIXME: If we still want to inherit from NSResponder (e.g. to
 // use put the controller into the responder chain for situations

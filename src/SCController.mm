@@ -27,6 +27,7 @@
  
 
 #import <SC21/SCController.h>
+#import <SC21/SCEventConverter.h>
 
 #import <Inventor/SoDB.h>
 #import <Inventor/SoInteraction.h>
