@@ -138,20 +138,6 @@ Protocol]]intf[[else]]cl[[endif]]/[[mainTitle]]">[[mainTitle]]</A></H1></FONT>
 
 [[if hasMainInterface != 0]][[comment - Everything else is only done if we have an interface]]
 
-[[if mainInterface.interfaceTitle == Class]][[if mainInterface.ivarArray.count > 0]]
-	<P><HR WIDTH=50% ALIGN=LEFT>
-	<H2>Instance Variables</H2>
-
-	[[foreach ivar mainInterface.ivarArray ivar1]]
-		[[ivar.formattedType]]<CODE>[[ivar.name]]</CODE>[[ivar.posttype]];<BR>[[endforeach ivar1]]
-	<P><TABLE>
-	[[foreach ivar mainInterface.fullIvarArray ivar2]]
-		<TR><TD>[[ivar.fullName]]</TD><TD>[[ivar.entityDescription.formattedCommentString]]</TD></TR>
-	[[endforeach ivar2]]
-	</TABLE>
-[[endif ivarArray]][[endif Class]]
-
-
 [[if mainInterface.declarationArray.count > 0]]
 	<P><HR WIDTH=50% ALIGN=LEFT>
 	<H2>Method Types</H2>
