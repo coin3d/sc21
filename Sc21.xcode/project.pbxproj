@@ -353,6 +353,54 @@
 			refType = 4;
 			sourceTree = "<group>";
 		};
+		3DC6401D06BD29CB00301065 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCExaminerHandlerP.h;
+			path = src/SCExaminerHandlerP.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3DC6401E06BD29CB00301065 = {
+			fileRef = 3DC6401D06BD29CB00301065;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		3DC6408406BD305800301065 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCEmulator.h;
+			path = src/SCEmulator.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3DC6408506BD305800301065 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SCEmulator.m;
+			path = src/SCEmulator.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3DC6408606BD305800301065 = {
+			fileRef = 3DC6408406BD305800301065;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		3DC6408706BD305800301065 = {
+			fileRef = 3DC6408506BD305800301065;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		3DDD3FF006B8EE5C0038959E = {
 			children = (
 				3DDD3FF106B8EE5C0038959E,
@@ -596,6 +644,8 @@
 				3D6AF42906AE769B00225657,
 				3D6AF42A06AE769B00225657,
 				E0D6A23106BA6FD900FF8E28,
+				3DC6408406BD305800301065,
+				3DC6408506BD305800301065,
 				E09CFA8F060249EF0000E227,
 				E09CFA90060249EF0000E227,
 				E0662923065383D600FB6420,
@@ -604,6 +654,7 @@
 				E0D6A27006BA74ED00FF8E28,
 				E080C6D906B12B080088958C,
 				E080C6DA06B12B080088958C,
+				3DC6401D06BD29CB00301065,
 				3D6AF42F06AE770400225657,
 				E0E5D14506B15E6E009165C8,
 				E0E5D14606B15E6E009165C8,
@@ -1335,6 +1386,7 @@
 				E057B59B06219ADC0012C546,
 				E09CFA95060249EF0000E227,
 				E09CFA97060249EF0000E227,
+				3DC6408606BD305800301065,
 				E09CFA99060249EF0000E227,
 				E09CFA9B060249EF0000E227,
 				E0EB290C0613442800C54774,
@@ -1355,6 +1407,7 @@
 				3D6AF42C06AE769B00225657,
 				3D6AF42E06AE769B00225657,
 				E080C6DB06B12B080088958C,
+				3DC6401E06BD29CB00301065,
 				E080C71606B132550088958C,
 				E0E5D14706B15E6E009165C8,
 				E0E5D14D06B15F61009165C8,
@@ -1389,6 +1442,7 @@
 				E080C71706B132550088958C,
 				E0E5D14806B15E6E009165C8,
 				E011760706B67E450042ADED,
+				3DC6408706BD305800301065,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;

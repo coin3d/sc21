@@ -24,42 +24,43 @@
  | Systems in Motion, Bygdoy Alle 5, 0257 Oslo, Norway.            |
  |                                                                 |
  * =============================================================== */
+ 
+#import <Sc21/SCExaminerHandler.h> 
 
-#import <Cocoa/Cocoa.h>
-#import "SCDefines.h"
-#import <Sc21/SCEventHandling.h>
-#import <Sc21/SCEmulator.h>
+typedef int SCOperation;
+#define SCNoOperation 0
+#define SCRotate      1
+#define SCPan         2
+#define SCZoom        3
 
-@class SCExaminerHandlerP;
-
-@interface SCExaminerHandler : NSObject <NSCoding, SCEventHandling>
+ @interface SCExaminerHandlerP : NSObject
 {
- @protected
-  SCExaminerHandlerP * _sc_examinerhandler;
+  int panbutton, rotatebutton, zoombutton;
+  unsigned int panmodifier, rotatemodifier, zoommodifier;
+  BOOL spinenabled;
+  BOOL scrollwheelzoomenabled;
+  SCEmulator * emulator;
+  SCOperation currentoperation;
+  SCMode * currentmode;
+  id<SCDrawable> currentdrawable;
+  SCCamera * currentcamera;  
 }
+@end
 
-/*" Mouse- and keybindings for examiner modes "*/
-- (void)setPanButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
-- (void)setRotateButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
-- (void)setZoomButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
+@implementation SCExaminerHandlerP
+@end
 
-- (void)getPanButton:(int*)buttonNumber modifier:(unsigned int*)modifierFlags;
-- (void)getRotateButton:(int*)buttonNumber modifier:(unsigned int*)modifierFlags;
-- (void)getZoomButton:(int*)buttonNumber modifier:(unsigned int*)modifierFlags;
+@interface SCExaminerHandler (InternalAPI)
+- (void)_SC_commonInit;
+- (Class)_SC_modeForOperation:(SCOperation)operation;
+- (BOOL)_SC_performActionForEvent:(NSEvent *)event camera:(SCCamera *)camera;
+- (void)_SC_setCurrentMode:(SCMode *)mode;
+- (SCMode *)_SC_currentMode;
+- (void)_SC_setCurrentOperation:(SCOperation)operation;
+- (SCOperation)_SC_currentOperation;
 
-/*" Additional settings "*/
-- (void)setSpinEnabled:(BOOL)enabled;
-- (BOOL)spinEnabled;
-- (void)setScrollWheelZoomEnabled:(BOOL)enabled;
-- (BOOL)scrollWheelZoomEnabled;
+- (void)_SC_activateMode:(SCMode *)mode event:(NSEvent *)event point:(NSPoint *)pn;
+- (SCOperation)_SC_operationForButton:(int)buttonNumber andModifier:(unsigned int)modifierFlags;
 
-/*" Mouse button emulation "*/
-- (SCEmulator *)emulator;
-- (void)setEmulator:(SCEmulator *)emulator;
 
-/*" SCEventHandling conformance "*/
-- (BOOL)handleEvent:(NSEvent *)event;
-- (void)update;
-- (void)drawableDidChange:(NSNotification *)notification;
-- (void)sceneGraphDidChange:(NSNotification *)notification;
 @end

@@ -5,52 +5,74 @@
 #import "SCZoomMode.h"
 #import "SCMouseLog.h"
 #import "SCUtil.h"
+#import <Sc21/SCController.h>
 
-#import <Sc21/SCEventHandlerP.h>
+#import <Sc21/SCExaminerHandlerP.h>
 
-@interface SCExaminerHandlerP : NSObject
-{
-  BOOL spinenabled;
-  BOOL scrollwheelzoomenabled;
-}
-@end
-
-@implementation SCExaminerHandlerP
-@end
-
-@interface SCExaminerHandler (InternalAPI)
-- (Class)_SC_modeForOperation:(SCOperation)operation;
-- (BOOL)_SC_performActionForEvent:(NSEvent *)event camera:(SCCamera *)camera;
-@end
-
-#define SUPER self->_sc_eventhandler
 #define SELF self->_sc_examinerhandler
 
 @implementation SCExaminerHandler
-
 
 #pragma mark --- initialization and cleanup ---
 
 - (id)init
 {
-  self = [super init];
-
-  [self enableOperation:SCRotate forButton:0 withModifier:0];
-  [self enableOperation:SCPan forButton:2 withModifier:0];
-  [self enableOperation:SCZoom forButton:0 withModifier:NSShiftKeyMask];
-  [self emulateButton:2 usingModifier:NSAlternateKeyMask];
-  [self setSpinEnabled:YES];
-  [self setScrollWheelZoomEnabled:YES];
-
+  if (self = [super init]) {
+    [self _SC_commonInit];
+    [self setRotateButton:0 modifier:0];
+    [self setPanButton:2 modifier:0];
+    [self setZoomButton:0 modifier:NSShiftKeyMask];
+    [self setSpinEnabled:YES];
+    [self setScrollWheelZoomEnabled:YES];
+  }
   return self;
 }
 
 - (void)dealloc
 {
+  [SELF->emulator release];
   [SELF release];
 }
 
-#pragma mark --- accessor methods --- 
+#pragma mark --- mouse- and keybindings --- 
+
+- (void)setPanButton:(int)buttonNumber modifier:(unsigned int)modifierFlags
+{
+  SELF->panbutton = buttonNumber;
+  SELF->panmodifier = modifierFlags;
+}
+
+- (void)setRotateButton:(int)buttonNumber modifier:(unsigned int)modifierFlags
+{
+  SELF->rotatebutton = buttonNumber;
+  SELF->rotatemodifier = modifierFlags;
+}
+
+- (void)setZoomButton:(int)buttonNumber modifier:(unsigned int)modifierFlags
+{
+  SELF->zoombutton = buttonNumber;
+  SELF->zoommodifier = modifierFlags;
+}
+
+- (void)getPanButton:(int*)button modifier:(unsigned int*)modifierFlags
+{
+  *button = SELF->panbutton;
+  *modifierFlags = SELF->panmodifier;
+}
+
+- (void)getRotateButton:(int*)button modifier:(unsigned int*)modifierFlags
+{
+  *button = SELF->rotatebutton;
+  *modifierFlags = SELF->rotatemodifier; 
+}
+
+- (void)getZoomButton:(int*)button modifier:(unsigned int*)modifierFlags
+{
+  *button = SELF->zoombutton;
+  *modifierFlags = SELF->zoommodifier;  
+}
+
+#pragma mark --- additional settings ---
 
 - (void)setSpinEnabled:(BOOL)enabled
 {
@@ -72,12 +94,25 @@
   return SELF->scrollwheelzoomenabled;
 }
 
+#pragma mark --- mouse button emulation ---
+- (SCEmulator *)emulator
+{
+  return SELF->emulator;
+}
+
+- (void)setEmulator:(SCEmulator *)emulator
+{
+  if (emulator != SELF->emulator) [SELF->emulator release];
+  SELF->emulator = [emulator retain];
+}
+
+
 #pragma mark --- SCEventHandler conformance ---
 
 - (BOOL)handleEvent:(NSEvent *)event
 { 
   SC21_LOG_METHOD;
-  NSRect frame = [SUPER->currentdrawable frame];
+  NSRect frame = [SELF->currentdrawable frame];
   NSPoint p = [event locationInWindow];
   NSPoint pn;
   pn.x = (p.x - frame.origin.x) / frame.size.width;
@@ -96,7 +131,8 @@
         [[SCMouseLog defaultMouseLog] appendPoint:&pn 
                                       timestamp:[event timestamp]];
       }
-      handled = [currentmode modifyCamera:SUPER->currentcamera withValue:[currentmode valueForEvent:event]];
+      handled = [currentmode modifyCamera:SELF->currentcamera 
+                                withValue:[currentmode valueForEvent:event]];
     }
     return handled;
   }
@@ -113,9 +149,11 @@
            eventtype == NSRightMouseDown ||
            eventtype == NSOtherMouseDown) {
     // Check for emulations
-    int effectivebutton = [self _SC_emulatedButton:[event buttonNumber] forModifier:modifierflags];
+    int effectivebutton = [SELF->emulator emulatedButtonForButton:[event buttonNumber] 
+    modifier:modifierflags];
     
-    SCOperation newoperation = [self operationForButton:effectivebutton andModifier:modifierflags];
+    SCOperation newoperation = [self _SC_operationForButton:effectivebutton 
+                                            andModifier:modifierflags];
     if (newoperation != SCNoOperation) operation = newoperation;
   }
 
@@ -132,7 +170,25 @@
   }
 
   if (!handled) 
-    return [self _SC_performActionForEvent:event camera:SUPER->currentcamera];
+    return [self _SC_performActionForEvent:event camera:SELF->currentcamera];
+}
+
+- (void)update
+{
+  NSTimeInterval currtime = [NSDate timeIntervalSinceReferenceDate];
+  [SELF->currentmode modifyCamera:SELF->currentcamera withTimeInterval:currtime];
+}
+
+- (void)drawableDidChange:(NSNotification *)notification
+{
+  SCController * controller = (SCController *)[notification object];
+  SELF->currentdrawable = [controller drawable];
+}
+
+- (void)sceneGraphDidChange:(NSNotification *)notification
+{
+  SCController * controller = (SCController *)[notification object];
+  SELF->currentcamera = [[controller sceneGraph] camera];
 }
 
 #pragma mark --- NSCoding conformance ---
@@ -147,10 +203,8 @@
 
 - (id)initWithCoder:(NSCoder *)coder
 {
-  if (self = [super initWithCoder:coder]) {
+  if (self = [super init]) {
     if ([coder allowsKeyedCoding]) {
-      // We don't need to check for existence since these two keys
-      // will always exist.
       SELF->spinenabled = [coder decodeBoolForKey:@"SC_spinenabled"];
       SELF->scrollwheelzoomenabled = [coder decodeBoolForKey:@"SC_scrollwheelzoomenabled"];
     }
@@ -164,8 +218,10 @@
 
 - (void)_SC_commonInit
 {
-  [super _SC_commonInit];
   SELF = [[SCExaminerHandlerP alloc] init];
+  // FIXME: Archive emulator. kyrah 20040801.
+  SELF->emulator = [[SCEmulator alloc] init];
+  [SELF->emulator emulateButton:2 usingModifier:NSAlternateKeyMask];
 }
 
 - (BOOL)_SC_performActionForEvent:(NSEvent *)event camera:(SCCamera *)camera
@@ -194,6 +250,82 @@
     return Nil;
     break;
   }
+}
+
+- (void)_SC_setCurrentMode:(SCMode *)mode
+{
+  [mode retain];
+  [SELF->currentmode release];
+  SELF->currentmode = mode;
+}
+
+- (SCMode *)_SC_currentMode
+{
+  return SELF->currentmode;
+}
+
+- (SCOperation)_SC_currentOperation
+{
+  return SELF->currentoperation;
+}
+
+- (void)_SC_setCurrentOperation:(SCOperation)operation
+{
+  SELF->currentoperation = operation;
+}
+
+- (void)_SC_activateMode:(SCMode *)newmode event:(NSEvent *)event
+                   point:(NSPoint *)pn
+{
+  [newmode activate:event point:pn camera:SELF->currentcamera];
+  [[SCMouseLog defaultMouseLog] setStartPoint:pn timestamp:[event timestamp]];
+  [[newmode cursor] set];
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:SCCursorChangedNotification object:self];  
+}
+
+
+- (SCOperation)_SC_operationForButton:(int)buttonNumber andModifier:(unsigned int)modifierFlags
+{
+  NSLog(@"_SC_operationForButton:%d andModifier:%u", buttonNumber, modifierFlags);
+  
+  unsigned int matchedflags = 0;
+  int matchedoperation = SCNoOperation;
+  
+  if (SELF->rotatebutton == buttonNumber && 
+      (SELF->rotatemodifier & modifierFlags) == SELF->rotatemodifier &&
+      SELF->rotatemodifier >= matchedflags) {
+    
+    matchedflags = SELF->rotatemodifier;
+    matchedoperation = SCRotate;
+    NSLog(@"After rotate check: matchedflags: %u, matchedoperation: %d", 
+          matchedflags, matchedoperation);
+  }
+    
+  if (SELF->zoombutton  == buttonNumber && 
+      (SELF->zoommodifier & modifierFlags) == SELF->zoommodifier &&
+      SELF->zoommodifier >= matchedflags) {
+    
+    matchedflags = SELF->zoommodifier;
+    matchedoperation = SCZoom;
+    NSLog(@"After zoom check: matchedflags: %u, matchedoperation: %d", 
+          matchedflags, matchedoperation);
+    
+  }
+  
+  if (SELF->panbutton  == buttonNumber && 
+      (SELF->panmodifier & modifierFlags) == SELF->panmodifier &&
+      SELF->panmodifier >= matchedflags)  {
+    
+    matchedflags = SELF->panmodifier;
+    matchedoperation = SCPan;
+    NSLog(@"After pan check: matchedflags: %u, matchedoperation: %d", 
+          matchedflags, matchedoperation);
+    
+  }
+  
+  return matchedoperation;
+  
 }
 
 @end
