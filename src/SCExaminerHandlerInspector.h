@@ -55,10 +55,13 @@
     
   IBOutlet NSPopUpButton * middleButtonEmulation;
   IBOutlet NSPopUpButton * rightButtonEmulation;
+  
+  IBOutlet NSBox * conflictWarning;
 }
 @end
 
 @interface SCExaminerHandler (IBPalette)
+- (NSString *)_SC_hasConflictingBindings;
 - (int)_SC_zoomButton;
 - (int)_SC_panButton;
 - (int)_SC_rotateButton;

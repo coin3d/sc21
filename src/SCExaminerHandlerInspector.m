@@ -62,7 +62,7 @@
   // Note that mouse button emulation settings depends on the order of
   // menu items being "no emulation", "command", "alt", "shift", "control",
   // and modifier settings on the order "command", "alt", "shift", "control".
-   
+
   SCExaminerHandler * scexaminerhandler = [self object];
 
   // mouse button emulation
@@ -95,7 +95,7 @@
   }
   [scexaminerhandler 
     setScrollWheelZoomEnabled:([enableWheel state] == NSOnState)];
-    
+  
   [super ok:sender];
 }
 
@@ -128,6 +128,11 @@
     forFlags:[scexaminerhandler _SC_zoomModifier]];
   [enableWheel setState:([scexaminerhandler scrollWheelZoomEnabled] ?
     NSOnState:NSOffState)];
+
+  NSString * conflict = [scexaminerhandler _SC_hasConflictingBindings];
+  
+  [conflictWarning setHidden:!conflict]; 
+  [conflictWarning setToolTip:conflict];
 
   [super revert:sender];
 }
@@ -210,6 +215,58 @@
 
 
 @implementation SCExaminerHandler (IBPalette)
+
+- (NSString *)_SC_hasConflictingBindings
+{
+  BOOL conflict = NO;
+  BOOL emulatesright = NO, emulatesmiddle = NO;
+  
+  int count = 3; // rotate, zoom, pan
+  if ([[self _SC_emulator] emulatesButton:1]) { emulatesright = YES; count++; }
+  if ([[self _SC_emulator] emulatesButton:2]) { emulatesmiddle = YES; count++; }
+  
+  int buttons[count];
+  unsigned int modifiers[count];
+  NSMutableArray * names = [NSMutableArray arrayWithCapacity:5];
+  
+  int idx = 0;  
+  
+  [self getRotateButton:&buttons[idx] modifier:&modifiers[idx]];
+  [names addObject:@"Rotate"]; idx++;
+  
+  [self getPanButton:&buttons[idx] modifier:&modifiers[idx]]; 
+  [names addObject:@"Pan"]; idx++;
+  
+  [self getZoomButton:&buttons[idx] modifier:&modifiers[idx]];
+  [names addObject:@"Zoom"]; idx++;
+  
+  if (emulatesright) {
+    buttons[idx] = 0;
+    modifiers[idx] = [[self _SC_emulator] modifierToEmulateButton:1];
+    [names addObject:@"Right mouse emulation"]; 
+    idx++;
+  }
+  
+  if (emulatesmiddle) {
+    buttons[idx] = 0;
+    modifiers[idx] = [[self _SC_emulator] modifierToEmulateButton:2];
+    [names addObject:@"Middle mouse emulation"]; 
+  }
+      
+  int i, j;
+  for (i = 0; i < count; i++) {
+    for (j = 0; j < count; j++) {
+      if (i == j) continue;
+      if (buttons[i] == buttons[j] && modifiers[i] == modifiers[j]) {
+        return [NSString stringWithFormat:@"%@ and %@", 
+          [names objectAtIndex:i], 
+          [names objectAtIndex:j]];
+      }
+    }
+  }
+  
+  return nil;
+}
 
 - (int)_SC_zoomButton
 {

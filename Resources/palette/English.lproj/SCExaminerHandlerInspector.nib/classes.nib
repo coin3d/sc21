@@ -6,6 +6,7 @@
             CLASS = SCExaminerHandlerInspector; 
             LANGUAGE = ObjC; 
             OUTLETS = {
+                conflictWarning = NSBox; 
                 enableSpin = NSButton; 
                 enableWheel = NSButton; 
                 middleButtonEmulation = NSPopUpButton; 
