@@ -64,11 +64,13 @@ class SoDirectionalLight;
 - (BOOL) handleEventAsViewerEvent:(NSEvent *)event;
 
 /*" Interaction with the viewer. "*/
-- (void) startDragging:(NSValue *)v;
-- (void) startPanning:(NSValue *)v;
-- (void) performDragging:(NSValue *)v;
-- (void) performPanning:(NSValue *)v;
-- (void) performZoom:(NSValue *)v;
+- (void) startDraggingWithPoint:(NSValue *)v;
+- (void) startPanningWithPoint:(NSValue *)v;
+- (void) startZoomWithPoint:(NSValue *)v;
+- (void) performDraggingWithPoint:(NSValue *)v;
+- (void) performPanningWithPoint:(NSValue *)v;
+- (void) performZoomWithDelta:(NSValue *)v;
+- (void) performZoomWithPoint:(NSValue *)v;
 - (void) performMove:(NSValue *)v;
 - (void) ignore:(NSValue *)v;
 

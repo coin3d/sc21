@@ -266,7 +266,8 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     Pressing the cursor keys on the keyboard will move the camera in a
     similar way.
     
-    The mouse wheel zooms in and out.
+    The mouse wheel zooms in and out. Dragging the mouse while holding
+    down the SHIFT key also zooms in and out. 
 
     Clicking into the scene with the right mouse button brings up a
     context menu if the application programmer has set up menu items. 
@@ -298,16 +299,18 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
       p = [view convertPoint:[event locationInWindow] fromView:nil];
       v = [NSValue valueWithPoint:p];
 
-      if (flags & NSAlternateKeyMask) action = @selector(startPanning:);
-      else action = @selector(startDragging:);
+      if (flags & NSAlternateKeyMask) action = @selector(startPanningWithPoint:);
+      else if (flags & NSShiftKeyMask) action = @selector(startZoomWithPoint:);
+      else action = @selector(startDraggingWithPoint:);
       handled = YES;
       break;
-      
+
     case NSLeftMouseDragged:
       p = [view convertPoint:[event locationInWindow] fromView:nil];
       v = [NSValue valueWithPoint:p];
-      if (flags & NSAlternateKeyMask) action = @selector(performPanning:);
-      else action = @selector(performDragging:);
+      if (flags & NSAlternateKeyMask) action = @selector(performPanningWithPoint:);
+      else if (flags & NSShiftKeyMask) action = @selector(performZoomWithPoint:);
+      else action = @selector(performDraggingWithPoint:);
       handled = YES;
       break;
 
@@ -327,14 +330,14 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     case NSOtherMouseDragged:
       p = [view convertPoint:[event locationInWindow] fromView:nil];
       v = [NSValue valueWithPoint:p];
-      action = @selector(performPanning:);
+      action = @selector(performPanningWithPoint:);
       handled = YES;
       break;
 
     case NSScrollWheel:
       delta = [event deltaY];
       v = [NSValue value:&delta withObjCType:@encode(float)];
-      action = @selector(performZoom:);
+      action = @selector(performZoomWithDelta:);
       handled = YES;
       break;
 
@@ -385,7 +388,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 /*" Prepares for dragging operation. "*/
 
-- (void) startDragging:(NSValue *) v
+- (void) startDraggingWithPoint:(NSValue *) v
 {
   // Clear log and project to the last position we stored.
   [_mouselog removeAllObjects];
@@ -396,16 +399,25 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 /*" Prepares for panning operation. "*/
 
-- (void) startPanning:(NSValue *) v
+- (void) startPanningWithPoint:(NSValue *) v
 {
   SbViewVolume vv;
   [_mouselog removeAllObjects];
   [_mouselog insertObject:v atIndex:0];
 }
 
+/*" Prepares for zooming operation. "*/
+
+- (void) startZoomWithPoint:(NSValue *) v
+{
+  // Clear log and project to the last position we stored.
+  [_mouselog removeAllObjects];
+  [_mouselog insertObject:v atIndex:0];
+}
+
 /*" Performs dragging operation. "*/
 
-- (void) performDragging:(NSValue *) v
+- (void) performDraggingWithPoint:(NSValue *) v
 {
   [_mouselog insertObject:v atIndex:0];
   [self _spin];
@@ -413,19 +425,39 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 /*" Performs panning operation. "*/
 
-- (void) performPanning:(NSValue *) v
+- (void) performPanningWithPoint:(NSValue *) v
 {
   [_mouselog insertObject:v atIndex:0];
   [self _pan];
 }
 
-/*" Zooms into the scene by sending the #zoom: message to SCCamera. "*/
+/*" Zooms into the scene by sending the #zoom: message to SCCamera. v must
+    contains a float value. Positive values mean zooming in, negative values
+    mean zooming out.
+ "*/
 
-- (void) performZoom:(NSValue *) v
+- (void) performZoomWithDelta:(NSValue *) v
 {
   float f;
   [v getValue:&f];
   [_camera zoom:f];
+}
+
+
+/*" Zooms into the scene by sending the #zoom: message to SCCamera. v must
+    contain an NSPoint value.
+ "*/
+
+- (void) performZoomWithPoint:(NSValue *) v
+{
+  NSPoint p, q, qn, pn;
+  [_mouselog insertObject:v atIndex:0];
+  if ([_mouselog count] < 2) return;
+  p = [[_mouselog objectAtIndex:0] pointValue];
+  q = [[_mouselog objectAtIndex:1] pointValue];
+  qn = [view normalizePoint:q];
+  pn = [view normalizePoint:p];
+  [_camera zoom:(qn.y - pn.y)];
 }
 
 /*" Move the camera in the plane that is parallel to the screen. "*/
