@@ -57,9 +57,7 @@ fi
 if [ -z $VERBOSE ]; then
   REDIRECT='> /dev/null 2>&1'
 fi
-#FIXME: Path is different on Jaguar
-eval "/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker -build -p \"$TARGET_BUILD_DIR/$PRODUCT_NAME\" -f \"$PRODUCT_ROOT\" -r \"$SRCROOT/$RESOURCE_DIR\" -i \"$SRCROOT/$INFOPLIST_FILE\" -d \"$SRCROOT/$DESCRIPTION_PLIST_FILE\" $REDIRECT"
-#FIXME: How to handle errors from PackageMaker? It seems to always return 2
-echo "PackageMaker returned $?"
 
-exit 0;
+eval "/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker -build -p \"$TARGET_BUILD_DIR/$PRODUCT_NAME\" -f \"$PRODUCT_ROOT\" -r \"$SRCROOT/$RESOURCE_DIR\" -i \"$SRCROOT/$INFOPLIST_FILE\" -d \"$SRCROOT/$DESCRIPTION_PLIST_FILE\" $REDIRECT"
+
+exit $?;
