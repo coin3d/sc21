@@ -47,6 +47,7 @@
 - (void)getRotateButton:(int*)buttonNumber modifier:(unsigned int*)modifierFlags;
 - (void)getZoomButton:(int*)buttonNumber modifier:(unsigned int*)modifierFlags;
 
+
 /*" Additional settings "*/
 - (void)setSpinEnabled:(BOOL)enabled;
 - (BOOL)spinEnabled;

@@ -195,6 +195,13 @@
 - (void)encodeWithCoder:(NSCoder *)coder
 {
   if ([coder allowsKeyedCoding]) {
+    [coder encodeInt:SELF->panbutton forKey:@"SC_panbutton"];
+    [coder encodeInt:SELF->rotatebutton forKey:@"SC_rotatebutton"];
+    [coder encodeInt:SELF->zoombutton forKey:@"SC_zoombutton"];
+    // FIXME: Is encodeInt: the right method to use for unsigned int? kyrah 20040801.
+    [coder encodeInt:SELF->panmodifier forKey:@"SC_panmodifier"];
+    [coder encodeInt:SELF->rotatemodifier forKey:@"SC_rotatemodifier"];
+    [coder encodeInt:SELF->zoommodifier forKey:@"SC_zoommodifier"];
     [coder encodeBool:SELF->spinenabled forKey:@"SC_spinenabled"];
     [coder encodeBool:SELF->scrollwheelzoomenabled forKey:@"SC_scrollwheelzoomenabled"];
   }
@@ -205,6 +212,12 @@
   if (self = [super init]) {
     [self _SC_commonInit];
     if ([coder allowsKeyedCoding]) {
+      SELF->panbutton = [coder decodeIntForKey:@"SC_panbutton"];
+      SELF->rotatebutton = [coder decodeIntForKey:@"SC_rotatebutton"];
+      SELF->zoombutton = [coder decodeIntForKey:@"SC_zoombutton"];
+      SELF->panmodifier = [coder decodeIntForKey:@"SC_panmodifier"];
+      SELF->rotatemodifier = [coder decodeIntForKey:@"SC_rotatemodifier"];
+      SELF->zoommodifier = [coder decodeIntForKey:@"SC_zoommodifier"];
       SELF->spinenabled = [coder decodeBoolForKey:@"SC_spinenabled"];
       SELF->scrollwheelzoomenabled = [coder decodeBoolForKey:@"SC_scrollwheelzoomenabled"];
     }

@@ -1,10 +1,31 @@
 {
     IBClasses = (
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = SCExaminerHandler; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {
             CLASS = SCExaminerHandlerInspector; 
             LANGUAGE = ObjC; 
-            OUTLETS = {middleButtonEmulation = NSPopUpButton; rightButtonEmulation = NSPopUpButton; }; 
+            OUTLETS = {
+                enableSpin = NSButton; 
+                enableWheel = NSButton; 
+                middleButtonEmulation = NSPopUpButton; 
+                panButton = NSPopUpButton; 
+                "pan_alt" = NSButton; 
+                "pan_command" = NSButton; 
+                "pan_control" = NSButton; 
+                "pan_shift" = NSButton; 
+                rightButtonEmulation = NSPopUpButton; 
+                rotateButton = NSPopUpButton; 
+                "rotate_alt" = NSButton; 
+                "rotate_command" = NSButton; 
+                "rotate_control" = NSButton; 
+                "rotate_shift" = NSButton; 
+                zoomButton = NSPopUpButton; 
+                "zoom_alt" = NSButton; 
+                "zoom_command" = NSButton; 
+                "zoom_control" = NSButton; 
+                "zoom_shift" = NSButton; 
+            }; 
             SUPERCLASS = IBInspector; 
         }
     ); 

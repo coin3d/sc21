@@ -27,10 +27,42 @@
  
 
 #import <InterfaceBuilder/InterfaceBuilder.h>
+#import <Sc21/SCExaminerHandler.h>
 
 @interface SCExaminerHandlerInspector : IBInspector
 {
+  IBOutlet NSPopUpButton * rotateButton;
+  IBOutlet NSPopUpButton * panButton;
+  IBOutlet NSPopUpButton * zoomButton;
+  
+  IBOutlet NSButton * rotate_command;
+  IBOutlet NSButton * rotate_alt;
+  IBOutlet NSButton * rotate_shift;
+  IBOutlet NSButton * rotate_control;
+  
+  IBOutlet NSButton * pan_command;
+  IBOutlet NSButton * pan_alt;
+  IBOutlet NSButton * pan_shift;
+  IBOutlet NSButton * pan_control;  
+  
+  IBOutlet NSButton * zoom_command;
+  IBOutlet NSButton * zoom_alt;
+  IBOutlet NSButton * zoom_shift;
+  IBOutlet NSButton * zoom_control;
+    
+  IBOutlet NSButton * enableSpin;
+  IBOutlet NSButton * enableWheel;
+    
   IBOutlet NSPopUpButton * middleButtonEmulation;
   IBOutlet NSPopUpButton * rightButtonEmulation;
 }
+@end
+
+@interface SCExaminerHandler (IBPalette)
+- (int)_SC_zoomButton;
+- (int)_SC_panButton;
+- (int)_SC_rotateButton;
+- (unsigned int)_SC_zoomModifier;
+- (unsigned int)_SC_panModifier;
+- (unsigned int)_SC_rotateModifier;
 @end

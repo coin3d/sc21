@@ -202,6 +202,33 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
                                            selector:@selector(_SC_sceneGraphChanged:)
                                                name:SCRootChangedNotification
                                              object:scenegraph];  
+  
+  // Re-register for eventhandling-related notifications.
+  // Note that this is only necessary since our setEventHander: method is
+  // not called from IB. 
+  // FIXME: Remove this when we found out how to make IB use our accessor. 
+  
+  [self->eventhandler drawableDidChange:[NSNotification 
+    notificationWithName:SCDrawableChangedNotification object:self]];
+  
+  [self->eventhandler sceneGraphDidChange:[NSNotification
+    notificationWithName:SCSceneGraphChangedNotification object:self]];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self->eventhandler 
+                                           selector:@selector(drawableDidChange:) 
+                                               name:SCDrawableChangedNotification 
+                                             object:self];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self->eventhandler 
+                                           selector:@selector(sceneGraphDidChange:) 
+                                               name:SCSceneGraphChangedNotification 
+                                             object:self];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self 
+                                           selector:@selector(_SC_cursorDidChange:) 
+                                               name:SCCursorChangedNotification 
+                                             object:self->eventhandler];
+  
 }
 
 - (void)dealloc
