@@ -50,8 +50,6 @@
 
 /*" File I/O "*/
 - (BOOL)readFromFile:(NSString *)filename;
-- (BOOL)writeToFile:(NSString *)filename;
-
 - (BOOL)readFromURL:(NSURL *)URL;
 
 - (BOOL)loadDataRepresentation:(NSData *)data;
@@ -101,12 +99,6 @@
     could be read from the file (i.e. #{SoDB::readAll()} returned NULL).                                             
 "*/
 SC21_EXTERN NSString * SCCouldNotReadFileNotification;
-
-/*" Posted if opening a requested file for writing failed, either
-    because the file does not exist or cannot be written to (i.e. 
-    #{SoOutput::openFile()} failed)
- "*/
-SC21_EXTERN NSString * SCCouldNotWriteFileNotification;
 
 /*" Posted if #setSceneGraph: is called with a scenegraph that
     does not contain a camera. Register for this notification if

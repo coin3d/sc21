@@ -135,21 +135,6 @@
   return ret;
 }
 
-- (BOOL)writeToFile:(NSString *)filename
-{
-  SoOutput out;
-  BOOL ok = out.openFile([filename UTF8String]);
-  if (ok) {
-    SoWriteAction wa(&out);
-    wa.apply([self root]);
-    return YES;
-  } else {
-    [[NSNotificationCenter defaultCenter]
-      postNotificationName:SCCouldNotWriteFileNotification object:self]; 
-  }
-  return NO;
-}
-
 - (BOOL)readFromURL:(NSURL *)URL
 {
   NSData * data = [URL resourceDataUsingCache:YES];

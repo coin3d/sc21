@@ -27,7 +27,6 @@
 
 // Notification names in SCSceneGraph
 NSString * SCCouldNotReadFileNotification = @"SCCouldNotReadFileNotification";
-NSString * SCCouldNotWriteFileNotification = @"SCCouldNotWriteFileNotification";
 NSString * SCNoCameraFoundInSceneNotification = @"SCNoCameraFoundInSceneNotification";
 NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotification";
 
