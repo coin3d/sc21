@@ -63,15 +63,3 @@ class SoDirectionalLight;
 @end
 
 
-/*" Posted whenever the camera has been repositioned so that
-    the whole scene can be seen.
- "*/
-SC21_EXTERN NSString * SCViewAllNotification;
-
-/*" Posted whenever the camera type has been changed, i.e.
-    when the camera has been from orthographic to perspective
-    or vice versa.
- "*/
-SC21_EXTERN NSString * SCCameraTypeChangedNotification;
-
-

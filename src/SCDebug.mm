@@ -33,7 +33,7 @@
 #import <Inventor/SbTime.h>
 #import <Inventor/actions/SoWriteAction.h>
 
-NSString *SCRendererIdToString(int rendererID)
+NSString *SCRendererDescription(int rendererID)
 {
   NSString *renderer = nil;
   switch(rendererID) {
@@ -179,8 +179,8 @@ NSString * SCPixelFormatInfo(SCOpenGLPixelFormat * scpformat,
 
   [nspformat getValues:nsvals forAttribute:NSOpenGLPFARendererID forVirtualScreen:0];
   scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFARendererID] == YES);
-  NSString *screnderer = scvalid?SCRendererIdToString(scvals[0]):@"N/A";
-  NSString *nsrenderer = SCRendererIdToString(nsvals[0]);
+  NSString *screnderer = scvalid?SCRendererDescription(scvals[0]):@"N/A";
+  NSString *nsrenderer = SCRendererDescription(nsvals[0]);
   [info appendFormat:@"NSOpenGLPFARendererID: %@ -> %@\n", screnderer, nsrenderer];
 
   [info appendFormat:@"-----------------------------\n"];

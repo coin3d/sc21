@@ -28,46 +28,24 @@
 
 #import <Sc21/SCCamera.h>
 #import <Sc21/SCSceneGraph.h>
-#import <Sc21/SCExaminerController.h> // for notifications
-#import "SCUtil.h"
+
+#import "SCCameraP.h"
 #import "SCSceneGraphP.h"
+#import "SCUtil.h"
 
 #import <OpenGL/gl.h> // for GLint
 
-#import <Inventor/SbRotation.h>
-#import <Inventor/SbMatrix.h>
 #import <Inventor/SoType.h>
 #import <Inventor/SoSceneManager.h>
 #import <Inventor/actions/SoGLRenderAction.h>
 #import <Inventor/actions/SoSearchAction.h>
 #import <Inventor/actions/SoGetMatrixAction.h>
-#import <Inventor/actions/SoGetBoundingBoxAction.h>
 #import <Inventor/nodekits/SoBaseKit.h>
-#import <Inventor/nodes/SoCamera.h>
 #import <Inventor/nodes/SoGroup.h>
-#import <Inventor/nodes/SoPerspectiveCamera.h>
-#import <Inventor/nodes/SoOrthographicCamera.h>
 
 #define SELF (self->sccamerapriv)
 
-@interface _SCCameraP : NSObject
-{
-  SCSceneGraph * scenegraph;
-  SoCamera * camera;
-  SoGetBoundingBoxAction * autoclipboxaction;
-}
-@end
-
 @implementation _SCCameraP
-@end
-
-@interface SCCamera (InternalAPI)
-  - (BOOL)_SC_convertToType:(SoType)type;
-  - (void)_SC_getCameraCoordinateSystem:(SbMatrix &)matrix inverse:(SbMatrix &)inverse;
-  - (void)_SC_cloneFromPerspectiveCamera:(SoOrthographicCamera *)orthocam;
-  - (void)_SC_cloneFromOrthographicCamera:(SoPerspectiveCamera *)perspectivecam;
-  - (float)_SC_bestValueForNearPlane:(float)near farPlane:(float)far;
-  - (SoGroup *)_SC_getParentOfNode:(SoNode *)node inSceneGraph:(SoGroup *)root;
 @end
 
 @implementation SCCamera
@@ -76,59 +54,67 @@
     an !{SoOrthographicCamera}, enabling easy conversion between these
     the two camera types. It also offers methods for moving and 
     reorienting the camera.
-
-    Note: This class is used internally in Sc21. You probably won't need
-    to ever use it yourself.
  "*/
 
 // ---------------- Initialisation and cleanup -------------------------
 
-/*" Initializes a newly allocated SCCamera to use camera as its 
-    representation in the scenegraph scenegraph.
+/*" Initializes a newly allocated SCCamera in the scenegraph scenegraph.
+    Note that you must set the actual camera in the Coin scenegraph explicitly 
+    using the #setSoCamera: method before being able to use the camera.
 
     This method is the designated initializer for the SCCamera
     class. Returns !{self}.
  "*/
 
-- (id)initWithSoCamera:(SoCamera *)camera inSceneGraph:(SCSceneGraph *)scenegraph
+- (id)initWithSceneGraph:(SCSceneGraph *)scenegraph
 {
   if (self = [super init]) {
-    SELF = [[_SCCameraP alloc] init];
-    SELF->scenegraph = scenegraph;
-    SELF->camera = camera;
-    if (SELF->camera) SELF->camera->ref();
+    [self _SC_commonInit];
+    [self setSceneGraph:scenegraph];
+    SELF->autoclipvalue = 0.6;
   }
   return self;
 }
-
-- (id)initWithSceneGraph:(SCSceneGraph *)scenegraph
-{
-  return [self initWithSoCamera:NULL inSceneGraph:scenegraph]; 
-}
-
 
 /*" Initializes a newly allocated SCCamera. Note that you must set
     the actual camera in the Coin scenegraph and the SCSceneGraph
     representing the scenegraph explicitly using #setSceneGraph:
     and #setSoCamera: before being able to use the camera.
+
+    Returns !{self}.
  "*/
  
 - (id)init
 {
-  // FIXME: Implement setSCSceneGraph, or remove this method at all?
-  return [self initWithSoCamera:NULL inSceneGraph:nil];
+  return [self initWithSceneGraph:nil];
 }
 
+- (id)initWithCoder:(NSCoder *)coder
+{
+ if (self = [super init]) {
+    [self _SC_commonInit];
+    if ([coder allowsKeyedCoding]) {
+      SELF->autoclipvalue = [coder decodeFloatForKey:@"SC_autoclipvalue"];
+    }
+  }
+  return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder
+{
+  if ([coder allowsKeyedCoding]) {
+    [coder encodeFloat:SELF->autoclipvalue forKey:@"SC_autoclipvalue"];
+  }
+}
 
 - (void)dealloc
 {
+  [SELF->scenegraph release];
   if (SELF->camera) SELF->camera->unref();
   if (SELF->autoclipboxaction) delete SELF->autoclipboxaction;
   [SELF release];
   [super dealloc];
 }
-
-
 
 // ---------- Switching between orthographic and perspective mode -------
 
@@ -145,8 +131,6 @@
     return SCCameraOrthographic;
   else return SCCameraUnknown;
 }
-
-
 
 
 /*" Converts from perspective to orthographic camera and vice versa.
@@ -253,7 +237,7 @@
     (the greater the ratio far/near, the less effective the depth buffer).
  "*/
  
-- (void)updateClippingPlanes:(SoGroup *)sg
+- (void)updateClippingPlanes:(SoSeparator *)sg
 {
   // FIXME: Need autoclipcb callback function? Investigate.
   // kyrah 20030509
@@ -334,20 +318,13 @@
 
   // delete camera if we created it and if requested
   if ([SELF->scenegraph hasAddedCamera] && deletecamera) { 
-    SoSceneManager * sm = [SELF->scenegraph sceneManager];
-    SoGroup * superscenegraph = (SoGroup *)(sm?sm->getSceneGraph():NULL);
-    SoGroup * camparent = 
-      [self _SC_getParentOfNode:SELF->camera 
-            inSceneGraph:superscenegraph];
+    SoGroup * camparent = [self _SC_getParentOfCamera];
     camparent->removeChild(SELF->camera);
     [SELF->scenegraph _SC_setHasAddedCamera:NO];
   }
   if (SELF->camera) SELF->camera->unref();
   SELF->camera = camera;
   SELF->camera->ref();
-#if 0
-  saveHomePosition;
-#endif
 }
 
 
@@ -356,6 +333,30 @@
 - (SoCamera *)soCamera { 
   return SELF->camera; 
 }
+
+- (void)setSceneGraph:(SCSceneGraph *)scenegraph
+{
+  if (SELF->scenegraph == scenegraph) { return; }
+  [SELF->scenegraph release];
+  SELF->scenegraph = [scenegraph retain];
+}
+
+// FIXME: Do we really need this? I mean, it's a very internal
+// implementation detail... I doubt that anybody can make sense 
+// from this... kyrah 20040717
+
+- (void)setAutoClipValue:(float)autoclipvalue
+{
+  SELF->autoclipvalue = autoclipvalue;
+}
+
+/*" Returns the current autoclipvalue. The default value is 0.6. "*/
+
+- (float)autoClipValue
+{
+  return SELF->autoclipvalue;
+}
+
 
 /*" Reorients the camera by rot. Note that this does not
     replace the previous values but is accumulative: rot
@@ -379,8 +380,28 @@
   SELF->camera->position = focalpt - SELF->camera->focalDistance.getValue() * dir;
 }
 
+/*"
+Translate camera relative to its own coordinate system.
+ 
+ In its own coordinate system, the camera is pointing in negative
+ Z direction with the Y axis being up.
+ "*/
+- (void)translate:(SbVec3f)v
+{
+  SbVec3f pos = SELF->camera->position.getValue();
+  SbRotation r = SELF->camera->orientation.getValue();
+  r.multVec(v, v);
+  SELF->camera->position = SELF->camera->position.getValue() + v;
+  pos = SELF->camera->position.getValue();
+}
 
 // ----------------------- InternalAPI --------------------------
+
+- (void)_SC_commonInit
+{
+  SELF = [[_SCCameraP alloc] init];
+  SELF->camera = nil;
+}
 
 /* Converts from perspective to orthographic camera and vice versa.
    Possible values for type are !{SoPerspectiveCamera::getTypeId()}
@@ -423,10 +444,7 @@
     [self _SC_cloneFromPerspectiveCamera:(SoOrthographicCamera *)newcam];
 
   // insert into SG
-  SoSceneManager * sm = [SELF->scenegraph sceneManager];
-  SoGroup * superscenegraph = (SoGroup *)(sm?sm->getSceneGraph():NULL);
-  SoGroup * camparent = [self _SC_getParentOfNode:SELF->camera
-                              inSceneGraph:superscenegraph];
+  SoGroup * camparent = [self _SC_getParentOfCamera];
   camparent->insertChild(newcam, camparent->findChild(SELF->camera));
 
   [self setSoCamera:newcam deleteOldCamera:YES];
@@ -497,7 +515,6 @@
   }
 }
 
-
 /* Determines the best value for the near clipping plane. Negative and very
    small near clipping plane distances are disallowed.
  */
@@ -516,12 +533,7 @@
   // VARIABLE_NEAR_PLANE strategy. As stated in the FIXME above,
   // we should have a delegate for this in general.
   glGetIntegerv(GL_DEPTH_BITS, depthbits);
-#if 0
-  // FIXME: Figure out how to get autoclip value. kyrah 20040718
-  usebits = (int) (float(depthbits[0]) * (1.0f - [SELF->controller autoClipValue]));
-#else
-  usebits = (int) (float(depthbits[0]) * (1.0f - 0.6));
-#endif
+  usebits = (int) (float(depthbits[0]) * (1.0f - SELF->autoclipvalue));
   r = (float) pow(2.0, (double) usebits);
   nearlimit = far / r;
 
@@ -533,40 +545,25 @@
   else return near;
 }
 
-
 /* Get the parent node of node */
 
-- (SoGroup *)_SC_getParentOfNode:(SoNode *)node inSceneGraph:(SoGroup *)root
+- (SoGroup *)_SC_getParentOfCamera
 {
-  if (!node) {
-    SC21_DEBUG(@"_SC_getParentOfNode called with NULL argument");
+  if (!SELF->camera) {
+    SC21_DEBUG(@"_SC_getParentOfCamera called with no active SoCamera");
     return NULL;
   }
+  SoSeparator * root = [SELF->scenegraph superSceneGraph];
   SbBool wassearchingchildren = SoBaseKit::isSearchingChildren();
   SoBaseKit::setSearchingChildren(TRUE);
   SoSearchAction search;
   search.setSearchingAll(TRUE);
-  search.setNode(node);
+  search.setNode(SELF->camera);
   search.apply(root);
   if (search.getPath() == NULL) return NULL;
   SoGroup * parent = (SoGroup*) ((SoFullPath *)search.getPath())->getNodeFromTail(1);
   SoBaseKit::setSearchingChildren(wassearchingchildren);
-  return (SoGroup *)parent;
-}
-
-/*"
-  Translate camera relative to its own coordinate system.
-
-  In its own coordinate system, the camera is pointing in negative
-  Z direction with the Y axis being up.
-  "*/
-- (void)translate:(SbVec3f)v
-{
-  SbVec3f pos = SELF->camera->position.getValue();
-  SbRotation r = SELF->camera->orientation.getValue();
-  r.multVec(v, v);
-  SELF->camera->position = SELF->camera->position.getValue() + v;
-  pos = SELF->camera->position.getValue();
+  return parent;
 }
 
 @end

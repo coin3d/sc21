@@ -41,7 +41,6 @@ class SoSceneManager;
   NSTimer * timerqueuetimer;
   SoSceneManager * scenemanager;
   BOOL handleseventsinviewer;
-  float autoclipvalue;
   NSRect viewrect;
   NSResponder * oldcontroller;
   BOOL clearcolorbuffer;

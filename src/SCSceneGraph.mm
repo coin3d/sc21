@@ -43,7 +43,7 @@
 
 // Note: I find it really degoutant that this class should be named
 // SCSceneGraph instead of SCScenegraph -- scenegraph is one word,
-// for goddess sake! But the folks who designed the original Inventor
+// for Goddess' sake! But the folks who designed the original Inventor
 // API Thought Different, and hence are using setSceneGraph() &c.
 // all over the place... so for consistency's sake, let's trudge along.
 // kyrah 20040716
@@ -101,6 +101,26 @@
   return self;
 }
 
+- (id)initWithCoder:(NSCoder *)coder
+{
+  if (self = [super init]) {
+    [self _SC_commonInit];
+    if ([coder allowsKeyedCoding]) {
+      SELF->addedlight = [coder decodeBoolForKey:@"SC_addedlight"];
+      SELF->addedcamera = [coder decodeBoolForKey:@"SC_addedcamera"];
+    }
+  }
+  return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder
+{
+  if ([coder allowsKeyedCoding]) {
+    [coder encodeBool:SELF->addedlight forKey:@"SC_addedlight"];
+    [coder encodeBool:SELF->addedcamera forKey:@"SC_addedcamera"];
+  }
+}
+
 - (void) dealloc
 {
   [SELF->camera release]; 
@@ -156,10 +176,7 @@
 
 - (void)setRoot:(SoSeparator *)root
 {
-  if (root == NULL) { 
-    // FIXME: Post notification?
-    return; 
-  }
+  if (root == NULL) { return; }
   
   // Clean up existing scenegraph
   if (SELF->scenegraph) { SELF->scenegraph->unref(); }

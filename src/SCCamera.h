@@ -27,15 +27,14 @@
  
 #import <Foundation/Foundation.h>
 
-#include <Inventor/SbLinear.h>
+#import <Sc21/SCDefines.h>
 
-@class SCController;
+#import <Inventor/SbLinear.h>
+#import <Inventor/SbRotation.h>
+#import <Inventor/nodes/SoCamera.h>
+#import <Inventor/nodes/SoSeparator.h>
+
 @class SCSceneGraph;
-
-class SbRotation;
-class SoCamera;
-class SoGroup;
-class SoGetBoundingBoxAction;
 @class _SCCameraP;
 
 /*" Possible camera types in the scene graph.
@@ -57,7 +56,6 @@ typedef enum _SCCameraType {
 }
 
 /*" Initializing an SCCamera "*/
-- (id)initWithSoCamera:(SoCamera *)camera inSceneGraph:(SCSceneGraph *)scenegraph;
 - (id)initWithSceneGraph:(SCSceneGraph *)scenegraph;
 
 /*" Switching between orthographic and perspective mode "*/
@@ -68,11 +66,25 @@ typedef enum _SCCameraType {
 - (void)zoom:(float)delta;
 - (void)reorient:(SbRotation)rot;
 - (void)viewAll;
-- (void)updateClippingPlanes:(SoGroup *)scenegraph;
+- (void)updateClippingPlanes:(SoSeparator *)scenegraph;
 - (void)translate:(SbVec3f)v;
 
 /*" Accessors "*/ 
 - (void)setSoCamera:(SoCamera *)camera;
 - (void)setSoCamera:(SoCamera *)camera deleteOldCamera:(BOOL)deletecamera;
 - (SoCamera *)soCamera;
+- (void)setSceneGraph:(SCSceneGraph *)scenegraph;
+- (void)setAutoClipValue:(float)autoclipvalue;
+- (float)autoClipValue;
 @end
+
+/*" Posted whenever the camera has been repositioned so that
+    the whole scene can be seen.
+"*/
+SC21_EXTERN NSString * SCViewAllNotification;
+
+/*" Posted whenever the camera type has been changed, i.e.
+    when the camera has been from orthographic to perspective
+    or vice versa.
+"*/
+SC21_EXTERN NSString * SCCameraTypeChangedNotification;

@@ -132,7 +132,7 @@
 - (void)render
 {
   if (!PRIVATE(self)->scenegraph) return;
-  [[PRIVATE(self)->scenegraph camera] updateClippingPlanes:(SoGroup *)[[self sceneGraph] root]];
+  [[PRIVATE(self)->scenegraph camera] updateClippingPlanes:[[self sceneGraph] root]];
   [super render];
 }
 

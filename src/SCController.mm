@@ -183,7 +183,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 {
   if (self = [super init]) {
     [self _SC_commonInit];
-    SELF->autoclipvalue = 0.6;
     SELF->handleseventsinviewer = YES;
     SELF->clearcolorbuffer = YES;
     SELF->cleardepthbuffer = YES;
@@ -471,14 +470,14 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (void)setAutoClipValue:(float)autoclipvalue
 {
-  SELF->autoclipvalue = autoclipvalue;
+  [[SELF->scenegraph camera] setAutoClipValue:autoclipvalue];
 }
 
 /*" Returns the current autoclipvalue. The default value is 0.6. "*/
 
 - (float)autoClipValue
 {
-  return SELF->autoclipvalue;
+  return [[SELF->scenegraph camera] autoClipValue];
 }
 
 
@@ -726,8 +725,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   if ([coder allowsKeyedCoding]) {
     [coder encodeBool:SELF->handleseventsinviewer 
            forKey:@"SC_handleseventsinviewer"];
-    [coder encodeFloat:SELF->autoclipvalue 
-           forKey:@"SC_autoclipvalue"];
     [coder encodeBool:SELF->clearcolorbuffer 
            forKey:@"SC_clearcolorbuffer"];
     [coder encodeBool:SELF->cleardepthbuffer 
@@ -752,7 +749,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
       // will always exist.
       SELF->handleseventsinviewer = 
         [coder decodeBoolForKey:@"SC_handleseventsinviewer"];
-      SELF->autoclipvalue = [coder decodeFloatForKey:@"SC_autoclipvalue"];
       SELF->clearcolorbuffer = [coder decodeBoolForKey:@"SC_clearcolorbuffer"];
       SELF->cleardepthbuffer = [coder decodeBoolForKey:@"SC_cleardepthbuffer"];
     }
@@ -774,16 +770,15 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     SC21_DEBUG(@"  upgrading old instance.");
 
     if (self = [self init]) {
-      SELF->autoclipvalue = 0.6;
       SELF->handleseventsinviewer = YES;
       if ([coder allowsKeyedCoding]) {
         if ([coder containsValueForKey:@"SC_handleseventsinviewer"]) {
           SELF->handleseventsinviewer = 
             [coder decodeBoolForKey:@"SC_handleseventsinviewer"];
         }
-        if ([coder containsValueForKey:@"SC_autoclipvalue"]) {
-          SELF->autoclipvalue = [coder decodeFloatForKey:@"SC_autoclipvalue"];
-        }
+        // FIXME: Set camera's autoclipvalue? But somehow it's just not 
+        // worthwhile, since we're not intending on keeping this in the
+        // final release, right? kyrah 20040717
       }
     }
 

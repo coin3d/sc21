@@ -53,6 +53,21 @@
 			settings = {
 			};
 		};
+		3D669D2506AAB21900CB9330 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCCameraP.h;
+			path = src/SCCameraP.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3D669D2606AAB21900CB9330 = {
+			fileRef = 3D669D2506AAB21900CB9330;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 //3D0
 //3D1
 //3D2
@@ -208,9 +223,10 @@
 				E057B59A06219ADC0012C546,
 				E09CFA8B060249EF0000E227,
 				E09CFA8C060249EF0000E227,
-				E0114C980670C15F002D7A19,
+				3D669D2506AAB21900CB9330,
 				E09CFA8D060249EF0000E227,
 				E09CFA8E060249EF0000E227,
+				E0114C980670C15F002D7A19,
 				E057B6260621B6E10012C546,
 				E057B6270621B6E10012C546,
 				E04A08450637E7E0002F2C04,
@@ -829,6 +845,7 @@
 				3D669B2E06AA974F00CB9330,
 				E0DC21F10690632C00C1FF85,
 				E09CFA9D060249EF0000E227,
+				3D669D2606AAB21900CB9330,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;

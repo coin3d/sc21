@@ -63,10 +63,9 @@
 - (SoSeparator *)root;
 - (void)setRoot:(SoSeparator *)root;
 
-// FIXME: NSCoding support!
 // FIXME: implement copy/paste - initWithPasteboard &c.
 // FIXME: add +(id) scenegraphNamed:(NSString *) name which will look for 
-// named nodes in all .iv/.wrl files in the app bundle
+//        named nodes in all .iv/.wrl files in the app bundle
 // FIXME: add "lazy initialization methods (initByReferencing[File|URL])
 // FIXME: Provide incremental loading delegate method (as in NSImage)?
 
