@@ -219,10 +219,9 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
   [[self openGLContext] clearDrawable];
   
   pixelFormat = [self createPixelFormat:[self frame]];
-  if (pixelFormat != nil) {
-    newContext = [[NSOpenGLContext alloc] initWithFormat:[pixelFormat pixelFormat]
-                                            shareContext:nil ];
-    if (newContext != nil) {
+  if (pixelFormat) {
+    newContext = [[[NSOpenGLContext alloc] initWithFormat:[pixelFormat pixelFormat] shareContext:nil] autorelease];
+    if (newContext) {
       const long int vals[1] = {1};
       [super setFrame:[self frame]];
       [super setOpenGLContext:newContext];
@@ -272,6 +271,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
   // performs drawing, do _not_ invoke [super drawRect] here!
   
   // FIXME: Remove: This is done by SoSceneManager::render()
+  // FIXME: Make clearing configurable, as in So@Gui@ ? (kintel 20040406)
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); 
   // FIXME: do this only once, after creating a context and binding it
   // (kintel 20040323)
