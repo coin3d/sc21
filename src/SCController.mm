@@ -378,6 +378,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (void)render
 {
+  //FIXME: Make clearing of color and depth buffer configurable?
+  //(kintel 20040429)
   _scenemanager->render();
 }
 
@@ -424,6 +426,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   int w = (GLint)(rect.size.width);
   int h = (GLint)(rect.size.height);
   _scenemanager->setViewportRegion(SbViewportRegion(w, h));
+  _scenemanager->scheduleRedraw();  
 }
 
 
