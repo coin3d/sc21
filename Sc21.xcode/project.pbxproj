@@ -190,29 +190,22 @@
 			buildRules = (
 			);
 			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				GCC_CW_ASM_SYNTAX = NO;
-				GCC_ENABLE_PASCAL_STRINGS = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
 				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
-				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
 				GCC_WARN_MISSING_PARENTHESES = YES;
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
-				GCC_WARN_PEDANTIC = NO;
 				GCC_WARN_SHADOW = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = NO;
 				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
-				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 			};
@@ -225,24 +218,6 @@
 			lastKnownFileType = sourcecode.c.h;
 			name = SC21_Prefix.pch;
 			path = src/SC21_Prefix.pch;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		E04107950608DBBA00F8E8B5 = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
-			name = SC21_Description.plist;
-			path = packaging/SC21_Description.plist;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		E04107960608DBBA00F8E8B5 = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
-			name = SC21_Info.plist;
-			path = packaging/SC21_Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -273,14 +248,18 @@
 			buildRules = (
 			);
 			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/framework/Description.plist;
+				INFOPLIST_FILE = packaging/framework/Info.plist;
 				INSTALL_PATH = /;
-				PRODUCT_NAME = "$(PROJECT_NAME).pkg";
+				PRODUCT_NAME = "$(PROJECT_NAME) framework.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/framework";
+				RESOURCE_DIR = packaging/framework/pkgresources;
 			};
 			dependencies = (
-				E056E6F20609FAC10068145A,
+				E06867B60633FDCA00F702EA,
 			);
 			isa = PBXNativeTarget;
-			name = "SC21 pkg";
+			name = "SC21 framework pkg";
 			productInstallPath = /usr/local/bin;
 			productName = Untitled;
 			productReference = E056E6DA0609F9FE0068145A;
@@ -291,7 +270,7 @@
 			files = (
 			);
 			inputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(PROJECT_NAME).palette",
+				"$(BUILT_PRODUCTS_DIR)/$(PROJECT_NAME).framework",
 			);
 			isa = PBXShellScriptBuildPhase;
 			outputPaths = (
@@ -299,13 +278,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Script A\"\nset -x\n./packaging/makesc21pkg.sh -v\ntouch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit 0";
+			shellScript = "echo \"Script: SC21 framework pkg\"\nset -x\n./packaging/scripts/makesc21pkg.sh -v\ntouch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit 0";
 		};
 		E056E6DA0609F9FE0068145A = {
 			explicitFileType = "compiled.mach-o.executable";
 			includeInIndex = 0;
 			isa = PBXFileReference;
-			path = SC21.pkg;
+			path = "SC21 framework.pkg";
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -364,18 +343,6 @@
 			target = E056E6D70609F9FE0068145A;
 			targetProxy = E056E6EF0609FAB00068145A;
 		};
-		E056E6F10609FAC10068145A = {
-			containerPortal = E0765C56060222BB0099F78E;
-			isa = PBXContainerItemProxy;
-			proxyType = 1;
-			remoteGlobalIDString = E09CFA55060245710000E227;
-			remoteInfo = "SC21 palette";
-		};
-		E056E6F20609FAC10068145A = {
-			isa = PBXTargetDependency;
-			target = E09CFA55060245710000E227;
-			targetProxy = E056E6F10609FAC10068145A;
-		};
 		E056E712060A13650068145A = {
 			buildPhases = (
 				E056E713060A13650068145A,
@@ -383,10 +350,12 @@
 			buildRules = (
 			);
 			buildSettings = {
+				INFOPLIST_FILE = "misc/SC21-framework-Info.plist";
+				INFO_PLIST_FILE = "$(SRCROOT)/packaging/SC21_framework_Info.plist";
 				PRODUCT_NAME = dummy.txt;
 			};
 			dependencies = (
-				E056E718060A13970068145A,
+				E06867BF0634023400F702EA,
 			);
 			isa = PBXNativeTarget;
 			name = dummy;
@@ -396,17 +365,17 @@
 			productType = "com.apple.product-type.tool";
 		};
 		E056E713060A13650068145A = {
-			buildActionMask = 8;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(PROJECTNAME)-0.0.1.dmg",
+				"$(BUILT_PRODUCTS_DIR)/$(PROJECTNAME).framework",
 			);
 			isa = PBXShellScriptBuildPhase;
 			outputPaths = (
 				"$(TARGET_BUILD_DIR)/$(PRODUCT_NAME)",
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "echo \"dummy script:\"\n./test.sh\nexit 0";
 		};
@@ -417,18 +386,6 @@
 			path = dummy.txt;
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		E056E717060A13970068145A = {
-			containerPortal = E0765C56060222BB0099F78E;
-			isa = PBXContainerItemProxy;
-			proxyType = 1;
-			remoteGlobalIDString = E056E6EA0609FA880068145A;
-			remoteInfo = "SC21 dmg";
-		};
-		E056E718060A13970068145A = {
-			isa = PBXTargetDependency;
-			target = E056E6EA0609FA880068145A;
-			targetProxy = E056E717060A13970068145A;
 		};
 		E057B59A06219ADC0012C546 = {
 			fileEncoding = 30;
@@ -502,6 +459,89 @@
 			refType = 4;
 			sourceTree = "<group>";
 		};
+		E06867AC0633FC8700F702EA = {
+			buildPhases = (
+				E06867AD0633FC8700F702EA,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/palette/Description.plist;
+				INFOPLIST_FILE = packaging/palette/Info.plist;
+				INSTALL_PATH = /;
+				PRODUCT_NAME = "$(PROJECT_NAME) palette.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/palette";
+				RESOURCE_DIR = packaging/palette/pkgresources;
+			};
+			dependencies = (
+				E06867B20633FC9E00F702EA,
+			);
+			isa = PBXNativeTarget;
+			name = "SC21 palette pkg";
+			productInstallPath = /usr/local/bin;
+			productName = "SC21 palette pkg";
+			productReference = E06867AF0633FC8700F702EA;
+			productType = "com.apple.product-type.tool";
+		};
+		E06867AD0633FC8700F702EA = {
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(PROJECT_NAME).palette",
+			);
+			isa = PBXShellScriptBuildPhase;
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(PRODUCT_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Script: SC21 palette pkg\"\nset -x\n./packaging/scripts/makesc21pkg.sh -v\ntouch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit 0\n";
+		};
+		E06867AF0633FC8700F702EA = {
+			explicitFileType = "compiled.mach-o.executable";
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = "SC21 palette.pkg";
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E06867B10633FC9E00F702EA = {
+			containerPortal = E0765C56060222BB0099F78E;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E09CFA55060245710000E227;
+			remoteInfo = "SC21 palette";
+		};
+		E06867B20633FC9E00F702EA = {
+			isa = PBXTargetDependency;
+			target = E09CFA55060245710000E227;
+			targetProxy = E06867B10633FC9E00F702EA;
+		};
+		E06867B50633FDCA00F702EA = {
+			containerPortal = E0765C56060222BB0099F78E;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E0765C5F060223120099F78E;
+			remoteInfo = "SC21 framework";
+		};
+		E06867B60633FDCA00F702EA = {
+			isa = PBXTargetDependency;
+			target = E0765C5F060223120099F78E;
+			targetProxy = E06867B50633FDCA00F702EA;
+		};
+		E06867BE0634023400F702EA = {
+			containerPortal = E0765C56060222BB0099F78E;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E0765C5F060223120099F78E;
+			remoteInfo = "SC21 framework";
+		};
+		E06867BF0634023400F702EA = {
+			isa = PBXTargetDependency;
+			target = E0765C5F060223120099F78E;
+			targetProxy = E06867BE0634023400F702EA;
+		};
 		E070FB1E0608992200A60FCA = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
@@ -528,10 +568,9 @@
 				E09CFAB206024B510000E227,
 				E09CFD9506024B5B0000E227,
 				E0765C61060223120099F78E,
+				E079476206340BEA006B5824,
 				E0765C62060223120099F78E,
 				E09CFA57060245720000E227,
-				E04107950608DBBA00F8E8B5,
-				E04107960608DBBA00F8E8B5,
 			);
 			isa = PBXGroup;
 			refType = 4;
@@ -541,10 +580,7 @@
 			buildRules = (
 			);
 			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_CW_ASM_SYNTAX = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_ENABLE_PASCAL_STRINGS = NO;
 				GCC_MODEL_CPU = G4;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				PREBINDING = NO;
@@ -560,20 +596,15 @@
 				COPY_PHASE_STRIP = YES;
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
-				GCC_CW_ASM_SYNTAX = NO;
-				GCC_ENABLE_ASM_KEYWORD = YES;
-				GCC_ENABLE_PASCAL_STRINGS = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
 				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
-				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
 				GCC_WARN_MISSING_PARENTHESES = YES;
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
-				GCC_WARN_PEDANTIC = NO;
 				GCC_WARN_SHADOW = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
@@ -581,7 +612,6 @@
 				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
-				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 			};
@@ -606,6 +636,8 @@
 				E0765C5F060223120099F78E,
 				E09CFA55060245710000E227,
 				E056E6D70609F9FE0068145A,
+				E06867AC0633FC8700F702EA,
+				E079478506341DCE006B5824,
 				E056E6EA0609FA880068145A,
 				E056E712060A13650068145A,
 			);
@@ -667,18 +699,13 @@
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/SC21_Prefix.pch;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = NO;
 				INFOPLIST_FILE = "misc/SC21-framework-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				OTHER_CFLAGS = "";
+				INSTALL_PATH = /Library/Frameworks;
+				INSTALL_ROOT = "$(DSTROOT)/framework";
 				OTHER_LDFLAGS = "-headerpad_max_install_names -seg1addr 0x2f000000";
-				OTHER_REZFLAGS = "";
 				PRODUCT_NAME = SC21;
 				SC21_VERSION = 0.0.2;
-				SECTORDER_FLAGS = "";
 				VERSIONING_SYSTEM = "apple-generic";
-				WARNING_CFLAGS = "-Wmost";
 			};
 			dependencies = (
 			);
@@ -728,6 +755,8 @@
 				E056E6DA0609F9FE0068145A,
 				E056E6ED0609FA880068145A,
 				E056E715060A13650068145A,
+				E06867AF0633FC8700F702EA,
+				E079478806341DCE006B5824,
 			);
 			isa = PBXGroup;
 			name = Products;
@@ -749,6 +778,91 @@
 			path = /System/Library/Frameworks/OpenGL.framework;
 			refType = 0;
 			sourceTree = "<absolute>";
+		};
+		E079476206340BEA006B5824 = {
+			children = (
+				E0D1CE0406343F5B00269948,
+				E0D1CDFE06343F4E00269948,
+				E0D1CDEB06343F3100269948,
+			);
+			isa = PBXGroup;
+			name = Packaging;
+			path = "";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E079478506341DCE006B5824 = {
+			buildPhases = (
+				E079478606341DCE006B5824,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/meta/Description.plist;
+				INFOPLIST_FILE = packaging/meta/Info.plist;
+				INSTALL_PATH = /;
+				PRODUCT_NAME = "$(PROJECT_NAME).mpkg";
+				PRODUCT_ROOT = "$(DSTROOT)/meta";
+				RESOURCE_DIR = packaging/meta/pkgresources;
+			};
+			dependencies = (
+				E079478B06341DF3006B5824,
+				E079478D06341E03006B5824,
+			);
+			isa = PBXNativeTarget;
+			name = "SC21 meta pkg";
+			productInstallPath = /usr/local/bin;
+			productName = "SC21 meta pkg";
+			productReference = E079478806341DCE006B5824;
+			productType = "com.apple.product-type.tool";
+		};
+		E079478606341DCE006B5824 = {
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(PROJECT_NAME) framework.pkg\n",
+				"$(BUILT_PRODUCTS_DIR)/$(PROJECT_NAME) palette.pkg\n",
+			);
+			isa = PBXShellScriptBuildPhase;
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(PRODUCT_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Script: SC21.mpkg\"\nmkdir -p $DSTROOT/meta\nset -x\n./packaging/scripts/makesc21pkg.sh -v\ntouch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit 0\n";
+		};
+		E079478806341DCE006B5824 = {
+			explicitFileType = "compiled.mach-o.executable";
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = SC21.mpkg;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E079478A06341DF3006B5824 = {
+			containerPortal = E0765C56060222BB0099F78E;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E056E6D70609F9FE0068145A;
+			remoteInfo = "SC21 framework pkg";
+		};
+		E079478B06341DF3006B5824 = {
+			isa = PBXTargetDependency;
+			target = E056E6D70609F9FE0068145A;
+			targetProxy = E079478A06341DF3006B5824;
+		};
+		E079478C06341E03006B5824 = {
+			containerPortal = E0765C56060222BB0099F78E;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E06867AC0633FC8700F702EA;
+			remoteInfo = "SC21 palette pkg";
+		};
+		E079478D06341E03006B5824 = {
+			isa = PBXTargetDependency;
+			target = E06867AC0633FC8700F702EA;
+			targetProxy = E079478C06341E03006B5824;
 		};
 		E09C036A06024BEF0000E227 = {
 			isa = PBXFileReference;
@@ -844,17 +958,12 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/SC21_Prefix.pch;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = NO;
 				INFOPLIST_FILE = "misc/SC21-palette-Info.plist";
 				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Palettes";
-				OTHER_CFLAGS = "";
+				INSTALL_ROOT = "$(DSTROOT)/palette";
 				OTHER_LDFLAGS = "-bundle";
-				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = SC21;
-				SECTORDER_FLAGS = "";
-				WARNING_CFLAGS = "-Wmost";
 				WRAPPER_EXTENSION = palette;
 			};
 			dependencies = (
@@ -1263,6 +1372,162 @@
 			settings = {
 			};
 		};
+		E0D1CDEB06343F3100269948 = {
+			children = (
+				E0D1CDEC06343F3100269948,
+				E0D1CDEF06343F3100269948,
+				E0D1CDF006343F3100269948,
+			);
+			isa = PBXGroup;
+			name = framework;
+			path = packaging/framework;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0D1CDEC06343F3100269948 = {
+			children = (
+				E0D1CDED06343F3100269948,
+				E0D1CDEE06343F3100269948,
+			);
+			isa = PBXGroup;
+			path = Resources;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0D1CDED06343F3100269948 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.rtf;
+			path = License.rtf;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0D1CDEE06343F3100269948 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.rtf;
+			path = Welcome.rtf;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0D1CDEF06343F3100269948 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			path = Description.plist;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0D1CDF006343F3100269948 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			path = Info.plist;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0D1CDFE06343F4E00269948 = {
+			children = (
+				E0D1CDFF06343F4E00269948,
+				E0D1CE0206343F4E00269948,
+				E0D1CE0306343F4E00269948,
+			);
+			isa = PBXGroup;
+			name = meta;
+			path = packaging/meta;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0D1CDFF06343F4E00269948 = {
+			children = (
+				E0D1CE0006343F4E00269948,
+				E0D1CE0106343F4E00269948,
+			);
+			isa = PBXGroup;
+			path = Resources;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0D1CE0006343F4E00269948 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.rtf;
+			path = License.rtf;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0D1CE0106343F4E00269948 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.rtf;
+			path = Welcome.rtf;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0D1CE0206343F4E00269948 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			path = Description.plist;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0D1CE0306343F4E00269948 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			path = Info.plist;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0D1CE0406343F5B00269948 = {
+			children = (
+				E0D1CE0506343F5B00269948,
+				E0D1CE0806343F5B00269948,
+				E0D1CE0906343F5B00269948,
+			);
+			isa = PBXGroup;
+			name = palette;
+			path = packaging/palette;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0D1CE0506343F5B00269948 = {
+			children = (
+				E0D1CE0606343F5B00269948,
+				E0D1CE0706343F5B00269948,
+			);
+			isa = PBXGroup;
+			path = Resources;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0D1CE0606343F5B00269948 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.rtf;
+			path = License.rtf;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0D1CE0706343F5B00269948 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.rtf;
+			path = Welcome.rtf;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0D1CE0806343F5B00269948 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			path = Description.plist;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0D1CE0906343F5B00269948 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			path = Info.plist;
+			refType = 4;
+			sourceTree = "<group>";
+		};
 		E0D32D3F0608BD8900FDEF66 = {
 			buildRules = (
 			);
@@ -1271,20 +1536,15 @@
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
-				GCC_CW_ASM_SYNTAX = NO;
-				GCC_ENABLE_ASM_KEYWORD = YES;
-				GCC_ENABLE_PASCAL_STRINGS = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
 				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
-				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
 				GCC_WARN_MISSING_PARENTHESES = YES;
 				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
-				GCC_WARN_PEDANTIC = NO;
 				GCC_WARN_SHADOW = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
@@ -1292,7 +1552,6 @@
 				GCC_WARN_UNKNOWN_PRAGMAS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
-				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 			};
