@@ -10,19 +10,20 @@ SCController via context menu actions.
 
 ++ Sc21FullscreenViewer
 
-This is a viewer similar to Sc21Viewer.
-In addition to Sc21Viewer, this example demonstrates how to
-use Coin and Sc21 in fullscreen mode.
+This is a viewer similar to Sc21Viewer, which demonstrates how to use
+Coin and Sc21 in fullscreen mode.
 
 ++ CustomEventHandling
 
-This is a viewer similar to Sc21Viewer.
-In addition to Sc21Viewer, this example demonstrates how to
-implement a custom Sc21 event handler.
+This is a viewer similar to Sc21Viewer, which demonstrates how to
+implement a custom Sc21 event handler. It also shows you how to
+emulate the "viewing" vs. "picking" concept used in the So@GUI@
+libraries (i.e. having two separate modes: either handling events in
+the viewer or sending them down the scenegraph).
 
 ++ Viewtiful
 
-Viewtiful is a little bit more involved example showing how to create
+Viewtiful is a slightly more involved example showing how to create
 a Document-Based Application with Sc21. It includes features such as:
  o Double-click on 3D model to open it
  o Drag and Drop files to the viewer icon
@@ -34,10 +35,9 @@ a Document-Based Application with Sc21. It includes features such as:
 ++ NoNibViewer
 
 This is a very simple example showing how to instantiate an
-SCController from Objective-C instead of in a nib file.
-
-Note that this way of developing applications is not recommended and
-this example is present here just as a proof of concept.
+SCController from Objective-C instead of in a nib file. Note that
+this way of developing applications is not recommended and this
+example is present here just as a proof of concept.
 
 --
 
