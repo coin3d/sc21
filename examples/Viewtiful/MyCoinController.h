@@ -28,7 +28,7 @@
 #import <Cocoa/Cocoa.h>
 #import <Sc21/Sc21.h>
 
-@interface MyExaminerController : SCExaminerController
+@interface MyCoinController : SCController
 {
 }
 

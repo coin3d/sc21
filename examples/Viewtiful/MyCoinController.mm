@@ -25,9 +25,9 @@
  |                                                                 |
  * =============================================================== */
 
-#import "MyExaminerController.h"
+#import "MyCoinController.h"
 
-@implementation MyExaminerController
+@implementation MyCoinController
 
 // Sets the viewer in "pick mode" if the user presses the 'm' key
 // FIXME: Should notify the rest of the app so we can set the checkbox correctly (kintel 20031112)
@@ -56,7 +56,7 @@
 
 - (IBAction)viewAll:(id)sender
 {
-  [self viewAll];
+  [[[self sceneGraph] camera] viewAll];
 }
 
 
