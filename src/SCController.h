@@ -24,7 +24,7 @@
  | Systems in Motion, Bygdoy Alle 5, 0257 Oslo, Norway.            |
  |                                                                 |
  * =============================================================== */
- 
+
 #import <Cocoa/Cocoa.h>
 #import <Sc21/SCDefines.h>
 #import <Sc21/SCCamera.h>
@@ -33,7 +33,11 @@
 class SoDirectionalLight;
 class SoSceneManager;
 @class SCEventConverter;
+@class SCEventHandler;
 @class _SCControllerP;
+@class SCMode;
+@class SCMouseMode;
+@class SCKeyboardMode;
 
 @interface SCController : NSObject <NSCoding>
 {
@@ -41,8 +45,9 @@ class SoSceneManager;
   _SCControllerP * _sc_controller;
   // FIXME: Are we sure we don't want the delegate to be protected? kyrah 20040716
  @private
-  id delegate;
+  IBOutlet id delegate;
   SCSceneGraph * scenegraph;
+  SCEventHandler * eventhandler;
 }
 
 /*" Static initialization "*/
@@ -86,6 +91,10 @@ class SoSceneManager;
 - (BOOL)handleEventAsViewerEvent:(NSEvent *)event inView:(NSView *)view;
 - (void)setHandlesEventsInViewer:(BOOL)yn;
 - (BOOL)handlesEventsInViewer;
+- (void)setModifierForCoinEvent:(unsigned int)modifier;
+- (unsigned int)modifierForCoinEvent;
+- (void)setEventHandler:(SCEventHandler *)handler;
+- (SCEventHandler *)eventHandler;
 
 /*" Timer management. "*/
 - (void)startTimers;
@@ -94,6 +103,8 @@ class SoSceneManager;
 @end
 
 @interface NSObject (SCControllerDelegate)
+- (unsigned int)modifierForCoinEvent;
+- (BOOL)handleEvent:(NSEvent *)event inView:(NSView *)view;
 - (SoGroup *)willSetSceneGraph:(SoGroup *)scenegraph;
 - (void)didSetSceneGraph:(SoGroup *)superscenegraph;
 @end

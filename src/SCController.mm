@@ -26,9 +26,11 @@
  * =============================================================== */
  
 #import <Sc21/SCController.h>
-#import <Sc21/SCEventConverter.h>
+#import <Sc21/SCEventHandler.h>
+#import "SCEventConverter.h"
 #import "SCUtil.h"
 
+#import <Inventor/SbTime.h>
 #import <Inventor/SoDB.h>
 #import <Inventor/SoInteraction.h>
 #import <Inventor/SoSceneManager.h>
@@ -184,6 +186,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   if (self = [super init]) {
     [self _SC_commonInit];
     SELF->handleseventsinviewer = YES;
+    SELF->modifierforcoinevent = NSAlternateKeyMask; //FIXME: -> inspector
     SELF->clearcolorbuffer = YES;
     SELF->cleardepthbuffer = YES;
   }
@@ -193,11 +196,12 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 - (void)dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [self setSceneGraph:NULL];
   [self stopTimers];
   SELF->redrawhandler = nil;
   [self _SC_setupRedrawInvocation]; // will release related objects
   [SELF->eventconverter release];
-
+  [self setEventHandler:nil];
   delete SELF->scenemanager;
   [SELF release];
   [super dealloc];
@@ -323,6 +327,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 - (void)setSceneManager:(SoSceneManager *)scenemanager
 {
   //FIXME: Keep old background color if set? (kintel 20040406)
+  //FIXME: Delete old scenemanager? Only if we created it ourselves?
+  // (kintel 20040412)
   SELF->scenemanager = scenemanager;
   SELF->scenemanager->setRenderCallback(redraw_cb, (void *)self);
   SoGLRenderAction * glra = SELF->scenemanager->getGLRenderAction();
@@ -378,10 +384,13 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (void)render
 {
+  SC21_DEBUG(@"SCController.render");
   // FIXME: Do clearing here instead of in SoSceneManager to support
   // alpha values? Alternatively, add SbColor4f support the necessary
   // places in Coin (kintel 20040502)
+  [[self->scenegraph camera] updateClippingPlanes:[self->scenegraph root]];
   SELF->scenemanager->render(SELF->clearcolorbuffer, SELF->cleardepthbuffer);
+  [self->eventhandler updateCamera:[self->scenegraph camera]];
 }
 
 /*" Sets the background color of the scene to color. Raises an exception if
@@ -500,10 +509,22 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
  
 - (BOOL)handleEvent:(NSEvent *)event inView:(NSView *)view
 {
-  if ([self handlesEventsInViewer] == NO) {
-    return [self handleEventAsCoinEvent:event inView:view];
-  } else {
-    return [self handleEventAsViewerEvent:event inView:view];
+  SC21_LOG_METHOD;
+  BOOL handled = NO;
+  //FIXME: Should we do this only for viewer events, or add another
+  // delegate method? (kintel 20040609)
+  if (self->delegate && 
+      [self->delegate respondsToSelector:@selector(handleEvent:inView:)]) {
+    handled = [self->delegate handleEvent:event inView:view];
+  }
+
+  if (!handled) {
+    if ([self handlesEventsInViewer] == NO ||
+        ([event modifierFlags] & [self modifierForCoinEvent])) {
+      return [self handleEventAsCoinEvent:event inView:view];
+    } else {
+      return [self handleEventAsViewerEvent:event inView:view];
+    }
   }
 }
 
@@ -515,13 +536,14 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
  
 - (BOOL)handleEventAsCoinEvent:(NSEvent *)event inView:(NSView *)view
 {
+  SC21_DEBUG(@"SCController.handleEventAsCoinEvent:");
+  BOOL handled = NO;
   SoEvent * se = [SELF->eventconverter createSoEvent:event inView:view];
   if (se) {
-    BOOL handled = SELF->scenemanager->processEvent(se);
+    handled = SELF->scenemanager->processEvent(se);
     delete se;
-    return handled;
   }
-  return NO;
+  return handled;
 }
 
 /*" Handles event as viewer event, i.e. does not send it to the scene
@@ -534,7 +556,11 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
  
 - (BOOL)handleEventAsViewerEvent:(NSEvent *)event inView:(NSView *)view
 {
-  return NO;
+  SC21_DEBUG(@"SCController.handleEventAsViewerEvent:");
+  BOOL handled = NO;
+  handled = [self->eventhandler handleEvent:event inView:view 
+                 camera:[self->scenegraph camera]];
+  return handled;
 }
 
 /*" 
@@ -564,6 +590,28 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 - (BOOL)handlesEventsInViewer
 {
   return SELF->handleseventsinviewer;
+}
+
+- (void)setModifierForCoinEvent:(unsigned int)modifier
+{
+  SELF->modifierforcoinevent = modifier;
+}
+
+- (unsigned int)modifierForCoinEvent
+{
+  return SELF->modifierforcoinevent;
+}
+
+- (void)setEventHandler:(SCEventHandler *)handler
+{
+  [handler retain];
+  [self->eventhandler release];
+  self->eventhandler = handler;
+}
+
+- (SCEventHandler *)eventHandler
+{
+  return self->eventhandler;
 }
 
 // -------------------- Timer management. ----------------------
@@ -611,6 +659,11 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   if ([coder allowsKeyedCoding]) {
     [coder encodeBool:SELF->handleseventsinviewer 
            forKey:@"SC_handleseventsinviewer"];
+    //FIXME: unsigned int -> encodeValueOfObjCType:at: ? (kintel 20040412)
+    [coder encodeInt:SELF->modifierforcoinevent 
+           forKey:@"SC_modifierforcoinevent"];
+    [coder encodeFloat:SELF->autoclipvalue 
+           forKey:@"SC_autoclipvalue"];
     [coder encodeBool:SELF->clearcolorbuffer 
            forKey:@"SC_clearcolorbuffer"];
     [coder encodeBool:SELF->cleardepthbuffer 
@@ -637,6 +690,12 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
         [coder decodeBoolForKey:@"SC_handleseventsinviewer"];
       SELF->clearcolorbuffer = [coder decodeBoolForKey:@"SC_clearcolorbuffer"];
       SELF->cleardepthbuffer = [coder decodeBoolForKey:@"SC_cleardepthbuffer"];
+      //FIXME: Remove this after all nib files have been saved with this
+      //new code (kintel 20040609)
+      if ([coder containsValueForKey:@"SC_modifierforcoinevent"]) {
+        SELF->modifierforcoinevent = 
+          [coder decodeIntForKey:@"SC_modifierforcoinevent"];
+      }
     }
   }
   return self;
@@ -692,11 +751,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   SELF = [[_SCControllerP alloc] init];
   scenegraph = nil;
   
-#if 0
-  // FIXME: Next two lines should be moved to scenegraph!
-  scenegraph->camera = [[SCCamera alloc] init];
-  [scenegraph->camera setController:self];
-#endif
   SELF->eventconverter = [[SCEventConverter alloc] init];
   SELF->redrawselector = @selector(display);
 

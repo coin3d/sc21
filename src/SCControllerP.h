@@ -39,6 +39,7 @@ class SoSceneManager;
   NSTimer * timerqueuetimer;
   SoSceneManager * scenemanager;
   BOOL handleseventsinviewer;
+  BOOL modifierforcoinevent;
   NSRect viewrect;
   NSResponder * oldcontroller;
   BOOL clearcolorbuffer;
