@@ -28,6 +28,13 @@
 #import <Cocoa/Cocoa.h>
 #import <Sc21/Sc21.h>
 
+
+// MyEventHandler acts as a switch between two eventhandlers: It
+// itself does not any eventhandling, meaning that all events are
+// forwarded to its nextEventHandler. But the nextEventHandler outlet
+// can be changed by calling the toggleModes: method, which switches
+// between coinhandler and examinerhandler.
+
 @interface MyEventHandler : SCEventHandler {
   IBOutlet SCEventHandler * coinhandler;
   IBOutlet SCEventHandler * examinerhandler;

@@ -36,10 +36,12 @@
 #import <Inventor/nodes/SoSeparator.h>
 #import <Inventor/SoSceneManager.h>
 
+// Callback which will be called whenever a node in the scenegraph is
+// selected. 
 void selection_cb(void *userdata, SoPath *path)
 {
   NSLog(@"Selected object!");
-  path->getTail()->touch();
+  path->getTail()->touch(); // force redraw
 }
 
 @implementation AppController
@@ -55,6 +57,8 @@ void selection_cb(void *userdata, SoPath *path)
 - (void)awakeFromNib
 {
   [filenametext setStringValue:@"None"];
+
+  // use highlight renderaction to display bounding boxes of selected items
   ra->setCacheContext([coincontroller sceneManager]->getGLRenderAction()->getCacheContext());
   ra->setTransparencyType(SoGLRenderAction::DELAYED_BLEND);
   [coincontroller sceneManager]->setGLRenderAction(ra);
@@ -69,16 +73,21 @@ void selection_cb(void *userdata, SoPath *path)
 // if they should be regarded as input for controlling the viewer or
 // sent to the scene graph directly.
 
+- (IBAction)toggleModes:(id)sender
+{
+  [[coincontroller eventHandler] toggleModes];
+}
+
+// "Wrapper"-action around toggleModes: for use from menu item.
+// Necessary to keep the "send events to scenegraph" radiobutton in sync.
+
 - (IBAction)menuToggleModes:(id)sender
 {
   [mode setNextState];
   [self toggleModes:sender];
 }
 
-- (IBAction)toggleModes:(id)sender
-{
-  [[coincontroller eventHandler] toggleModes];
-}
+// Reposition the camera so that the whole scene can be seen.
 
 - (IBAction)viewAll:(id)sender
 {
@@ -112,16 +121,15 @@ void selection_cb(void *userdata, SoPath *path)
   }
 }
 
-// Delegate implementation to quit application when window is being closed:
-// This is not a document-based implementation, so you cannot close the main
-// window and open a new one at will without doing more setup work.
+// Delegate implementation to quit application when window is being closed.
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)nsapp
 {
   return YES;
 }
 
-// SCSceneGraph delegate implementation: add selection node before the scenegraph.
+// SCSceneGraph delegate implementation: add selection node before the
+// scenegraph.
 
 - (SoGroup *)createSuperSceneGraph:(SoGroup *)scenegraph
 {

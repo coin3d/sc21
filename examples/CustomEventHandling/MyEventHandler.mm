@@ -37,4 +37,8 @@
     [self setNextEventHandler:coinhandler]; 
   }
 }
+
+// controller:handleEvent inherited from SCEventHandler to do nothing
+// and return NO.
+
 @end
