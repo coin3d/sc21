@@ -233,10 +233,7 @@
   SC21_DEBUG(@"SCOpenGLView.setOpenGLContext");
 
   [context retain];
-  if (SELF->openGLContext) {
-    if ([SELF->openGLContext view] == self) [SELF->openGLContext clearDrawable];
-    [SELF->openGLContext release];
-  }
+  [self clearGLContext];
   SELF->openGLContext = context;
 }
 
