@@ -39,8 +39,8 @@
 #import <Inventor/elements/SoGLCacheContextElement.h>
 #import <Inventor/nodekits/SoBaseKit.h>
 #import <Inventor/nodekits/SoNodeKit.h>
-#import <Inventor/nodes/SoCamera.h>
-#import <Inventor/nodes/SoLight.h>
+#import <Inventor/nodes/SoPerspectiveCamera.h>
+#import <Inventor/nodes/SoDirectionalLight.h>
 #import <Inventor/nodes/SoSeparator.h>
 
 #import <OpenGL/gl.h>
@@ -78,11 +78,9 @@
 - (void)_sensorQueueChanged;
 - (SoLight *)_findLightInSceneGraph:(SoGroup *)root;
 - (SoCamera *)_findCameraInSceneGraph:(SoGroup *)root;
-- (void)_setInternalSceneGraph:(SoGroup *)root;
-- (void)_handleLighting;
-- (void)_handleCamera;
 - (NSPoint)_normalizePoint:(NSPoint)point;
 - (void)_setupRedrawInvocation;
+- (SoGroup *)_createSuperSceneGraph:(SoGroup *)scenegraph;
 @end  
 
 
@@ -273,7 +271,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   return _redrawsel;
 }
 
-/*" Sets the scene graph that shall be rendered. You do not need to 
+/*" FIXME: Write doc for delegate methods
+    Sets the scene graph that shall be rendered. You do not need to 
     !{ref()} the node before passing it to this method. If sg is NULL,
     an empty scenegraph consisting of a single SoSeparator node will
     be created and set. 
@@ -295,27 +294,54 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 {
   NSLog(@"SetSceneGraph called with %p", scenegraph);
   if (scenegraph == _scenegraph) return;
+  if (_scenegraph) _scenegraph->unref();
+  if (_superscenegraph) _superscenegraph->unref();
+  _scenegraph = _superscenegraph = NULL;
+
   if (scenegraph == NULL) {
-    scenegraph = new SoSeparator;
+    _superscenegraph = _scenegraph = new SoSeparator;
     [self stopTimers];   // Don't waste cycles by animating an empty scene. 
-  } else {
-    [self startTimers];
+    _superscenegraph->ref();
+    _scenegraph->ref();
   }
-
-  [self _setInternalSceneGraph:scenegraph];
-  [self _handleLighting];
-  [self _handleCamera];
-
-  if (_scenemanager) {
-    _scenemanager->setSceneGraph(_scenegraph);
-    [_camera updateClippingPlanes:_scenegraph];
+  else {
+    scenegraph->ref();
+    if (_delegate && 
+        [_delegate respondsToSelector:@selector(willSetSceneGraph:)]) {
+      _superscenegraph = (SoGroup *)[_delegate willSetSceneGraph:scenegraph];
+    }
+    else {
+      _superscenegraph = [self _createSuperSceneGraph:scenegraph];
+    }
+    if (_superscenegraph) {
+      _scenegraph = scenegraph;
+      _superscenegraph->ref();
+      
+      if (_scenemanager) {
+        _scenemanager->setSceneGraph(_superscenegraph);
+        [_camera updateClippingPlanes:_scenegraph];
+      }
+      if (_delegate && 
+          [_delegate respondsToSelector:@selector(didSetSceneGraph:)]) {
+        [_delegate didSetSceneGraph:_superscenegraph];
+      }
+      if ([_camera controllerHasCreatedCamera]) {
+        [_camera viewAll];
+        _scenemanager->scheduleRedraw(); //FIXME: Do we need this? (kintel 20040604)
+      }
+      [self startTimers];
+    }
+    else {
+      scenegraph->unrefNoDelete();
+    }
   }
 
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCSceneGraphChangedNotification object:self];
 }
 
-/*" Returns the current scene graph used for rendering. "*/
+/*" Returns the current scene graph used for rendering.
+  FIXME: Write not about how to get superscenegraph"*/
 
 - (SoGroup *)sceneGraph 
 { 
@@ -340,7 +366,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   glra->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
   glra->setTransparencyType(SoGLRenderAction::DELAYED_BLEND);
   _scenemanager->activate();
-  if (_scenegraph) _scenemanager->setSceneGraph(_scenegraph);
+  if (_superscenegraph) _scenemanager->setSceneGraph(_superscenegraph);
 }
 
 /*" Returns the current Coin scene manager instance. "*/
@@ -653,8 +679,38 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   return self;
 }
 
+// ----------------- Automatic headlight configuration -----------------
 
-// ----------------------- InternalAPI -------------------------
+/*" Returns !{YES} if the headlight is on, and !{NO} if it is off. "*/
+
+- (BOOL)headlightIsOn
+{
+  if (_headlight == NULL) return FALSE;
+  return (_headlight->on.getValue() == TRUE) ? YES : NO;
+}
+
+
+/*" Turns the headlight on or off. "*/
+
+- (void)setHeadlightIsOn:(BOOL)yn
+{
+  if (_headlight == NULL) return;
+  _headlight-> on = yn ? TRUE : FALSE;
+  
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:SCHeadlightChangedNotification object:self];
+}
+
+/*" Returns the headlight of the current scene graph. "*/
+
+- (SoDirectionalLight *)headlight
+{
+  return _headlight;
+}
+
+@end
+
+@implementation SCController (InternalAPI)
 
 /*!
   Timer callback function: process the timer sensor queue.
@@ -723,21 +779,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   }
 }
 
-- (void)_setInternalSceneGraph:(SoGroup *)root
-{
-  if (_scenegraph) _scenegraph->unref();
-  _scenegraph = root;
-  _scenegraph->ref();
-}
-
-- (void)_handleLighting
-{
-  if (![self _findLightInSceneGraph:_scenegraph]) {
-    [[NSNotificationCenter defaultCenter]
-      postNotificationName:SCNoLightFoundInSceneNotification object:self];
-  }
-}
-
 /* Find light in root. Returns a pointer to the light, if found,
     otherwise NULL.
  */
@@ -783,18 +824,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   return scenecamera;
 }
 
-- (void)_handleCamera
-{  
-  SoCamera * scenecamera  = [self _findCameraInSceneGraph:_scenegraph];
-  if (scenecamera == NULL) {
-    [[NSNotificationCenter defaultCenter]
-      postNotificationName:SCNoCameraFoundInSceneNotification object:self];
-  } else {
-    [_camera setSoCamera:scenecamera deleteOldCamera:NO];
-    [_camera setControllerHasCreatedCamera:NO]; 
-  }
-}
-
 - (NSPoint)_normalizePoint:(NSPoint)point
 {
   NSPoint normalized;
@@ -830,6 +859,36 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     [_redrawinv setTarget:_redrawhandler];
     if ([sig numberOfArguments] == 3) [_redrawinv setArgument:self atIndex:2];
   }
+ }
+ 
+- (SoGroup *)_createSuperSceneGraph:(SoGroup *)scenegraph
+{
+  SoGroup *superscenegraph = new SoSeparator;
+
+  // Handle lighting
+  if (![self _findLightInSceneGraph:scenegraph]) {
+    [self setHeadlightIsOn:YES];
+  } else {
+    [self setHeadlightIsOn:NO];
+  }
+  _headlight = new SoDirectionalLight;
+  superscenegraph->addChild(_headlight);
+
+  // Handle camera
+  SoCamera * scenecamera  = [self _findCameraInSceneGraph:scenegraph];
+  if (scenecamera == NULL) {
+    scenecamera = new SoPerspectiveCamera;
+    [_camera setSoCamera:scenecamera deleteOldCamera:NO];
+    [_camera setControllerHasCreatedCamera:YES];
+    superscenegraph->addChild(scenecamera);
+  } else {
+    [_camera setSoCamera:scenecamera deleteOldCamera:NO];
+    [_camera setControllerHasCreatedCamera:NO];
+  }
+  
+  superscenegraph->addChild(scenegraph);
+
+  return superscenegraph;
 }
 
 @end

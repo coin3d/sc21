@@ -32,6 +32,7 @@
 class SoCamera;
 class SoGroup;
 class SoLight;
+class SoDirectionalLight;
 class SoSceneManager;
 @class SCEventConverter;
 
@@ -54,12 +55,14 @@ class SoSceneManager;
   NSInvocation * _redrawinv;
   SCCamera * _camera;
   SCEventConverter * _eventconverter;
-  NSTimer * _timerqueuetimer;
-  SoGroup * _scenegraph;	  // the whole scenegraph
+  NSTimer * _timerqueuetimer; 
+  SoGroup * _scenegraph;	      // the user scenegraph 
+  SoGroup * _superscenegraph;	  // the real scenegraph
   SoSceneManager * _scenemanager;
   BOOL _handleseventsinviewer;
   float _autoclipvalue;
   NSRect _viewrect;
+  SoDirectionalLight * _headlight;  
 }
 
 /*" Static initialization "*/
@@ -94,6 +97,11 @@ class SoSceneManager;
 - (SoCamera *)camera;
 - (SCCameraType)cameraType; // see SCCamera.h for SCCameraType enum
 
+/*" Automatic headlight configuration "*/
+- (SoDirectionalLight *)headlight;
+- (BOOL)headlightIsOn;
+- (void)setHeadlightIsOn:(BOOL)yn;
+
 /*" Debugging aids. "*/
 - (BOOL)dumpSceneGraph;
 
@@ -111,6 +119,8 @@ class SoSceneManager;
 @end
 
 @interface NSObject (SCControllerDelegate)
+- (SoGroup *)willSetSceneGraph:(SoGroup *)scenegraph;
+- (void)didSetSceneGraph:(SoGroup *)superscenegraph;
 @end
 
 // --------------------- Notifications ------------------------
@@ -139,3 +149,6 @@ SC21_EXTERN NSString * SCNoCameraFoundInSceneNotification;
     will be used.)
 "*/
 SC21_EXTERN NSString * SCNoLightFoundInSceneNotification;
+
+/*" Posted whenever the headlight has been turned on or off. "*/
+SC21_EXTERN NSString * SCHeadlightChangedNotification;
