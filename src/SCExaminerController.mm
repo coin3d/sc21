@@ -2,9 +2,13 @@
 #import "SCView.h"
 
 #import <Inventor/SoSceneManager.h>
+#import <Inventor/SbMatrix.h>
 #import <Inventor/SbPlane.h>
 #import <Inventor/SbViewVolume.h>
+#import <Inventor/SoPickedPoint.h>
 #import <Inventor/actions/SoGetBoundingBoxAction.h>
+#import <Inventor/actions/SoRayPickAction.h>
+#import <Inventor/actions/SoGLRenderAction.h>
 #import <Inventor/actions/SoSearchAction.h>
 #import <Inventor/actions/SoGetMatrixAction.h>
 #import <Inventor/nodekits/SoBaseKit.h>
@@ -262,8 +266,8 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
       p = [view convertPoint:[event locationInWindow] fromView:nil];
       v = [NSValue valueWithPoint:p];
-      if (_iswaitingforseek) action = @selector(performSeek:);
-      else if (flags & NSAlternateKeyMask) action = @selector(startPanning:);
+
+      if (flags & NSAlternateKeyMask) action = @selector(startPanning:);
       else action = @selector(startDragging:);
       handled = YES;
       break;
@@ -330,12 +334,6 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
             action = @selector(performMove:);
             handled = YES;
             break;
-          case 's':
-            NSLog(@"Waiting to seek...");
-            _iswaitingforseek = YES;
-            action = @selector(ignore:);
-            handled = YES;
-            break;
           default:
             action = @selector(ignore:);
             break;
@@ -399,21 +397,13 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   [_camera zoom:f];
 }
 
-/*" Currently unimplemented. "*/
-- (void) performSeek:(NSValue *) v
-{
-  NSLog(@"Seeking.");
-  _iswaitingforseek = NO;
-  // FIXME: Implement. kyrah 20030621.
-}
-
 /*" Move the camera in the plane that is parallel to the screen. "*/
 
 - (void) performMove:(NSValue *) v
 {
   // FIXME: This is the same as pan -> Reuse code!
   // kyrah 20030515
-  
+
   NSPoint p = [v pointValue];
   SbLine line;
   SbVec3f curplanepoint, prevplanepoint;

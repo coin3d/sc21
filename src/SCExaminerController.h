@@ -15,7 +15,7 @@ class SoDirectionalLight;
   SbSphereSheetProjector * _spinprojector;
   SbRotation * _spinrotation;
   SoGroup * _userscenegraph;  // _scenegraph includes camera/headlight
-  BOOL _iswaitingforseek;  
+  BOOL _iswaitingforseek;  // currently unused
 }
 
 /*" Initializing and encoding/decoding an SCExaminerController "*/
@@ -43,7 +43,6 @@ class SoDirectionalLight;
 - (void) performDragging:(NSValue *)v;
 - (void) performPanning:(NSValue *)v;
 - (void) performZoom:(NSValue *)v;
-- (void) performSeek:(NSValue *)v;
 - (void) performMove:(NSValue *)v;
 - (void) ignore:(NSValue *)v;
 
