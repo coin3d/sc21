@@ -7,7 +7,7 @@
 //
 
 #import "SCCamera.h"
-#import "SCExaminerController.h"
+#import "SCController.h"
 
 #import <Inventor/SbRotation.h>
 #import <Inventor/SbMatrix.h>
@@ -48,7 +48,7 @@
     class. Returns !{self}.
  "*/
 
-- (id) initWithSoCamera:(SoCamera *) c controller:(SCExaminerController *) controller
+- (id) initWithSoCamera:(SoCamera *) c controller:(SCController *) controller
 {
   if (self = [super init]) {
     controllerhascreatedcamera = NO;
@@ -315,7 +315,6 @@
   // into the model's corners when it is rotated.
   camera->nearDistance = nearval * (1.0f - SLACK);
   camera->farDistance = farval * (1.0f + SLACK);
-
 }
 
 // ------------------ Accessor methods ----------------------------
@@ -375,7 +374,7 @@
 
 /*" Sets the SCCamera's SCController component to controller. "*/
 
-- (void) setController:(SCExaminerController *) controller
+- (void) setController:(SCController *) controller
 {
   [controller retain];
   [_controller release];
@@ -384,7 +383,7 @@
 
 /*" Returns the SCCamera's SCController component. "*/
 
-- (SCExaminerController *) controller { return _controller; }
+- (SCController *) controller { return _controller; }
 
 /*" Reorients the camera by rot. Note that this does not
     replace the previous values but is accumulative: rot

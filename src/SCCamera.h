@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@class SCExaminerController;
+@class SCController;
 
 class SbRotation;
 class SbMatrix;
@@ -14,7 +14,7 @@ class SoPerspectiveCamera;
 class SoOrthographicCamera;
 
 @interface SCCamera : NSObject {
-  SCExaminerController * _controller;
+  SCController * _controller;
   SoCamera * camera;
   SoGetBoundingBoxAction * autoclipboxaction;
   BOOL controllerhascreatedcamera;
@@ -22,7 +22,7 @@ class SoOrthographicCamera;
 
 
 /*" Initializing an SCCamera "*/
-- (id) initWithSoCamera:(SoCamera *) camera controller:(SCExaminerController *) controller;
+- (id) initWithSoCamera:(SoCamera *) camera controller:(SCController *) controller;
 
 /*" Switching between orrthographic and perspective mode "*/
 - (BOOL) isPerspective;
@@ -42,8 +42,8 @@ class SoOrthographicCamera;
 - (void) getCameraCoordinateSystem:(SbMatrix &)matrix inverse:(SbMatrix &) inverse;
 
 /*" Accessors "*/ 
-- (void) setController:(SCExaminerController *) ctrl;
-- (SCExaminerController *) controller;
+- (void) setController:(SCController *) ctrl;
+- (SCController *) controller;
 - (void) setSoCamera:(SoCamera *) c;
 - (SoCamera *) soCamera;
 - (void) setControllerHasCreatedCamera:(BOOL) yn;
