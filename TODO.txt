@@ -1,0 +1,14 @@
+- fullscreen mode
+- seeking
+- redesign and rewrite timer queue and delay queue handling
+- automatically determine best OpenGL settings
+- store/load viewpoints
+
+- custom cursors
+- fps counter
+- "spinning" of the scene (cf. SoQt)
+- use delegates to avoid subclassing
+- document differences between SC21 and SoQt
+- rewrite panning code (should be dependant on zoom factor)
+- notification for camera change (sent on mouseUp: after drag/pan/zoom)
+
