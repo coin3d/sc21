@@ -662,8 +662,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     //FIXME: unsigned int -> encodeValueOfObjCType:at: ? (kintel 20040412)
     [coder encodeInt:SELF->modifierforcoinevent 
            forKey:@"SC_modifierforcoinevent"];
-    [coder encodeFloat:SELF->autoclipvalue 
-           forKey:@"SC_autoclipvalue"];
     [coder encodeBool:SELF->clearcolorbuffer 
            forKey:@"SC_clearcolorbuffer"];
     [coder encodeBool:SELF->cleardepthbuffer 
