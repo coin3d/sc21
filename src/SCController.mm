@@ -245,8 +245,7 @@ NSString * SCSceneGraphChangedNotification = @"SCSceneGraphChangedNotification";
 
 // ------------------- rendering and scene management ---------------------
 
-/*" Sets the scene graph that shall be rendered. The reference count of
-    sg will be increased by 1 before use, so you there is no need to 
+/*" Sets the scene graph that shall be rendered. You do not need to 
     !{ref()} the node before passing it to this method.
 
     Note that the scenegraph is not modified in any way, i.e. you must
