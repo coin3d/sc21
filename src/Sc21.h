@@ -4,4 +4,3 @@
 #import <SC21/SCController.h>
 #import <SC21/SCExaminerController.h>
 #import <SC21/SCCamera.h>
-#import <SC21/SCEventConverter.h>
