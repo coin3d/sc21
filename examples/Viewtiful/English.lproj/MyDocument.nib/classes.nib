@@ -24,19 +24,14 @@
             CLASS = MyWindowController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
+                coinhandler = SCEventHandler; 
                 controller = SCController; 
+                examinerhandler = SCEventHandler; 
                 modebutton = NSButton; 
                 sizetext = NSTextField; 
                 typetext = NSTextField; 
             }; 
             SUPERCLASS = NSWindowController; 
-        }, 
-        {CLASS = SCExaminerHandler; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
-        {
-            CLASS = SCSceneGraph; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {delegate = id; }; 
-            SUPERCLASS = NSObject; 
         }
     ); 
     IBVersion = 1; 

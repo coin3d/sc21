@@ -91,8 +91,11 @@
 
 - (IBAction)modeButtonClicked:(id)sender
 {
-  BOOL viewmode = ([modebutton state] != NSOnState);
-  [controller setHandlesEventsInViewer:viewmode];
+  if ([modebutton state] == NSOnState) {
+    [controller setEventHandler:coinhandler];
+  } else {
+    [controller setEventHandler:examinerhandler];
+  }
 }
 
 - (IBAction)modeMenuSelected:(id)sender
@@ -100,7 +103,11 @@
   NSLog(@"MyWindowController.modeMenuSelected");
   NSMenuItem *item = sender;
   BOOL viewmode = ([item state] == NSOnState);
-  [controller setHandlesEventsInViewer:viewmode];
+  if (viewmode) {
+    [controller setEventHandler:examinerhandler];
+  } else {
+    [controller setEventHandler:coinhandler];
+  }
   [modebutton setState:viewmode?NSOffState:NSOnState];
 }
 

@@ -34,6 +34,8 @@
   IBOutlet NSTextField *typetext;
   IBOutlet NSTextField *sizetext;
   IBOutlet NSButton *modebutton;
+  IBOutlet SCEventHandler *examinerhandler;
+  IBOutlet SCEventHandler *coinhandler;
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)item;
