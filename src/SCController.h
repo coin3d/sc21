@@ -28,8 +28,8 @@
 #import <Cocoa/Cocoa.h>
 #import <Sc21/SCDefines.h>
 #import <Sc21/SCCamera.h>
+#import <Sc21/SCSceneGraph.h>
 
-class SoLight;
 class SoDirectionalLight;
 class SoSceneManager;
 @class SCEventConverter;
@@ -39,6 +39,7 @@ class SoSceneManager;
 {
  @protected
   _SCControllerP * sccontrollerpriv;
+  // FIXME: Are we sure we don't want the delegate to be protected? kyrah 20040716
  @private
   id delegate;
 }
@@ -59,8 +60,8 @@ class SoSceneManager;
 - (void)setRedrawSelector:(SEL)selector;
 - (SEL)redrawSelector;
 - (void)render;
-- (void)setSceneGraph:(SoGroup *)scenegraph;
-- (SoGroup *)sceneGraph;
+- (void)setSceneGraph:(SCSceneGraph *)scenegraph;
+- (SCSceneGraph *)sceneGraph;
 - (void)setSceneManager:(SoSceneManager *)scenemanager;
 - (SoSceneManager *)sceneManager;
 - (void)setBackgroundColor:(NSColor *)color;
@@ -73,16 +74,9 @@ class SoSceneManager;
 - (BOOL)clearDepthBuffer;
 - (void)viewSizeChanged:(NSRect)size;
 
-/*" Camera handling. "*/
-- (void)setCamera:(SoCamera *)camera;
-- (SoCamera *)camera;
-- (SCCameraType)cameraType; // see SCCamera.h for SCCameraType enum
-- (void)viewAll;
 
-/*" Automatic headlight configuration "*/
-- (SoDirectionalLight *)headlight;
-- (BOOL)headlightIsOn;
-- (void)setHeadlightIsOn:(BOOL)yn;
+/*" Camera handling. "*/
+- (void)viewAll;
 
 /*" Event handling "*/
 - (BOOL)handleEvent:(NSEvent *)event inView:(NSView *)view;
@@ -112,22 +106,3 @@ SC21_EXTERN NSString * SCModeChangedNotification;
 /*" Posted when the scenegraph is changed through #setSceneGraph: "*/
 SC21_EXTERN NSString * SCSceneGraphChangedNotification;
 
-/*" Posted if #setSceneGraph: is called with a scenegraph that
-    does not contain a camera. Register for this notification if
-    you want to issue a warning to your users that they will not
-    be able to see anything. Note that SCExaminerController does
-    not post this notification; instead, it simply adds a camera
-    in front of the scenegraph.
- "*/
-SC21_EXTERN NSString * SCNoCameraFoundInSceneNotification;
-
-/*" Posted if #setSceneGraph: is called with a scenegraph that
-    does not contain a light. Register for this notification if
-    you want to issue a warning to your users that they will not
-    be able to see much in the scene (since only ambient light
-    will be used.)
-"*/
-SC21_EXTERN NSString * SCNoLightFoundInSceneNotification;
-
-/*" Posted whenever the headlight has been turned on or off. "*/
-SC21_EXTERN NSString * SCHeadlightChangedNotification;

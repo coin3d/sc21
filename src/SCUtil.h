@@ -1,4 +1,4 @@
-#define SC21_DEBUG 1
+#undef SC21_DEBUG 
 
 #ifdef SC21_DEBUG
 #undef SC21_DEBUG

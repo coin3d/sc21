@@ -43,7 +43,6 @@
 #import <Inventor/nodes/SoDirectionalLight.h>
 #import <Inventor/nodes/SoOrthographicCamera.h>
 #import <Inventor/nodes/SoPerspectiveCamera.h>
-#import <Inventor/nodes/SoSeparator.h>
 #import <Inventor/projectors/SbSphereSheetProjector.h>
 
 #import "SCControllerP.h"
@@ -132,7 +131,8 @@
  
 - (void)render
 {
-  [PRIVATE(self)->camera updateClippingPlanes:[self sceneGraph]];
+  if (!PRIVATE(self)->scenegraph) return;
+  [PRIVATE(self)->scenegraph->camera updateClippingPlanes:(SoGroup *)[[self sceneGraph] root]];
   [super render];
 }
 
@@ -144,7 +144,7 @@
 
 - (void)setCameraType:(SCCameraType)type
 {
-  [PRIVATE(self)->camera convertToType:type];
+  [PRIVATE(self)->scenegraph->camera convertToType:type];
 }
 
 // -------------------- Event handling -----------------------
@@ -314,7 +314,7 @@
   _spinprojector->projectAndGetRotation(SbVec2f(pn.x, pn.y), r);
   r.invert();
 
-  [PRIVATE(self)->camera reorient:r];
+  [PRIVATE(self)->scenegraph->camera reorient:r];
 }
 
 
@@ -331,7 +331,7 @@
   NSPoint p, q, pn, qn;
   SbLine line;
   SbVec3f curplanepoint, prevplanepoint;
-  SoCamera * cam = [PRIVATE(self)->camera soCamera];
+  SoCamera * cam = [PRIVATE(self)->scenegraph->camera soCamera];
   NSValue * v = [NSValue valueWithPoint:point];
 
   [_mouselog insertObject:v atIndex:0];
@@ -370,7 +370,7 @@
 
 - (void)zoomWithDelta:(float)delta
 {
-  [PRIVATE(self)->camera zoom:delta];
+  [PRIVATE(self)->scenegraph->camera zoom:delta];
 }
 
 
@@ -395,7 +395,7 @@
   q = [[_mouselog objectAtIndex:1] pointValue];
   qn = [self _SC_normalizePoint:q];
   pn = [self _SC_normalizePoint:p];
-  [PRIVATE(self)->camera zoom:(pn.y - qn.y)];
+  [PRIVATE(self)->scenegraph->camera zoom:(pn.y - qn.y)];
 }
 
 

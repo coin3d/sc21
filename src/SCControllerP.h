@@ -26,6 +26,7 @@
  * =============================================================== */
 
 #import <Sc21/SCController.h>
+#import <Sc21/SCSceneGraph.h>
 
 class SoGroup;
 class SoSceneManager;
@@ -35,16 +36,13 @@ class SoSceneManager;
   id redrawhandler;
   SEL redrawsel;
   NSInvocation * redrawinv;
-  SCCamera * camera;
   SCEventConverter * eventconverter;
+  SCSceneGraph * scenegraph;
   NSTimer * timerqueuetimer;
-  SoGroup * scenegraph;	      // the user scenegraph 
-  SoGroup * superscenegraph;	// the real scenegraph
   SoSceneManager * scenemanager;
   BOOL handleseventsinviewer;
   float autoclipvalue;
   NSRect viewrect;
-  SoDirectionalLight * headlight;  
   NSResponder * oldcontroller;
   BOOL clearcolorbuffer;
   BOOL cleardepthbuffer;
@@ -56,9 +54,6 @@ class SoSceneManager;
 - (void)_SC_timerQueueTimerFired:(NSTimer *)t;
 - (void)_SC_idle:(NSNotification *)notification;
 - (void)_SC_sensorQueueChanged;
-- (SoLight *)_SC_findLightInSceneGraph:(SoGroup *)root;
-- (SoCamera *)_SC_findCameraInSceneGraph:(SoGroup *)root;
 - (NSPoint)_SC_normalizePoint:(NSPoint)point;
 - (void)_SC_setupRedrawInvocation;
-- (SoGroup *)_SC_createSuperSceneGraph:(SoGroup *)scenegraph;
 @end  

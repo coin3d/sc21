@@ -237,7 +237,7 @@
 - (void)viewAll
 {
   if (SELF->camera == NULL || SELF->controller == nil) return;
-  SELF->camera->viewAll([SELF->controller sceneGraph],
+  SELF->camera->viewAll((SoNode *)([[SELF->controller sceneGraph] root]),
                   [SELF->controller sceneManager]->getViewportRegion());
 
   [[NSNotificationCenter defaultCenter]
@@ -503,7 +503,7 @@
 
 - (void)_SC_getCameraCoordinateSystem: (SbMatrix &)m inverse:(SbMatrix &)inv
 {
-  SoGroup * root = [SELF->controller sceneGraph];
+  SoSeparator * root = [[SELF->controller sceneGraph] root];
   SoSearchAction searchaction;
   SoGetMatrixAction matrixaction(SbViewportRegion(100,100));
 

@@ -79,6 +79,7 @@
   // Note that we cannot compare for "== distantFuture" here, since
   // distantFuture is "current time + a high number" (i.e. the actual 
   // date changes with time)
+  
   return ([self fireDate] < [NSDate dateWithTimeIntervalSinceNow:10000]);
 }
 @end
@@ -197,7 +198,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   SELF->redrawhandler = nil;
   [self _SC_setupRedrawInvocation]; // will release related objects
   [SELF->eventconverter release];
-  [SELF->camera release];
+
   delete SELF->scenemanager;
   [SELF release];
   [super dealloc];
@@ -277,6 +278,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   return SELF->redrawsel;
 }
 
+#if 0 // old code 
+
 /*"
   Sets the scene graph that shall be rendered.
 
@@ -298,7 +301,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
   After a scene graph is set, the delegate method -didSetSceneGraph:
   is called with the super scene graph as parameter.
-
 
 
   Both the passed and the actual scene graph will be !{ref()}'ed.
@@ -329,6 +331,12 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     // super scene graph creation
     if (self->delegate && 
         [self->delegate respondsToSelector:@selector(willSetSceneGraph:)]) {
+      // FIXME: The delegate method name is slightly misleading IMHO - it doesn't sound
+      // like the delegate is supposed to create a superscenegraph. I think it would be
+      // more in the spirit of the Cocoa API to have a method to query whether we should
+      // do our default handling [-(BOOL)willSetSuperSceneGraph, returning NO to stop the
+      // processing from happening] and an additional optional delegate method 
+      // -(SoGroup *)setSuperSceneGraph:scenegraph. kyrah 20040716
       SELF->superscenegraph = (SoGroup *)[self->delegate willSetSceneGraph:scenegraph];
     }
     else {
@@ -373,6 +381,50 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   return SELF->scenegraph; 
 }
 
+#else // new code 
+
+- (void)setSceneGraph:(SCSceneGraph *)scenegraph
+{
+  if (scenegraph == SELF->scenegraph) { return; }
+
+  if (SELF->scenegraph) { [SELF->scenegraph release]; }
+  [scenegraph retain];
+  SELF->scenegraph = scenegraph;    
+  // FIXME: This is really ugly -> cleanup!
+  [SELF->scenegraph->camera setController:self];
+  
+  if (SELF->scenemanager) {
+    SELF->scenemanager->setSceneGraph([SELF->scenegraph superSceneGraph]);
+  }
+  
+#if 0 // FIXME: verify/update
+  if (self->delegate && 
+      [self->delegate respondsToSelector:@selector(didSetSceneGraph:)]) {
+    [self->delegate didSetSceneGraph:SELF->superscenegraph];
+  }
+#endif
+
+  SELF->scenemanager->scheduleRedraw(); 
+  // FIXME: Do we need this? (kintel 20040604)
+  // Update kyrah 20040716. Yes: In case the scenegraph is set to nil,
+  // we will stop all timers. We do want one last re-render to clear the
+  // screen to our background color...
+  
+  // Don't waste cycles by animating an empty scene
+  if (scenegraph == nil) { [self stopTimers]; }
+  else { [self startTimers]; }
+  
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:SCSceneGraphChangedNotification object:self];
+}
+
+- (SCSceneGraph *)sceneGraph 
+{ 
+  return SELF->scenegraph; 
+}
+
+#endif 
+
 /*" Sets the current scene manager to scenemanager. The scene manager's
     render callback will be set to %redraw_cb (SCController's default
     redraw callback), and it will be activated. Also, if a scenegraph
@@ -391,7 +443,9 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   glra->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
   glra->setTransparencyType(SoGLRenderAction::DELAYED_BLEND);
   SELF->scenemanager->activate();
-  if (SELF->superscenegraph) SELF->scenemanager->setSceneGraph(SELF->superscenegraph);
+  if (SELF->scenegraph) {
+    SELF->scenemanager->setSceneGraph([SELF->scenegraph superSceneGraph]);
+  }
 }
 
 /*" Returns the current Coin scene manager instance. "*/
@@ -426,41 +480,12 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 }
 
 
-/*" Sets the SoCamera used for viewing the scene to cam.
-    It is first checked if the scenegraph contains a camera created by
-    the controller, and if yes, this camera is deleted.
-
-    Note that cam is expected to be part of the scenegraph already;
-    it is not inserted into it.
-"*/
-
-- (void)setCamera:(SoCamera *)cam
-{
-  [SELF->camera setSoCamera:cam deleteOldCamera:YES];
-}
-
-/*" Returns the current SoCamera used for viewing. "*/
-
-- (SoCamera *)camera
-{
-  return [SELF->camera soCamera];
-}
-
-/*" Returns !{SCCameraPerspective} if the camera is perspective
-    and !{SCCameraOrthographic} if the camera is orthographic.
- "*/
-
-- (SCCameraType)cameraType
-{
-  return [SELF->camera type];
-}
-
 /*"
   Repositions the camera so that we can se the whole scene.
   "*/
 - (void)viewAll
 {
-  [PRIVATE(self)->camera viewAll]; // SCViewAllNotification sent by _camera
+  [SELF->scenegraph viewAll];
 }
 
 /*" Renders the scene. "*/
@@ -766,35 +791,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   return self;
 }
 
-// ----------------- Automatic headlight configuration -----------------
-
-/*" Returns !{YES} if the headlight is on, and !{NO} if it is off. "*/
-
-- (BOOL)headlightIsOn
-{
-  if (SELF->headlight == NULL) return FALSE;
-  return (SELF->headlight->on.getValue() == TRUE) ? YES : NO;
-}
-
-
-/*" Turns the headlight on or off. "*/
-
-- (void)setHeadlightIsOn:(BOOL)yn
-{
-  if (SELF->headlight == NULL) return;
-  SELF->headlight-> on = yn ? TRUE : FALSE;
-  
-  [[NSNotificationCenter defaultCenter]
-    postNotificationName:SCHeadlightChangedNotification object:self];
-}
-
-/*" Returns the headlight of the current scene graph. "*/
-
-- (SoDirectionalLight *)headlight
-{
-  return SELF->headlight;
-}
-
 @end
 
 @implementation SCController (InternalAPI)
@@ -811,8 +807,13 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 {
   [SCController initCoin];
   SELF = [[_SCControllerP alloc] init];
-  SELF->camera = [[SCCamera alloc] init];
-  [SELF->camera setController:self];
+  SELF->scenegraph = nil;
+  
+#if 0
+  // FIXME: Next two lines should be moved to scenegraph!
+  SELF->scenegraph->camera = [[SCCamera alloc] init];
+  [SELF->scenegraph->camera setController:self];
+#endif
   SELF->eventconverter = [[SCEventConverter alloc] init];
   SELF->redrawsel = @selector(display);
   SELF->clearcolorbuffer = YES;
@@ -895,53 +896,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   }
 }
 
-/* Find light in root. Returns a pointer to the light, if found,
-    otherwise NULL.
- */
-
-- (SoLight *)_SC_findLightInSceneGraph:(SoGroup *)root
-{
-  if (root == NULL) return NULL;
-
-  SoLight * light = NULL;
-  SbBool oldsearch = SoBaseKit::isSearchingChildren();
-  SoBaseKit::setSearchingChildren(TRUE);
-  SoSearchAction sa;
-  sa.reset();
-  sa.setType(SoLight::getClassTypeId());
-  sa.apply(root);
-  SoBaseKit::setSearchingChildren(oldsearch);
-  if (sa.getPath() != NULL) {
-    SoFullPath * fullpath = (SoFullPath *) sa.getPath();
-    light = (SoLight *)fullpath->getTail();
-  }
-  return light;
-}
-
-
-
-
-/*" Find camera in root. Returns a pointer to the camera, if found,
-    otherwise NULL.
-"*/
-
-- (SoCamera *)_SC_findCameraInSceneGraph:(SoGroup *)root
-{
-  SoCamera * scenecamera = NULL;
-  SbBool oldsearch = SoBaseKit::isSearchingChildren();
-  SoBaseKit::setSearchingChildren(TRUE);
-  SoSearchAction sa;
-  sa.reset();
-  sa.setType(SoCamera::getClassTypeId());
-  sa.apply(root);
-  SoBaseKit::setSearchingChildren(oldsearch);
-  if (sa.getPath() != NULL) {
-    SoFullPath * fullpath = (SoFullPath *) sa.getPath();
-    scenecamera = (SoCamera *)fullpath->getTail();
-  }
-  return scenecamera;
-}
-
 - (NSPoint)_SC_normalizePoint:(NSPoint)point
 {
   NSPoint normalized;
@@ -977,36 +931,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     [SELF->redrawinv setTarget:SELF->redrawhandler];
     if ([sig numberOfArguments] == 3) [SELF->redrawinv setArgument:self atIndex:2];
   }
- }
- 
-- (SoGroup *)_SC_createSuperSceneGraph:(SoGroup *)scenegraph
-{
-  SoGroup *superscenegraph = new SoSeparator;
-
-  // Handle lighting
-  if (![self _SC_findLightInSceneGraph:scenegraph]) {
-    [self setHeadlightIsOn:YES];
-  } else {
-    [self setHeadlightIsOn:NO];
-  }
-  SELF->headlight = new SoDirectionalLight;
-  superscenegraph->addChild(SELF->headlight);
-
-  // Handle camera
-  SoCamera * scenecamera  = [self _SC_findCameraInSceneGraph:scenegraph];
-  if (scenecamera == NULL) {
-    scenecamera = new SoPerspectiveCamera;
-    [SELF->camera setSoCamera:scenecamera deleteOldCamera:NO];
-    [SELF->camera setControllerHasCreatedCamera:YES];
-    superscenegraph->addChild(scenecamera);
-  } else {
-    [SELF->camera setSoCamera:scenecamera deleteOldCamera:NO];
-    [SELF->camera setControllerHasCreatedCamera:NO];
-  }
-  
-  superscenegraph->addChild(scenegraph);
-
-  return superscenegraph;
 }
+ 
 
 @end
