@@ -411,7 +411,6 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 - (void) mouseDown:(NSEvent *)event
 {
-  NSLog(@"mouseDown");
   if (![controller handleEvent:event]) {
     [[self nextResponder] mouseDown:event];
   }
