@@ -39,6 +39,8 @@ class SoSceneManager;
 
 @interface SCController : NSObject <NSCoding>
 {
+  @private
+    id delegate;
   @protected
     _SCControllerP * sccontrollerpriv;
 }
@@ -49,7 +51,7 @@ class SoSceneManager;
 /*" Initializing an SCController "*/
 - (id)init;
 
-- (void)setDelegate:(id)newdelegate;
+- (void)setDelegate:(id)delegate;
 - (id)delegate;
 
 /*" Coin rendering and related functionality "*/
@@ -65,9 +67,9 @@ class SoSceneManager;
 - (SoSceneManager *)sceneManager;
 - (void)setBackgroundColor:(NSColor *)color;
 - (NSColor *)backgroundColor;
-- (void)viewSizeChanged:(NSRect)size;
 - (void)setAutoClipValue:(float)autoclipvalue;
 - (float)autoClipValue;
+- (void)viewSizeChanged:(NSRect)size;
 
 /*" Camera handling. "*/
 - (void)setCamera:(SoCamera *)camera;

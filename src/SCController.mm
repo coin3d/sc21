@@ -191,12 +191,12 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 - (void)setDelegate:(id)newdelegate
 {
   NSLog(@"SCController.setDelegate");
-  SELF->delegate = newdelegate;
+  self->delegate = newdelegate;
 }
 
 - (id)delegate
 {
-  return SELF->delegate;
+  return self->delegate;
 }
 
 // ------------------- rendering and scene management ---------------------
@@ -287,9 +287,9 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   }
   else {
     scenegraph->ref();
-    if (SELF->delegate && 
-        [SELF->delegate respondsToSelector:@selector(willSetSceneGraph:)]) {
-      SELF->superscenegraph = (SoGroup *)[SELF->delegate willSetSceneGraph:scenegraph];
+    if (self->delegate && 
+        [self->delegate respondsToSelector:@selector(willSetSceneGraph:)]) {
+      SELF->superscenegraph = (SoGroup *)[self->delegate willSetSceneGraph:scenegraph];
     }
     else {
       SELF->superscenegraph = [self _SC_createSuperSceneGraph:scenegraph];
@@ -302,9 +302,9 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
         SELF->scenemanager->setSceneGraph(SELF->superscenegraph);
         [SELF->camera updateClippingPlanes:SELF->scenegraph];
       }
-      if (SELF->delegate && 
-          [SELF->delegate respondsToSelector:@selector(didSetSceneGraph:)]) {
-        [SELF->delegate didSetSceneGraph:SELF->superscenegraph];
+      if (self->delegate && 
+          [self->delegate respondsToSelector:@selector(didSetSceneGraph:)]) {
+        [self->delegate didSetSceneGraph:SELF->superscenegraph];
       }
       if ([SELF->camera controllerHasCreatedCamera]) {
         [SELF->camera viewAll];

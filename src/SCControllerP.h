@@ -30,7 +30,6 @@
  
 @interface _SCControllerP : NSObject
 {
-  id delegate;
   id redrawhandler;
   SEL redrawsel;
   NSInvocation * redrawinv;
