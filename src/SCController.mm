@@ -117,7 +117,7 @@ static BOOL _coinInitialized = NO;
     return;
   }
   SoWriteAction wa(&out);
-  wa.apply(scenegraph);
+  wa.apply(_scenegraph);
   NSString * info = [NSString stringWithFormat:@"Dumped scene to file '%s'",
     filename.getString()];
   [view displayInfo:info];
@@ -139,11 +139,10 @@ static BOOL _coinInitialized = NO;
 - (id) init
 {
   if (self = [super init]) {
-    camera = [[SCCamera alloc] init];
-    [camera setController:self];
-    NSLog(@"Created camera: %p", camera);
-    autoclipstrategy = VARIABLE_NEAR_PLANE;
-    autoclipvalue = 0.6;
+    _camera = [[SCCamera alloc] init];
+    [_camera setController:self];
+    _autoclipstrategy = VARIABLE_NEAR_PLANE;
+    _autoclipvalue = 0.6;
     _handleseventsinviewer = YES;
     _eventconverter = [[SCEventConverter alloc] initWithController:self];
     if (!_coinInitialized) [SCController initCoin];
@@ -169,7 +168,7 @@ static BOOL _coinInitialized = NO;
     SoGLCacheContextElement::getUniqueCacheContext());
   _scenemanager->activate();
      
-  if (scenegraph == NULL) {
+  if (_scenegraph == NULL) {
     SoSeparator * root = new SoSeparator;
     [self setSceneGraph:root];
   }
@@ -194,8 +193,8 @@ static BOOL _coinInitialized = NO;
   [_timer invalidate];
   [_timer release];
   [_eventconverter release];
-  [camera release];
-  scenegraph->unref();
+  [_camera release];
+  _scenegraph->unref();
   delete _scenemanager;
   [super dealloc];
 }
@@ -229,8 +228,8 @@ static BOOL _coinInitialized = NO;
 
   SoCamera * scenecamera = [self findCameraInSceneGraph:sg];
   if (scenecamera) {
-    [camera setSoCamera:scenecamera];
-    [camera setControllerHasCreatedCamera:NO];
+    [_camera setSoCamera:scenecamera];
+    [_camera setControllerHasCreatedCamera:NO];
   } else {
     NSLog(@"No camera found in scene, you won't be able to see anything");
   }
@@ -239,10 +238,10 @@ static BOOL _coinInitialized = NO;
     NSLog(@"No light found in scene, you won't be able to see anything");
   }
 
-  if (scenegraph) scenegraph->unref();
-  scenegraph = sg;
-  _scenemanager->setSceneGraph(scenegraph);
-  [camera updateClippingPlanes:scenegraph];
+  if (_scenegraph) _scenegraph->unref();
+  _scenegraph = sg;
+  _scenemanager->setSceneGraph(_scenegraph);
+  [_camera updateClippingPlanes:_scenegraph];
   [view setNeedsDisplay:YES];
 }
 
@@ -250,7 +249,7 @@ static BOOL _coinInitialized = NO;
 
 - (SoGroup *) sceneGraph 
 { 
-  return scenegraph; 
+  return _scenegraph; 
 }
 
 /*" Returns the current Coin scene manager instance. "*/
@@ -330,14 +329,14 @@ otherwise NULL.
 
 - (void) setCamera:(SoCamera *) cam
 {
-  [camera setSoCamera:cam];
+  [_camera setSoCamera:cam];
 }
 
 /*" Returns the current SoCamera used for viewing. "*/
 
 - (SoCamera *) camera
 {
-  return [camera soCamera];
+  return [_camera soCamera];
 }
 
 
@@ -345,7 +344,6 @@ otherwise NULL.
 
 - (void) render
 {
-//  [camera updateClippingPlanes:scenegraph];
   _scenemanager->render();
 }
 
@@ -527,8 +525,8 @@ The default strategy is VARIABLE_NEAR_PLANE.
 
   // FIXME: Make it possible to turn autoclipping off. kyrah 20030621.
   // NSLog(@"setting autoclip strategy");
-  autoclipstrategy = strategy;
-  autoclipvalue = v;
+  _autoclipstrategy = strategy;
+  _autoclipvalue = v;
   [self render];
 }
 
@@ -544,20 +542,20 @@ small near clipping plane distances are disallowed.
   int usebits;
   GLint _depthbits[1];
 
-  if (![camera isPerspective]) return near;
+  if (![_camera isPerspective]) return near;
 
-  switch (autoclipstrategy) {
+  switch (_autoclipstrategy) {
     case CONSTANT_NEAR_PLANE:
-      nearlimit = autoclipvalue;
+      nearlimit = _autoclipvalue;
       break;
     case VARIABLE_NEAR_PLANE:
       glGetIntegerv(GL_DEPTH_BITS, _depthbits);
-      usebits = (int) (float(_depthbits[0]) * (1.0f - autoclipvalue));
+      usebits = (int) (float(_depthbits[0]) * (1.0f - _autoclipvalue));
       r = (float) pow(2.0, (double) usebits);
       nearlimit = far / r;
       break;
     default:
-      NSLog(@"Unknown autoclip strategy: %d", autoclipstrategy);
+      NSLog(@"Unknown autoclip strategy: %d", _autoclipstrategy);
       break;
   }
 
@@ -586,11 +584,10 @@ small near clipping plane distances are disallowed.
 - (id) initWithCoder:(NSCoder *) coder
 {
   if (self = [super initWithCoder:coder]) {
-    camera = [[SCCamera alloc] init];
-    [camera setController:self];
-    NSLog(@"Created camera: %p", camera);
-    autoclipstrategy = VARIABLE_NEAR_PLANE;
-    autoclipvalue = 0.6;
+    _camera = [[SCCamera alloc] init];
+    [_camera setController:self];
+    _autoclipstrategy = VARIABLE_NEAR_PLANE;
+    _autoclipvalue = 0.6;
     _handleseventsinviewer = YES;
     _eventconverter = [[SCEventConverter alloc] initWithController:self];
     if (!_coinInitialized) [SCController initCoin];

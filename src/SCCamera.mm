@@ -51,11 +51,11 @@
 - (id) initWithSoCamera:(SoCamera *) c controller:(SCController *) controller
 {
   if (self = [super init]) {
-    controllerhascreatedcamera = NO;
+    _controllerhascreatedcamera = NO;
     _controller = controller;
     [controller retain];
-    camera = c;
-    if (camera) camera->ref();
+    _camera = c;
+    if (_camera) _camera->ref();
   }
   return self;
 }
@@ -75,8 +75,8 @@
 
 - (void) dealloc {
   [_controller release];
-  if (camera) camera->unref();
-  if (autoclipboxaction) delete autoclipboxaction;
+  if (_camera) _camera->unref();
+  if (_autoclipboxaction) delete _autoclipboxaction;
 }
 
 
@@ -87,7 +87,7 @@
 
 - (BOOL) isPerspective
 {
-  return camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId());
+  return _camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId());
 }
 
 
@@ -95,7 +95,7 @@
 
 - (BOOL) isOrthographic
 {
-  return camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId());
+  return _camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId());
 }
 
 
@@ -105,8 +105,8 @@
 
 - (void) cloneFromPerspectiveCamera:(SoOrthographicCamera *)ocam
 {
-  assert(camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId()));
-  SoPerspectiveCamera * pcam = (SoPerspectiveCamera *) camera;
+  assert(_camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId()));
+  SoPerspectiveCamera * pcam = (SoPerspectiveCamera *) _camera;
 
   ocam->aspectRatio.setValue(pcam->aspectRatio.getValue());
   ocam->focalDistance.setValue(pcam->focalDistance.getValue());
@@ -124,8 +124,8 @@
  
 - (void) cloneFromOrthographicCamera:(SoPerspectiveCamera *) pcam
 {
-  assert(camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId()));
-  SoOrthographicCamera * ocam = (SoOrthographicCamera *) camera;
+  assert(_camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId()));
+  SoOrthographicCamera * ocam = (SoOrthographicCamera *) _camera;
 
   pcam->aspectRatio.setValue(ocam->aspectRatio.getValue());
   pcam->focalDistance.setValue(ocam->focalDistance.getValue());
@@ -154,11 +154,11 @@
 
 - (void) convertToType:(SoType) type
 {
-  if (camera == NULL) return;
+  if (_camera == NULL) return;
 
   // FIXME: Check how SoQt handles this - maybe it should be possible to 
   // change camera type if even the cam is part of user SG? kyrah 20030711
-  if (!controllerhascreatedcamera) {
+  if (!_controllerhascreatedcamera) {
     NSLog(@"Camera is part of user scenegraph, cannot convert.");
     return; 
   }
@@ -177,9 +177,9 @@
 
   
   // insert into SG
-  SoGroup * camparent = [self getParentOfNode:camera
+  SoGroup * camparent = [self getParentOfNode:_camera
     inSceneGraph:(SoGroup *)[_controller sceneGraph]];
-  camparent->insertChild(newcam, camparent->findChild(camera));
+  camparent->insertChild(newcam, camparent->findChild(_camera));
 
 #if 0
   // Store the current home position, as it will be implicitly reset
@@ -216,22 +216,22 @@
   // kyrah 20030621.
   
   float factor = (delta > 0) ? 1.1 : 0.9;
-  if (camera == NULL) return;
-  SoType t = camera->getTypeId();
+  if (_camera == NULL) return;
+  SoType t = _camera->getTypeId();
 
   if ([self isOrthographic]) {
 
-    SoOrthographicCamera * orthocam = (SoOrthographicCamera *)camera;
+    SoOrthographicCamera * orthocam = (SoOrthographicCamera *)_camera;
     orthocam->height = orthocam->height.getValue() * factor;
     
   } else if ([self isPerspective]) {
     
     SbVec3f dir, newpos;
     float newfocaldist, dist;
-    const float oldfocaldist = camera->focalDistance.getValue();
-    const SbVec3f oldpos = camera->position.getValue();
+    const float oldfocaldist = _camera->focalDistance.getValue();
+    const SbVec3f oldpos = _camera->position.getValue();
     newfocaldist = oldfocaldist * factor;
-    camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), dir);
+    _camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), dir);
     newpos = oldpos + (newfocaldist - oldfocaldist) * -dir;
     dist = newpos.length();
 
@@ -241,8 +241,8 @@
       return;
     }
 
-    camera->position = newpos;
-    camera->focalDistance = newfocaldist;
+    _camera->position = newpos;
+    _camera->focalDistance = newfocaldist;
     
   } else {
   
@@ -255,8 +255,8 @@
 
 - (void) viewAll
 {
-  if (camera == NULL || _controller == nil) return;
-  camera->viewAll([_controller sceneGraph],
+  if (_camera == NULL || _controller == nil) return;
+  _camera->viewAll([_controller sceneGraph],
                   [_controller sceneManager]->getViewportRegion());
 }
 
@@ -276,27 +276,27 @@
   SbBox3f box;
   const float SLACK = 0.001f;
 
-  if (camera == NULL) return;
+  if (_camera == NULL) return;
 
   // Important note: Applying an SoGetBoundingBoxAction here
   // is also important for caching, since applying a getBoundingBox
   // action to the SG creates a valid bounding box cache, needed
   // for caching. kyrah 20030622
   
-  if (autoclipboxaction == NULL)
-    autoclipboxaction = new
+  if (_autoclipboxaction == NULL)
+    _autoclipboxaction = new
       SoGetBoundingBoxAction([_controller viewportRegion]);
   else
-    autoclipboxaction->setViewportRegion([_controller viewportRegion]);
+    _autoclipboxaction->setViewportRegion([_controller viewportRegion]);
 
-  autoclipboxaction->apply(scenegraph);
-  xbox =  autoclipboxaction->getXfBoundingBox();
+  _autoclipboxaction->apply(scenegraph);
+  xbox =  _autoclipboxaction->getXfBoundingBox();
   [self getCameraCoordinateSystem:cameramatrix inverse:inverse];
   xbox.transform(inverse);
 
-  m.setTranslate(-camera->position.getValue());
+  m.setTranslate(-_camera->position.getValue());
   xbox.transform(m);
-  m = camera->orientation.getValue().inverse();
+  m = _camera->orientation.getValue().inverse();
   xbox.transform(m);
   box = xbox.project();
 
@@ -313,8 +313,8 @@
   // Add some slack around bounding box in case the scene fits exactly
   // inside it, to avoid artifacts like the near clipping plane cutting
   // into the model's corners when it is rotated.
-  camera->nearDistance = nearval * (1.0f - SLACK);
-  camera->farDistance = farval * (1.0f + SLACK);
+  _camera->nearDistance = nearval * (1.0f - SLACK);
+  _camera->farDistance = farval * (1.0f + SLACK);
 }
 
 // ------------------ Accessor methods ----------------------------
@@ -331,15 +331,15 @@
 {
   if (cam == NULL) return;
 
-  if (controllerhascreatedcamera) { // delete camera if we created it
-    SoGroup * camparent = [self getParentOfNode:camera
+  if (_controllerhascreatedcamera) { // delete camera if we created it
+    SoGroup * camparent = [self getParentOfNode:_camera
       inSceneGraph:(SoGroup*)[_controller sceneGraph]];
-    camparent->removeChild(camera);
-    controllerhascreatedcamera = NO;
+    camparent->removeChild(_camera);
+    _controllerhascreatedcamera = NO;
   }
-  if (camera) camera->unref();
-  camera = cam;
-  camera->ref();
+  if (_camera) _camera->unref();
+  _camera = cam;
+  _camera->ref();
 #if 0
   saveHomePosition;
 #endif
@@ -349,7 +349,7 @@
 /*" Returns the actual camera used in the scene graph. "*/
 
 - (SoCamera *) soCamera { 
-  return camera; 
+  return _camera; 
 }
 
 
@@ -360,7 +360,7 @@
  "*/
     
 - (void) setControllerHasCreatedCamera:(BOOL) yn { 
-  controllerhascreatedcamera = yn; 
+  _controllerhascreatedcamera = yn; 
 }
 
 /*" Returns YES if the camera was created by the controller 
@@ -369,7 +369,7 @@
  "*/
  
 - (BOOL) controllerHasCreatedCamera { 
-  return controllerhascreatedcamera; 
+  return _controllerhascreatedcamera; 
 }
 
 /*" Sets the SCCamera's SCController component to controller. "*/
@@ -393,18 +393,18 @@
 - (void) reorient:(SbRotation)rot
 {
   SbVec3f dir, focalpt;
-  if (camera == NULL) return;
+  if (_camera == NULL) return;
   
   // Find global coordinates of focal point.
-  camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), dir);
-  focalpt = camera->position.getValue() + camera->focalDistance.getValue() * dir;
+  _camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), dir);
+  focalpt = _camera->position.getValue() + _camera->focalDistance.getValue() * dir;
   
   // Set new orientation value by accumulating the new rotation.
-  camera->orientation = rot * camera->orientation.getValue();
+  _camera->orientation = rot * _camera->orientation.getValue();
   
   // Reposition camera so we are still pointing at the same old focal point.
-  camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), dir);
-  camera->position = focalpt - camera->focalDistance.getValue() * dir;
+  _camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), dir);
+  _camera->position = focalpt - _camera->focalDistance.getValue() * dir;
 }
 
 /*" Get the camera's object coordinate system. "*/
@@ -417,7 +417,7 @@
   
   searchaction.setSearchingAll(TRUE);
   searchaction.setInterest(SoSearchAction::FIRST);
-  searchaction.setNode(camera);
+  searchaction.setNode(_camera);
   searchaction.apply(root);
   m = inv = SbMatrix::identity();
   if (searchaction.getPath()) {

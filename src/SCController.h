@@ -16,18 +16,18 @@ class SoGetBoundingBoxAction;
 {
   IBOutlet SCView * view;
 
-  SCCamera * camera;
+  SCCamera * _camera;
   SCEventConverter * _eventconverter;
   NSTimer * _timer;
   NSRect _viewframe;
-  SoGroup * scenegraph;	  // the whole scenegraph
+  SoGroup * _scenegraph;	  // the whole scenegraph
   SoSceneManager * _scenemanager;
   BOOL _handleseventsinviewer;
-  float autoclipvalue;
+  float _autoclipvalue;
   enum AutoClipStrategy {
     CONSTANT_NEAR_PLANE,
     VARIABLE_NEAR_PLANE
-  } autoclipstrategy;
+  } _autoclipstrategy;
 }
 
 /*" Static methods "*/

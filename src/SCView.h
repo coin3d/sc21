@@ -10,6 +10,7 @@
 @interface SCView : NSOpenGLView <NSCoding>
 {
   IBOutlet SCController * controller; /*" handles the actual Coin interaction."*/
+  
   int _colorbits; /*" specifies the color depth. "*/
   int _depthbits;  /*" specifies the z buffer resolution. "*/
 }

@@ -15,11 +15,10 @@ class SoOrthographicCamera;
 
 @interface SCCamera : NSObject {
   SCController * _controller;
-  SoCamera * camera;
-  SoGetBoundingBoxAction * autoclipboxaction;
-  BOOL controllerhascreatedcamera;
+  SoCamera * _camera;
+  SoGetBoundingBoxAction * _autoclipboxaction;
+  BOOL _controllerhascreatedcamera;
 }
-
 
 /*" Initializing an SCCamera "*/
 - (id) initWithSoCamera:(SoCamera *) camera controller:(SCController *) controller;
@@ -38,7 +37,6 @@ class SoOrthographicCamera;
 - (void) updateClippingPlanes:(SoGroup *) scenegraph;
 
 // internal
-
 - (void) getCameraCoordinateSystem:(SbMatrix &)matrix inverse:(SbMatrix &) inverse;
 
 /*" Accessors "*/ 

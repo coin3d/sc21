@@ -20,16 +20,13 @@ class SoDirectionalLight;
   // including a potential added camera and headlight,
   // while userscenegraph is the user supplied SG.
 
-  NSPoint lastmousepos;
-  NSMutableArray * mouselog;
-
-  SoDirectionalLight * headlight;  
-  SbSphereSheetProjector * spinprojector;
-  SbRotation * spinrotation;
-  SoGroup * userscenegraph;  
-
-  BOOL iswaitingforseek;  
-
+  NSPoint _lastmousepos;
+  NSMutableArray * _mouselog;
+  SoDirectionalLight * _headlight;  
+  SbSphereSheetProjector * _spinprojector;
+  SbRotation * _spinrotation;
+  SoGroup * _userscenegraph;  
+  BOOL _iswaitingforseek;  
 }
 
 /*" Actions "*/

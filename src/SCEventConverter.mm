@@ -145,13 +145,13 @@ static struct key1map KeyMap[] = {
 {
   if (self = [super init]) {
     _controller = ctrl;
-    keydict = new SbDict;
-    printabledict = new SbDict;
+    _keydict = new SbDict;
+    _printabledict = new SbDict;
     int i=0;
     while (KeyMap[i].nsvalue != 0) {
-      keydict->enter((unsigned long)KeyMap[i].nsvalue,
+      _keydict->enter((unsigned long)KeyMap[i].nsvalue,
                      (void *)KeyMap[i].sovalue);
-      printabledict->enter((unsigned long)KeyMap[i].nsvalue,
+      _printabledict->enter((unsigned long)KeyMap[i].nsvalue,
                            (void *)(int)KeyMap[i].printable);
       i++;
     }    
@@ -176,8 +176,8 @@ static struct key1map KeyMap[] = {
 /* Clean up after ourselves. */
 - (void) dealloc
 {
-  delete keydict;
-  delete printabledict;
+  delete _keydict;
+  delete _printabledict;
 }
 
 
@@ -264,7 +264,7 @@ static struct key1map KeyMap[] = {
   unsigned long c = [s characterAtIndex:0];
   void * sokey, * printable;
   SoKeyboardEvent * ke = new SoKeyboardEvent;
-  if (keydict->find(c, sokey) && printabledict->find(c, printable)) {
+  if (_keydict->find(c, sokey) && _printabledict->find(c, printable)) {
     ke->setKey((SoKeyboardEvent::Key)(int)sokey);
     ke->setPrintableCharacter((char)(int)printable);
   }

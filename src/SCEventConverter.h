@@ -7,7 +7,7 @@
 
 @interface SCEventConverter : NSObject {
   SCController * _controller;
-  SbDict * keydict, * printabledict;
+  SbDict * _keydict, * _printabledict;
 }
 
 /*" Initializing an SCEventConverter "*/

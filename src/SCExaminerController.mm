@@ -57,7 +57,7 @@
 
 - (IBAction) viewAll:(id)sender
 {
-  [camera viewAll];
+  [_camera viewAll];
 }
 
 /*" Toggles between perspective and orthographic camera. "*/
@@ -66,7 +66,7 @@
 {
   SoType persp = SoPerspectiveCamera::getClassTypeId();
   SoType ortho = SoOrthographicCamera::getClassTypeId();
-  [camera convertToType: ([camera isPerspective] ? ortho : persp)];
+  [_camera convertToType: ([_camera isPerspective] ? ortho : persp)];
 }
 
 /*" Switches the headlight on and off. "*/
@@ -89,15 +89,15 @@
 - (id) init
 {
   if (self = [super init]) {
-    headlight = NULL;
+    _headlight = NULL;
     SbViewVolume volume;
-    mouselog = [[NSMutableArray alloc] init];
-    spinprojector = new SbSphereSheetProjector(SbSphere(SbVec3f(0,0,0),0.8f));
+    _mouselog = [[NSMutableArray alloc] init];
+    _spinprojector = new SbSphereSheetProjector(SbSphere(SbVec3f(0,0,0),0.8f));
     volume.ortho(-1, 1, -1, 1, -1, 1);
-    spinprojector->setViewVolume(volume);
-    spinrotation = new SbRotation;
-    spinrotation->setValue(SbVec3f(0, 0, -1), 0);
-    iswaitingforseek = NO;
+    _spinprojector->setViewVolume(volume);
+    _spinrotation = new SbRotation;
+    _spinrotation->setValue(SbVec3f(0, 0, -1), 0);
+    _iswaitingforseek = NO;
   }
   return self;
 }
@@ -110,15 +110,15 @@
 {
   // FIXME: Move shared code to commonInit: kyrah 20030621
   if (self = [super initWithCoder:coder]) {
-    headlight = NULL;
+    _headlight = NULL;
     SbViewVolume volume;
-    mouselog = [[NSMutableArray alloc] init];
-    spinprojector = new SbSphereSheetProjector(SbSphere(SbVec3f(0,0,0),0.8f));
+    _mouselog = [[NSMutableArray alloc] init];
+    _spinprojector = new SbSphereSheetProjector(SbSphere(SbVec3f(0,0,0),0.8f));
     volume.ortho(-1, 1, -1, 1, -1, 1);
-    spinprojector->setViewVolume(volume);
-    spinrotation = new SbRotation;
-    spinrotation->setValue(SbVec3f(0, 0, -1), 0);
-    iswaitingforseek = NO;
+    _spinprojector->setViewVolume(volume);
+    _spinrotation = new SbRotation;
+    _spinrotation->setValue(SbVec3f(0, 0, -1), 0);
+    _iswaitingforseek = NO;
   }
   return self;
 }
@@ -146,10 +146,10 @@
 
 - (void) dealloc
 {
-  [mouselog release];
+  [_mouselog release];
 
-  delete spinprojector;
-  delete spinrotation;
+  delete _spinprojector;
+  delete _spinrotation;
   [super dealloc];
 }
 
@@ -161,8 +161,7 @@
  
 - (void) render
 {
-  [camera updateClippingPlanes:scenegraph];
-//  [camera updateClippingPlanes:userscenegraph];
+  [_camera updateClippingPlanes:_userscenegraph];
   [super render];
 }
 
@@ -183,7 +182,7 @@
   SoSeparator * root;
 
   // Check if somebody passes the scenegraph that is already set.
-  if (sg != NULL && sg == userscenegraph) {
+  if (sg != NULL && sg == _userscenegraph) {
     NSLog(@"setSceneGraph called with the same root as already set");
     return;
   }
@@ -191,46 +190,46 @@
   // Set old headlight to NULL, or otherwise toggling the headlight will
   // continue to have effect on the headlight of the previous (destroyed)
   // scenegraph.
-  headlight = NULL;
+  _headlight = NULL;
   
   root = new SoSeparator;
-  userscenegraph = sg;     // store user-supplied SG
-  userscenegraph->ref();   // must ref() before applying action
+  _userscenegraph = sg;     // store user-supplied SG
+  _userscenegraph->ref();   // must ref() before applying action
 
-  headlight = new SoDirectionalLight;
-  root->addChild(headlight);
+  _headlight = new SoDirectionalLight;
+  root->addChild(_headlight);
 
   // If there was a light in the user scenegraph, turn off headlight
   // by default. We are adding one anyway, since you might want to
   // be able to view the whole model (regardless if lights are present
   // or not.
-  [self setHeadlightIsOn: ([self findLightInSceneGraph:userscenegraph]) ? NO : YES];
+  [self setHeadlightIsOn: ([self findLightInSceneGraph:_userscenegraph]) ? NO : YES];
  
-  root->addChild(userscenegraph);
-  userscenegraph->unref();
+  root->addChild(_userscenegraph);
+  _userscenegraph->unref();
 
-  SoCamera * scenecamera = [self findCameraInSceneGraph:userscenegraph];
+  SoCamera * scenecamera = [self findCameraInSceneGraph:_userscenegraph];
 
   // Make our camera if there was none.
   if (!scenecamera) {
     scenecamera = new SoPerspectiveCamera;
-    [camera setSoCamera:scenecamera];
-    [camera setControllerHasCreatedCamera:YES];
+    [_camera setSoCamera:scenecamera];
+    [_camera setControllerHasCreatedCamera:YES];
     root->insertChild(scenecamera, 1);
   } else {
-    [camera setSoCamera:scenecamera];
-    [camera setControllerHasCreatedCamera:NO];
+    [_camera setSoCamera:scenecamera];
+    [_camera setControllerHasCreatedCamera:NO];
   }
 
   // begin [super setSceneGraph:root];
   root->ref();
-  if (scenegraph) scenegraph->unref();
-  scenegraph = root;
-  _scenemanager->setSceneGraph(scenegraph);
+  if (_scenegraph) _scenegraph->unref();
+  _scenegraph = root;
+  _scenemanager->setSceneGraph(_scenegraph);
   [view setNeedsDisplay:YES];
   // end [super setSceneGraph:root];
 
-  if ([camera controllerHasCreatedCamera]) [self viewAll:nil];
+  if ([_camera controllerHasCreatedCamera]) [self viewAll:nil];
 
 }
 
@@ -243,8 +242,8 @@
 
 - (BOOL) headlightIsOn
 {
-  if (headlight == NULL) return FALSE;
-  return (headlight->on.getValue() == TRUE) ? YES : NO;
+  if (_headlight == NULL) return FALSE;
+  return (_headlight->on.getValue() == TRUE) ? YES : NO;
 }
 
 
@@ -252,15 +251,15 @@
 
 - (void) setHeadlightIsOn:(BOOL) yn
 {
-  if (headlight == NULL) return;
-  headlight-> on = yn ? TRUE : FALSE;
+  if (_headlight == NULL) return;
+  _headlight-> on = yn ? TRUE : FALSE;
 }
 
 /*" Returns the headlight of the current scene graph. "*/
 
 - (SoDirectionalLight *) headlight
 {
-  return headlight;
+  return _headlight;
 }
 
 /*" Menu validation: Enable/disable default menu items depending on state.
@@ -269,7 +268,7 @@
 
 - (BOOL)validateMenuItem:(NSMenuItem *) item {
   if ([[item title] isEqualToString:@"toggle camera type"]
-     && ![camera controllerHasCreatedCamera]) {
+     && ![_camera controllerHasCreatedCamera]) {
     return NO;
   }
   return YES;
@@ -321,7 +320,7 @@
 
       p = [view convertPoint:[event locationInWindow] fromView:nil];
       v = [NSValue valueWithPoint:p];
-      if (iswaitingforseek) action = @selector(performSeek:);
+      if (_iswaitingforseek) action = @selector(performSeek:);
       else if (flags & NSAlternateKeyMask) action = @selector(startPanning:);
       else action = @selector(startDragging:);
       break;
@@ -376,7 +375,7 @@
             break;
           case 's':
             NSLog(@"Waiting to seek...");
-            iswaitingforseek = YES;
+            _iswaitingforseek = YES;
             action = @selector(ignore:);
             break;
           default:
@@ -402,9 +401,9 @@
 - (void) startDragging:(NSValue *) v
 {
   // Clear log and project to the last position we stored.
-  [mouselog removeAllObjects];
-  spinprojector->project(SbVec2f(lastmousepos.x, lastmousepos.y));
-  [mouselog insertObject:v atIndex:0];  
+  [_mouselog removeAllObjects];
+  _spinprojector->project(SbVec2f(_lastmousepos.x, _lastmousepos.y));
+  [_mouselog insertObject:v atIndex:0];  
 }
 
 
@@ -413,15 +412,15 @@
 - (void) startPanning:(NSValue *) v
 {
   SbViewVolume vv;
-  [mouselog removeAllObjects];
-  [mouselog insertObject:v atIndex:0];
+  [_mouselog removeAllObjects];
+  [_mouselog insertObject:v atIndex:0];
 }
 
 /*" Performs dragging operation. "*/
 
 - (void) performDragging:(NSValue *) v
 {
-  [mouselog insertObject:v atIndex:0];
+  [_mouselog insertObject:v atIndex:0];
   [self _spin];
 }
 
@@ -429,7 +428,7 @@
 
 - (void) performPanning:(NSValue *) v
 {
-  [mouselog insertObject:v atIndex:0];
+  [_mouselog insertObject:v atIndex:0];
   [self _pan];
 }
 
@@ -439,14 +438,14 @@
 {
   float f;
   [v getValue:&f];
-  [camera zoom:f];
+  [_camera zoom:f];
 }
 
 /*" Currently unimplemented. "*/
 - (void) performSeek:(NSValue *) v
 {
   NSLog(@"Seeking.");
-  iswaitingforseek = NO;
+  _iswaitingforseek = NO;
   // FIXME: Implement. kyrah 20030621.
 }
 
@@ -460,7 +459,7 @@
   NSPoint p = [v pointValue];
   SbLine line;
   SbVec3f curplanepoint, prevplanepoint;
-  SoCamera * cam = [camera soCamera];
+  SoCamera * cam = [_camera soCamera];
   if (cam == NULL) return;
   
   SbViewVolume vv = cam->getViewVolume([view aspectRatio]);
@@ -499,13 +498,13 @@
   NSPoint p, q, pn, qn;
   SbLine line;
   SbVec3f curplanepoint, prevplanepoint;
-  SoCamera * cam = [camera soCamera];
+  SoCamera * cam = [_camera soCamera];
 
-  if ([mouselog count] < 2) return;
+  if ([_mouselog count] < 2) return;
   if (cam == NULL) return;
 
-  p = [[mouselog objectAtIndex:0] pointValue];
-  q = [[mouselog objectAtIndex:1] pointValue];
+  p = [[_mouselog objectAtIndex:0] pointValue];
+  q = [[_mouselog objectAtIndex:1] pointValue];
   qn = [view normalizePoint:q];
   pn = [view normalizePoint:p];
 
@@ -528,19 +527,19 @@
   NSPoint p, q, qn, pn;
   SbRotation r;
 
-  if ([mouselog count] < 2) return;
-  assert (spinprojector);
+  if ([_mouselog count] < 2) return;
+  assert (_spinprojector);
 
-  p = [[mouselog objectAtIndex:0] pointValue];
-  q = [[mouselog objectAtIndex:1] pointValue];
+  p = [[_mouselog objectAtIndex:0] pointValue];
+  q = [[_mouselog objectAtIndex:1] pointValue];
   qn = [view normalizePoint:q];
   pn = [view normalizePoint:p];
 
-  spinprojector->project(SbVec2f(qn.x, qn.y));
-  spinprojector->projectAndGetRotation(SbVec2f(pn.x, pn.y), r);
+  _spinprojector->project(SbVec2f(qn.x, qn.y));
+  _spinprojector->projectAndGetRotation(SbVec2f(pn.x, pn.y), r);
   r.invert();
 
-  [camera reorient:r];
+  [_camera reorient:r];
 }
 
 @end
