@@ -31,7 +31,6 @@
 
 @interface SCMode : NSObject
 {
-  //FIXME: Pimplify?
  @private
   BOOL active;
 }

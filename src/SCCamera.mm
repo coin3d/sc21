@@ -235,9 +235,6 @@
   } else {
     SELF->autoclipboxaction->setViewportRegion(viewport);
   }
-  // FIXME: According to kintel, this shouldn't be applied only to the
-  // userscenegraph -- but SoGui also applies the action to the
-  // superscenegraph (cf. SoGuiViewer.cpp.in:949). kyrah 20040908
   SELF->autoclipboxaction->apply([sceneGraph _SC_superSceneGraph]);
 
   if (SELF->updatesclippingplanes) {
