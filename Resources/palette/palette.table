@@ -17,7 +17,10 @@
 		<!-- a list of class names exported from palette to IB -->
 	<key>ExportClasses</key>
 	<array>
+		<string>SCOpenGLView</string>
 		<string>SCView</string>
+		<string>SCController</string>
+		<string>SCExaminerController</string>
 	</array>
 
 		<!-- a list of images names exported from palette to IB -->
