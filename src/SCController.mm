@@ -30,10 +30,8 @@
 - (void) _processTimerQueue:(NSTimer *) t;
 - (void) _processDelayQueue:(NSTimer *) t;
 - (void) _setInternalSceneGraph:(SoGroup *)root;
-- (void) _lightNotFound;
-- (void) _lightFound;
-- (void) _cameraNotFound;
-- (void) _positionCamera;
+- (void) _handleLighting;
+- (void) _handleCamera;
 @end  
 
 
@@ -230,26 +228,11 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   if (scenegraph == NULL) scenegraph = new SoSeparator;
 
   [self _setInternalSceneGraph:scenegraph];
-
-  if (![self findLightInSceneGraph:scenegraph]) {
-    [self _lightNotFound];
-  } else {
-    [self _lightFound];
-  }
-
-  SoCamera * scenecamera  = [self findCameraInSceneGraph:scenegraph];
-  if (scenecamera == NULL) {
-    [self _cameraNotFound];
-  } else {
-    [_camera setSoCamera:scenecamera deleteOldCamera:NO];
-    [_camera setControllerHasCreatedCamera:NO]; 
-  }
+  [self _handleLighting];
+  [self _handleCamera];
   [_camera updateClippingPlanes:_scenegraph];
-
-  if (_scenemanager) {
-    _scenemanager->setSceneGraph(_scenegraph);
-    [self _positionCamera];
-  }
+  
+  if (_scenemanager) _scenemanager->setSceneGraph(_scenegraph);
 
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCSceneGraphChangedNotification object:self];
@@ -738,26 +721,24 @@ otherwise NULL.
   _scenegraph = root;
 }
 
-- (void) _lightNotFound
+- (void) _handleLighting
 {
-  [[NSNotificationCenter defaultCenter]
-    postNotificationName:SCNoLightFoundInSceneNotification object:self];
+  if (![self findLightInSceneGraph:_scenegraph]) {
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:SCNoLightFoundInSceneNotification object:self];
+  }
 }
 
-- (void) _lightFound
-{
-  // do nothing
-}
-
-- (void) _cameraNotFound
-{
-  [[NSNotificationCenter defaultCenter]
-    postNotificationName:SCNoCameraFoundInSceneNotification object:self];
-}
-
-- (void) _positionCamera
-{
-  // do nothing.
+- (void) _handleCamera
+{  
+  SoCamera * scenecamera  = [self findCameraInSceneGraph:_scenegraph];
+  if (scenecamera == NULL) {
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:SCNoCameraFoundInSceneNotification object:self];
+  } else {
+    [_camera setSoCamera:scenecamera deleteOldCamera:NO];
+    [_camera setControllerHasCreatedCamera:NO]; 
+  }
 }
 
 @end

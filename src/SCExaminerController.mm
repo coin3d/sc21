@@ -160,7 +160,16 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
      A camera is added before the scenegraph, if it does not contain one.
  */
-// No setSceneGraph implementation - uses superclass.
+
+- (void) setSceneGraph:(SoGroup*)root
+{
+  [super setSceneGraph:root];
+  
+  if ([_camera controllerHasCreatedCamera]) {
+    [self viewAll];
+    [view setNeedsDisplay:YES];
+  }  
+}
 
 
 /*" Sets the type of the camera we are using for viewing the scene.
@@ -506,29 +515,29 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   _scenegraph->addChild(_userscenegraph);
 }
 
-- (void) _lightNotFound
+
+- (void) _handleLighting
 {
-  [self setHeadlightIsOn:YES];
+  if (![self findLightInSceneGraph:_scenegraph]) {
+    NSLog(@"No light found, Turning headlight on.");
+    [self setHeadlightIsOn:YES];
+  } else {
+    NSLog(@"Turning headlight on.");
+    [self setHeadlightIsOn:NO];
+  }
 }
 
-- (void) _lightFound
+- (void) _handleCamera
 {
-  [self setHeadlightIsOn:NO];
-}
-
-- (void) _cameraNotFound
-{
-  SoCamera * scenecamera = new SoPerspectiveCamera;
-  [_camera setSoCamera:scenecamera deleteOldCamera:NO];
-  [_camera setControllerHasCreatedCamera:YES];
-  _scenegraph->insertChild(scenecamera, 1);
-}
-
-- (void) _positionCamera
-{
-  if ([_camera controllerHasCreatedCamera]) {
-    [self viewAll];
-    [view setNeedsDisplay:YES];
+  SoCamera * scenecamera  = [self findCameraInSceneGraph:_scenegraph];
+  if (scenecamera == NULL) {
+    SoCamera * scenecamera = new SoPerspectiveCamera;
+    [_camera setSoCamera:scenecamera deleteOldCamera:NO];
+    [_camera setControllerHasCreatedCamera:YES];
+    _scenegraph->insertChild(scenecamera, 1);
+  } else {
+    [_camera setSoCamera:scenecamera deleteOldCamera:NO];
+    [_camera setControllerHasCreatedCamera:NO];
   }
 }
 
