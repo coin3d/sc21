@@ -195,6 +195,9 @@
       [[NSOpenGLContext alloc] initWithFormat:[format pixelFormat]
                                shareContext:nil];
 
+    //FIXME: The following line results in a "invalid drawable" message.
+    //This is probably because this method is called before the view
+    //is on-screen (from SCView.reshape) (kintel 20040616).
     [SELF->openGLContext setView:self];
     [SELF->openGLContext makeCurrentContext];
     // Run this only under <= 10.2 since >=10.3 automatically calls
