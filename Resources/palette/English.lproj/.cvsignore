@@ -1,2 +1,5 @@
 .cvsignore
 Sc21Palette~.nib
+SCControllerInspector~.nib
+SCFlyHandlerInspector~.nib
+SCSceneGraphInspector~.nib
