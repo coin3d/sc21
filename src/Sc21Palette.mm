@@ -25,8 +25,8 @@
  |                                                                 |
  * =============================================================== */
  
-
 #import "Sc21Palette.h"
+#import <Cocoa/Cocoa.h>
 #import <Inventor/SoDB.h>
 
 @implementation Sc21Palette
@@ -140,11 +140,11 @@
 // class' regular implementation in all cases.
 
 @interface SCView (IBTest)
-- (void) drawRect:(NSRect) frame;
+- (void)drawRect:(NSRect)frame;
 @end
 
 @implementation SCView (IBTest)
-- (void) drawRect:(NSRect) frame
+- (void)drawRect:(NSRect)frame
 {
   NSLog(@"Sc21Palette: SCView.drawRect:");
   [[NSColor blackColor] set];
@@ -165,11 +165,11 @@
 // are in test interface mode.
 
 @interface SCController (IBTest)
-- (void) _SC_idle:(NSNotification *)not;
+- (void)_SC_idle:(NSNotification *)n;
 @end
 
 @implementation SCController (IBTest)
-- (void) _SC_idle:(NSNotification *)not
+- (void)_SC_idle:(NSNotification *)n
 {
   if ([NSApp isTestingInterface]) {
     SoDB::getSensorManager()->processTimerQueue();
