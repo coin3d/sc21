@@ -698,8 +698,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 #endif
   SELF->eventconverter = [[SCEventConverter alloc] init];
   SELF->redrawsel = @selector(display);
-  SELF->clearcolorbuffer = YES;
-  SELF->cleardepthbuffer = YES;
 
   [self setSceneManager:new SoSceneManager];
 
