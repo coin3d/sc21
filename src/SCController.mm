@@ -206,7 +206,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 - (void) dealloc
 {
   [self stopTimers];
-  [view release];
+  [view setController:nil];
   [_eventconverter release];
   [_camera release];
   delete _scenemanager;
@@ -220,8 +220,8 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 - (void) setView:(SCView *)newview
 {
-  [newview retain];
-  [view release];
+  // We intentionally do not retain the view here, to avoid
+  // circular references.
   view = newview;
 }
 
@@ -394,9 +394,9 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   float blue = sbcolor[2];
   
   NSColor * color = [NSColor colorWithDeviceRed:red
-                                        green:green
-                                         blue:blue
-                                        alpha:1];
+                             green:green
+                             blue:blue
+                             alpha:1];
   return color;	
 }
 
