@@ -314,6 +314,10 @@ void error_cb(const class SoError * error, void * data)
 {
   SC21_DEBUG(@"SCSceneGraph.setRoot: %p", root);
 
+  // just to be sure we don't accidentally delete root when
+  // unref()'ing scenegraph below (in case root == scenegraph)
+  root->ref(); 
+
   // Clean up existing scenegraph
   if (SELF->scenegraph) { SELF->scenegraph->unref(); }
   if (SELF->superscenegraph) { SELF->superscenegraph->unref(); }
@@ -403,6 +407,9 @@ void error_cb(const class SoError * error, void * data)
   
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCRootChangedNotification object:self];  
+
+  // ref()'ed at the start of this method to avoid accidental deletion
+  root->unrefNoDelete(); 
 
   return YES;
 }
