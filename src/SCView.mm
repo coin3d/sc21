@@ -35,7 +35,6 @@
 
 @interface _SCViewP : NSObject
 {
-  NSOpenGLView * oldview; /* FIXME: We should remove this after a grace period (say Sc21 V1.0.1) */
   NSCursor * cursor;
 }
 @end
@@ -435,72 +434,12 @@ Sets the controller to newcontroller. newcontroller is retained.
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {
-  SC21_DEBUG(@"SCView.encodeWithCoder:");
   [super encodeWithCoder:coder];
-}
-
-/*!
-  This method is here only to support reading nib files created with
-  Sc21 public beta.
-
-  Here we decode the old instance variables, colorbits and depthbits,
-  and copy all relevant settings from the old view.
-
-  FIXME: We somehow still lose outlet connections and size settings when
-  reading old nib files...
-
-  FIXME: We should remove this after a grace period (say Sc21 V1.0.1)
-  (kintel 20040404)
-*/
-- (id)awakeAfterUsingCoder:(NSCoder *)coder
-{
-  SC21_DEBUG(@"SCView.awakeAfterUsingCoder:");
-  if (SELF->oldview) {
-    SC21_DEBUG(@"  upgrading old instance.");
-    int colorbits, depthbits;
-    [coder decodeValueOfObjCType:@encode(int) at:&colorbits];
-    [coder decodeValueOfObjCType:@encode(int) at:&depthbits];
-    SC21_DEBUG(@"  colorbits: %d, depthbits: %d", colorbits, depthbits);
-    //FIXME: Copy these as well:
-    // colorbits, depthbits, pixel format attributes
-    // (kintel 20040404)
-    if (self = [self initWithFrame:[SELF->oldview frame]]) {
-      NSView * superview = [SELF->oldview superview];
-      [superview replaceSubview:SELF->oldview with:self];
-      [self setMenu:[SELF->oldview menu]];
-      [self setInterfaceStyle:[SELF->oldview interfaceStyle]];
-      [self setHidden:[SELF->oldview isHidden]];
-      [self setNextKeyView:[SELF->oldview nextKeyView]];
-      [self setBounds:[SELF->oldview bounds]];
-      if ([SELF->oldview isRotatedFromBase]) {
-        [self setFrameRotation:[SELF->oldview frameRotation]];
-        [self setBoundsRotation:[SELF->oldview boundsRotation]];
-      }
-      [self setPostsFrameChangedNotifications:[SELF->oldview postsFrameChangedNotifications]];
-      [self setPostsBoundsChangedNotifications:[SELF->oldview postsBoundsChangedNotifications]];
-      [self setAutoresizingMask:[SELF->oldview autoresizingMask]];
-      [self setToolTip:[SELF->oldview toolTip]];
-      [SELF->oldview release];
-      SELF->oldview = nil;
-    }
-  }
-  return self;
 }
 
 - (id)initWithCoder:(NSCoder *)coder
 {
-  SC21_DEBUG(@"SCView.initWithCoder: (coder says version is %d)", 
-             [coder versionForClassName:@"SCView"]);
-  // This is support for reading archives from Sc21 public beta
-  // FIXME: We should remove this after a grace period (say Sc21 V1.0.1)
-  // (kintel 20040404)
-  if ([coder versionForClassName:@"SCView"] == 0) {
-    [self _SC_commonInit];
-    SELF->oldview = [[NSOpenGLView alloc] initWithCoder:coder];
-    return self;
-  } else {
-    self = [super initWithCoder:coder]; // Will call _SC_commonInit
-  }  
+  self = [super initWithCoder:coder]; // Will call _SC_commonInit
   return self;
 }
 
@@ -531,6 +470,5 @@ Sets the controller to newcontroller. newcontroller is retained.
   SC21_LOG_METHOD;
   SELF->cursor = [NSCursor currentCursor];
 }
-
 
 @end

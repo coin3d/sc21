@@ -590,7 +590,6 @@ Returns the receiver's delegate.
   if ([coder allowsKeyedCoding]) {
     [coder encodeBool:SELF->handleseventsinviewer 
            forKey:@"SC_handleseventsinviewer"];
-    //FIXME: unsigned int -> encodeValueOfObjCType:at: ? (kintel 20040412)
     [coder encodeInt:SELF->modifierforcoinevent 
            forKey:@"SC_modifierforcoinevent"];
     [coder encodeBool:SELF->clearcolorbuffer 
@@ -605,12 +604,7 @@ Returns the receiver's delegate.
     
 - (id)initWithCoder:(NSCoder *)coder
 {
-  // FIXME: Change to [SCController version]. kyrah 20040629.
-  if ([coder versionForClassName:@"SCController"] == 0) {
-    [self _SC_commonInit];
-    SELF->oldcontroller = [[NSResponder alloc] initWithCoder:coder];
-    return self;
-  } else if (self = [super init]) {
+  if (self = [super init]) {
     [self _SC_commonInit];
     if ([coder allowsKeyedCoding]) {
       // We don't need to check for existence since these four keys
@@ -619,45 +613,9 @@ Returns the receiver's delegate.
         [coder decodeBoolForKey:@"SC_handleseventsinviewer"];
       SELF->clearcolorbuffer = [coder decodeBoolForKey:@"SC_clearcolorbuffer"];
       SELF->cleardepthbuffer = [coder decodeBoolForKey:@"SC_cleardepthbuffer"];
-      //FIXME: Remove this after all nib files have been saved with this
-      //new code (kintel 20040609)
-      if ([coder containsValueForKey:@"SC_modifierforcoinevent"]) {
-        SELF->modifierforcoinevent = 
-          [coder decodeIntForKey:@"SC_modifierforcoinevent"];
-      }
+      SELF->modifierforcoinevent = 
+        [coder decodeIntForKey:@"SC_modifierforcoinevent"];
     }
-  }
-  return self;
-}
-
-/*!
-  This method is here only to support reading nib files created with
-  Sc21 public beta.
-
-  FIXME: We should remove this after a grace period (say Sc21 V1.0.1)
-  (kintel 20040404)
-*/
-- (id)awakeAfterUsingCoder:(NSCoder *)coder
-{
-  SC21_DEBUG(@"SCController.awakeAfterUsingCoder:");
-  if (SELF->oldcontroller) {
-    SC21_DEBUG(@"  upgrading old instance.");
-
-    if (self = [self init]) {
-      SELF->handleseventsinviewer = YES;
-      if ([coder allowsKeyedCoding]) {
-        if ([coder containsValueForKey:@"SC_handleseventsinviewer"]) {
-          SELF->handleseventsinviewer = 
-            [coder decodeBoolForKey:@"SC_handleseventsinviewer"];
-        }
-        // FIXME: Set camera's autoclipvalue? But somehow it's just not 
-        // worthwhile, since we're not intending on keeping this in the
-        // final release, right? kyrah 20040717
-      }
-    }
-
-    [SELF->oldcontroller release];
-    SELF->oldcontroller = nil;
   }
   return self;
 }
