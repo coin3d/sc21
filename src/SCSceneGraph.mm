@@ -296,7 +296,20 @@ void error_cb(const class SoError * error, void * data)
   is called with the superscenegraph as parameter.
  
   Both the passed and the actual scene graph will be !{ref()}'ed.
+
+  Returns !{YES} if the scenegraph was set successfully, and !{NO} if
+  an unexpected problem occured. (Currently the only reason when !{NO}
+  would be returned is when the delegate method
+  !{createSuperSceneGraph:} returns !{NULL}, which is interpreted as
+  an indication that setting the new scenegraph should be aborted.)
+
+  Note that it is perfectly fine to pass !{NULL} as root, in which
+  case the old scenegraph will be released and the scenegraph set to
+  !{NULL}. Since this is considered a valid operation, !{setRoot:}
+  will return !{YES} in this case.
 "*/
+
+
 - (BOOL)setRoot:(SoGroup *)root
 {
   SC21_DEBUG(@"SCSceneGraph.setRoot: %p", root);
