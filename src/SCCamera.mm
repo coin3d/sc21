@@ -221,6 +221,9 @@ Translate camera relative to its own coordinate system.
   } else {
     SELF->autoclipboxaction->setViewportRegion(viewport);
   }
+  // FIXME: According to kintel, this shouldn't be applied only to the
+  // userscenegraph -- but SoGui also applies the action to the
+  // superscenegraph (cf. SoGuiViewer.cpp.in:949). kyrah 20040908
   SELF->autoclipboxaction->apply([sceneGraph _SC_superSceneGraph]);
 
   if (SELF->updatesclippingplanes) {
@@ -338,17 +341,17 @@ Translate camera relative to its own coordinate system.
 }
 
 
-/*" Sets the actual camera in the Coin scene graph to cam. 
+/*" Sets the actual camera in the Coin scene graph to newcamera. 
     
-    Note that cam is expected to be part of the scenegraph already;
-    it is not inserted into it.
- "*/
+    Note that newcamera is expected to be part of the scenegraph
+    already; it is not inserted into it. 
+"*/
 
-- (void)setSoCamera:(SoCamera *)camera 
+- (void)setSoCamera:(SoCamera *)newcamera 
 {
-  if (camera == NULL) return;
+  if (newcamera == NULL) return;
   if (SELF->camera) SELF->camera->unref();
-  SELF->camera = camera;
+  SELF->camera = newcamera;
   SELF->camera->ref();
 }
 
