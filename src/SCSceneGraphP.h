@@ -36,6 +36,7 @@
   SoDirectionalLight * headlight;  
   BOOL addedlight;
   BOOL addedcamera;
+  BOOL createsuperscenegraph;
 }
 @end
 
@@ -46,4 +47,6 @@
 - (void)_SC_setHasAddedCamera:(BOOL)yn;
 - (void)_SC_createSuperSceneGraph;
 - (SoSeparator*)_SC_readFile:(NSString *)name;
+- (void)_SC_setCreatesSuperSceneGraph:(BOOL)yn;
+- (BOOL)_SC_createsSuperSceneGraph;
 @end  
