@@ -32,7 +32,6 @@ class SoSceneManager;
 - (void) awakeFromNib;
 - (void) encodeWithCoder:(NSCoder *)coder;
 
-
 /*" Getting the view associated with the controller "*/
 - (void) setView:(SCView *) view;
 - (SCView *) view;
