@@ -77,7 +77,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     mouse button is interpreted the same way.
 
     Clicking into the scene with the right mouse button brings up a
-    context menu. Holding down th CTRL key and clicking with the left
+    context menu. Holding down the CTRL key and clicking with the left
     mouse button is interpreted the same way.
 
     For general information, see also the SCController documentation.
@@ -289,10 +289,10 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
       handled = YES;
       break;
 
-    case NSRightMouseDown:
-      [NSMenu popUpContextMenu:[view menu] withEvent:event forView:view];
-      handled = YES;
-      break;
+      // Pass through right mouse -> used for context menu by NSView
+//     case NSRightMouseDown:
+//       handled = NO;
+//       break;
 
     case NSOtherMouseDown:
       p = [view convertPoint:[event locationInWindow] fromView:nil];
