@@ -79,9 +79,6 @@ class SoSceneManager;
 - (BOOL)headlightIsOn;
 - (void)setHeadlightIsOn:(BOOL)yn;
 
-/*" Debugging aids. "*/
-- (BOOL)dumpSceneGraph;
-
 /*" Event handling "*/
 - (BOOL)handleEvent:(NSEvent *)event inView:(NSView *)view;
 - (BOOL)handleEventAsCoinEvent:(NSEvent *)event inView:(NSView *)view;

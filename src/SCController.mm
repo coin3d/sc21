@@ -587,32 +587,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   SoDB::getSensorManager()->setChangedCallback(sensorqueuechanged_cb, self);
 }
 
-// ----------------- Debugging aids ----------------------------
-
-/*" Writes the current scenegraph to a file. The filename will be
-    XXX-dump.iv, where XXX is a number calculated based on the
-    current time. The file will be stored in the current working
-    directory. Returns !{NO} if there was an error writing the file,
-    !{YES} otherwise.
-"*/
-
-- (BOOL)dumpSceneGraph
-{
-  SoOutput out;
-  SbString filename = SbTime::getTimeOfDay().format();
-  filename += "-dump.iv";
-  SbBool ok = out.openFile(filename.getString());
-  if (ok) {
-    SoWriteAction wa(&out);
-    wa.apply(SELF->scenegraph);
-    return YES;
-  }
-  // FIXME: Shouldn't we post a notification about the error?
-  // In general, we should have a consistent strategy for
-  // exception handling
-  return NO;
-}
-
 // ---------------- NSCoder conformance -------------------------------
 
 /*" Encodes the SCController using encoder coder "*/
