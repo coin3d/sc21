@@ -404,7 +404,6 @@
       SELF->scrollwheelzoomenabled = 
         [coder decodeBoolForKey:@"SC_scrollwheelzoomenabled"];
       SELF->emulator = [[coder decodeObjectForKey:@"SC_emulator"] retain];
-      NSLog(@"emulator: %@", SELF->emulator);
     }
   }
   return self;
