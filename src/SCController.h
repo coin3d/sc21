@@ -48,7 +48,7 @@ class SoSceneManager;
  @private
   id delegate;
   SCSceneGraph * scenegraph;
-  IBOutlet id<SCEventHandling> eventhandler;
+  id<SCEventHandling> eventHandler;
 }
 
 /*" Static initialization "*/

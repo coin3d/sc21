@@ -202,24 +202,24 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
                                            selector:@selector(_SC_sceneGraphChanged:)
                                                name:SCRootChangedNotification
                                              object:scenegraph];  
-  
+ 
   // Re-register for eventhandling-related notifications.
   // Note that this is only necessary since our setEventHander: method is
   // not called from IB. 
   // FIXME: Remove this when we found out how to make IB use our accessor. 
   
-  [self->eventhandler drawableDidChange:[NSNotification 
+  [self->eventHandler drawableDidChange:[NSNotification 
     notificationWithName:SCDrawableChangedNotification object:self]];
   
-  [self->eventhandler sceneGraphDidChange:[NSNotification
+  [self->eventHandler sceneGraphDidChange:[NSNotification
     notificationWithName:SCSceneGraphChangedNotification object:self]];
   
-  [[NSNotificationCenter defaultCenter] addObserver:self->eventhandler 
+  [[NSNotificationCenter defaultCenter] addObserver:self->eventHandler 
                                            selector:@selector(drawableDidChange:) 
                                                name:SCDrawableChangedNotification 
                                              object:self];
   
-  [[NSNotificationCenter defaultCenter] addObserver:self->eventhandler 
+  [[NSNotificationCenter defaultCenter] addObserver:self->eventHandler 
                                            selector:@selector(sceneGraphDidChange:) 
                                                name:SCSceneGraphChangedNotification 
                                              object:self];
@@ -227,8 +227,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   [[NSNotificationCenter defaultCenter] addObserver:self 
                                            selector:@selector(_SC_cursorDidChange:) 
                                                name:SCCursorChangedNotification 
-                                             object:self->eventhandler];
-  
+                                             object:self->eventHandler];
 }
 
 - (void)dealloc
@@ -258,7 +257,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   [self _SC_viewSizeChanged];
   [[self->scenegraph camera] updateClippingPlanes:self->scenegraph];
   SELF->scenemanager->render(SELF->clearcolorbuffer, SELF->cleardepthbuffer);
-  [self->eventhandler update];
+  [self->eventHandler update];
 }
 
 #pragma mark --- event handling ---
@@ -326,7 +325,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 - (BOOL)handleEventAsViewerEvent:(NSEvent *)event
 {
   SC21_DEBUG(@"SCController.handleEventAsViewerEvent:");
-  return [self->eventhandler handleEvent:event];
+  return [self->eventHandler handleEvent:event];
 }
 
 /*" 
@@ -370,23 +369,24 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 
 - (void)setEventHandler:(id<SCEventHandling>)handler
 {
-  if (handler != self->eventhandler) {
-    [self->eventhandler release];
-    self->eventhandler = [handler retain];
+  NSLog(@"SCController setEventHandler: called");
+  if (handler != self->eventHandler) {
+    [self->eventHandler release];
+    self->eventHandler = [handler retain];
     NSNotification * notification = [NSNotification notificationWithName:SCDrawableChangedNotification object:self];
-    [self->eventhandler drawableDidChange:notification];
+    [self->eventHandler drawableDidChange:notification];
     notification = [NSNotification notificationWithName:SCSceneGraphChangedNotification object:self];
-    [self->eventhandler sceneGraphDidChange:notification];
+    [self->eventHandler sceneGraphDidChange:notification];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self->eventhandler selector:@selector(drawableDidChange:) name:SCDrawableChangedNotification object:self];
-    [[NSNotificationCenter defaultCenter] addObserver:self->eventhandler selector:@selector(sceneGraphDidChange:) name:SCSceneGraphChangedNotification object:self];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_SC_cursorDidChange:) name:SCCursorChangedNotification object:self->eventhandler];
+    [[NSNotificationCenter defaultCenter] addObserver:self->eventHandler selector:@selector(drawableDidChange:) name:SCDrawableChangedNotification object:self];
+    [[NSNotificationCenter defaultCenter] addObserver:self->eventHandler selector:@selector(sceneGraphDidChange:) name:SCSceneGraphChangedNotification object:self];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_SC_cursorDidChange:) name:SCCursorChangedNotification object:self->eventHandler];
   }
 }
 
 - (id<SCEventHandling>)eventHandler
 {
-  return self->eventhandler;
+  return self->eventHandler;
 }
 
 #pragma mark --- timer management ---
