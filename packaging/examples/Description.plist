@@ -5,10 +5,10 @@
 	<key>IFPkgDescriptionDeleteWarning</key>
 	<string></string>
 	<key>IFPkgDescriptionDescription</key>
-	<string>Sc21 examples 0.9.0 by Systems in Motion AS. Installed in /Developer/Examples/Sc21.</string>
+	<string>Sc21 examples 0.9.1 by Systems in Motion AS. Installed in /Developer/Examples/Sc21.</string>
 	<key>IFPkgDescriptionTitle</key>
 	<string>Sc21 examples</string>
 	<key>IFPkgDescriptionVersion</key>
-	<string>0.9.0</string>
+	<string>0.9.1</string>
 </dict>
 </plist>

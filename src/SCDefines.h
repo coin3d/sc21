@@ -61,5 +61,4 @@ SC21_EXTERN const double Sc21VersionNumber;
 //                                but the Letter version will also change
 //                                (e.g. A -> B).
 
-#define Sc21VersionNumber1_0 3
-
+#define Sc21VersionNumber1_0 4
