@@ -120,36 +120,6 @@
 			settings = {
 			};
 		};
-		3D0D68F906B7B4DC00B64A18 = {
-			fileEncoding = 4;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
-			name = SCFlyHandlerInspector.h;
-			path = src/SCFlyHandlerInspector.h;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		3D0D68FA06B7B4DC00B64A18 = {
-			fileEncoding = 4;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.objc;
-			name = SCFlyHandlerInspector.m;
-			path = src/SCFlyHandlerInspector.m;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		3D0D68FB06B7B4DC00B64A18 = {
-			fileRef = 3D0D68F906B7B4DC00B64A18;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		3D0D68FC06B7B4DC00B64A18 = {
-			fileRef = 3D0D68FA06B7B4DC00B64A18;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		3D0D691806B7B5E100B64A18 = {
 			children = (
 				3D0D691906B7B5E100B64A18,
@@ -753,8 +723,6 @@
 				E000676B062598DD00F49FCD,
 				3D016A6506B6EBD800AD1116,
 				3D016A6606B6EBD800AD1116,
-				3D0D68F906B7B4DC00B64A18,
-				3D0D68FA06B7B4DC00B64A18,
 				E09CFA83060249D50000E227,
 				E09CFA84060249D50000E227,
 				3DDD3FF506B8EE9D0038959E,
@@ -1887,7 +1855,6 @@
 				E09CFA89060249D50000E227,
 				E000676C062598DD00F49FCD,
 				3D016A6706B6EBD800AD1116,
-				3D0D68FB06B7B4DC00B64A18,
 				3DDD3FF706B8EE9D0038959E,
 			);
 			isa = PBXHeadersBuildPhase;
@@ -1922,7 +1889,6 @@
 				E09CFA8A060249D50000E227,
 				E000676D062598DD00F49FCD,
 				3D016A6806B6EBD800AD1116,
-				3D0D68FC06B7B4DC00B64A18,
 				3DDD3FF806B8EE9D0038959E,
 			);
 			isa = PBXSourcesBuildPhase;
