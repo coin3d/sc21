@@ -376,9 +376,9 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 }
 
 
-/*" Performs dragging operation. Dragging is done depending on the
-    user's mouse movements. The NSPoint corresponding to the current
-    mouseDragged event is passed in point, stored in an internal log
+/*" Performs dragging operation. This method is revoked repeatedly
+    while the user is dragging the mouse, with the current mouse
+    position passed in point. This value is stored in an internal log
     of mouse positions, and compared with earlier values to determine
     the extent of the dragging.
  "*/
@@ -407,9 +407,10 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 }
 
 
-/*" Performs panning operation. Panning is done depending on the
-    user's mouse movements. The NSPoint corresponding to the current
-    mouseDragged event is passed in point, stored in an internal log
+/*" Performs panning operation. This method is revoked repeatedly
+    while the user is dragging the mouse while holding down the ALT key
+    (or dragging with the middle mouse button pressed), with the current
+    mouse position passed in point. This value is stored in an internal log
     of mouse positions, and compared with earlier values to determine
     the extent of the panning.
 "*/
@@ -445,9 +446,9 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   cam->position = cam->position.getValue() - (curplanepoint - prevplanepoint);    
 }
 
-/*" Performs zoom operation. Zooming is done based on the delta value
-    of the wheel mouse. The floating point value corresponding to the
-    current delta value is passed in v.
+/*" Performs zoom operation. This method is revoked repeatedly
+    while the user is moving the mouse wheel, with the floating
+    point value corresponding to the current change passed in delta. 
 
     Zooming can also be done by dragging while holding down the
     shift key. In this case, #zoomWithPoint: is called instead of this
@@ -460,11 +461,12 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 }
 
 
-/*" Performs zoom operation. Zooming is done depending on the
-    user's mouse movements. The NSPoint corresponding to the current
-    mouseDragged event is passed in v, stored in an internal log
-    of mouse positions, and compared with earlier values to determine
-    whether to zoom in (mouse moved up) or zoom out (mouse moved down).
+/*" Performs zoom operation. This method is revoked repeatedly
+    while the user is dragging the mouse while holding down the SHIFT
+    key, with the current mouse position passed in point. This value
+    is stored in an internal log of mouse positions, and compared with
+    earlier values to determine whether to zoom in (mouse moved up)
+    or zoom out (mouse moved down).
 
     Zooming can also be done by using the wheel on a wheel mouse.
     In this case, #zoomWithDelta: is called instead of this method.
