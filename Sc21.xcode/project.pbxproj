@@ -147,6 +147,7 @@
 		};
 		E01100B50605E71900F93EC1 = {
 			children = (
+				E0DC21F00690632C00C1FF85,
 				E07485500675CC1F0052D77F,
 				E0114C980670C15F002D7A19,
 				E0EC5B2E0653F88100DA8092,
@@ -253,6 +254,7 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				OTHER_CPLUSPLUSFLAGS = "-DSC21_DEBUG";
 				PREBINDING = NO;
 				UNSTRIPPED_PRODUCT = YES;
 			};
@@ -687,6 +689,8 @@
 				GCC_MODEL_CPU = G4;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				OTHER_CFLAGS = "-DSC21_DEBUG";
+				OTHER_CPLUSPLUSFLAGS = "-DSC21_DEBUG";
 				PREBINDING = NO;
 				UNSTRIPPED_PRODUCT = YES;
 				ZERO_LINK = YES;
@@ -765,6 +769,7 @@
 				E0EC5B300653F88100DA8092,
 				E0114C990670C15F002D7A19,
 				E07485510675CC1F0052D77F,
+				E0DC21F10690632C00C1FF85,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1695,6 +1700,21 @@
 			};
 			isa = PBXBuildStyle;
 			name = install;
+		};
+		E0DC21F00690632C00C1FF85 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCUtil.h;
+			path = src/SCUtil.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0DC21F10690632C00C1FF85 = {
+			fileRef = E0DC21F00690632C00C1FF85;
+			isa = PBXBuildFile;
+			settings = {
+			};
 		};
 		E0DD072F0654F9CA009C673A = {
 			buildPhases = (
