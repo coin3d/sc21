@@ -196,13 +196,19 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   return self;
 }
 
+- (void)awakeFromNib
+{
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(_SC_sceneGraphChanged:)
+                                               name:SCRootChangedNotification
+                                             object:scenegraph];  
+}
+
 - (void)dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [self setSceneGraph:nil];
   [self stopTimers];
-//   SELF->redrawhandler = nil;
-//   [self _SC_setupRedrawInvocation]; // will release related objects
   [SELF->eventconverter release];
   [self setEventHandler:nil];
   delete SELF->scenemanager;
@@ -412,19 +418,8 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   if (sg == scenegraph) { return; }
   
   [scenegraph release];
-  scenegraph = [sg retain];    
-  [scenegraph setSceneManager:SELF->scenemanager];
-  
-  if (SELF->scenemanager) {
-    SELF->scenemanager->setSceneGraph([scenegraph superSceneGraph]);
-  }
-  
-  SELF->scenemanager->scheduleRedraw(); 
-  // FIXME: Do we need this? (kintel 20040604)
-  // Update kyrah 20040716. Yes: In case the scenegraph is set to nil,
-  // we will stop all timers. We do want one last re-render to clear the
-  // screen to our background color...
-  
+  scenegraph = [sg retain];
+   
   // Don't waste cycles by animating an empty scene
   if (scenegraph == nil) { [self stopTimers]; }
   else { [self startTimers]; }
@@ -740,14 +735,23 @@ Returns the receiver's delegate.
                                        (short)frame.size.height));
 }
 
-
 /*
   Called when the scenegraph, or the scenegraph's root node, has changed.
   This is done so that we have one common notification for both cases.
  */
 
 - (void)_SC_sceneGraphChanged:(id)sender
-{
+{  
+  // Make sure the scenegraph <-> scenemanager connection is valid.
+  // Note that this cannot be moved to setSceneGraph: since the 
+  // SoSceneManager must know the the SCSceneGraph's superscenegraph,
+  // which might have changed in SCSceneGraph's setRoot: 
+  
+  [scenegraph setSceneManager:SELF->scenemanager];
+  if (SELF->scenemanager) {
+    SELF->scenemanager->setSceneGraph([scenegraph superSceneGraph]);
+  }
+    
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCSceneGraphChangedNotification object:self];
 }
