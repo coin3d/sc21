@@ -193,14 +193,12 @@
 
 - (void)zoom:(float)delta
 {
-  // FIXME: Actually use delta to determine zoom distance?
-  // kyrah 20030621.
+  NSLog(@"SCCamera.zoom: %f", delta);
 
-  // Greater factor means more is viewed at the same time ("zoom out")
-  if (delta == 0) return;
+  if (delta == 0 || SELF->camera == NULL) return;
   
-  float factor = (delta > 0) ? 0.9 : 1.1;
-  if (SELF->camera == NULL) return;
+  float factor = float(exp(delta * 20.0f)); // Multiply by 20 to get a good
+                                            // sensitivity.
   SoType t = SELF->camera->getTypeId();
 
   if ([self type] == SCCameraOrthographic) {
@@ -210,28 +208,27 @@
     
   } else if ([self type] == SCCameraPerspective) {
     
-    SbVec3f dir, newpos;
-    float newfocaldist, dist;
     const float oldfocaldist = SELF->camera->focalDistance.getValue();
+    const float newfocaldist = oldfocaldist * factor;
     const SbVec3f oldpos = SELF->camera->position.getValue();
-    newfocaldist = oldfocaldist * factor;
+    SbVec3f dir;
     SELF->camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), dir);
-    newpos = oldpos + (newfocaldist - oldfocaldist) * -dir;
-    dist = newpos.length();
+    const SbVec3f newpos = oldpos + (newfocaldist - oldfocaldist) * -dir;
 
     // Floating point precision sanity check.
+    float dist = newpos.length();
     if (dist > float(sqrt(FLT_MAX))) {
-      SC21_DEBUG(@"Zoomed too far: Distance to origo = %f (%e)", dist, dist);
-      return;
+      SC21_DEBUG(@"SCCamera.zoom: Zoomed too far: Distance to origo = %f (%e)",
+                 dist, dist);
     }
-
-    SELF->camera->position = newpos;
-    SELF->camera->focalDistance = newfocaldist;
-    
+    else {
+      SELF->camera->position = newpos;
+      SELF->camera->focalDistance = newfocaldist;
+    }
   } else {
-  
-    SC21_DEBUG(@"Unknown camera type in [SCCamera zoom]; no zooming done.");
     
+    SC21_DEBUG(@"SCCamera.zoom: Unknown camera type in [SCCamera zoom]; "
+               "no zooming done.");
   }
 }
 
@@ -572,6 +569,21 @@
   SoGroup * parent = (SoGroup*) ((SoFullPath *)search.getPath())->getNodeFromTail(1);
   SoBaseKit::setSearchingChildren(wassearchingchildren);
   return (SoGroup *)parent;
+}
+
+/*"
+  Translate camera relative to its own coordinate system.
+
+  In its own coordinate system, the camera is pointing in negative
+  Z direction with the Y axis being up.
+  "*/
+- (void)translate:(SbVec3f)v
+{
+  SbVec3f pos = SELF->camera->position.getValue();
+  SbRotation r = SELF->camera->orientation.getValue();
+  r.multVec(v, v);
+  SELF->camera->position = SELF->camera->position.getValue() + v;
+  pos = SELF->camera->position.getValue();
 }
 
 @end

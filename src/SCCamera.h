@@ -27,6 +27,8 @@
  
 #import <Foundation/Foundation.h>
 
+#include <Inventor/SbLinear.h>
+
 @class SCController;
 
 class SbRotation;
@@ -65,6 +67,7 @@ typedef enum _SCCameraType {
 - (void)reorient:(SbRotation)rot;
 - (void)viewAll;
 - (void)updateClippingPlanes:(SoGroup *)scenegraph;
+- (void)translate:(SbVec3f)v;
 
 /*" Accessors "*/ 
 - (void)setController:(SCController *)controller;
