@@ -134,7 +134,13 @@
   if (eventtype == NSLeftMouseUp ||
       eventtype == NSRightMouseUp ||
       eventtype == NSOtherMouseUp) {
-    mode = Nil;
+    if (mode) { 
+      mode = Nil;
+      [[NSCursor arrowCursor] set];
+      [[NSNotificationCenter defaultCenter]
+        postNotificationName:SCCursorChangedNotification object:self];  
+      handled = YES;
+    }
   } 
 
   else if (eventtype == NSLeftMouseDown ||
