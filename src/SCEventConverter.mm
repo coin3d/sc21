@@ -218,64 +218,75 @@ static struct key1map KeyMap[] = {
   SoEvent * se = NULL;
   SoMouseButtonEvent * smbe = NULL;
   SoLocation2Event* sle = NULL;
+  float delta;
+
   switch (type) {
+  case NSLeftMouseDown:
+    smbe = new SoMouseButtonEvent;
+    smbe->setButton(SoMouseButtonEvent::BUTTON1);
+    smbe->setState(SoButtonEvent::DOWN);
+    se = smbe;
+    break;
     
-    case NSLeftMouseDown:
-      smbe = new SoMouseButtonEvent;
-      smbe->setButton(SoMouseButtonEvent::BUTTON1);
-      smbe->setState(SoButtonEvent::DOWN);
-      se = smbe;
-      break;
-      
-    case NSLeftMouseUp:
-      smbe = new SoMouseButtonEvent;
-      smbe->setButton(SoMouseButtonEvent::BUTTON1);
-      smbe->setState(SoButtonEvent::UP);
-      se = smbe;
-      break;
-      
-    case NSRightMouseDown:
-      smbe = new SoMouseButtonEvent;
-      smbe->setButton(SoMouseButtonEvent::BUTTON2);
-      smbe->setState(SoButtonEvent::DOWN);
-      se = smbe;
-      break;
-      
-    case NSRightMouseUp:
-      smbe = new SoMouseButtonEvent;
-      smbe->setButton(SoMouseButtonEvent::BUTTON2);
-      smbe->setState(SoButtonEvent::UP);
-      se = smbe;
-      break;
-
-    case NSOtherMouseDown:
-      smbe = new SoMouseButtonEvent;
-      smbe->setButton(SoMouseButtonEvent::BUTTON3);
-      smbe->setState(SoButtonEvent::DOWN);
-      se = smbe;
-      break;
-
-    case NSOtherMouseUp:
-      smbe = new SoMouseButtonEvent;
-      smbe->setButton(SoMouseButtonEvent::BUTTON3);
-      smbe->setState(SoButtonEvent::UP);
-      se = smbe;
-      break;      
-
-    case NSLeftMouseDragged:
-    case NSRightMouseDragged:
-    case NSOtherMouseDragged:
-      sle = new SoLocation2Event;
-      se = sle;
-      break;
-      
-    case NSKeyDown:
-      se = [self createSoKeyboardEventWithString:[event characters]];
-      break;
-      
-    default:
-      NSLog(@"Warning: Unknown event: %d", type);
-      break;
+  case NSLeftMouseUp:
+    smbe = new SoMouseButtonEvent;
+    smbe->setButton(SoMouseButtonEvent::BUTTON1);
+    smbe->setState(SoButtonEvent::UP);
+    se = smbe;
+    break;
+    
+  case NSRightMouseDown:
+    smbe = new SoMouseButtonEvent;
+    smbe->setButton(SoMouseButtonEvent::BUTTON2);
+    smbe->setState(SoButtonEvent::DOWN);
+    se = smbe;
+    break;
+    
+  case NSRightMouseUp:
+    smbe = new SoMouseButtonEvent;
+    smbe->setButton(SoMouseButtonEvent::BUTTON2);
+    smbe->setState(SoButtonEvent::UP);
+    se = smbe;
+    break;
+    
+  case NSOtherMouseDown:
+    smbe = new SoMouseButtonEvent;
+    smbe->setButton(SoMouseButtonEvent::BUTTON3);
+    smbe->setState(SoButtonEvent::DOWN);
+    se = smbe;
+    break;
+    
+  case NSOtherMouseUp:
+    smbe = new SoMouseButtonEvent;
+    smbe->setButton(SoMouseButtonEvent::BUTTON3);
+    smbe->setState(SoButtonEvent::UP);
+    se = smbe;
+    break;      
+    
+  case NSLeftMouseDragged:
+  case NSRightMouseDragged:
+  case NSOtherMouseDragged:
+    sle = new SoLocation2Event;
+    se = sle;
+    break;
+    
+  case NSScrollWheel:
+    delta = [event deltaY];
+    if (delta == 0.0f) break; // some other scroll wheel axis -> ignore
+    smbe = new SoMouseButtonEvent;
+    if (delta > 0) smbe->setButton(SoMouseButtonEvent::BUTTON4);
+    else smbe->setButton(SoMouseButtonEvent::BUTTON5);
+    smbe->setState(SoButtonEvent::DOWN); // wheel gives only DOWN events
+    se = smbe;
+    break;
+    
+  case NSKeyDown:
+    se = [self createSoKeyboardEventWithString:[event characters]];
+    break;
+    
+  default:
+    NSLog(@"Warning: Unknown event: %d", type);
+    break;
   }
 
   if (se) {
