@@ -83,18 +83,14 @@
 @implementation SCView (IBTest)
 - (void) drawRect:(NSRect) frame
 {
-  // "Test Interface" mode in IB - do regular drawRect:
-  // FIXME: This should of course be shared code w/drawRect
-  if ([NSApp isTestingInterface]) {
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LIGHTING);
-    [controller render];
-    [[self openGLContext] flushBuffer];
-  // "Design interface" mode - override.
-  } else {
-    [[NSColor blackColor] set];
-    NSRectFill(frame);
-  }
+  [[NSColor blackColor] set];
+  NSRectFill(frame);
+
+  // FIXME: figure out how to draw string centered
+  //[@"SCView" drawInRect:frame withAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+  //  [NSColor grayColor], NSForegroundColorAttributeName,
+  //  [NSFont systemFontOfSize:24], NSFontAttributeName,
+  //  nil]];
 }
 @end
 
