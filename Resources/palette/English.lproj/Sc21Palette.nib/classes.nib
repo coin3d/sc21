@@ -2,13 +2,20 @@
     IBClasses = (
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {CLASS = NSObject; LANGUAGE = ObjC; }, 
+        {CLASS = SCCoinHandler; LANGUAGE = ObjC; SUPERCLASS = SCEventHandler; }, 
         {
             CLASS = SCController; 
             LANGUAGE = ObjC; 
-            OUTLETS = {delegate = id; eventHandler = id; sceneGraph = SCSceneGraph; }; 
+            OUTLETS = {eventHandler = SCEventHandler; sceneGraph = SCSceneGraph; }; 
             SUPERCLASS = NSObject; 
         }, 
-        {CLASS = SCExaminerHandler; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = SCEventHandler; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {nextEventHandler = SCEventHandler; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {CLASS = SCExaminerHandler; LANGUAGE = ObjC; SUPERCLASS = SCEventHandler; }, 
         {CLASS = SCOpenGLView; LANGUAGE = ObjC; SUPERCLASS = NSView; }, 
         {
             CLASS = SCSceneGraph; 
@@ -17,9 +24,16 @@
             SUPERCLASS = NSObject; 
         }, 
         {
+            CLASS = SCView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {controller = SCController; }; 
+            SUPERCLASS = SCOpenGLView; 
+        }, 
+        {
             CLASS = Sc21Palette; 
             LANGUAGE = ObjC; 
             OUTLETS = {
+                sccoinhandleritem = NSImageView; 
                 sccontrolleritem = NSImageView; 
                 scexaminerhandleritem = NSImageView; 
                 scscenegraphitem = NSImageView; 

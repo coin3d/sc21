@@ -26,6 +26,7 @@
     <string>SCController</string>
     <string>SCSceneGraph</string>
     <string>SCExaminerHandler</string>
+    <string>SCCoinHandler</string>
   </array>
 
   <!-- a list of images names exported from palette to IB -->

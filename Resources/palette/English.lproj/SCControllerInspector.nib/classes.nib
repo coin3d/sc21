@@ -4,13 +4,7 @@
         {
             CLASS = SCControllerInspector; 
             LANGUAGE = ObjC; 
-            OUTLETS = {
-                clearcolorbuffer = NSButton; 
-                cleardepthbuffer = NSButton; 
-                handleEvents = NSMatrix; 
-                handleEventsInSceneGraph = NSButtonCell; 
-                handleEventsInViewer = NSButtonCell; 
-            }; 
+            OUTLETS = {clearcolorbuffer = NSButton; cleardepthbuffer = NSButton; }; 
             SUPERCLASS = IBInspector; 
         }
     ); 
