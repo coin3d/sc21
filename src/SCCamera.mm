@@ -53,7 +53,6 @@
   if (self = [super init]) {
     _controllerhascreatedcamera = NO;
     _controller = controller;
-//    [controller retain];
     _camera = c;
     if (_camera) _camera->ref();
   }
@@ -74,7 +73,6 @@
 
 
 - (void) dealloc {
-//  [_controller release];
   if (_camera) _camera->unref();
   if (_autoclipboxaction) delete _autoclipboxaction;
 }
@@ -376,8 +374,6 @@
 
 - (void) setController:(SCController *) controller
 {
-//  [controller retain];
-//  [_controller release];
   _controller = controller;
 }
 
