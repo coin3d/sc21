@@ -14,7 +14,7 @@
             CLASS = AppController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
-                coincontroller = SCExaminerController; 
+                coincontroller = SCController; 
                 filenametext = NSTextField; 
                 mode = NSButton; 
                 view = SCView; 
