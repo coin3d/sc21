@@ -316,7 +316,7 @@ void error_cb(const class SoError * error, void * data)
 
   // just to be sure we don't accidentally delete root when
   // unref()'ing scenegraph below (in case root == scenegraph)
-  root->ref(); 
+  if (root) root->ref(); 
 
   // Clean up existing scenegraph
   if (SELF->scenegraph) { SELF->scenegraph->unref(); }
