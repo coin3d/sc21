@@ -426,6 +426,8 @@
 
 @end
 
+#if FOR_AUTODOC_ONLY 
+
 // Dummy implementations to force AutoDoc to generate documentation for 
 // delegate methods.
 
@@ -458,3 +460,5 @@
 {
 }
 @end
+
+#endif // FOR_AUTODOC_ONLY 
