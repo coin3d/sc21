@@ -209,20 +209,6 @@ Used by subclassers to initialize OpenGL state. This function is called
     SELF->openGLContext = 
       [[NSOpenGLContext alloc] initWithFormat:[format pixelFormat]
                                shareContext:nil];
-
-    //FIXME: Does setView: make the context current, making this redundant?
-    //       (same behavior for Jaguar and Panther?)
-    [SELF->openGLContext makeCurrentContext];
-    // Run this only under <= 10.2 since >=10.3 automatically calls
-    // prepareOpenGL from NSOpenGLContext.
-    //   FIXME:
-    //   Is it OK to assume that prepareOpenGL will work when compiling
-    //   under Jaguar and running under Panther? If not, we should
-    //   probably not use prepareOpenGL at all, but a similar method
-    //   that will work with both OS versions. (kintel 20040615)
-    if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_2) {
-      [self prepareOpenGL];
-    }
   }
   return SELF->openGLContext;
 }
@@ -293,6 +279,7 @@ Used by subclassers to initialize OpenGL state. This function is called
 {
   // SC21_DEBUG(@"SCOpenGLView.lockFocus");
 
+  NSOpenGLContext * oldcontext = SELF->openGLContext;
   NSOpenGLContext * context = [self openGLContext];
   [super lockFocus];
   
@@ -300,6 +287,17 @@ Used by subclassers to initialize OpenGL state. This function is called
     [context setView:self];
   }
   [context makeCurrentContext];
+  // Run this only under <= 10.2 since >=10.3 automatically calls
+  // prepareOpenGL from NSOpenGLContext.
+  //   FIXME:
+  //   Is it OK to assume that prepareOpenGL will work when compiling
+  //   under Jaguar and running under Panther? If not, we should
+  //   probably not use prepareOpenGL at all, but a similar method
+  //   that will work with both OS versions. (kintel 20040615)
+  if (oldcontext != context &&
+      floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_2) {
+    [self prepareOpenGL];
+  }
 }
 
 #pragma mark --- NSCoding conformance ---
