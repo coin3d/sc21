@@ -66,7 +66,6 @@
 - (void)scrollWheel:(NSEvent *)event;
 - (void)keyDown:(NSEvent *)event;
 - (void)keyUp:(NSEvent *)event;
-- (BOOL)acceptsFirstResponder;
 
 /*" Cursor handling "*/
 - (void)setCursor:(NSCursor *)cursor;
