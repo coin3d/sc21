@@ -54,5 +54,3 @@ class SoSceneManager;
 - (void)_SC_viewSizeChanged;
 - (void)_SC_sceneGraphChanged:(id)sender;
 @end  
-
-SC21_EXTERN NSString * SCRootChangedNotification;
