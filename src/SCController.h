@@ -45,7 +45,7 @@ class SoSceneManager;
   _SCControllerP * _sc_controller;
   // FIXME: Are we sure we don't want the delegate to be protected? kyrah 20040716
  @private
-  IBOutlet id delegate;
+  id delegate;
   SCSceneGraph * scenegraph;
   SCEventHandler * eventhandler;
 }
