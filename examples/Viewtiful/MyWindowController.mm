@@ -65,7 +65,6 @@
 {
   NSLog(@"MyWindowController.awakeFromNib");
   [self documentChanged:self];
-  [controller setEventHandler:[[[SCExaminerHandler alloc] init] autorelease]];
 }
 
 - (void)windowWillLoad
@@ -133,13 +132,8 @@
 - (IBAction)documentChanged:(id)sender
 {
   MyDocument *doc = [self document];
-  // FIXME: MyDocument should contain an SCSceneGraph instance
-  // instead of an SoGroup. kyrah 20040723.
-  SCSceneGraph * sg = [[SCSceneGraph alloc] init];
-  [sg setRoot:[doc sceneGraph]];
-  [controller setSceneGraph:sg];
-  [sg release];
-  [[controller sceneGraph]  viewAll];
+  [controller setSceneGraph:[doc sceneGraph]];
+  [[controller sceneGraph] viewAll];
 
   [typetext setStringValue:[doc fileType]];
   [sizetext setStringValue:[doc fileSize]];
