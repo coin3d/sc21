@@ -159,7 +159,7 @@
 @end
 
 
-// Another hack: For some reason, IB crashes if we are trying to
+// FIXME: Another hack: For some reason, IB crashes if we are trying to
 // render while not in test-interface mode. Weird, but until I find
 // out what's going on, I'll just disable rendering unless we
 // are in test interface mode.
