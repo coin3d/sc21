@@ -33,7 +33,7 @@
 
 @class SCController;
 
-@interface SCView : SCOpenGLView
+@interface SCView : SCOpenGLView /*" NSView : NSResponder : NSObject "*/
 {
   IBOutlet SCController * controller; 
   NSOpenGLView * _oldview;

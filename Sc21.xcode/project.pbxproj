@@ -248,6 +248,30 @@
 			refType = 4;
 			sourceTree = "<group>";
 		};
+		E03800C406551033000633F5 = {
+			containerPortal = E0765C56060222BB0099F78E;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E0DD072F0654F9CA009C673A;
+			remoteInfo = "SC21 doc";
+		};
+		E03800C506551033000633F5 = {
+			isa = PBXTargetDependency;
+			target = E0DD072F0654F9CA009C673A;
+			targetProxy = E03800C406551033000633F5;
+		};
+		E03800C60655103C000633F5 = {
+			containerPortal = E0765C56060222BB0099F78E;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E0DD073F06550C23009C673A;
+			remoteInfo = "SC21 doc pkg";
+		};
+		E03800C70655103C000633F5 = {
+			isa = PBXTargetDependency;
+			target = E0DD073F06550C23009C673A;
+			targetProxy = E03800C60655103C000633F5;
+		};
 		E04A08450637E7E0002F2C04 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
@@ -694,8 +718,10 @@
 			targets = (
 				E0765C5F060223120099F78E,
 				E09CFA55060245710000E227,
+				E0DD072F0654F9CA009C673A,
 				E056E6D70609F9FE0068145A,
 				E06867AC0633FC8700F702EA,
+				E0DD073F06550C23009C673A,
 				E079478506341DCE006B5824,
 				E056E6EA0609FA880068145A,
 				E056E712060A13650068145A,
@@ -820,6 +846,8 @@
 				E056E715060A13650068145A,
 				E06867AF0633FC8700F702EA,
 				E079478806341DCE006B5824,
+				E0DD07320654F9CA009C673A,
+				E0DD074206550C23009C673A,
 			);
 			isa = PBXGroup;
 			name = Products;
@@ -871,6 +899,7 @@
 			dependencies = (
 				E079478B06341DF3006B5824,
 				E079478D06341E03006B5824,
+				E03800C70655103C000633F5,
 			);
 			isa = PBXNativeTarget;
 			name = "SC21 meta pkg";
@@ -1621,6 +1650,92 @@
 			};
 			isa = PBXBuildStyle;
 			name = install;
+		};
+		E0DD072F0654F9CA009C673A = {
+			buildPhases = (
+				E0DD07300654F9CA009C673A,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Documentation";
+				INSTALL_ROOT = "$(DSTROOT)/doc";
+				PRODUCT_NAME = SC21;
+			};
+			dependencies = (
+			);
+			isa = PBXNativeTarget;
+			name = "SC21 doc";
+			productInstallPath = /usr/local/bin;
+			productName = "SC21 doc";
+			productReference = E0DD07320654F9CA009C673A;
+			productType = "com.apple.product-type.tool";
+		};
+		E0DD07300654F9CA009C673A = {
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			isa = PBXShellScriptBuildPhase;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Script: SC21 doc\"\nset -x\nbin/autodoc -project src -format html -template doc/HTMLTemplate.html -copyright \"Systems in Motion AS\" -destination $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME -tree -allclasses -force\ncp doc/style.css $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME\ncp doc/index.html $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME\nretval=$?\nexit $retval\n";
+		};
+		E0DD07320654F9CA009C673A = {
+			explicitFileType = "compiled.mach-o.executable";
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = SC21;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E0DD073F06550C23009C673A = {
+			buildPhases = (
+				E0DD074006550C23009C673A,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/doc/Description.plist;
+				INFOPLIST_FILE = packaging/doc/Info.plist;
+				INSTALL_PATH = /;
+				PRODUCT_NAME = "$(PROJECT_NAME) doc.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/doc";
+				RESOURCE_DIR = packaging/doc/Resources;
+			};
+			dependencies = (
+				E03800C506551033000633F5,
+			);
+			isa = PBXNativeTarget;
+			name = "SC21 doc pkg";
+			productInstallPath = /usr/local/bin;
+			productName = "SC21 doc pkg";
+			productReference = E0DD074206550C23009C673A;
+			productType = "com.apple.product-type.tool";
+		};
+		E0DD074006550C23009C673A = {
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			isa = PBXShellScriptBuildPhase;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Script: SC21 DOC pkg\"\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\nexit $retval";
+		};
+		E0DD074206550C23009C673A = {
+			explicitFileType = "compiled.mach-o.executable";
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = "SC21 doc.pkg";
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		E0EB29080613442800C54774 = {
 			fileEncoding = 30;

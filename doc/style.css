@@ -1,0 +1,39 @@
+# cascading style sheet file for SIM-kyrah web page
+# written by kyrah 2001
+
+a:active { color: #666666; font-family: Verdana, Helvetica, Arial, sans-serif; text-decoration: none }
+a:link { color: #666666; font-family: Verdana, Helvetica, Arial, sans-serif; text-decoration: none }
+a:visited { color: #666666; font-family: Verdana, Helvetica, Arial, sans-serif; text-decoration: none }
+b { font-size: 8pt; font-family: Verdana, Helvetica, Arial, sans-serif }
+body { font-size: 8pt; font-family: Verdana, Helvetica, Arial, sans-serif; background-color: #ffffff; margin-top: 10px; margin-bottom: 10px; margin-left: 8pt }
+dd { font-size: 8pt; font-family: Verdana, Helvetica, Arial, sans-serif }
+div { font-size: 8pt; font-family: Verdana, Helvetica, Arial, sans-serif }
+h1 { color: #666666; font-size: 14pt; font-family: Verdana, Helvetica, Arial, sans-serif }
+h2 { color: #666666; font-size: 12pt; font-family: Verdana, Helvetica, Arial, sans-serif }
+h3 { color: #666666; font-weight: bold; font-size: 8pt; font-family: Verdana, Helvetica, Arial, sans-serif }
+h4 { font-weight: 200; font-size: 7pt; font-family: Verdana, Helvetica, Arial, sans-serif }
+h5 { color: #000000; font-weight: bold; font-size: 8pt; font-family: Verdana, Helvetica, Arial, sans-serif }
+i { font-size: 8pt; font-family: Verdana, Helvetica, Arial, sans-serif }
+li { font-size: 8pt; font-family: Verdana, Helvetica, Arial, sans-serif }
+ol { font-size: 8pt; font-family: Verdana, Helvetica, Arial, sans-serif }
+option { font-size: 8pt; font-family: Verdana, Helvetica, Arial, sans-serif }
+p { font-size: 8pt; font-family: Verdana, Helvetica, Arial, sans-serif }
+pre { color: #000000; font-size: 8pt; font-family: "Courier New", Courier }
+td { font-size: 8pt; font-family: Verdana, Helvetica, Arial, sans-serif; vertical-align: top }
+td.centered { font-size: 8pt; font-family: Verdana, Helvetica, Arial, sans-serif; vertical-align: middle; text-align: center;}
+td.middle { font-size: 8pt; font-family: Verdana, Helvetica, Arial, sans-serif; vertical-align: middle;}
+td.right { font-size: 8pt; font-family: Verdana, Helvetica, Arial,
+sans-serif; vertical-align: middle; text-align: right;}
+td.menu{ background-color: #dcecf9; font-size: 8pt; font-family: Verdana, Helvetica, Arial, sans-serif; vertical-align: top; text-align: left}
+td.topmenu{ background-color: #dcecf9; font-size: 8pt; font-family: Verdana, Helvetica, Arial, sans-serif; vertical-align: middle; text-align: center}
+td.menuitem { font-size: 8pt; font-family: Verdana, Helvetica, Arial, sans-serif; vertical-align: top }
+td.newstop{ background-color: #dcecf9; font-size: 8pt; font-family: Verdana, Helvetica, Arial, sans-serif; vertical-align: middle; text-align: left; color: #666666}
+td.newsinternal{ background-color: #ffffff; font-size: 8pt; font-family: Verdana, Helvetica, Arial, sans-serif; vertical-align: middle; text-align: left; color: #000000}
+tt { font-size: 8pt; font-family: Courier, sans-serif; background-color: #ffffff; margin-top: 10px; margin-bottom: 10px; margin-left: 8pt }
+.grey {color: #666666; }
+.lightgrey {color: #aaaaaa; }
+.black {color: #000000; }
+.red {color: #990000;}
+.blue {color: #000066;}
+.green {color: #00cc00;}
+.sim {color: #ff6600;}
