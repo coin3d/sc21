@@ -37,11 +37,38 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 
 @interface SCView (InternalAPI)
-- (void) _initMenu;
-- (NSSize) _size;
-- (float) _width;
-- (float) _height;
+- (void)_initMenu;
+- (NSSize)_size;
+- (float)_width;
+- (float)_height;
 @end
+
+#if 0
+// Emulation of "super super" behavior (see -initWithCoder:)
+// FIXME: This doesn't work, but keep until we know that the new code works
+// (kintel 20040404)
+@interface SCOpenGLView (SuperSuperEmulation)
+- (id)_compatInitWithCoder:(NSCoder *)coder;
+@end
+
+@implementation SCOpenGLView (SuperSuperEmulation)
+- (id)_compatInitWithCoder:(NSCoder *)coder
+{
+  return [super initWithCoder:coder];
+}
+@end
+
+@interface SCView (SuperSuperEmulation)
+- (id)_compatInitWithCoder:(NSCoder *)coder;
+@end
+
+@implementation SCView (SuperSuperEmulation)
+- (id)_compatInitWithCoder:(NSCoder *)coder
+{
+  return [super _compatInitWithCoder:coder];
+}
+@end
+#endif
 
 @implementation SCView
 
@@ -71,6 +98,10 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 // to have all its outlet instance variables set -- so don't try to
 // messages to other objects in the archive in init: 
 
++ (void)initialize
+{
+  [SCView setVersion:1];
+}
 
 /*" Initializes a newly allocated SCView with rect as its frame
     rectangle. Sets up an OpenGL context with default values
@@ -89,42 +120,16 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     class. Returns !{self}.
  "*/
 
-- (id) initWithFrame:(NSRect)rect
+- (id)initWithFrame:(NSRect)rect
 {
-  NSOpenGLPixelFormat * pixelFormat;
-  _colorbits = 32;
-  _depthbits = 32;
-  if ((pixelFormat = [self createPixelFormat:rect]) != nil) {
-    if (self = [super initWithFrame:rect pixelFormat:pixelFormat]) {
-      // flush buffer only during the vertical retrace of the monitor
-      const long int vals[1] = {1};
-      [[self openGLContext] setValues:vals forParameter:NSOpenGLCPSwapInterval];
-      [[self openGLContext] makeCurrentContext];
-      [self commonInit];
-    }
-    [pixelFormat release];
-  } else {
-    [[NSNotificationCenter defaultCenter]
-      postNotificationName:SCCouldNotCreateValidPixelFormatNotification object:self];
-    [self dealloc];
-    self = nil;
-  }
-  return self;
-}
+  NSLog(@"SCView.initWithFrame:");
 
-
-/*" Initializes a newly allocated SCView instance from the data
-    in decoder. Returns !{self}.
-
-    Calls #commonInit, which contains common initialization
-    code needed both in #init and #initWithCoder.
- "*/
-
-- (id) initWithCoder:(NSCoder *)coder
-{
-  if (self = [super initWithCoder:coder]) {
-    [coder decodeValueOfObjCType:@encode(int) at:&_colorbits];
-    [coder decodeValueOfObjCType:@encode(int) at:&_depthbits];
+  SCOpenGLPixelFormat * pixelFormat = [self createPixelFormat:rect];
+  if (self = [super initWithFrame:rect pixelFormat:pixelFormat]) {
+    // flush buffer only during the vertical retrace of the monitor
+    const long int vals[1] = {1};
+    [[self openGLContext] setValues:vals forParameter:NSOpenGLCPSwapInterval];
+    [[self openGLContext] makeCurrentContext];
     [self commonInit];
   }
   return self;
@@ -137,7 +142,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     implementation to make sure everything is set up properly.
 "*/
 
-- (void) commonInit
+- (void)commonInit
 {
   [self _initMenu];
 }
@@ -148,23 +153,14 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     loaded from an Interface Builder archive or nib file. 
  "*/
 
-- (void) awakeFromNib
+- (void)awakeFromNib
 {
+  NSLog(@"SCView.awakeFromNib");
   [self recreateOpenGLContext];
 }
 
 
-/*" Encodes the SCView using encoder coder "*/
-
-- (void) encodeWithCoder:(NSCoder *)coder
-{
-  [super encodeWithCoder:coder];
-  [coder encodeValueOfObjCType:@encode(int) at:&_colorbits];
-  [coder encodeValueOfObjCType:@encode(int) at:&_depthbits];
-}
-
-
-- (void) dealloc
+- (void)dealloc
 {
   // Prevent controller from continuing to draw into our view.
   [controller stopTimers];
@@ -176,7 +172,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 // ---------------------- Accessing SCController --------------------
 
 /*" Returns the currently used SCController. "*/
-- (SCController *) controller
+- (SCController *)controller
 {
   return controller;  
 }
@@ -186,7 +182,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     retained.
  "*/
 
-- (void) setController:(SCController *) newcontroller
+- (void)setController:(SCController *)newcontroller
 {
   [newcontroller retain];
   [controller release];
@@ -208,13 +204,13 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     instead.
  "*/
 
-- (BOOL) recreateOpenGLContext
+- (BOOL)recreateOpenGLContext
 {
   // FIXME: Shouldn't we inform Coin about the context change?
   // Test with textures and display lists! kyrah 20030616
     
   BOOL success = FALSE;
-  NSOpenGLPixelFormat * pixelFormat;
+  SCOpenGLPixelFormat * pixelFormat;
   NSOpenGLContext * newContext;
   success = NO;
 
@@ -222,7 +218,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
   
   pixelFormat = [self createPixelFormat:[self frame]];
   if (pixelFormat != nil) {
-    newContext = [[NSOpenGLContext alloc] initWithFormat:pixelFormat
+    newContext = [[NSOpenGLContext alloc] initWithFormat:[pixelFormat pixelFormat]
                                             shareContext:nil ];
     if (newContext != nil) {
       const long int vals[1] = {1};
@@ -233,99 +229,10 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
       [newContext makeCurrentContext];
       success = TRUE;
     }
-    [pixelFormat release];
   }
   [self setNeedsDisplay:YES];
   return success;
 }
-
-
-/*" Sets the current color depth and re-initializes the SCView's
-    OpenGL context by calling #recreateOpenGLContext:
-    
-    To change this setting without immediately recreating the 
-    context, call #{setColorBitsNoRecreate:} instead. This is
-    advisable if you want to do several changes at the same time,
-    to avoid multiple re-initalisation.
-    
-    Example:
-    
-    !{// Not good.
-    [self setColorBits:32;  // recreate context with new color and old depth
-    [self setDepthBits:16;  // recreate context with new color and new depth}
-    
-    !{// Good.
-    [self setColorBitsNoRecreate:32;  // do not recreate OpenGL context
-    [self setDepthBits:16;            // recreate context with new color and new depth}
- "*/
-
-- (void) setColorBits:(int)n
-{
-  [self setColorBitsNoRecreate:n];
-  [self recreateOpenGLContext];
-}
-
-
-/*" Sets the current color depth, but does not re-initialize the SCView's
-    OpenGL context. To change this setting and immediately recreate the 
-    context, call #{setColorBits:} instead.
- "*/
-    
-- (void) setColorBitsNoRecreate:(int)n
-{
-  _colorbits = n;
-}
-
-/*" Returns the current color depth. 
-
-    Note that this returns the value as set by the last 
-    #setColorBits: or #setColorBitsNoRecreate: call. In the latter case,
-    the actual color depth of the OpenGL context might be different
-    from the returned value.
-"*/
-
-- (int) colorBits
-{
-  return _colorbits;
-}
-
-/*" Sets the current depth buffer resolution and re-initializes the 
-    SCView's OpenGL context by calling #recreateOpenGLContext:
-    
-    To change this setting without immediately recreating the 
-    context, call #{setDepthBitsNoRecreate:} instead. See the 
-    documentation of #setColorBits: for usage information.
- "*/
-
-- (void) setDepthBits:(int)n
-{
-  [self setDepthBitsNoRecreate:n];
-  [self recreateOpenGLContext];
-}
-
-/*" Sets the current depth buffer resolution, but does not re-initialize 
-    the SCView's OpenGL context. To change this setting and 
-    immediately recreate the context, call #{setDepthBits:} instead.
- "*/
- 
-- (void) setDepthBitsNoRecreate:(int)n
-{
-  _depthbits = n;
-}
-
-/*" Returns the depth buffer resolution. 
-
-    Note that this returns the value as set by the last 
-    #setDepthBits: or #setDepthBitsNoRecreate: call. In the latter case,
-    the actual depth buffer resolution of the OpenGL context might
-    be different from the returned value.
-"*/
-
-- (int) depthBits
-{
-  return _depthbits;
-}
-
 
 /*" Returns a double buffered, accelerated pixel format. The 
     colordepth and depth are the current values as set by
@@ -334,24 +241,16 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     method if you need specific settings.
  "*/
  
-- (NSOpenGLPixelFormat *) createPixelFormat:(NSRect)frame
+- (SCOpenGLPixelFormat *)createPixelFormat:(NSRect)frame
 {
-  NSOpenGLPixelFormatAttribute att[16];
-  NSOpenGLPixelFormat *pixelFormat;
-  int i = 0;
-  att[i++] = NSOpenGLPFADoubleBuffer;
-  att[i++] = NSOpenGLPFAAccelerated;
-  att[i++] = NSOpenGLPFAAccumSize;
-  att[i++] = (NSOpenGLPixelFormatAttribute)32;
-  att[i++] = NSOpenGLPFAColorSize;
-  att[i++] = (NSOpenGLPixelFormatAttribute)_colorbits;
-  att[i++] = NSOpenGLPFADepthSize;
-  att[i++] = (NSOpenGLPixelFormatAttribute)_depthbits;
-  att[i++] = NSOpenGLPFAScreenMask;
-  att[i++] = (NSOpenGLPixelFormatAttribute)
-    CGDisplayIDToOpenGLDisplayMask(kCGDirectMainDisplay);
-  att[i] = (NSOpenGLPixelFormatAttribute)0;
-  pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:att];
+  SCOpenGLPixelFormat *pixelFormat = [[SCOpenGLPixelFormat alloc] init];
+  [pixelFormat setAttribute:NSOpenGLPFADoubleBuffer];
+  [pixelFormat setAttribute:NSOpenGLPFAAccelerated];
+  [pixelFormat setAttribute:NSOpenGLPFAAccumSize toValue:32];
+  [pixelFormat setAttribute:NSOpenGLPFAColorSize toValue:32];
+  [pixelFormat setAttribute:NSOpenGLPFAAlphaSize toValue:8];
+  [pixelFormat setAttribute:NSOpenGLPFADepthSize toValue:32];
+  [pixelFormat autorelease];
   return pixelFormat;
 }
 
@@ -364,14 +263,15 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 "*/
 
-- (void) drawRect:(NSRect)rect
+- (void)drawRect:(NSRect)rect
 {
   // Note: As NSView's implementation of this method, #drawRect: is
   // intended to be completely overridden by each subclass that
   // performs drawing, do _not_ invoke [super drawRect] here!
   
+  //FIXME: Shouldn't be needed since we shouldn't call drawRect ourselves.
   [[self openGLContext] makeCurrentContext];
-  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // FIXME: needed?
+  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // FIXME: Remove: This is done by SoSceneManager::render()
   // FIXME: do this only once, after creating a context and binding it
   // (kintel 20040323)
   glEnable(GL_DEPTH_TEST);
@@ -386,7 +286,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     OpenGL context.
  "*/
 
-- (void) reshape
+- (void)reshape
 {
   [controller viewSizeChanged:[self visibleRect]];
   [[self openGLContext] update];
@@ -399,7 +299,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     be (0.5, 0,25) in normalized coordinates.)
   "*/
   
-- (NSPoint) normalizePoint:(NSPoint)point
+- (NSPoint)normalizePoint:(NSPoint)point
 {
   NSPoint normalized;
   NSSize size = [self _size];
@@ -425,7 +325,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     %{[controller handleEvent:event]}.
  "*/
 
-- (void) mouseDown:(NSEvent *)event
+- (void)mouseDown:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
     [[self nextResponder] mouseDown:event];
@@ -438,7 +338,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     be forwarded through the responder chain as usual. 
  "*/
 
-- (void) mouseUp:(NSEvent *)event
+- (void)mouseUp:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
     [[self nextResponder] mouseUp:event];
@@ -456,7 +356,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     occured before the dragging.
  "*/
 
-- (void) mouseDragged:(NSEvent *)event
+- (void)mouseDragged:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
     [[self nextResponder] mouseDragged:event];
@@ -469,7 +369,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     be forwarded through the responder chain as usual.
  "*/
 
-- (void) rightMouseDown:(NSEvent *)event
+- (void)rightMouseDown:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
     [[self nextResponder] rightMouseDown:event];
@@ -482,7 +382,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     be forwarded through the responder chain as usual.
  "*/
 
-- (void) rightMouseUp:(NSEvent *)event
+- (void)rightMouseUp:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
     [[self nextResponder] rightMouseUp:event];
@@ -499,7 +399,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     occured before the dragging.
  "*/
 
-- (void) rightMouseDragged:(NSEvent *)event
+- (void)rightMouseDragged:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
     [[self nextResponder] rightMouseDragged:event];
@@ -512,7 +412,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     be forwarded through the responder chain as usual 
  "*/
 
-- (void) otherMouseDown:(NSEvent *)event
+- (void)otherMouseDown:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
     [[self nextResponder] otherMouseDown:event];
@@ -525,7 +425,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     be forwarded through the responder chain as usual. 
  "*/
 
-- (void) otherMouseUp:(NSEvent *)event
+- (void)otherMouseUp:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
     [[self nextResponder] otherMouseUp:event];
@@ -543,7 +443,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     occured before the dragging.
  "*/
 
-- (void) otherMouseDragged:(NSEvent *)event
+- (void)otherMouseDragged:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
     [[self nextResponder] otherMouseDragged:event];
@@ -555,7 +455,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     be forwarded through the responder chain as usual.
  "*/
 
-- (void) scrollWheel:(NSEvent *)event
+- (void)scrollWheel:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
     [[self nextResponder] scrollWheel:event];
@@ -568,7 +468,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     be forwarded through the responder chain as usual.
  "*/
 
-- (void) keyDown:(NSEvent *)event {
+- (void)keyDown:(NSEvent *)event {
   if (![controller handleEvent:event]) {
     [[self nextResponder] keyDown:event];
   } 
@@ -592,7 +492,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     Needed to receive keyboard events
  "*/
 
-- (BOOL)acceptsFirstResponder
+-(BOOL)acceptsFirstResponder
 {
   return YES;
 }
@@ -601,17 +501,119 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 /*" Returns the aspect ratio of the SCView. "*/
 
-- (float) aspectRatio
+- (float)aspectRatio
 {
   NSSize s = [self _size];
   return s.width/s.height;
+}
+
+// ----------------------- NSCoding -------------------------
+// FIXME: Rewrite to use keyed archiving (kintel 20030324)
+// FIXME: Also support old 10.1 style archiving? (kintel 20030324)
+
+/*" Encodes the SCView using encoder coder "*/
+
+- (void)encodeWithCoder:(NSCoder *)coder
+{
+  NSLog(@"SCView.encodeWithCoder:");
+  [super encodeWithCoder:coder];
+}
+
+/*!
+  This method is here only to support reading nib files created with
+  SC21 public beta.
+
+  Here we decode the old instance variables, colorbits and depthbits,
+  and copy all relevant settings from the old view.
+
+  FIXME: We should remove this after a grace period (say SC21 V1.0.1)
+  (kintel 20040404)
+*/
+- (id)awakeAfterUsingCoder:(NSCoder *)coder
+{
+  NSLog(@"SCView.awakeAfterUsingCoder:");
+  if (_oldview) {
+    int colorbits, depthbits;
+    [coder decodeValueOfObjCType:@encode(int) at:&colorbits];
+    [coder decodeValueOfObjCType:@encode(int) at:&depthbits];
+    NSLog(@"  colorbits: %d, depthbits: %d", colorbits, depthbits);
+    //FIXME: Copy these as well:
+    // colorbits, depthbits, pixel format attributes
+    // (kintel 20040404)
+    if (self = [self initWithFrame:[_oldview frame]]) {
+      _superview = [_oldview superview];
+      [self setMenu:[_oldview menu]];
+      [self setInterfaceStyle:[_oldview interfaceStyle]];
+      [self setHidden:[_oldview isHidden]];
+      [self setNextKeyView:[_oldview nextKeyView]];
+      [self setBounds:[_oldview bounds]];
+      if ([_oldview isRotatedFromBase]) {
+        [self setFrameRotation:[_oldview frameRotation]];
+        [self setBoundsRotation:[_oldview boundsRotation]];
+      }
+      [self setPostsFrameChangedNotifications:[_oldview postsFrameChangedNotifications]];
+      [self setPostsBoundsChangedNotifications:[_oldview postsBoundsChangedNotifications]];
+      [self setAutoresizingMask:[_oldview autoresizingMask]];
+      [self setToolTip:[_oldview toolTip]];
+      [_oldview release];
+      _oldview = nil;
+    }
+  }
+  return self;
+}
+
+/*" Initializes a newly allocated SCView instance from the data
+    in decoder. Returns !{self}.
+
+    Calls #commonInit, which contains common initialization
+    code needed both in #init and #initWithCoder.
+ "*/
+
+- (id)initWithCoder:(NSCoder *)coder
+{
+  NSLog(@"SCView.initWithCoder:");
+  // This is support for reading archives from SC21 public beta
+  // FIXME: We should remove this after a grace period (say SC21 V1.0.1)
+  // (kintel 20040404)
+  if ([coder versionForClassName:@"SCView"] == 0) {
+    _oldview = [[NSOpenGLView alloc] initWithCoder:coder];
+    return self;
+#if 0 
+    // Old try that didn't work. Keep here until we know that the
+    // new code works.
+    NSOpenGLView * oldview = 
+      [[[NSOpenGLView alloc] initWithCoder:coder] autorelease];
+
+    if (oldview) {
+      // Enable initialization of an NSView from a coder also containing
+      // an NSOpenGLView without having to initialize the NSOpenGLView
+      NSData * data = [NSArchiver archivedDataWithRootObject:oldview];
+      NSCoder * oldcoder = 
+        [[[NSUnarchiver alloc] initForReadingWithData:data] autorelease];
+      if (self = [self _compatInitWithCoder:oldcoder]) {
+        int colorbits, depthbits;
+        [coder decodeValueOfObjCType:@encode(int) at:&colorbits];
+        [coder decodeValueOfObjCType:@encode(int) at:&depthbits];
+        NSLog(@"  colorbits: %d, depthbits: %d", colorbits, depthbits);
+        //FIXME: Convert to new scheme:
+        // colorbits, depthbits, pixel format attributes, hidden
+        // (kintel 20040404)
+        [self initWithFrame:[self frame]];
+      }
+    }
+#endif
+  }
+  else if (self = [super initWithCoder:coder]) {
+    [self commonInit];
+  }
+  return self;
 }
 
 
 // ----------------------- InternalAPI -------------------------
 
 /* Initalizes and sets the contextual menu. */
-- (void) _initMenu
+- (void)_initMenu
 {
   NSMenu * menu;
   menu = [[NSMenu alloc] initWithTitle:@"Menu"];
@@ -621,7 +623,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 /* Returns the size of the SCView. */
 
-- (NSSize) _size
+- (NSSize)_size
 {
   NSSize s = [self bounds].size;
   return s;
@@ -629,18 +631,17 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 /*" Returns the width of the SCView. "*/
 
-- (float) _width
+- (float)_width
 {
   return [self bounds].size.width;
 }
 
 /*" Returns the height of the SCView. "*/
 
-- (float) _height
+- (float)_height
 {
   return [self bounds].size.height;
 }
 
-
-
 @end
+

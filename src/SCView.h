@@ -28,58 +28,55 @@
 
 #import <Cocoa/Cocoa.h>
 #import <OpenGL/gl.h>
+#import "SCOpenGLView.h"
+#import "SCOpenGLPixelFormat.h"
 
 @class SCController;
 
-@interface SCView : NSOpenGLView <NSCoding>
+@interface SCView : SCOpenGLView
 {
   IBOutlet SCController * controller; 
-  int _colorbits; // color depth
-  int _depthbits; // z buffer resolution
+  NSOpenGLView * _oldview;
 }
 
 /*" Initializing an SCView "*/
-- (id) initWithFrame:(NSRect)rect;
-- (void) commonInit;
-- (void) awakeFromNib;
+- (id)initWithFrame:(NSRect)rect;
+- (void)commonInit;
+- (void)awakeFromNib;
 
 /*" Accessing the SCController. "*/
-- (SCController *) controller;
-- (void) setController:(SCController *) controller;
+- (SCController *)controller;
+- (void)setController:(SCController *) controller;
 
 /*" Drawing, viewing, and view-dependant calculations "*/
-- (void) drawRect:(NSRect)rect;
-- (void) reshape;
+- (void)drawRect:(NSRect)rect;
+- (void)reshape;
 
 /*" OpenGL setup "*/
-- (BOOL) recreateOpenGLContext;
-- (void) setColorBits:(int)n;
-- (void) setColorBitsNoRecreate:(int)n;
-- (int) colorBits;
-- (void) setDepthBits:(int)n;
-- (void) setDepthBitsNoRecreate:(int)n;
-- (int) depthBits;
-- (NSOpenGLPixelFormat *) createPixelFormat:(NSRect)frame;
+- (BOOL)recreateOpenGLContext;
+- (SCOpenGLPixelFormat *)createPixelFormat:(NSRect)frame;
 
 /*" Event handling "*/
-- (void) rightMouseDown:(NSEvent *)event;
-- (void) mouseDown:(NSEvent *)event;
-- (void) mouseUp:(NSEvent *)event;
-- (void) mouseDragged:(NSEvent *)event;
-- (void) otherMouseDown:(NSEvent *)event;
-- (void) otherMouseDragged:(NSEvent *)event;
-- (void) scrollWheel:(NSEvent *)event;
-- (void) keyDown:(NSEvent *)event;
-- (BOOL) becomeFirstResponder;
-- (BOOL) acceptsFirstResponder;
+- (void)rightMouseDown:(NSEvent *)event;
+- (void)mouseDown:(NSEvent *)event;
+- (void)mouseUp:(NSEvent *)event;
+- (void)mouseDragged:(NSEvent *)event;
+- (void)otherMouseDown:(NSEvent *)event;
+- (void)otherMouseDragged:(NSEvent *)event;
+- (void)scrollWheel:(NSEvent *)event;
+- (void)keyDown:(NSEvent *)event;
+- (BOOL)becomeFirstResponder;
+- (BOOL)acceptsFirstResponder;
 
 /*" Convenience methods and shortcuts "*/
-- (float) aspectRatio;
-- (NSPoint) normalizePoint:(NSPoint)point;
+- (float)aspectRatio;
+- (NSPoint)normalizePoint:(NSPoint)point;
 
 /*" NSCoding conformance "*/
-- (void) encodeWithCoder:(NSCoder *)coder;
-- (id) initWithCoder:(NSCoder *)coder;
+//FIXME: We could remove the declarations, as this seems to be the strategy 
+//       elsewhere (kintel 20030324)
+- (void)encodeWithCoder:(NSCoder *)coder;
+- (id)initWithCoder:(NSCoder *)coder;
 
 @end
 
