@@ -78,13 +78,13 @@ void error_cb(const class SoError * error, void * data)
   camera if none is found. This is called %{superscenegraph creation}
   can be controlled in several ways:
 
-  (1) !{shouldCreateDefaultSuperSceneGraph} delegate method (if present)
+  (1) !{createSuperSceneGraph} delegate method (if present) - gets
+      called instead of internal default implementation
 
-  (2) else: !{createSuperSceneGraph} delegate method
-      (called instead of internal default)
+  (2) else !{shouldCreateDefaultSuperSceneGraph} delegate method (if present)
 
-  (3) else: use the value of SCSceneGraph's IB
-      inspector (default setting is !{YES})
+  (3) else: use the value of SCSceneGraph's IB inspector (default
+      setting is !{YES})
 
   For more information about the delegate methods refer to the 
   #{NSObject(SCSceneGraphDelegate)} documentation.
@@ -233,7 +233,10 @@ void error_cb(const class SoError * error, void * data)
   return SELF->camera; 
 }
 
-/*" Positions the current camera so that the whole scene is visible. "*/
+/*" 
+   Positions the current camera so that the whole scene is visible, by sending 
+   !{viewAll:self} to the receiver's SCCamera.
+"*/
 
 - (void)viewAll
 {
@@ -257,7 +260,15 @@ void error_cb(const class SoError * error, void * data)
 /*"
   Returns the root node in the receiver's Open Inventor scenegraph, or
   NULL if there is no valid scenegraph.
-  "*/
+
+  Note that this is the root as previously set by !{setRoot:}, or the
+  top node of the scenegraph read from a file, URL, or memory
+  buffer. It thus does %not contain the superscenegraph. If for some
+  reason you want to access the complete scenegraph (including the
+  superscenegraph) that is actually used for rendering, you can get it
+  by calling !{SoSceneManager::getSceneGraph()}.
+
+"*/
 - (SoGroup *)root
 {
   return SELF->scenegraph;

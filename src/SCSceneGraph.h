@@ -47,7 +47,7 @@ class SoDirectionalLight;
 - (id)initWithContentsOfFile:(NSString *)filename;
 - (id)initWithContentsOfURL:(NSURL *)URL;
 
-/*" File I/O "*/
+/*" Reading from files and URLS and loading data "*/
 - (BOOL)readFromFile:(NSString *)filename;
 - (BOOL)readFromURL:(NSURL *)URL;
 - (BOOL)loadDataRepresentation:(NSData *)data;
@@ -59,11 +59,11 @@ class SoDirectionalLight;
 - (SCCamera *)camera;
 - (void)viewAll;
 
-/*" Accessing the actual Coin scenegraph. "*/
+/*" Accessing the actual Coin scenegraph "*/
 - (SoGroup *)root;
 - (void)setRoot:(SoGroup *)root;
 
-  /*" Delegate handling. "*/
+  /*" Delegate handling "*/
 - (void)setDelegate:(id)newdelegate;
 - (id)delegate;
 
@@ -95,19 +95,25 @@ SC21_EXTERN NSString * SCCouldNotOpenFileNotification;
 
 SC21_EXTERN NSString * SCCouldNotReadSceneNotification;
 
-/*" Posted if !{setSceneGraph:} is called with a scenegraph that
-    does not contain a camera. Register for this notification if
-    you want to issue a warning to your users that they will not
-    be able to see anything. 
+/*" 
+  Posted if !{setSceneGraph:} is called with a scenegraph that does
+  not contain a camera. (The check is done after superscenegraph
+  creation.)
+
+  Register for this notification if you want to issue a warning to
+  your users that they will not be able to see anything. 
 "*/
 
 SC21_EXTERN NSString * SCNoCameraFoundInSceneNotification;
 
-/*" Posted if !{setSceneGraph:} is called with a scenegraph that
-    does not contain a light. Register for this notification if
-    you want to issue a warning to your users that they will not
-    be able to see much in the scene (since only ambient light
-    will be used.)
+/*" 
+  Posted if !{setSceneGraph:} is called with a scenegraph that does
+  not contain a light. (The check is done after superscenegraph
+  creation.)
+
+  Register for this notification if you want to issue a warning to
+  your users that they will not be able to see much in the scene
+  (since only ambient light will be used.)
 "*/
 
 SC21_EXTERN NSString * SCNoLightFoundInSceneNotification;
