@@ -92,7 +92,7 @@ redraw_cb(void * user, SoSceneManager *) {
 }
 
 static void
-sensorqueuechanged_cb (void * data) {
+sensorqueuechanged_cb(void * data) {
   SCController * ctrl = (SCController *)data;
   [ctrl _sensorQueueChanged];
 }
@@ -199,8 +199,14 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     _scenemanager->setSceneGraph(_scenegraph); 
   }
 
+  // FIXME: use name constant for notification name
+  [[NSNotificationCenter defaultCenter] addObserver: self
+    selector:@selector(_idle:) name:@"SCIdleNotification"
+    object:nil];  
+
   [self _sensorQueueChanged];
 }
+
 
 /* Clean up after ourselves. */
 - (void)dealloc
@@ -394,9 +400,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   float blue = sbcolor[2];
   
   NSColor * color = [NSColor colorWithDeviceRed:red
-                             green:green
-                             blue:blue
-                             alpha:1];
+                             green:green blue:blue alpha:1];
   return color;	
 }
 
@@ -531,6 +535,8 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 {
   if (_timerqueuetimer != nil) return;
 
+  // Timer fire dates will be controlled in sensorQueueChanged:,
+  // so initialize with a high interval...
   _timerqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:1 target:self
                        selector:@selector(_timerQueueTimerFired:) userInfo:nil 
                        repeats:YES] retain];
@@ -547,7 +553,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 }
 
 /*" Sets the frequency how often we process the timer sensor queue,
-    in seconds. Default value is 0.001.
+    in seconds. 
  "*/
 
 - (void)setTimerInterval:(NSTimeInterval)interval
@@ -684,6 +690,9 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     wa.apply(_scenegraph);
     return YES;
   }
+  // FIXME: Shouldn't we post a notification about the error?
+  // In general, we should have a consistent strategy for
+  // exception handling
   return NO;
 }
 
@@ -715,7 +724,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 - (void)_timerQueueTimerFired:(NSTimer *)t
 {
-  NSLog(@"timerQueueTimerFired");
+  // NSLog(@"timerQueueTimerFired");
   SoDB::getSensorManager()->processTimerQueue();
   [self _sensorQueueChanged];
 }
@@ -724,7 +733,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 - (void)_delayQueueTimerFired:(NSTimer *)t
 {
-  NSLog(@"delayQueueTimerFired");
+  // NSLog(@"delayQueueTimerFired");
   SoDB::getSensorManager()->processTimerQueue();
   SoDB::getSensorManager()->processDelayQueue(FALSE);
   [self _sensorQueueChanged];
@@ -732,9 +741,10 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 /* process delay queue when application is idle. */
 
-- (void)_idle
+- (void)_idle:(NSNotification *)notification
 {
   // FIXME: Implement mechanism to call this function  
+  // NSLog(@"doing idle processing");
   SoDB::getSensorManager()->processTimerQueue();
   SoDB::getSensorManager()->processDelayQueue(TRUE);
   [self _sensorQueueChanged];
@@ -743,12 +753,6 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 // FIXME: Rename to something more appropriate... ;)
 - (void)_sensorQueueChanged
 {
-
-  // FIXME: Process delay queue when application is idle. Problem:
-  // There is not really a concept of "application is idle" in 
-  // cocoa... Might be able to use NSNotificationQueue
-  // with style NSPostWhenIdle?
-
   // Create timers at first invocation
   if (!_timerqueuetimer) {
     [self startTimers];
@@ -764,7 +768,12 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   }
   
   if (sm->isDelaySensorPending()) {
-    [_delayqueuetimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:0.008]];      
+    [[NSNotificationQueue defaultQueue] enqueueNotification:[NSNotification 
+      notificationWithName:@"SCIdleNotification" object:self]
+      postingStyle:NSPostWhenIdle coalesceMask:NSNotificationCoalescingOnName
+      forModes:[NSArray arrayWithObjects: NSDefaultRunLoopMode, NSModalPanelRunLoopMode,
+      NSEventTrackingRunLoopMode, nil]];
+    [_delayqueuetimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:0.08]];      
   } else {
     [_delayqueuetimer deactivate];
   }
