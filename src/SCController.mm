@@ -88,8 +88,8 @@
 static void
 redraw_cb(void * user, SoSceneManager *)
 {
-  SCView * view = (SCView *)user;
-  [view setNeedsDisplay:YES]; 
+  SCController * SELF = (SCController *)user;
+  [[SELF view] setNeedsDisplay:YES];
 }
 
 static void
@@ -168,7 +168,7 @@ NSString * SCIdleNotification = @"SCIdleNotification";
     call !{[super commonInit]} as the first call in your
     implementation to make sure everything is set up properly.
 "*/
-//FIXME: We should be able to move the contents of this method
+//FIXME: We should be able to move most of the contents of this method
 // to -init and archive/unarchive the aggregated instance variables.
 // (kintel 20040406)
 - (void)commonInit
@@ -179,26 +179,19 @@ NSString * SCIdleNotification = @"SCIdleNotification";
   _autoclipvalue = 0.6;
   _handleseventsinviewer = YES;
   _eventconverter = [[SCEventConverter alloc] initWithController:self];
-}
 
-/*" Sets up and activates the Coin scenemanager and sets up the timers
-    for animation.
-
-    Note: You %must call this method, or else things will not work.
-    A good place to do this is in your #awakeFromNib or
-    #applicationDidFinishLaunching method.
-"*/
-
-- (void)activate
-{
-  SoSceneManager *scenemanager = new SoSceneManager;
-  [self setSceneManager:scenemanager];
+  [self setSceneManager:new SoSceneManager];
 
   [[NSNotificationCenter defaultCenter] addObserver:self
     selector:@selector(_idle:) name:SCIdleNotification
     object:nil];
 
   [self _sensorQueueChanged];
+}
+
+// FIXME: Remove when example apps are updated (kintel 20040406)
+- (void)activate
+{
 }
 
 
@@ -291,14 +284,14 @@ NSString * SCIdleNotification = @"SCIdleNotification";
     has been set earlier, scenemanager's scenegraph will be set to it.
 
     Note that you should not normally need to call that method, since a
-    scene manager is created for you in #activate. 
+    scene manager is created for you in #commonInit
  "*/
 
 - (void)setSceneManager:(SoSceneManager *)scenemanager
 {
   //FIXME: Keep old background color if set? (kintel 20040406)
   _scenemanager = scenemanager;
-  _scenemanager->setRenderCallback(redraw_cb, (void *)view);
+  _scenemanager->setRenderCallback(redraw_cb, (void *)self);
   _scenemanager->getGLRenderAction()->setCacheContext(
     SoGLCacheContextElement::getUniqueCacheContext());
   _scenemanager->activate();
