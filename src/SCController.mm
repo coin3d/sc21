@@ -402,6 +402,11 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 - (void)setDrawable:(id<SCDrawable>)newdrawable
 {
   SELF->drawable = newdrawable;
+  
+  // Force a redraw - otherwise the display wouldn't be refreshed 
+  // until the first event or the scene change.
+  [self sceneManager]->scheduleRedraw();
+  
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCDrawableChangedNotification object:self];
 }
