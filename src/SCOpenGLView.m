@@ -210,10 +210,6 @@ Used by subclassers to initialize OpenGL state. This function is called
       [[NSOpenGLContext alloc] initWithFormat:[format pixelFormat]
                                shareContext:nil];
 
-    //FIXME: The following line results in a "invalid drawable" message.
-    //This is probably because this method is called before the view
-    //is on-screen (from SCView.reshape) (kintel 20040616).
-    [SELF->openGLContext setView:self];
     //FIXME: Does setView: make the context current, making this redundant?
     //       (same behavior for Jaguar and Panther?)
     [SELF->openGLContext makeCurrentContext];
