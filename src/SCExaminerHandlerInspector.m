@@ -130,21 +130,21 @@
   [self _SC_revertPopUpButton:middleButtonEmulation forButton:2];
   
   // rotate mode: button, modifier flags, spinning?
-  int index = [handler rotateButtonIsEnabled] ? [handler _SC_rotateButton] : 3;
-  [rotateButton selectItemAtIndex:index];
+  int idx = [handler rotateButtonIsEnabled] ? [handler _SC_rotateButton] : 3;
+  [rotateButton selectItemAtIndex:idx];
   [self _SC_setStateOfCommand:rotate_command alt:rotate_alt shift:rotate_shift 
     forFlags:[handler _SC_rotateModifier]];
   [enableSpin setState:([handler spinEnabled] ? NSOnState : NSOffState)];
     
   // pan mode: button, modifier flags
-  index = [handler panButtonIsEnabled] ? [handler _SC_panButton] : 3;
-  [panButton selectItemAtIndex:index];
+  idx = [handler panButtonIsEnabled] ? [handler _SC_panButton] : 3;
+  [panButton selectItemAtIndex:idx];
   [self _SC_setStateOfCommand:pan_command alt:pan_alt shift:pan_shift 
     forFlags:[handler _SC_panModifier]];
   
   // zoom mode: button, modifier flags, use wheel?
-  index = [handler zoomButtonIsEnabled] ? [handler _SC_zoomButton] : 3;
-  [zoomButton selectItemAtIndex:index];
+  idx = [handler zoomButtonIsEnabled] ? [handler _SC_zoomButton] : 3;
+  [zoomButton selectItemAtIndex:idx];
   [self _SC_setStateOfCommand:zoom_command alt:zoom_alt shift:zoom_shift 
     forFlags:[handler _SC_zoomModifier]];
   [enableWheel setState:([handler scrollWheelZoomEnabled] ?
