@@ -697,8 +697,8 @@
 		E09C036A06024BEF0000E227 = {
 			isa = PBXFileReference;
 			lastKnownFileType = image.pict;
-			name = scview_icon.pict;
-			path = Resources/scview_icon.pict;
+			name = SCView.pict;
+			path = Resources/SCView.pict;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -854,8 +854,8 @@
 			fileEncoding = 30;
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.c.h;
-			name = SC21Inspector.h;
-			path = src/SC21Inspector.h;
+			name = SCOpenGLViewInspector.h;
+			path = src/SCOpenGLViewInspector.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -863,8 +863,8 @@
 			fileEncoding = 30;
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.cpp.objcpp;
-			name = SC21Inspector.mm;
-			path = src/SC21Inspector.mm;
+			name = SCOpenGLViewInspector.mm;
+			path = src/SCOpenGLViewInspector.mm;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -1097,16 +1097,16 @@
 		E09CFAA106024AD40000E227 = {
 			isa = PBXFileReference;
 			lastKnownFileType = image.pict;
-			name = ib_scc.pict;
-			path = Resources/ib_scc.pict;
+			name = SCController.pict;
+			path = Resources/SCController.pict;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E09CFAA206024AD40000E227 = {
 			isa = PBXFileReference;
 			lastKnownFileType = image.pict;
-			name = ib_scec.pict;
-			path = Resources/ib_scec.pict;
+			name = SCExaminerController.pict;
+			path = Resources/SCExaminerController.pict;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -1147,7 +1147,7 @@
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.nib;
 			name = English;
-			path = Resources/English.lproj/SC21Inspector.nib;
+			path = Resources/English.lproj/SCOpenGLViewInspector.nib;
 			refType = 4;
 			sourceTree = "<group>";
 		};
