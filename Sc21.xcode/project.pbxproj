@@ -343,6 +343,16 @@
 			settings = {
 			};
 		};
+		3DA4938D06BAF780006C4DFA = {
+			children = (
+				E09CFA91060249EF0000E227,
+				E09CFA92060249EF0000E227,
+			);
+			isa = PBXGroup;
+			name = obsoleted;
+			refType = 4;
+			sourceTree = "<group>";
+		};
 		3DDD3FF006B8EE5C0038959E = {
 			children = (
 				3DDD3FF106B8EE5C0038959E,
@@ -556,6 +566,7 @@
 		};
 		E01100B50605E71900F93EC1 = {
 			children = (
+				3DA4938D06BAF780006C4DFA,
 				E066294D065383E000FB6420,
 				E057B59A06219ADC0012C546,
 				E09CFA8B060249EF0000E227,
@@ -576,8 +587,6 @@
 				E0662924065383D600FB6420,
 				E0E5D14C06B15F61009165C8,
 				E0D6A27006BA74ED00FF8E28,
-				E09CFA91060249EF0000E227,
-				E09CFA92060249EF0000E227,
 				E080C6D906B12B080088958C,
 				E080C6DA06B12B080088958C,
 				3D6AF42F06AE770400225657,
@@ -687,10 +696,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VALUE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
+				GCC_WARN_UNUSED_VARIABLE = NO;
 				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
-				OTHER_CFLAGS = "-DSC21_DEBUG";
-				OTHER_CPLUSPLUSFLAGS = "-DSC21_DEBUG";
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
 				PREBINDING = NO;
 				UNSTRIPPED_PRODUCT = YES;
 			};
@@ -1461,7 +1470,7 @@
 		};
 		E0765C62060223120099F78E = {
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			name = Info.plist;
 			path = Resources/framework/Info.plist;
 			refType = 4;
@@ -1821,7 +1830,7 @@
 		};
 		E09CFA57060245720000E227 = {
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			name = Info.plist;
 			path = Resources/palette/Info.plist;
 			refType = 4;
@@ -2081,7 +2090,7 @@
 		E09CFAA306024AD40000E227 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			name = palette.table;
 			path = Resources/palette/palette.table;
 			refType = 4;
@@ -2197,7 +2206,7 @@
 		E0D1CDEF06343F3100269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			path = Description.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -2205,7 +2214,7 @@
 		E0D1CDF006343F3100269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			path = Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -2250,7 +2259,7 @@
 		E0D1CE0206343F4E00269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			path = Description.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -2258,7 +2267,7 @@
 		E0D1CE0306343F4E00269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			path = Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -2303,7 +2312,7 @@
 		E0D1CE0806343F5B00269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			path = Description.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -2311,7 +2320,7 @@
 		E0D1CE0906343F5B00269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			path = Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
