@@ -260,8 +260,9 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   if (scenegraph == NULL) {
     scenegraph = new SoSeparator;
     // Don't waste cycles by animating an empty scene. 
-    [_delayqueuetimer deactivate];
-    [_timerqueuetimer deactivate];
+    [self stopTimers];
+  } else {
+    [self startTimers];
   }
 
   [self _setInternalSceneGraph:scenegraph];
@@ -520,7 +521,29 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 - (void) stopTimers
 {
   if ([_timerqueuetimer isValid]) [_timerqueuetimer invalidate];
+  _timerqueuetimer = nil;
   if ([_delayqueuetimer isValid]) [_delayqueuetimer invalidate];
+  _delayqueuetimer = nil;
+  SoDB::getSensorManager()->setChangedCallback(NULL, NULL);
+}
+
+- (void) startTimers
+{
+  if (_timerqueuetimer != nil) return;
+
+  _timerqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:1 target:self
+                       selector:@selector(_timerQueueTimerFired:) userInfo:nil 
+                       repeats:YES] retain];
+  _delayqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:1 target:self
+                       selector:@selector(_delayQueueTimerFired:) userInfo:nil 
+                       repeats:YES] retain];
+  
+  [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSModalPanelRunLoopMode];
+  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSModalPanelRunLoopMode];
+  [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSEventTrackingRunLoopMode];
+  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSEventTrackingRunLoopMode];
+  
+  SoDB::getSensorManager()->setChangedCallback(sensorqueuechanged_cb, self);
 }
 
 /*" Sets the frequency how often we process the timer sensor queue,
@@ -728,20 +751,8 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
   // Create timers at first invocation
   if (!_timerqueuetimer) {
-    _timerqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:1 target:self
-                         selector:@selector(_timerQueueTimerFired:) userInfo:nil 
-                         repeats:YES] retain];
-    _delayqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:1 target:self
-                         selector:@selector(_delayQueueTimerFired:) userInfo:nil 
-                         repeats:YES] retain];
-    
-    [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSModalPanelRunLoopMode];
-    [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSModalPanelRunLoopMode];
-    [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSEventTrackingRunLoopMode];
-    [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSEventTrackingRunLoopMode];
-  
-    SoDB::getSensorManager()->setChangedCallback(sensorqueuechanged_cb, self);
-  }
+    [self startTimers];
+ }
 
   SoSensorManager * sm = SoDB::getSensorManager();
   SbTime t;  
