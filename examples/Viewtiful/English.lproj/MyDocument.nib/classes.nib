@@ -14,6 +14,7 @@
         }, 
         {
             ACTIONS = {
+                documentChanged = id; 
                 dumpScenegraph = id; 
                 modeButtonClicked = id; 
                 modeMenuSelected = id; 
@@ -25,7 +26,6 @@
                 controller = SCExaminerController; 
                 modebutton = NSButton; 
                 sizetext = NSTextField; 
-                test = id; 
                 typetext = NSTextField; 
             }; 
             SUPERCLASS = NSWindowController; 
