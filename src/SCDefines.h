@@ -27,8 +27,31 @@
 
 #import <Sc21/SCInternalDefines.h>
 
-/*" The run-time Sc21 version number "*/
+/*" 
+
+  The run-time Sc21 version number. 
+
+  Allows you to check at runtime whether certain features you want to
+  use are actually available.  For instance if you want to use a
+  feature that was introduced in Sc21 1.1:
+
+  !{if (floor(Sc21VersionNumber) >= Sc21VersionNumber1_1) {
+    \/\/ use the new feature
+   }}
+"*/
+
+// Note that the value of this is set via the apple-generic versioning
+// system. To modify the actual value in Xcode, change the "Current
+// Project Version" attribute in Targets -> Sc21 framework -> Info ->
+// Build.
+
 SC21_EXTERN const double Sc21VersionNumber;
+
+
+/*" 
+  The compile-time version number. (See Sc21VersionNumber
+  documentation for more information.)
+"*/
 
 // Version numbers are increased by the following scheme:
 // o Micro versions (e.g. 1.0.1): changes only after the decimal point
@@ -37,6 +60,6 @@ SC21_EXTERN const double Sc21VersionNumber;
 // o Major versions:              basically the same as for minor versions
 //                                but the Letter version will also change
 //                                (e.g. A -> B).
-/*" FIXME: Document "*/
+
 #define Sc21VersionNumber1_0 3
-//FIXME: or: #define SC21_VERSION_1_0 3
+
