@@ -36,20 +36,20 @@
 }
 
 /*" Mouse- and keybindings for rotate mode "*/
-- (void)setRotateButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
-- (void)getRotateButton:(int*)buttonNumber modifier:(unsigned int*)modifierFlags;
+- (void)setRotateButton:(int)buttonNr modifier:(unsigned int)modifierFlags;
+- (void)getRotateButton:(int*)buttonNr modifier:(unsigned int*)modifierFlags;
 - (void)disableRotateButton;
 - (BOOL)rotateButtonIsEnabled;
 
 /*" Mouse- and keybindings for pan mode "*/
-- (void)setPanButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
-- (void)getPanButton:(int*)buttonNumber modifier:(unsigned int*)modifierFlags;
+- (void)setPanButton:(int)buttonNr modifier:(unsigned int)modifierFlags;
+- (void)getPanButton:(int*)buttonNr modifier:(unsigned int*)modifierFlags;
 - (void)disablePanButton;
 - (BOOL)panButtonIsEnabled;
 
 /*" Mouse- and keybindings for zoom mode "*/
-- (void)setZoomButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
-- (void)getZoomButton:(int*)buttonNumber modifier:(unsigned int*)modifierFlags;
+- (void)setZoomButton:(int)buttonNr modifier:(unsigned int)modifierFlags;
+- (void)getZoomButton:(int*)buttonNr modifier:(unsigned int*)modifierFlags;
 - (void)disableZoomButton;
 - (BOOL)zoomButtonIsEnabled;
 

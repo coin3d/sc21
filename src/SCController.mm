@@ -26,7 +26,6 @@
  * =============================================================== */
  
 #import <Sc21/SCController.h>
-#import <Sc21/SCEventHandler.h>
 
 #import "SCControllerP.h"
 #import "SCSceneGraphP.h"

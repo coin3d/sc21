@@ -26,10 +26,11 @@
  * =============================================================== */
 
 #import <Cocoa/Cocoa.h>
+
 #import <Sc21/SCDefines.h>
 
-@class SCController;
 @class SCEventHandlerP;
+@class SCController;
 
 @interface SCEventHandler : NSObject
 {
@@ -56,4 +57,5 @@
   This is automatically picked up by the SCView currently viewing the
   scene graph.
 "*/
+
 SC21_EXTERN NSString * SCCursorChangedNotification;

@@ -26,11 +26,11 @@
  * =============================================================== */
  
 #import <Sc21/SCExaminerHandler.h> 
-#import <Sc21/SCDrawable.h>
-#import "SCMode.h"
-#import "SCEmulator.h"
 
- @interface SCExaminerHandlerP : NSObject
+#import "SCEmulator.h"
+#import "SCMode.h"
+
+@interface SCExaminerHandlerP : NSObject
 {
   int panbutton, rotatebutton, zoombutton;
   unsigned int panmodifier, rotatemodifier, zoommodifier;
@@ -43,12 +43,15 @@
 @end
 
 @interface SCExaminerHandler (InternalAPI)
+
 - (void)_SC_commonInit;
 - (void)_SC_setCurrentMode:(SCMode *)mode;
 - (SCMode *)_SC_currentMode;
-- (void)_SC_activateMode:(SCMode *)mode camera:(SCCamera *)camera event:(NSEvent *)event point:(NSPoint *)pn;
-- (Class)_SC_modeForButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
+- (Class)_SC_modeForButton:(int)buttonNr modifier:(unsigned int)modifierFlags;
 - (SCEmulator *)_SC_emulator;
 - (void)_SC_setEmulator:(SCEmulator *)emulator;
 - (BOOL)_SC_usesEvent:(NSEvent *)event;
+- (void)_SC_activateMode:(SCMode *)mode camera:(SCCamera *)camera 
+  event:(NSEvent *)event point:(NSPoint *)pn;
+
 @end

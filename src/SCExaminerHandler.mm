@@ -27,20 +27,23 @@
 
 #import <Sc21/SCExaminerHandler.h>
 #import <Sc21/SCCamera.h>
+#import <Sc21/SCController.h>
+
+#import "SCExaminerHandlerP.h"
 #import "SCRotateMode.h"
 #import "SCPanMode.h"
 #import "SCZoomMode.h"
 #import "SCSpinMode.h"
 #import "SCMouseLog.h"
 #import "SCUtil.h"
-#import <Sc21/SCController.h>
 
-#import <Sc21/SCExaminerHandlerP.h>
 
 @implementation SCExaminerHandlerP
 @end
 
+
 #define SELF self->_sc_examinerhandler
+
 
 @implementation SCExaminerHandler
 
@@ -51,6 +54,7 @@
   Note that the mouse + modifier key combinations are most easily
   configured through the associated InterfaceBuilder inspector.
 "*/
+
 
 #pragma mark --- initialization and cleanup ---
 
@@ -68,11 +72,13 @@
   return self;
 }
 
+
 - (void)dealloc
 {
   [SELF->emulator release];
   [SELF release];
 }
+
 
 #pragma mark --- mouse- and keybindings --- 
 
@@ -83,6 +89,7 @@
   return SELF->panbuttonenabled;
 }
 
+
 /*" Returns !{YES} if rotating by clicking and dragging is enabled. "*/
 
 - (BOOL)rotateButtonIsEnabled
@@ -90,15 +97,18 @@
   return SELF->rotatebuttonenabled;
 }
 
+
 /*" 
   Returns !{YES} if zooming by clicking and dragging is enabled. 
 
   Note that this does not affect zooming via the mouse wheel.
 "*/
+
 - (BOOL)zoomButtonIsEnabled
 {
   return SELF->zoombuttonenabled;
 }
+
 
 /*" Disable panning by clicking and dragging. "*/
 
@@ -107,12 +117,14 @@
   SELF->panbuttonenabled = NO;
 }
 
+
 /*" Disable rotating by clicking and dragging. "*/
 
 - (void)disableRotateButton
 {
   SELF->rotatebuttonenabled = NO;
 }
+
 
 /*" 
   Disable zooming by clicking and dragging. 
@@ -125,7 +137,11 @@
   SELF->zoombuttonenabled = NO;
 }
 
-/*" Set the mouse button and modifier key(s) used for panning. "*/
+
+/*" 
+  Set the mouse button and modifier key(s) used for panning. 
+"*/
+
 - (void)setPanButton:(int)buttonNumber modifier:(unsigned int)modifierFlags
 {
   SELF->panbutton = buttonNumber;
@@ -133,7 +149,11 @@
   SELF->panbuttonenabled = YES;
 }
 
-/*" Set the mouse button and modifier key(s) used for rotating. "*/
+
+/*" 
+  Set the mouse button and modifier key(s) used for rotating. 
+"*/
+
 - (void)setRotateButton:(int)buttonNumber modifier:(unsigned int)modifierFlags
 {
   SELF->rotatebutton = buttonNumber;
@@ -141,7 +161,11 @@
   SELF->rotatebuttonenabled = YES;
 }
 
-/*" Set the mouse button and modifier key(s) used for zooming. "*/
+
+/*" 
+  Set the mouse button and modifier key(s) used for zooming. 
+"*/
+
 - (void)setZoomButton:(int)buttonNumber modifier:(unsigned int)modifierFlags
 {
   SELF->zoombutton = buttonNumber;
@@ -149,26 +173,39 @@
   SELF->zoombuttonenabled = YES;  
 }
 
-/*" Get the mouse button and modifier key(s) used for panning. "*/
+
+/*" 
+  Get the mouse button and modifier key(s) used for panning. 
+"*/
+
 - (void)getPanButton:(int*)button modifier:(unsigned int*)modifierFlags
 {
   *button = SELF->panbutton;
   *modifierFlags = SELF->panmodifier;
 }
 
-/*" Get the mouse button and modifier key(s) used for rotating. "*/
+
+/*" 
+  Get the mouse button and modifier key(s) used for rotating. 
+"*/
+
 - (void)getRotateButton:(int*)button modifier:(unsigned int*)modifierFlags
 {
   *button = SELF->rotatebutton;
   *modifierFlags = SELF->rotatemodifier; 
 }
 
-/*" Get the mouse button and modifier key(s) used for zooming. "*/
+
+/*" 
+  Get the mouse button and modifier key(s) used for zooming. 
+"*/
+
 - (void)getZoomButton:(int*)button modifier:(unsigned int*)modifierFlags
 {
   *button = SELF->zoombutton;
   *modifierFlags = SELF->zoommodifier;  
 }
+
 
 #pragma mark --- additional settings ---
 
@@ -176,26 +213,33 @@
   Pass !{YES} to enable "spinning" (i.e. starting a continuous
   animation by dragging and then releasing). 
 "*/
+
 - (void)setSpinEnabled:(BOOL)enabled
 {
   SELF->spinenabled = enabled;
 }
 
-/*" Returns !{YES} if spinning is enabled, and !{NO} otherwise. "*/
+
+/*" 
+  Returns !{YES} if spinning is enabled, and !{NO} otherwise. 
+"*/
 
 - (BOOL)spinEnabled
 {
   return SELF->spinenabled;
 }
 
+
 /*" 
   Pass !{YES} to enable scrolling by using the mouse wheel (if 
   present).
 "*/
+
 - (void)setScrollWheelZoomEnabled:(BOOL)enabled
 {
   SELF->scrollwheelzoomenabled = enabled;
 }
+
 
 /*" 
   Returns !{YES} if the mouse wheel can be used for zooming, and !{NO}
@@ -210,6 +254,7 @@
 {
   return SELF->scrollwheelzoomenabled;
 }
+
 
 #pragma mark --- SCEventHandler conformance ---
 
@@ -306,12 +351,14 @@
   return handled;
 }
 
+
 - (void)update:(SCController *)controller
 {
   NSTimeInterval currtime = [NSDate timeIntervalSinceReferenceDate];
   [SELF->currentmode modifyCamera:[[controller sceneGraph] camera] 
                  withTimeInterval:currtime];
 }
+
 
 #pragma mark --- NSCoding conformance ---
 
@@ -365,12 +412,14 @@
 
 @end
 
+
 @implementation SCExaminerHandler (InternalAPI)
 
 - (void)_SC_commonInit
 {
   SELF = [[SCExaminerHandlerP alloc] init];
 }
+
 
 - (void)_SC_setCurrentMode:(SCMode *)mode
 {
@@ -379,10 +428,12 @@
   SELF->currentmode = mode;
 }
 
+
 - (SCMode *)_SC_currentMode
 {
   return SELF->currentmode;
 }
+
 
 - (void)_SC_activateMode:(SCMode *)newmode camera:(SCCamera *)camera
                    event:(NSEvent *)event point:(NSPoint *)pn
@@ -394,13 +445,14 @@
     postNotificationName:SCCursorChangedNotification object:self];  
 }
 
-- (Class)_SC_modeForButton:(int)buttonNumber modifier:(unsigned int)modifierFlags
+
+- (Class)_SC_modeForButton:(int)buttonNr modifier:(unsigned int)modifierFlags
 {
   unsigned int matchedflags = 0;
   Class matchedmode = Nil;
   
   if (SELF->rotatebuttonenabled && 
-      SELF->rotatebutton == buttonNumber && 
+      SELF->rotatebutton == buttonNr && 
       (SELF->rotatemodifier & modifierFlags) == SELF->rotatemodifier &&
       SELF->rotatemodifier >= matchedflags) {
     matchedflags = SELF->rotatemodifier;
@@ -408,7 +460,7 @@
   }
   
   if (SELF->zoombuttonenabled && 
-      SELF->zoombutton  == buttonNumber && 
+      SELF->zoombutton  == buttonNr && 
       (SELF->zoommodifier & modifierFlags) == SELF->zoommodifier &&
       SELF->zoommodifier >= matchedflags) {
     matchedflags = SELF->zoommodifier;
@@ -416,7 +468,7 @@
   }
   
   if (SELF->panbuttonenabled && 
-      SELF->panbutton  == buttonNumber && 
+      SELF->panbutton  == buttonNr && 
       (SELF->panmodifier & modifierFlags) == SELF->panmodifier &&
       SELF->panmodifier >= matchedflags)  {
     matchedflags = SELF->panmodifier;
@@ -426,6 +478,7 @@
   return matchedmode;
 }
 
+
 #pragma mark --- mouse button emulation ---
 
 - (SCEmulator *)_SC_emulator
@@ -433,11 +486,13 @@
   return SELF->emulator;
 }
 
+
 - (void)_SC_setEmulator:(SCEmulator *)emulator
 {
   if (emulator != SELF->emulator) [SELF->emulator release];
   SELF->emulator = [emulator retain];
 }
+
 
 #pragma mark --- other stuff ---
 
@@ -445,18 +500,18 @@
 {
   int nr = [event buttonNumber];
   
-  // It is not guaranteed that modifierflags == 0 when no modifier keys are
-  // pressed, so it is not possible to compare 
-  //   if (modifierflags == SELF->panmodifier)
-  // However, we can mask out the modifiers that _could_ be present, and 
-  // compare against those.
+  // It is not guaranteed that modifierflags == 0 when no modifier
+  // keys are pressed, so it is not possible to compare "if
+  // (modifierflags == SELF->panmodifier)". However, we can mask out
+  // the modifiers that _could_ be present, and compare against those.
+  // Known modifiermasks used here are from: AppKit version C (AppKit
+  // library compatibility version 45.0.0, current version 743.0.0)
   
-  // FIXME: This does of course not cover any additional modifiers that might 
-  // be added in the future (the rest of SCExaminerHandler is not using any 
-  // specific modifier flags... only the IB palette does). kyrah 20040827
-  
-  // Known modifiermasks as of AppKit version C (AppKit library
-  // compatibility version 45.0.0, current version 743.0.0)
+  // FIXME: This does of course not cover any additional modifiers
+  // that might be added in the future (the rest of SCExaminerHandler
+  // is not using any specific modifier flags... only the IB palette
+  // does). kyrah 20040827
+
   unsigned int flags = [event modifierFlags] & 
     (NSAlphaShiftKeyMask | NSShiftKeyMask | NSControlKeyMask | 
      NSAlternateKeyMask | NSCommandKeyMask | NSNumericPadKeyMask | 

@@ -26,14 +26,18 @@
  * =============================================================== */
 
 #import <Cocoa/Cocoa.h>
-#import <Sc21/SCOpenGLView.h>
+
+#import <Sc21/SCDefines.h>
 #import <Sc21/SCDrawable.h>
+#import <Sc21/SCOpenGLView.h>
+
+#import "SCOpenGLPixelFormat.h"
 
 @class SCController;
-@class SCOpenGLPixelFormat;
 @class SCViewP;
 
-@interface SCView : SCOpenGLView  <SCDrawable> /*" NSView : NSResponder : NSObject "*/
+@interface SCView : SCOpenGLView  <SCDrawable> 
+/*" NSView : NSResponder : NSObject "*/
 {
  @protected
   SCViewP * _sc_view;
@@ -66,3 +70,5 @@
 - (void)flagsChanged:(NSEvent *)event;
 
 @end
+
+SC21_EXTERN NSString * SCCursorChangedNotification;

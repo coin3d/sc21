@@ -28,8 +28,6 @@
 #import <Sc21/SCEventHandler.h>
 
 @interface SCEventHandlerP : NSObject
-{
-}
 @end
 
 @interface SCEventHandler (InternalAPI)

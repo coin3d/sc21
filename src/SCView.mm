@@ -27,33 +27,27 @@
  
 #import <Sc21/SCView.h>
 #import <Sc21/SCController.h>
+//#import <Sc21/SCEventHandler.h>
+
+#import "SCViewP.h"
 #import "SCUtil.h"
 #import "SCOpenGLViewP.h"
+
 #import <Inventor/actions/SoGLRenderAction.h>
 #import <Inventor/misc/SoContextHandler.h>
-#import <Inventor/SoSceneManager.h>
 
-@interface SCViewP : NSObject
-{
-  NSCursor * cursor;
-}
-@end
 
 @implementation SCViewP
 @end
 
+
 #define PRIVATE(p) ((p)->_sc_view)
 #define SELF PRIVATE(self)
 
-@interface SCView(InternalAPI)
-- (void)_SC_commonInit;
-- (void)_SC_cursorChanged:(NSNotification *)notification;
-@end
 
 @implementation SCView
 
 /*"
-
   #{SCView and SCDrawable} 
 
   SCView conforms to the SCDrawable protocol, which means it can be
@@ -69,6 +63,7 @@
   documentation for more information.
 
 "*/
+
 
 #pragma mark --- initialization ---
 
@@ -90,13 +85,16 @@
   return self;
 }
 
+
 /*"
   Equivalent to calling !{[self initWithFrame:rect format:nil]}.
 "*/
+
 - (id)initWithFrame:(NSRect)rect
 {
   return [self initWithFrame:rect pixelFormat:nil];
 }
+
 
 - (void)dealloc
 {
@@ -122,6 +120,7 @@
 /*" 
   Sets the receiver's SCController to newcontroller. newcontroller is retained.
 "*/
+
 - (void)setController:(SCController *)newcontroller
 {
   if (newcontroller == self->controller) { return; }
@@ -144,17 +143,18 @@
     name:SCCursorChangedNotification object:self->controller];
 }
 
+
 #pragma mark --- drawing and resizing ---
 
 /*"
   Renders the current scene graph into frame rectangle rect.
 
   Calls SCController's #render: method.
-  "*/
+"*/
+
 - (void)drawRect:(NSRect)rect
 {
-//    SC21_DEBUG(@"SCView.drawRect");
-  // draw Interface Builder representation: black filled rectangle
+  // Draw Interface Builder representation: black filled rectangle
   // FIXME: make sure this actually works on Jaguar too. kyrah 20040705
    if ([[self class] respondsToSelector:@selector(isInInterfaceBuilder)] &&
        [[self class] isInInterfaceBuilder]) {    
@@ -171,9 +171,6 @@
 }
 
 
-/*" 
-
-  "*/
 - (void)reshape
 {
   if ([[self openGLContext] view] == self) [[self openGLContext] update];
@@ -191,8 +188,8 @@
   }
 }
 
-#pragma mark --- event handling ---
 
+#pragma mark --- event handling ---
 
 /*" 
   Forwards event to the controller. If the event is not handled by the
@@ -209,6 +206,7 @@
   }
 }
 
+
 /*" 
   Forwards event to the controller. If the event is not handled by the
   controller, it will be sent on through the responder chain as usual.
@@ -220,7 +218,8 @@
   ctrl-click yourself, you have to subclass SCView and override
   !{- (NSMenu *)menuForEvent:(NSEvent *)event} to return nil.
   This will cause the event to be passed on to this function.
-  "*/
+"*/
+
 - (void)mouseDown:(NSEvent *)event
 {
   if (![self->controller handleEvent:event]) {
@@ -228,16 +227,19 @@
   }
 }
 
+
 /*" 
   Forwards event to the controller. If the event is not handled by the
   controller, it will be sent on through the responder chain as usual.
 "*/
+
 - (void)mouseUp:(NSEvent *)event
 {
   if (![self->controller handleEvent:event]) {
     [super mouseUp:event];
   }
 }
+
 
 /*" 
   Forwards event to the controller. If the event is not handled by the
@@ -247,7 +249,8 @@
   distinguish between left and right mouse button. If you interested
   in that information, you have to evaluate the last mouseDown that
   occured before the dragging.
-  "*/
+"*/
+
 - (void)mouseDragged:(NSEvent *)event
 {
   if (![self->controller handleEvent:event]) {
@@ -255,16 +258,17 @@
   }
 }
 
+
 /*"
   Forwards event to the controller. If the event is not handled by the
   controller, it will be sent on through the responder chain as usual.
-
 "*/
 
 // FIXME: Unhandled right-clicks will usually result in NSView displaying
 // a context menu. In this case, the corresponding rightMouseUp: will
 // never reach us but be sent to the context menu. This will confuse
 // any state machines implemented in the controller (kintel 20040502).
+
 - (void)rightMouseDown:(NSEvent *)event
 {
   if (![self->controller handleEvent:event]) {
@@ -276,14 +280,15 @@
 /*" 
   Forwards event to the controller. If the event is not handled by the
   controller, it will be sent on through the responder chain as usual.
+"*/
 
-  "*/
 - (void)rightMouseUp:(NSEvent *)event
 {
   if (![self->controller handleEvent:event]) {
     [super rightMouseUp:event];
   }
 }
+
 
 /*"
   Forwards event to the controller. If the event is not handled by the
@@ -293,7 +298,8 @@
   distinguish between left and right mouse button. If you are interested
   in that information, you have to evaluate the last mouseDown that
   occured before the dragging.
-  "*/
+"*/
+
 - (void)rightMouseDragged:(NSEvent *)event
 {
   if (![self->controller handleEvent:event]) {
@@ -301,11 +307,12 @@
   }
 }
 
+
 /*" 
   Forwards event to the controller. If the event is not handled by the
   controller, it will be sent on through the responder chain as usual.
+"*/
 
-  "*/
 - (void)otherMouseDown:(NSEvent *)event
 {
   if (![self->controller handleEvent:event]) {
@@ -313,17 +320,19 @@
   }
 }
 
+
 /*" 
   Forwards event to the controller. If the event is not handled by the
   controller, it will be sent on through the responder chain as usual.
+"*/
 
-  "*/
 - (void)otherMouseUp:(NSEvent *)event
 {
   if (![self->controller handleEvent:event]) {
     [super otherMouseUp:event];
   }
 }
+
 
 /*" 
   Forwards event to the controller. If the event is not handled by the
@@ -333,7 +342,8 @@
   distinguish between left and right mouse button. If you are interested
   in that information, you have to evaluate the last mouseDown that
   occured before the dragging.
-  "*/
+"*/
+
 - (void)otherMouseDragged:(NSEvent *)event
 {
   if (![self->controller handleEvent:event]) {
@@ -341,11 +351,12 @@
   }
 }
 
+
 /*" 
   Forwards event to the controller. If the event is not handled by the
   controller, it will be sent on through the responder chain as usual.
+"*/
 
-  "*/
 - (void)scrollWheel:(NSEvent *)event
 {
   if (![self->controller handleEvent:event]) {
@@ -358,6 +369,7 @@
   Forwards event to the controller. If the event is not handled by the
   controller, it will be sent on through the responder chain as usual.
 "*/
+
 - (void)keyDown:(NSEvent *)event 
 {
   if ([event isARepeat]) return;
@@ -371,12 +383,14 @@
   Forwards event to the controller. If the event is not handled by the
   controller, it will be sent on through the responder chain as usual.
 "*/
+
 - (void)keyUp:(NSEvent *)event 
 {
   if (![self->controller handleEvent:event]) {
     [super keyUp:event];
   } 
 }
+
 
 /*" 
   Forwards event to the controller. If the event is not handled by the
@@ -396,10 +410,12 @@
   return YES;
 }
 
+
 #pragma mark --- cursor handling ---
 
 // FIXME: Only used by the event handling scheme. Reconsider this as part
 // of redesigning event handling (kintel 20040615).
+
 - (void)resetCursorRects
 {
   SC21_DEBUG(@"SCView.resetCursorRects");
@@ -417,10 +433,12 @@
   [super display];
 }
 
+
 - (NSRect)frame
 {
   return [super frame];
 }
+
 
 #pragma mark --- NSCoding conformance ---
 
@@ -428,6 +446,7 @@
 {
   [super encodeWithCoder:coder];
 }
+
 
 - (id)initWithCoder:(NSCoder *)coder
 {
@@ -437,9 +456,10 @@
 
 @end
 
+
 @implementation SCView(InternalAPI)
 
-/*" 
+/* 
   Shared initialization code that is called both from 
   #initWithFrame:pixelFormat and #initWithCoder:.
   
@@ -447,16 +467,18 @@
   o call [super _SC_commonInit] as the first call in your
     implementation to make sure everything is set up properly.
   o _not_ call this method from init or initWithCoder in the subclass
-  "*/
+*/
 - (void)_SC_commonInit
 {
   [super _SC_commonInit];
   SELF = [[SCViewP alloc] init];
 }
 
-/*"
+
+/*
   Used to cache the current cursor so we can use it from -resetCursorRects
-  "*/
+*/
+
 - (void)_SC_cursorChanged:(NSNotification *)notification;
 {
   SC21_LOG_METHOD;

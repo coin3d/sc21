@@ -27,18 +27,21 @@
 
 #import <Sc21/SCEventHandler.h>
 #import <Sc21/SCController.h>
+
 #import "SCEventHandlerP.h"
+
 
 @implementation SCEventHandlerP
 @end
 
+
 #define PRIVATE(p) ((p)->_sc_eventhandler)
 #define SELF PRIVATE(self)
+
 
 @implementation SCEventHandler
 
 /*" 
-
   SCEventHandler is the superclass for Sc21 eventhandlers. It takes
   care of managing the eventhandler chain. When writing your own
   eventhandler, it should be derived from this class and override
@@ -81,6 +84,7 @@
   return self;
 }
 
+
 /*" 
   Sets the next eventhandler in the eventhandler chain to nexthandler. 
 
@@ -91,6 +95,7 @@
 {
   self->nextEventHandler = nexthandler;
 }
+
 
 /*" 
   Returns the next eventhandler in the eventhandler chain. 
@@ -103,17 +108,19 @@
   return self->nextEventHandler;
 }
 
+
 /*" 
   Handle the NSEvent event. The controller argument is sent to allow
   subclasses to access the current camera, scenegraph, etc.
 
   The default implementation does nothing and returns NO.
- "*/
+"*/
 
 - (BOOL)controller:(SCController *)controller handleEvent:(NSEvent *)event
 {
   return NO;
 }
+
 
 /*" 
   Post-render callback that allows you to do continuous animation
@@ -121,6 +128,7 @@
 
   The default implementation does nothing and returns NO.
 "*/
+
 - (void)update:(SCController *)controller
 {
 }

@@ -27,22 +27,31 @@
 
 #import <Sc21/SCDebug.h>
 #import <Sc21/SCOpenGLPixelFormat.h>
-#import <Cocoa/Cocoa.h>
+
 #import <OpenGL/CGLRenderers.h>
+
 #import <Inventor/SoOutput.h>
 #import <Inventor/SbTime.h>
 #import <Inventor/actions/SoWriteAction.h>
+
 
 @interface SCDebug (InternalAPI)
 + (NSString *)infoForSCOpenGLPixelFormat:(SCOpenGLPixelFormat *)scpformat 
                      NSOpenGLPixelFormat:(NSOpenGLPixelFormat *)nspformat;
 @end
 
+
 @implementation SCDebug
 
-/*" Collection of useful debugging methods. "*/
+/*" 
+  Collection of useful debugging methods. 
+"*/
 
-/*" Returns a human-readable description of the renderer rendererID. "*/
+
+/*" 
+  Returns a human-readable description of the renderer rendererID. 
+"*/
+
 + (NSString *)descriptionForRendererID:(int)rendererID
 {
   NSString *renderer = nil;
@@ -86,6 +95,7 @@
   }
   return renderer;
 }
+
 
 /*" Returns a string describing the OpenGL capabilities of the current 
     OpenGL context. 
@@ -147,6 +157,7 @@
   return info;
 }
 
+
 /*" 
   Writes the given scenegraph to a file. The file will be stored in
   the current working directory. The filename will be XXX-dump.iv,
@@ -181,106 +192,196 @@
   long nsvals[10];
   BOOL scvalid;
   [info appendFormat:@"-------- pixelformatattribute: sc -> ns --------\n"];
-  [info appendFormat:@"Virtual screens: -> %d\n", [nspformat numberOfVirtualScreens]];
+  [info appendFormat:@"Virtual screens: -> %d\n", 
+   [nspformat numberOfVirtualScreens]];
   
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAAllRenderers forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAAllRenderers] == YES);
-  [info appendFormat:@"NSOpenGLPFAAllRenderers: %s -> %s\n", scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFADoubleBuffer forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFADoubleBuffer] == YES);
-  [info appendFormat:@"NSOpenGLPFADoubleBuffer: %s -> %s\n", scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAStereo forVirtualScreen:0];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAAllRenderers 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAAllRenderers] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFAAllRenderers: %s -> %s\n", 
+   scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFADoubleBuffer 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFADoubleBuffer] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFADoubleBuffer: %s -> %s\n", 
+   scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAStereo 
+   forVirtualScreen:0];
   scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAStereo] == YES);
-  [info appendFormat:@"NSOpenGLPFAStereo: %s -> %s\n", scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAMinimumPolicy forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAMinimumPolicy] == YES);
-  [info appendFormat:@"NSOpenGLPFAMinimumPolicy: %s -> %s\n", scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAMaximumPolicy forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAMaximumPolicy] == YES);
-  [info appendFormat:@"NSOpenGLPFAMaximumPolicy: %s -> %s\n", scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAOffScreen forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAOffScreen] == YES);
-  [info appendFormat:@"NSOpenGLPFAOffScreen: %s -> %s\n", scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAFullScreen forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAFullScreen] == YES);
-  [info appendFormat:@"NSOpenGLPFAFullScreen: %s -> %s\n", scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFASingleRenderer forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFASingleRenderer] == YES);
-  [info appendFormat:@"NSOpenGLPFASingleRenderer: %s -> %s\n", scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFANoRecovery forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFANoRecovery] == YES);
-  [info appendFormat:@"NSOpenGLPFANoRecovery: %s -> %s\n", scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAAccelerated forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAAccelerated] == YES);
-  [info appendFormat:@"NSOpenGLPFAAccelerated: %s -> %s\n", scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAClosestPolicy forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAClosestPolicy] == YES);
-  [info appendFormat:@"NSOpenGLPFAClosestPolicy: %s -> %s\n", scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFARobust forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFARobust] == YES);
-  [info appendFormat:@"NSOpenGLPFARobust: %s -> %s\n", scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFABackingStore forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFABackingStore] == YES);
-  [info appendFormat:@"NSOpenGLPFABackingStore: %s -> %s\n", scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAWindow forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAWindow] == YES);
-  [info appendFormat:@"NSOpenGLPFAWindow: %s -> %s\n", scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAMultiScreen forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAMultiScreen] == YES);
-  [info appendFormat:@"NSOpenGLPFAMultiScreen: %s -> %s\n", scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFACompliant forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFACompliant] == YES);
-  [info appendFormat:@"NSOpenGLPFACompliant: %s -> %s\n", scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAPixelBuffer forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAPixelBuffer] == YES);
-  [info appendFormat:@"NSOpenGLPFAPixelBuffer: %s -> %s\n", scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAMPSafe forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAMPSafe] == YES);
-  [info appendFormat:@"NSOpenGLPFAMPSafe: %s -> %s\n", scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
+  [info appendFormat:@"NSOpenGLPFAStereo: %s -> %s\n", 
+   scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAMinimumPolicy 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAMinimumPolicy] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFAMinimumPolicy: %s -> %s\n", 
+   scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAMaximumPolicy 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAMaximumPolicy] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFAMaximumPolicy: %s -> %s\n", 
+   scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAOffScreen 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAOffScreen] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFAOffScreen: %s -> %s\n", 
+   scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAFullScreen 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAFullScreen] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFAFullScreen: %s -> %s\n", 
+   scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFASingleRenderer 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFASingleRenderer] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFASingleRenderer: %s -> %s\n", 
+   scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFANoRecovery 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFANoRecovery] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFANoRecovery: %s -> %s\n", 
+   scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAAccelerated 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAAccelerated] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFAAccelerated: %s -> %s\n", 
+   scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAClosestPolicy 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAClosestPolicy] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFAClosestPolicy: %s -> %s\n", 
+   scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFARobust 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFARobust] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFARobust: %s -> %s\n", 
+   scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFABackingStore 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFABackingStore] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFABackingStore: %s -> %s\n", 
+   scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAWindow 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAWindow] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFAWindow: %s -> %s\n", 
+   scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAMultiScreen 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAMultiScreen] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFAMultiScreen: %s -> %s\n", 
+   scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFACompliant 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFACompliant] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFACompliant: %s -> %s\n", 
+   scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAPixelBuffer 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAPixelBuffer] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFAPixelBuffer: %s -> %s\n", 
+   scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAMPSafe 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAMPSafe] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFAMPSafe: %s -> %s\n", 
+   scvalid?(scvals[0]?"YES":"NO"):"N/A", nsvals[0]?"YES":"NO"];
   
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAAuxBuffers forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAAuxBuffers] == YES);
-  [info appendFormat:@"NSOpenGLPFAAuxBuffers: %d -> %d\n", scvalid?scvals[0]:-1, nsvals[0]];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAColorSize forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAColorSize] == YES);
-  [info appendFormat:@"NSOpenGLPFAColorSize: %d -> %d\n", scvalid?scvals[0]:-1, nsvals[0]];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAAlphaSize forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAAlphaSize] == YES);
-  [info appendFormat:@"NSOpenGLPFAAlphaSize: %d -> %d\n", scvalid?scvals[0]:-1, nsvals[0]];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFADepthSize forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFADepthSize] == YES);
-  [info appendFormat:@"NSOpenGLPFADepthSize: %d -> %d\n", scvalid?scvals[0]:-1, nsvals[0]];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAStencilSize forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAStencilSize] == YES);
-  [info appendFormat:@"NSOpenGLPFAStencilSize: %d -> %d\n", scvalid?scvals[0]:-1, nsvals[0]];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAAccumSize forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAAccumSize] == YES);
-  [info appendFormat:@"NSOpenGLPFAAccumSize: %d -> %d\n", scvalid?scvals[0]:-1, nsvals[0]];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAScreenMask forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAScreenMask] == YES);
-  [info appendFormat:@"NSOpenGLPFAScreenMask: %d -> %d\n", scvalid?scvals[0]:-1, nsvals[0]];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAAuxBuffers 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAAuxBuffers] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFAAuxBuffers: %d -> %d\n", 
+   scvalid?scvals[0]:-1, nsvals[0]];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAColorSize 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAColorSize] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFAColorSize: %d -> %d\n", 
+   scvalid?scvals[0]:-1, nsvals[0]];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAAlphaSize 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAAlphaSize] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFAAlphaSize: %d -> %d\n", 
+   scvalid?scvals[0]:-1, nsvals[0]];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFADepthSize 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFADepthSize] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFADepthSize: %d -> %d\n", 
+   scvalid?scvals[0]:-1, nsvals[0]];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAStencilSize 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAStencilSize] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFAStencilSize: %d -> %d\n", 
+   scvalid?scvals[0]:-1, nsvals[0]];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAAccumSize 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAAccumSize] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFAAccumSize: %d -> %d\n", 
+   scvalid?scvals[0]:-1, nsvals[0]];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAScreenMask 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAScreenMask] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFAScreenMask: %d -> %d\n", 
+   scvalid?scvals[0]:-1, nsvals[0]];
   
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAVirtualScreenCount forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAVirtualScreenCount] == YES);
-  [info appendFormat:@"NSOpenGLPFAVirtualScreenCount: %d -> %d\n", scvalid?scvals[0]:-1, nsvals[0]];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFASampleBuffers forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFASampleBuffers] == YES);
-  [info appendFormat:@"NSOpenGLPFASampleBuffers: %d -> %d\n", scvalid?scvals[0]:-1, nsvals[0]];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFASamples forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFASamples] == YES);
-  [info appendFormat:@"NSOpenGLPFASamples: %d -> %d\n", scvalid?scvals[0]:-1, nsvals[0]];
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAAuxDepthStencil forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAAuxDepthStencil] == YES);
-  [info appendFormat:@"NSOpenGLPFAAuxDepthStencil: %d -> %d\n", scvalid?scvals[0]:-1, nsvals[0]];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAVirtualScreenCount 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals 
+              forAttribute:NSOpenGLPFAVirtualScreenCount] == YES);
+  [info appendFormat:@"NSOpenGLPFAVirtualScreenCount: %d -> %d\n", 
+   scvalid?scvals[0]:-1, nsvals[0]];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFASampleBuffers 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFASampleBuffers] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFASampleBuffers: %d -> %d\n", 
+   scvalid?scvals[0]:-1, nsvals[0]];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFASamples 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFASamples] 
+             == YES);
+  [info appendFormat:@"NSOpenGLPFASamples: %d -> %d\n", 
+   scvalid?scvals[0]:-1, nsvals[0]];
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFAAuxDepthStencil 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFAAuxDepthStencil]
+             == YES);
+  [info appendFormat:@"NSOpenGLPFAAuxDepthStencil: %d -> %d\n", 
+   scvalid?scvals[0]:-1, nsvals[0]];
   
-  [nspformat getValues:nsvals forAttribute:NSOpenGLPFARendererID forVirtualScreen:0];
-  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFARendererID] == YES);
+  [nspformat getValues:nsvals forAttribute:NSOpenGLPFARendererID 
+   forVirtualScreen:0];
+  scvalid = ([scpformat getValue:scvals forAttribute:NSOpenGLPFARendererID] 
+             == YES);
   
-  NSString *screnderer = scvalid ? [SCDebug descriptionForRendererID:scvals[0]] : @"N/A";
+  NSString *screnderer = scvalid ? 
+    [SCDebug descriptionForRendererID:scvals[0]] : @"N/A";
   NSString *nsrenderer = [SCDebug descriptionForRendererID:nsvals[0]];
   
-  [info appendFormat:@"NSOpenGLPFARendererID: %@ -> %@\n", screnderer, nsrenderer];
-  
+  [info appendFormat:@"NSOpenGLPFARendererID: %@ -> %@\n", screnderer, 
+   nsrenderer];  
   [info appendFormat:@"-----------------------------\n"];
   
   return info;

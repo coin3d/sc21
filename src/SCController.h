@@ -28,8 +28,8 @@
 #import <Cocoa/Cocoa.h>
 
 #import <Sc21/SCDrawable.h>
-#import <Sc21/SCEventHandler.h>
 #import <Sc21/SCSceneGraph.h>
+#import <Sc21/SCEventHandler.h>
 
 #import <Inventor/SoSceneManager.h>
 

@@ -31,7 +31,6 @@
 
 @implementation NSCursor (SCCursors)
 
-
 /*" 
   Custom cursors used in Sc21. 
 
@@ -40,13 +39,12 @@
   cursor handling in Cocoa.
 "*/
 
+
 /*" 
   Returns a cursor that looks like two arrows forming a circle, as is
   commonly used to indicate rotation.
 "*/
 
-// FIXME: factory methods should autorelease the instance they return.
-// In our case here - who will ever release the cursor? kyrah 20040722.
 + (NSCursor *)rotateCursor
 {
   static NSCursor * rotateCursor = nil;
@@ -64,6 +62,7 @@
   }
   return rotateCursor;
 }
+
 
 /*" 
   Returns a cursor that looks like an arrow with two arrowheads, one
@@ -88,6 +87,7 @@
   }
   return zoomCursor;
 }
+
 
 /*"  
   Returns a cursor that consists of four arrows forming a cross,
