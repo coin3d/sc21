@@ -26,6 +26,8 @@
  * =============================================================== */
  
 #import <Sc21/SCExaminerHandler.h> 
+#import <Sc21/SCDrawable.h>
+#import "SCMode.h"
 
  @interface SCExaminerHandlerP : NSObject
 {
@@ -50,5 +52,6 @@
 - (SCMode *)_SC_currentMode;
 - (void)_SC_activateMode:(SCMode *)mode event:(NSEvent *)event point:(NSPoint *)pn;
 - (Class)_SC_modeForButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
-
+- (SCEmulator *)_SC_emulator;
+- (void)_SC_setEmulator:(SCEmulator *)emulator;
 @end
