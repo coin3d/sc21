@@ -28,6 +28,7 @@
 
 #import "SCExaminerController.h"
 #import "SCView.h"
+#import "SCCursors.h"
 
 #import <Inventor/SoSceneManager.h>
 #import <Inventor/SbMatrix.h>
@@ -278,7 +279,12 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   NSPoint p;
 
   switch (type) {
-    
+    case NSLeftMouseUp:
+    case NSRightMouseUp:
+    case NSOtherMouseUp:
+      [view setCursor:[NSCursor rotateCursor]];
+      break;
+
     case NSLeftMouseDown:
       // Note that we will never see ctrl-click -- this is translated
       // into a menuForEvent: message and not forwarded here unless
@@ -358,6 +364,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   NSValue * v = [NSValue valueWithPoint:point];
   [_mouselog removeAllObjects];
   [_mouselog insertObject:v atIndex:0];
+  [view setCursor:[NSCursor panCursor]];
 }
 
 
@@ -373,6 +380,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   // Clear log and project to the last position we stored.
   [_mouselog removeAllObjects];
   [_mouselog insertObject:v atIndex:0];
+  [view setCursor:[NSCursor zoomCursor]];
 }
 
 
