@@ -1,14 +1,9 @@
 {
     IBClasses = (
         {
-            ACTIONS = {addViewpoint = id; newDocument = id; }; 
             CLASS = AppController; 
             LANGUAGE = ObjC; 
-            OUTLETS = {
-                addViewpointItem = NSMenuItem; 
-                refreshItem = NSMenuItem; 
-                viewpointMenuItem = NSMenuItem; 
-            }; 
+            OUTLETS = {refreshItem = NSMenuItem; }; 
             SUPERCLASS = NSObject; 
         }, 
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
