@@ -35,6 +35,8 @@
 
 @interface SCView : SCOpenGLView /*" NSView : NSResponder : NSObject "*/
 {
+  @private
+    IBOutlet SCController * controller;
   @protected
     _SCViewP * scviewpriv;
 }
@@ -45,7 +47,7 @@
 
 /*" Accessing the SCController. "*/
 - (SCController *)controller;
-- (void)setController:(SCController *) controller;
+- (void)setController:(SCController *)controller;
 
 /*" Drawing, viewing, and view-dependant calculations "*/
 - (void)drawRect:(NSRect)rect;

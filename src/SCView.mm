@@ -32,7 +32,6 @@
 
 @interface _SCViewP : NSObject
 {
-  SCController * controller; 
   NSOpenGLView * oldview;
   NSCursor * cursor;
 }
@@ -106,9 +105,9 @@
 {
   NSLog(@"SCView.dealloc");
   // Prevent controller from continuing to draw into our view.
-  [SELF->controller setRedrawHandler:nil];
-  [SELF->controller stopTimers];
-  [SELF->controller release];
+  [self->controller setRedrawHandler:nil];
+  [self->controller stopTimers];
+  [self->controller release];
   [SELF release];
   [super dealloc];
 }
@@ -119,7 +118,7 @@
 /*" Returns the currently used SCController. "*/
 - (SCController *)controller
 {
-  return SELF->controller;  
+  return self->controller;  
 }
 
 
@@ -130,10 +129,10 @@
 - (void)setController:(SCController *)newcontroller
 {
   [newcontroller retain];
-  [SELF->controller release];
-  SELF->controller = newcontroller;
+  [self->controller release];
+  self->controller = newcontroller;
   // Use [self display] as a redraw handler
-  [SELF->controller setRedrawHandler:self];
+  [self->controller setRedrawHandler:self];
   [self reshape]; // Initialize viewport
 }
 
@@ -151,7 +150,7 @@
   // Note: As NSView's implementation of this method, #drawRect: is
   // intended to be completely overridden by each subclass that
   // performs drawing, do _not_ invoke [super drawRect] here!
-  [SELF->controller render];
+  [self->controller render];
   [[self openGLContext] flushBuffer];
 }
 
@@ -163,7 +162,7 @@
 
 - (void)reshape
 {
-  [SELF->controller viewSizeChanged:[self visibleRect]];
+  [self->controller viewSizeChanged:[self visibleRect]];
   if ([[self openGLContext] view] == self) [[self openGLContext] update];
 }
 
@@ -185,7 +184,7 @@
 
 - (void)mouseDown:(NSEvent *)event
 {
-  if (![SELF->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event inView:self]) {
     [super mouseDown:event];
   }
 }
@@ -198,7 +197,7 @@
 
 - (void)mouseUp:(NSEvent *)event
 {
-  if (![SELF->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event inView:self]) {
     [super mouseUp:event];
   }
 }
@@ -216,7 +215,7 @@
 
 - (void)mouseDragged:(NSEvent *)event
 {
-  if (![SELF->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event inView:self]) {
     [super mouseDragged:event];
   }
 }
@@ -234,7 +233,7 @@
 
 - (void)rightMouseDown:(NSEvent *)event
 {
-  if (![SELF->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event inView:self]) {
     [super rightMouseDown:event];
   }
 }
@@ -247,7 +246,7 @@
 
 - (void)rightMouseUp:(NSEvent *)event
 {
-  if (![SELF->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event inView:self]) {
     [super rightMouseUp:event];
   }
 }
@@ -264,7 +263,7 @@
 
 - (void)rightMouseDragged:(NSEvent *)event
 {
-  if (![SELF->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event inView:self]) {
     [super rightMouseDragged:event];
   }
 }
@@ -277,7 +276,7 @@
 
 - (void)otherMouseDown:(NSEvent *)event
 {
-  if (![SELF->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event inView:self]) {
     [super otherMouseDown:event];
   }
 }
@@ -290,7 +289,7 @@
 
 - (void)otherMouseUp:(NSEvent *)event
 {
-  if (![SELF->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event inView:self]) {
     [super otherMouseUp:event];
   }
 }
@@ -308,7 +307,7 @@
 
 - (void)otherMouseDragged:(NSEvent *)event
 {
-  if (![SELF->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event inView:self]) {
     [super otherMouseDragged:event];
   }
 }
@@ -320,7 +319,7 @@
 
 - (void)scrollWheel:(NSEvent *)event
 {
-  if (![SELF->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event inView:self]) {
     [super scrollWheel:event];
   }
 }
@@ -333,7 +332,7 @@
 
 - (void)keyDown:(NSEvent *)event 
 {
-  if (![SELF->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event inView:self]) {
     [super keyDown:event];
   } 
 }
@@ -346,7 +345,7 @@
 
 - (void)keyUp:(NSEvent *)event 
 {
-  if (![SELF->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event inView:self]) {
     [super keyUp:event];
   } 
 }
