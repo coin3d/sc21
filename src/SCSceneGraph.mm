@@ -502,11 +502,17 @@ method returns this headlight. Otherwise, NULL is returned. "*/
 
 /*" 
   Return !{NO} to skip superscenegraph creation.
+
+  Important note: If you want to implement your own superscenegraph
+  creation method, make sure to read the !{createSuperSceneGraph:}
+  documentation!
 "*/
+
 - (BOOL)shouldCreateDefaultSuperSceneGraph
 {
   
 }
+
 /*" 
   If present, this method will be called instead of the internal
   implementation to create a superscenegraph.
@@ -514,7 +520,17 @@ method returns this headlight. Otherwise, NULL is returned. "*/
   The scenegraph argument is the root node of the Coin scene
   graph. The method is expected to return a new node that contains
   scenegraph as one of its children, or scenegraph itself.
+
+  Important note: If you want to implement your own superscenegraph
+  creation method, #{DO NOT} implement
+  !{shouldCreateDefaultSuperSceneGraph} to return !{NO}. If the
+  delegate implements !{shouldCreateDefaultSuperSceneGraph},
+  !{createSuperScenegraph:} will be ignored!
+
+  The right thing to do is to not have a
+  !{shouldCreateDefaultSuperSceneGraph} implementation at all.
 "*/
+
 - (SoGroup *)createSuperSceneGraph:(SoGroup *)scenegraph
 {
   
@@ -523,7 +539,7 @@ method returns this headlight. Otherwise, NULL is returned. "*/
 
   Implement this method to do postprocessing after creation of superscenegraph.
 
-  Note that this method will be called both if superscenegraph was
+  This method will be called both if superscenegraph was
   created using the internal default implementation, or the
   !{createSuperSceneGraph:} delegate method.
 
