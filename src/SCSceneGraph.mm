@@ -63,8 +63,7 @@
 "*/
 - (id)initWithContentsOfFile:(NSString *)filename
 {
-  if (self = [super init]) {
-    [self _SC_commonInit];
+  if (self = [self init]) {
     SoSeparator * fileroot = [self _SC_readFile:filename];
     if (fileroot == NULL) {
       [self release];
@@ -85,8 +84,7 @@
 "*/
 - (id)initWithContentsOfURL:(NSURL *)url
 {
-  if (self = [super init]) {
-    [self _SC_commonInit];
+  if (self = [self init]) {
     // FIXME: Implement reading file from URL.
   }
   return self;
@@ -96,6 +94,7 @@
 {
   if (self = [super init]) {
     [self _SC_commonInit];
+    SELF->createsuperscenegraph = YES;
   }
   return self;
 }
@@ -105,6 +104,8 @@
   if (self = [super init]) {
     [self _SC_commonInit];
     if ([coder allowsKeyedCoding]) {
+      SELF->createsuperscenegraph = 
+        [coder decodeBoolForKey:@"SC_createsuperscenegraph"];
       SELF->addedlight = [coder decodeBoolForKey:@"SC_addedlight"];
       SELF->addedcamera = [coder decodeBoolForKey:@"SC_addedcamera"];
     }
@@ -115,6 +116,8 @@
 - (void)encodeWithCoder:(NSCoder *)coder
 {
   if ([coder allowsKeyedCoding]) {
+    [coder encodeBool:SELF->createsuperscenegraph 
+      forKey:@"SC_createsuperscenegraph"];
     [coder encodeBool:SELF->addedlight forKey:@"SC_addedlight"];
     [coder encodeBool:SELF->addedcamera forKey:@"SC_addedcamera"];
   }
@@ -189,11 +192,13 @@
   SELF->headlight = NULL;
   SELF->addedlight = NO;
 
+  // SELF->createsuperscenegraph is controlled through the IB inspector.
+  BOOL createsuperscenegraph = SELF->createsuperscenegraph;
+  
   // Give delegate the chance to stop superscenegraph creation:
   // It can implement shouldCreateDefaultSuperSceneGraph to return
   // if we should create the default superscenegraph; or it can 
   // supply createSuperSceneGraph: to return its own superscenegraph.
-  BOOL createsuperscenegraph = YES;
   if (self->delegate) {
     if ([self->delegate 
       respondsToSelector:@selector(shouldCreateDefaultSuperSceneGraph)]) {
@@ -228,7 +233,10 @@
   if (SELF->superscenegraph && self->delegate &&
     [self->delegate respondsToSelector:@selector(didCreateSuperSceneGraph:)]) {
     [self->delegate didCreateSuperSceneGraph:SELF->superscenegraph];
-  } 
+  }
+  
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:SCSceneGraphChangedNotification object:self];  
 }
 
 - (void)setSceneManager:(SoSceneManager *)scenemanager
@@ -434,5 +442,17 @@
     }
   }
   return fileroot;
+}
+
+
+- (void)_SC_setCreatesSuperSceneGraph:(BOOL)yn
+{
+  SELF->createsuperscenegraph = yn; 
+  NSLog(@"SCSceneGraph set createsuperscenegraph to %d", yn);
+}
+
+- (BOOL)_SC_createsSuperSceneGraph
+{
+  return SELF->createsuperscenegraph;
 }
 @end

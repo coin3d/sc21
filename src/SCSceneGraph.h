@@ -115,3 +115,6 @@ SC21_EXTERN NSString * SCNoCameraFoundInSceneNotification;
     will be used.)
 "*/
 SC21_EXTERN NSString * SCNoLightFoundInSceneNotification;
+
+/*" Posted when the scenegraph is changed through #setRoot: "*/
+SC21_EXTERN NSString * SCSceneGraphChangedNotification;
