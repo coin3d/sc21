@@ -38,6 +38,7 @@
 @interface SCSceneGraph : NSObject {
   @protected
   _SCSceneGraphP * scscenegraphpriv;
+  IBOutlet id delegate;
 }
 
   /*" Initialization "*/
@@ -62,6 +63,10 @@
 - (SoSeparator *)superSceneGraph; 
 - (SoSeparator *)root;
 - (void)setRoot:(SoSeparator *)root;
+
+  /*" Delegate handling. "*/
+- (void)setDelegate:(id)delegate;
+- (id)delegate;
 
 // FIXME: implement copy/paste - initWithPasteboard &c.
 // FIXME: add +(id) scenegraphNamed:(NSString *) name which will look for 

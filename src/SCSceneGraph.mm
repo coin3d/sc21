@@ -86,10 +86,11 @@
   return self;
 }
 
-/*" Initializes the receiver, a newly allocated SCSceneGraph instance, with the contents of the URL url.
-  After finishing the initialization, this method returns an initialized object. However, if a valid 
-  Open Inventor scenegraph cannot be read from the specified file, the receiver is freed, and nil is 
-  returned.
+/*" Initializes the receiver, a newly allocated SCSceneGraph instance, with 
+    the contents of the URL url. After finishing the initialization, this method 
+    returns an initialized object. However, if a valid Open Inventor scenegraph 
+    cannot be read from the specified file, the receiver is freed, and nil is 
+    returned.
 "*/
 
 - (id)initWithContentsOfURL:(NSURL *)url
@@ -124,6 +125,8 @@
 - (void) dealloc
 {
   [SELF->camera release]; 
+  if (SELF->superscenegraph) { SELF->superscenegraph->unref(); }
+  else if (SELF->scenegraph) { SELF->scenegraph->unref(); }
   [SELF release];
 }
 
@@ -170,8 +173,21 @@
   return SELF->superscenegraph;
 }
 
-/*" Sets the receiver's scenegraph to root. Note that no checking will be done whether root is
-    actually a valid Open Inventor scenegraph or not. 
+/*" Sets the receiver's Coin scenegraph to root. 
+
+    By default, the internal implementation will check whether root
+    contains at least one light source and one camera. If no light
+    is found, a headlight (i.e. a light following the active camera)
+    will be added. If a camera is found, it will be used as active
+    camera; otherwise, a perspective camera will be added before the 
+    scenegraph.
+
+    It is possible to supply a delegate to 
+ After a scene graph is set, the delegate method -didSetSceneGraph:
+ is called with the super scene graph as parameter.
+ 
+ 
+Both the passed and the actual scene graph will be !{ref()}'ed.
  "*/
 
 - (void)setRoot:(SoSeparator *)root
@@ -186,23 +202,42 @@
   SELF->scenegraph = root;
   SELF->headlight = NULL;
   SELF->addedlight = NO;
+
+  // Give delegate the chance to stop superscenegraph creation:
+  // It can implement shouldCreateDefaultSuperSceneGraph to return
+  // if we should create the default superscenegraph; or it can 
+  // supply createSuperSceneGraph: to return its own superscenegraph.
+  BOOL createsuperscenegraph = YES;
+  if (self->delegate) {
+    if ([self->delegate respondsToSelector:@selector(shouldCreateDefaultSuperSceneGraph)]) {
+      createsuperscenegraph = [delegate shouldCreateDefaultSuperSceneGraph];    
+    } else if ([self->delegate respondsToSelector:@selector(createSuperSceneGraph:)]) {
+      createsuperscenegraph = NO;
+    }
+  }
+  if (createsuperscenegraph) {
+    [self _SC_createSuperSceneGraph];
+  } else { 
+    if (self->delegate &&
+        [self->delegate respondsToSelector:@selector(createSuperSceneGraph:)]) {
+      SELF->superscenegraph = (SoSeparator *)[self->delegate createSuperSceneGraph:SELF->scenegraph];
+    } else {
+      SELF->superscenegraph = NULL;
+      SELF->scenegraph->ref();    
+    }
+  }
   
-  // FIXME: Give delegate chance to handle this. 
-  // (Please note the FIXME comment in the #ifdef'ed code 
-  // in SCController at the same place.)
-  [self _SC_createSuperSceneGraph];
-  
-  // FIXME: Check if superscenegraph creation failed (can it
-  // fail at all?) - if so, unref root and post notification. 
-  // kyrah 20040717
-  
-  // FIXME: If delegate decides to cancel superscenegraph 
-  // creation, don't forget to ref() the scenegraph!
+  // Give delegate the chance to do postprocessing, regardless of 
+  // whether the superscenegraph was created by us or by the delegate.
+  if (SELF->superscenegraph && self->delegate &&
+      [self->delegate respondsToSelector:@selector(didCreateSuperSceneGraph:)]) {
+    [self->delegate didCreateSuperSceneGraph:SELF->superscenegraph];
+  } 
 }
 
-- (void) setSceneManager:(SoSceneManager *)sm
+- (void) setSceneManager:(SoSceneManager *)scenemanager
 {
-  SELF->scenemanager = sm;
+  SELF->scenemanager = scenemanager;
 }
 
 - (SoSceneManager *)sceneManager
@@ -260,6 +295,20 @@
   return SELF->addedlight;
 }
 
+/*" Makes newdelegate the receiver's delegate. "*/
+
+- (void)setDelegate:(id)newdelegate
+{
+  self->delegate = newdelegate;
+}
+
+/*" Returns the receiver's delegate. "*/
+
+- (id)delegate
+{
+  return self->delegate;
+}
+
 @end
 
 @implementation SCSceneGraph (InternalAPI)
@@ -269,6 +318,7 @@
   SELF = [[_SCSceneGraphP alloc] init];
   SELF->camera = [[SCCamera alloc] initWithSceneGraph:self];
   SELF->addedcamera = NO;  
+  SELF->addedlight = NO;  
 }
 
 /* Find light in root. Returns a pointer to the light, if found,

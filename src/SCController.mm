@@ -277,133 +277,20 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   return SELF->redrawsel;
 }
 
-#if 0 // old code 
-
-/*"
-  Sets the scene graph that shall be rendered.
-
-  If scenegraph is NULL, an empty scenegraph consisting of a single 
-  SoSeparator node will be created and set. 
-
-  Before the scene graph is set, the delegate method -willSetSceneGraph:
-  will be called. The return value of this method will be used as the
-  actual scene graph. This delegate method can be used to set up a
-  super scene graph containing lights, cameras etc. If this method
-  returns NULL, no scene graph will be set.
-  If no delegate has been set for this class or if it doesn't implement
-  the -willSetSceneGraph: method, we will fall back to an internal
-  implementation which does the following:
-  o Adds a headlight.
-  o Enables the headlight if no lights are found in the scene graph
-  o Create a perspective camera if no cameras are found in the scene graph
-  o Use the first found camera as the active camera
-
-  After a scene graph is set, the delegate method -didSetSceneGraph:
-  is called with the super scene graph as parameter.
-
-
-  Both the passed and the actual scene graph will be !{ref()}'ed.
-  "*/
-- (void)setSceneGraph:(SoGroup *)scenegraph
-{
-  if (scenegraph == SELF->scenegraph) return;
-
-  // Clean up existing scene graph
-  if (SELF->scenegraph) SELF->scenegraph->unref();
-  if (SELF->superscenegraph) SELF->superscenegraph->unref();
-  SELF->scenegraph = SELF->superscenegraph = NULL;
-  SELF->headlight = NULL;
-  [self setHeadlightIsOn:NO];
-
-  if (scenegraph == NULL) {
-    [self stopTimers];   // Don't waste cycles by animating an empty scene
-    // Create an empty scene graph
-    // Why do we create an SoSeparator instead of keeping the scenegraph
-    // as NULL? (kintel 20040616)
-    SELF->superscenegraph = SELF->scenegraph = new SoSeparator;
-    SELF->superscenegraph->ref();
-    SELF->scenegraph->ref();
-  }
-  else {
-    scenegraph->ref();
-
-    // super scene graph creation
-    if (self->delegate && 
-        [self->delegate respondsToSelector:@selector(willSetSceneGraph:)]) {
-      // FIXME: The delegate method name is slightly misleading IMHO - it doesn't sound
-      // like the delegate is supposed to create a superscenegraph. I think it would be
-      // more in the spirit of the Cocoa API to have a method to query whether we should
-      // do our default handling [-(BOOL)willSetSuperSceneGraph, returning NO to stop the
-      // processing from happening] and an additional optional delegate method 
-      // -(SoGroup *)setSuperSceneGraph:scenegraph. kyrah 20040716
-      SELF->superscenegraph = (SoGroup *)[self->delegate willSetSceneGraph:scenegraph];
-    }
-    else {
-      SELF->superscenegraph = [self _SC_createSuperSceneGraph:scenegraph];
-    }
-
-    // Successful super scene graph creation
-    if (SELF->superscenegraph) {
-      SELF->scenegraph = scenegraph;
-      SELF->superscenegraph->ref();
-      
-      if (SELF->scenemanager) {
-        SELF->scenemanager->setSceneGraph(SELF->superscenegraph);
-        [SELF->camera updateClippingPlanes:SELF->scenegraph];
-      }
-      if (self->delegate && 
-          [self->delegate respondsToSelector:@selector(didSetSceneGraph:)]) {
-        [self->delegate didSetSceneGraph:SELF->superscenegraph];
-      }
-      if ([SELF->camera controllerHasCreatedCamera]) {
-        [SELF->camera viewAll];
-        SELF->scenemanager->scheduleRedraw(); //FIXME: Do we need this? (kintel 20040604)
-      }
-      [self startTimers];
-    }
-    else {
-      // NULL super scene graph => leave everything at NULL
-      scenegraph->unrefNoDelete();
-      if (SELF->scenemanager) SELF->scenemanager->setSceneGraph(NULL);
-    }
-  }
-
-  [[NSNotificationCenter defaultCenter]
-    postNotificationName:SCSceneGraphChangedNotification object:self];
-}
-
-/*" Returns the current scene graph used for rendering.
-  FIXME: Write not about how to get superscenegraph"*/
-
-- (SoGroup *)sceneGraph 
-{ 
-  return SELF->scenegraph; 
-}
-
-#else // new code 
-
+/*" Sets the scene graph that shall be rendered. If nil is passed,
+    this method returns immediately.
+ "*/
 - (void)setSceneGraph:(SCSceneGraph *)scenegraph
 {
-  if (scenegraph == SELF->scenegraph) { return; }
+  if (scenegraph == SELF->scenegraph || scenegraph == nil) { return; }
 
   if (SELF->scenegraph) { [SELF->scenegraph release]; }
-  [scenegraph retain];
-  SELF->scenegraph = scenegraph;    
+  SELF->scenegraph = [scenegraph retain];    
   [SELF->scenegraph setSceneManager:SELF->scenemanager];
-  
-  // FIXME: This is really ugly -> cleanup!
-  //[SELF->scenegraph->camera setController:self];
   
   if (SELF->scenemanager) {
     SELF->scenemanager->setSceneGraph([SELF->scenegraph superSceneGraph]);
   }
-  
-#if 0 // FIXME: verify/update
-  if (self->delegate && 
-      [self->delegate respondsToSelector:@selector(didSetSceneGraph:)]) {
-    [self->delegate didSetSceneGraph:SELF->superscenegraph];
-  }
-#endif
 
   SELF->scenemanager->scheduleRedraw(); 
   // FIXME: Do we need this? (kintel 20040604)
@@ -423,8 +310,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 { 
   return SELF->scenegraph; 
 }
-
-#endif 
 
 /*" Sets the current scene manager to scenemanager. The scene manager's
     render callback will be set to %redraw_cb (SCController's default

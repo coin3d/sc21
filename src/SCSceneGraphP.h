@@ -38,7 +38,6 @@
 }
 @end
 
-
 @interface SCSceneGraph (InternalAPI)
 - (void)_SC_commonInit;
 - (SoLight *)_SC_findLight;

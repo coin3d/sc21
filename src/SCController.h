@@ -50,6 +50,7 @@ class SoSceneManager;
 /*" Initializing an SCController "*/
 - (id)init;
 
+/*" Delegate handling. "*/
 - (void)setDelegate:(id)delegate;
 - (id)delegate;
 
