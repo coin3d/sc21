@@ -211,8 +211,9 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 /* Clean up after ourselves. */
 - (void)dealloc
 {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   [self stopTimers];
-  [view release];
+  [view setController:nil];
   [_eventconverter release];
   [_camera release];
   delete _scenemanager;
@@ -226,8 +227,8 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 - (void)setView:(SCView *)newview
 {
-  [newview retain];
-  [view release];
+  // We intentionally do not retain the view here, to avoid
+  // circular references.
   view = newview;
 }
 
@@ -584,7 +585,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 
 /*" Sets the frequency how often we process the delay sensor queue,
-    in seconds. Default value is 0.001.
+    in seconds. 
 
     Note: Do not use the SoSensorManager::setDelaySensorTimeout()
     method - the value set by that function is ignored. Use this
