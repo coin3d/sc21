@@ -47,12 +47,12 @@
 #import <Inventor/nodes/SoOrthographicCamera.h>
 
 @interface SCCamera (InternalAPI)
-  - (BOOL) _convertToType:(SoType) type;
-  - (void) _getCameraCoordinateSystem:(SbMatrix &)matrix inverse:(SbMatrix &)inverse;
-  - (void) _cloneFromPerspectiveCamera:(SoOrthographicCamera *)orthocam;
-  - (void) _cloneFromOrthographicCamera:(SoPerspectiveCamera *)perspectivecam;
-  - (float) _bestValueForNearPlane:(float)near farPlane:(float) far;
-  - (SoGroup *) _getParentOfNode:(SoNode *)node inSceneGraph:(SoGroup *)root;
+  - (BOOL)_convertToType:(SoType)type;
+  - (void)_getCameraCoordinateSystem:(SbMatrix &)matrix inverse:(SbMatrix &)inverse;
+  - (void)_cloneFromPerspectiveCamera:(SoOrthographicCamera *)orthocam;
+  - (void)_cloneFromOrthographicCamera:(SoPerspectiveCamera *)perspectivecam;
+  - (float)_bestValueForNearPlane:(float)near farPlane:(float)far;
+  - (SoGroup *)_getParentOfNode:(SoNode *)node inSceneGraph:(SoGroup *)root;
 @end
 
 @implementation SCCamera
@@ -76,7 +76,7 @@
     class. Returns !{self}.
  "*/
 
-- (id) initWithSoCamera:(SoCamera *)camera controller:(SCController *)controller
+- (id)initWithSoCamera:(SoCamera *)camera controller:(SCController *)controller
 {
   if (self = [super init]) {
     _controllerhascreatedcamera = NO;
@@ -94,13 +94,13 @@
     and #setSoCamera: before being able to use the camera.
  "*/
  
-- (id) init
+- (id)init
 {
   return [self initWithSoCamera:NULL controller:nil];
 }
 
 
-- (void) dealloc {
+- (void)dealloc {
   if (_camera) _camera->unref();
   if (_autoclipboxaction) delete _autoclipboxaction;
 }
@@ -114,7 +114,7 @@
     !{SCUnknown} otherwise.
  "*/
 
-- (SCCameraType) type
+- (SCCameraType)type
 {
   if (_camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId()))
     return SCCameraPerspective;
@@ -145,7 +145,7 @@
 
  "*/
 
-- (BOOL) convertToType:(SCCameraType)type
+- (BOOL)convertToType:(SCCameraType)type
 {
   BOOL ok = NO;
   switch (type) {
@@ -172,7 +172,7 @@
 
 /*" Zooms in if delta is > 0, else zooms out. "*/
 
-- (void) zoom:(float)delta
+- (void)zoom:(float)delta
 {
   // FIXME: Actually use delta to determine zoom distance?
   // kyrah 20030621.
@@ -218,7 +218,7 @@
 
 /*" Positions the camera so that we can see the whole scene. "*/
 
-- (void) viewAll
+- (void)viewAll
 {
   if (_camera == NULL || _controller == nil) return;
   _camera->viewAll([_controller sceneGraph],
@@ -233,7 +233,7 @@
     (the greater the ratio far/near, the less effective the depth buffer).
  "*/
  
-- (void) updateClippingPlanes:(SoGroup *)scenegraph
+- (void)updateClippingPlanes:(SoGroup *)scenegraph
 {
   // FIXME: Need autoclipcb callback function? Investigate.
   // kyrah 20030509
@@ -298,7 +298,7 @@
     it is not inserted into it.
  "*/
 
-- (void) setSoCamera:(SoCamera *)camera deleteOldCamera:(BOOL)deletecamera
+- (void)setSoCamera:(SoCamera *)camera deleteOldCamera:(BOOL)deletecamera
 {
   if (camera == NULL) return;
 
@@ -320,7 +320,7 @@
 
 /*" Returns the actual camera used in the scene graph. "*/
 
-- (SoCamera *) soCamera { 
+- (SoCamera *)soCamera { 
   return _camera; 
 }
 
@@ -331,7 +331,7 @@
     old camera should be deleted or not.   
  "*/
     
-- (void) setControllerHasCreatedCamera:(BOOL)yn { 
+- (void)setControllerHasCreatedCamera:(BOOL)yn { 
   _controllerhascreatedcamera = yn; 
 }
 
@@ -340,13 +340,13 @@
     scene graph.
  "*/
  
-- (BOOL) controllerHasCreatedCamera { 
+- (BOOL)controllerHasCreatedCamera { 
   return _controllerhascreatedcamera; 
 }
 
 /*" Sets the SCCamera's SCController component to controller. "*/
 
-- (void) setController:(SCController *)controller
+- (void)setController:(SCController *)controller
 {
   // We intentionally do not retain controller here, to avoid
   // circular references.
@@ -355,7 +355,7 @@
 
 /*" Returns the SCCamera's SCController component. "*/
 
-- (SCController *) controller
+- (SCController *)controller
 {
   return _controller;
 }
@@ -365,7 +365,7 @@
     will be multiplied together with the previous orientation.
  "*/
 
-- (void) reorient:(SbRotation)rot
+- (void)reorient:(SbRotation)rot
 {
   SbVec3f dir, focalpt;
   if (_camera == NULL) return;
@@ -395,7 +395,7 @@
    the #setSoCamera: method.
 */
 
-- (BOOL) _convertToType:(SoType)type
+- (BOOL)_convertToType:(SoType)type
 {
   // FIXME: Maybe a better solution would be to have a switch
   // node containing both a perspective and an orthographic
@@ -439,7 +439,7 @@
     Note: The current camera must be a perspective camera.
 "*/
 
-- (void) _cloneFromPerspectiveCamera:(SoOrthographicCamera *)orthocam
+- (void)_cloneFromPerspectiveCamera:(SoOrthographicCamera *)orthocam
 {
   assert(_camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId()));
   SoPerspectiveCamera * pcam = (SoPerspectiveCamera *) _camera;
@@ -458,10 +458,10 @@
     Note: The current camera must be an orthographic camera.
 "*/
 
-- (void) _cloneFromOrthographicCamera:(SoPerspectiveCamera *) perspectivecam
+- (void)_cloneFromOrthographicCamera:(SoPerspectiveCamera *)perspectivecam
 {
   assert(_camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId()));
-  SoOrthographicCamera * ocam = (SoOrthographicCamera *) _camera;
+  SoOrthographicCamera * ocam = (SoOrthographicCamera *)_camera;
 
   perspectivecam->aspectRatio.setValue(ocam->aspectRatio.getValue());
   perspectivecam->focalDistance.setValue(ocam->focalDistance.getValue());
@@ -480,7 +480,7 @@
 
 /* Get the camera's object coordinate system. */
 
-- (void) _getCameraCoordinateSystem: (SbMatrix &)m inverse:(SbMatrix &)inv
+- (void)_getCameraCoordinateSystem: (SbMatrix &)m inverse:(SbMatrix &)inv
 {
   SoGroup * root = [_controller sceneGraph];
   SoSearchAction searchaction;
@@ -503,7 +503,7 @@
    small near clipping plane distances are disallowed.
  */
 
-- (float) _bestValueForNearPlane:(float)near farPlane:(float) far
+- (float)_bestValueForNearPlane:(float)near farPlane:(float)far
 {
   // FIXME: Use delegate for doing plane calculation, instead of
   // using strategy. kyrah 20030621.
@@ -532,7 +532,7 @@
 
 /* Get the parent node of node */
 
-- (SoGroup *) _getParentOfNode:(SoNode *)node inSceneGraph:(SoGroup *)root
+- (SoGroup *)_getParentOfNode:(SoNode *)node inSceneGraph:(SoGroup *)root
 {
   if (!node) {
     NSLog(@"_getParentOfNode called with NULL argument");
