@@ -330,6 +330,7 @@
   "*/
 - (void)keyDown:(NSEvent *)event 
 {
+  if ([event isARepeat]) return;
   if (![self->controller handleEvent:event inView:self]) {
     [super keyDown:event];
   } 
@@ -345,6 +346,18 @@
 {
   if (![self->controller handleEvent:event inView:self]) {
     [super keyUp:event];
+  } 
+}
+
+/*" Forwards event to %controller by sending it the #handleEvent:
+    message.  If the event is not handled by the controller, it will
+    be forwarded through the responder chain as usual.
+ "*/
+
+- (void)flagsChanged:(NSEvent *)event 
+{
+  if (![self->controller handleEvent:event inView:self]) {
+    [super flagsChanged:event];
   } 
 }
 
