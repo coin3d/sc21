@@ -964,7 +964,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Script: Sc21 framework pkg\"\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\n#\U0013touch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit $retval";
+			shellScript = "echo \"Script: Sc21 framework pkg\"\n$SRCROOT/packaging/scripts/makesc21pkg.sh\nretval=$?\n#\U0013touch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit $retval";
 		};
 		E056E6DA0609F9FE0068145A = {
 			explicitFileType = "compiled.mach-o.executable";
@@ -1254,7 +1254,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Script: Sc21 palette pkg\"\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\n#touch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit $retval\n";
+			shellScript = "echo \"Script: Sc21 palette pkg\"\n$SRCROOT/packaging/scripts/makesc21pkg.sh\nretval=$?\n#touch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit $retval\n";
 		};
 		E06867AF0633FC8700F702EA = {
 			explicitFileType = "compiled.mach-o.executable";
@@ -1615,7 +1615,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Script: Sc21.mpkg\"\nmkdir -p $DSTROOT/meta\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\n#touch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit $retval\n";
+			shellScript = "echo \"Script: Sc21.mpkg\"\nmkdir -p $DSTROOT/meta\n$SRCROOT/packaging/scripts/makesc21pkg.sh\nretval=$?\n#touch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit $retval\n";
 		};
 		E079478806341DCE006B5824 = {
 			explicitFileType = "compiled.mach-o.executable";
@@ -2469,7 +2469,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Script: Sc21 doc\"\nset -x\nbin/autodoc -project src -format html -template doc/HTMLTemplate.html -copyright \"Systems in Motion AS\" -destination $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME -tree -allclasses -force\ncp doc/style.css $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME\ncp doc/index.html $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME\nretval=$?\nexit $retval\n";
+			shellScript = "echo \"Script: Sc21 doc\"\nbin/autodoc -project src -format html -template doc/HTMLTemplate.html -copyright \"Systems in Motion AS\" -destination $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME -tree -allclasses -force\ncp doc/style.css $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME\ncp doc/index.html $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME\nretval=$?\nexit $retval\n";
 		};
 		E0DD07320654F9CA009C673A = {
 			explicitFileType = "compiled.mach-o.executable";
@@ -2515,7 +2515,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Script: Sc21 DOC pkg\"\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\nexit $retval";
+			shellScript = "echo \"Script: Sc21 doc pkg\"\n$SRCROOT/packaging/scripts/makesc21pkg.sh\nretval=$?\nexit $retval";
 		};
 		E0DD074206550C23009C673A = {
 			explicitFileType = "compiled.mach-o.executable";
@@ -2655,7 +2655,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Script: Sc21 examples\"\nset -x\n$SRCROOT/packaging/scripts/copyexamples.sh\nretval=$?\nexit $retval\n";
+			shellScript = "echo \"Script: Sc21 examples\"\n$SRCROOT/packaging/scripts/copyexamples.sh\nretval=$?\nexit $retval\n";
 		};
 		E0F867CA06C2750B0022BF2A = {
 			explicitFileType = "compiled.mach-o.executable";
@@ -2701,7 +2701,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Script: Sc21 examples pkg\"\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\nexit $retval";
+			shellScript = "echo \"Script: Sc21 examples pkg\"\n$SRCROOT/packaging/scripts/makesc21pkg.sh\nretval=$?\nexit $retval";
 		};
 		E0F867D306C276D40022BF2A = {
 			explicitFileType = "compiled.mach-o.executable";
