@@ -29,6 +29,7 @@
 #import <Sc21/SCController.h>
 #import <Sc21/SCExaminerController.h>
 #import <Sc21/SCCursors.h>
+#import "SCOpenGLViewP.h"
 
 @interface _SCViewP : NSObject
 {
@@ -88,7 +89,6 @@
     const long int vals[1] = {1};
     [[self openGLContext] setValues:vals forParameter:NSOpenGLCPSwapInterval];
     [[self openGLContext] makeCurrentContext];
-    [self _SC_commonInit];
   }
   return self;
   
@@ -425,7 +425,6 @@
       [self setToolTip:[SELF->oldview toolTip]];
       [SELF->oldview release];
       SELF->oldview = nil;
-      [self _SC_commonInit];
     }
   }
   return self;
@@ -445,9 +444,8 @@
     SELF->oldview = [[NSOpenGLView alloc] initWithCoder:coder];
     return self;
   }
-  else if (self = [super initWithCoder:coder]) {
-    [self _SC_commonInit];
-  }
+  else self = [super initWithCoder:coder];
+
   return self;
 }
 
@@ -459,12 +457,15 @@
   Shared initialization code that is called both from 
   #initWithFrame:pixelFormat and #initWithCoder:.
   
-  If you override this method, you must call [super _SC_commonInit]
-  as the first call in your implementation to make sure everything
-  is set up properly.
+  NB! If you override this method, you must:
+  o call [super _SC_commonInit] as the first call in your
+    implementation to make sure everything is set up properly.
+  o _not_ call this method from init or initWithCoder in the subclass
+
   "*/
 - (void)_SC_commonInit
 {
+  [super _SC_commonInit];
   SELF = [[_SCViewP alloc] init];
 }
 
