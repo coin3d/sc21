@@ -44,16 +44,8 @@
 - (BOOL) becomeFirstResponder;
 - (BOOL) acceptsFirstResponder;
 
-/*" Information and error message display "*/
-- (void) displayInfo:(NSString *)message;
-- (void) displayError:(NSString *)message;
-- (void) displayErrorAndExit:(NSString *)message;
-
 /*" Convenience methods and shortcuts "*/
 - (NSMenuItem *) addMenuEntry:(NSString *)title target:(id)target action:(SEL)selector;
-- (NSSize) size;
-- (float) width;
-- (float) height;
 - (float) aspectRatio;
 - (NSPoint) normalizePoint:(NSPoint)point;
 
@@ -62,3 +54,8 @@
 - (id) initWithCoder:(NSCoder *)coder;
 
 @end
+
+/*" Notifications posted by SCView. "*/
+
+extern NSString * SCCouldNotCreateValidPixelFormatNotification;
+

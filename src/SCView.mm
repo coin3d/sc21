@@ -10,10 +10,19 @@
 #import <Inventor/events/SoEvent.h>
 #import <OpenGL/glu.h>
 
+
+// ---------------------- Notifications ----------------------------
+
+NSString * SCCouldNotCreateValidPixelFormatNotification =
+  @"SCCouldNotCreateValidPixelFormatNotification";
+
+
 @interface SCView (InternalAPI)
 - (void) _initMenu;
+- (NSSize) _size;
+- (float) _width;
+- (float) _height;
 @end
-
 
 @implementation SCView
 
@@ -52,13 +61,16 @@
     #{createPixelFormat:} method if you need to set custom
     NSOpenGLPixelFormat settings.
 
+    If no valid pixel format could be created, an
+    %SCCouldNotCreateValidPixelFormatNotification is posted,
+    the object is deallocated, and nil is returned.
+
     This method is the designated initializer for the SCView
     class. Returns !{self}.
  "*/
 - (id) initWithFrame:(NSRect)rect
 {
   NSOpenGLPixelFormat * pixelFormat;
-  
   _colorbits = 32;
   _depthbits = 32;
 
@@ -74,7 +86,10 @@
     }
     [pixelFormat release];
   } else {
-    [self displayErrorAndExit:@"Could not get valid pixel format, exiting."];
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:SCCouldNotCreateValidPixelFormatNotification object:self];
+    [self dealloc];
+    self = nil;
   }
   return self;
 }
@@ -87,7 +102,6 @@
 
 - (void) awakeFromNib
 {
-  NSLog(@"SCView awakeFromNib called");
   [self recreateOpenGLContext];
 }
 
@@ -304,7 +318,7 @@
 - (NSPoint) normalizePoint:(NSPoint)point
 {
   NSPoint normalized;
-  NSSize size = [self size];
+  NSSize size = [self _size];
   normalized.x = point.x / size.width;
   normalized.y = point.y / size.height;
   return normalized;
@@ -496,58 +510,6 @@
   return YES;
 }
 
-
-
-// --------------- Information and error message display ------------
-
-/*" Displays msg as informational alert panel. Override this method
-    if you want to send the information to a file instead of getting
-    an alert panel, or do some other custom logging.
-  "*/
-
-- (void) displayInfo:(NSString *)message
-{  
-  NSWindow * panel = 
-    NSGetInformationalAlertPanel(@"Info",
-    message, @"Dismiss", nil, nil );
-  [NSApp runModalForWindow:panel];
-  [panel close];
-  NSReleaseAlertPanel(panel);
-}
-
-/*" Displays the error description msg as alert panel.
-
-    Override this method if you want to send the error output to a file
-    instead of getting an alert panel, or do some other custom logging.
- "*/
-
-- (void) displayError:(NSString *)message
-{
-  NSWindow * alertpanel =  NSGetCriticalAlertPanel(@"Error",
-                                                   message, @"OK", nil, nil );
-  [NSApp runModalForWindow:alertpanel];
-  [alertpanel close];
-  NSReleaseAlertPanel(alertpanel);
-}
-
-/*" Displays the error description msg by calling #displayError:, and exits 
-    the application. 
-
-    Override #displayError: if you want to send the error output to a file
-    instead of getting an alert panel, or do some other custom logging.
-"*/
-
-- (void) displayErrorAndExit:(NSString *)message
-{
-  NSWindow * alertpanel =  NSGetCriticalAlertPanel(@"Fatal error",
-                                                   message, @"OK", nil, nil );
-  [NSApp runModalForWindow:alertpanel];
-  [alertpanel close];
-  NSReleaseAlertPanel(alertpanel);
-  [NSApp terminate:self];
-}
-
-
 // --------------- Convenience methods --------------------
 
 /*" Adds a new menu entry "title" to the view's context menu. When the
@@ -567,34 +529,11 @@
   return item;
 }
 
-/*" Returns the size of the SCView. "*/
-
-- (NSSize)size
-{
-  NSSize s = [self bounds].size;
-  return s;
-}
-
-/*" Returns the width of the SCView. "*/
-
-- (float) width
-{
-  return [self bounds].size.width;
-}
-
-/*" Returns the height of the SCView. "*/
-
-- (float) height
-{
-  return [self bounds].size.height;
-}
-
-
 /*" Returns the aspect ratio of the SCView. "*/
 
 - (float) aspectRatio
 {
-  NSSize s = [self size];
+  NSSize s = [self _size];
   return s.width/s.height;
 }
 
@@ -634,5 +573,29 @@
   [self setMenu:menu];  // retained by the view
   [menu release];
 }
+
+/* Returns the size of the SCView. */
+
+- (NSSize) _size
+{
+  NSSize s = [self bounds].size;
+  return s;
+}
+
+/*" Returns the width of the SCView. "*/
+
+- (float) _width
+{
+  return [self bounds].size.width;
+}
+
+/*" Returns the height of the SCView. "*/
+
+- (float) _height
+{
+  return [self bounds].size.height;
+}
+
+
 
 @end
