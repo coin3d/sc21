@@ -63,6 +63,9 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 /*" Initializes a newly allocated SCExaminerController.
 
+    Calls #commonInit, which contains common initialization
+    code needed both in #init and #initWithCoder.
+
     This method is the designated initializer for the SCController
     class. Returns !{self}.
  "*/
@@ -70,60 +73,63 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 - (id) init
 {
   if (self = [super init]) {
-    _headlight = NULL;
-    SbViewVolume volume;
-    _mouselog = [[NSMutableArray alloc] init];
-    _spinprojector = new SbSphereSheetProjector(SbSphere(SbVec3f(0,0,0),0.8f));
-    volume.ortho(-1, 1, -1, 1, -1, 1);
-    _spinprojector->setViewVolume(volume);
-    _spinrotation = new SbRotation;
-    _spinrotation->setValue(SbVec3f(0, 0, -1), 0);
-    _iswaitingforseek = NO;
+    // Note that commonInit will be called by our superclass'
+    // initWithCoder method, so do not call it here.
+    ; 
   }
   return self;
 }
 
 
 /*" Initializes a newly allocated SCExaminerController instance from the 
-    data in decoder. Returns !{self} "*/
+    data in decoder. Returns !{self}
+
+    Calls #commonInit, which contains common initialization
+    code needed both in #init and #initWithCoder.
+"*/
 
 - (id) initWithCoder:(NSCoder *) coder
 {
-  // FIXME: Move shared code to commonInit: kyrah 20030621
   if (self = [super initWithCoder:coder]) {
-    _headlight = NULL;
-    SbViewVolume volume;
-    _mouselog = [[NSMutableArray alloc] init];
-    _spinprojector = new SbSphereSheetProjector(SbSphere(SbVec3f(0,0,0),0.8f));
-    volume.ortho(-1, 1, -1, 1, -1, 1);
-    _spinprojector->setViewVolume(volume);
-    _spinrotation = new SbRotation;
-    _spinrotation->setValue(SbVec3f(0, 0, -1), 0);
-    _iswaitingforseek = NO;
+    // Note that commonInit will be called by our superclass'
+    // initWithCoder method, so do not call it here.
+    ; 
   }
   return self;
 }
 
-/*" Calls SCController #awakeFromNib and adds context menu
-    entries for the functionality added by SCExaminerController.
-    If you override this method, you must send a !{[super init]}
-    message to ensure proper setup of the Coin subsystem.
-    
-    Called after the object has been loaded from an Interface 
-    Builder archive or nib file. 
-"*/
+
+/*" Shared initialization code that is called both from #init:
+    and #initWithCoder: If you override this method, you must
+    call [super commonInit] as the first call in your
+    implementation to make sure everything is set up properly.
+ "*/
+
+- (void) commonInit
+{
+  [super commonInit];
+  NSLog(@"SCExaminerController commonInit");
+  _headlight = NULL;
+  SbViewVolume volume;
+  _mouselog = [[NSMutableArray alloc] init];
+  _spinprojector = new SbSphereSheetProjector(SbSphere(SbVec3f(0,0,0),0.8f));
+  volume.ortho(-1, 1, -1, 1, -1, 1);
+  _spinprojector->setViewVolume(volume);
+  _spinrotation = new SbRotation;
+  _spinrotation->setValue(SbVec3f(0, 0, -1), 0);
+  _iswaitingforseek = NO;  
+}
 
 - (void) awakeFromNib
 {
   [super awakeFromNib];
 }
 
-/* Clean up after ourselves. */
+/*" Clean up after ourselves. "*/
 
 - (void) dealloc
 {
   [_mouselog release];
-
   delete _spinprojector;
   delete _spinrotation;
   [super dealloc];

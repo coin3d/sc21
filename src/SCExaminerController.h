@@ -18,9 +18,11 @@ class SoDirectionalLight;
   BOOL _iswaitingforseek;  
 }
 
-/*" Initializing an SCExaminerController "*/
+/*" Initializing and encoding/decoding an SCExaminerController "*/
 - (id) init;
-- (void) awakeFromNib;
+- (void) commonInit;
+- (id) initWithCoder:(NSCoder *) coder;
+- (void) encodeWithCoder:(NSCoder *) coder;
 
 /*" Coin rendering and related functionality "*/
 - (void) render;
@@ -46,12 +48,6 @@ class SoDirectionalLight;
 - (void) performMove:(NSValue *)v;
 - (void) ignore:(NSValue *)v;
 
-
-/*" NSCoding conformance "*/
-- (void) encodeWithCoder:(NSCoder *) coder;
-- (id) initWithCoder:(NSCoder *) coder;
-
-
 @end
 
 /*" Notifications posted by SCExaminerController. "*/
@@ -59,6 +55,3 @@ class SoDirectionalLight;
 extern NSString * SCViewAllNotification;
 extern NSString * SCCameraTypeChangedNotification;
 extern NSString * SCHeadlightChangedNotification;
-
-
-

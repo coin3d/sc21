@@ -97,16 +97,28 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 - (id) init
 {
   if (self = [super init]) {
-    if (!_coinInitialized) [SCController initCoin];
-    _camera = [[SCCamera alloc] init];
-    [_camera setController:self];
-    _autoclipvalue = 0.6;
-    _handleseventsinviewer = YES;
-    _eventconverter = [[SCEventConverter alloc] initWithController:self];
+    [self commonInit];
   }
   return self;
 }
 
+
+/*" Shared initialization code that is called both from #init:
+    and #initWithCoder: If you override this method, you must
+    call [super commonInit] as the first call in your
+    implementation to make sure everything is set up properly.
+"*/
+
+- (void) commonInit
+{
+  if (!_coinInitialized) [SCController initCoin];
+  _camera = [[SCCamera alloc] init];
+  [_camera setController:self];
+  _autoclipvalue = 0.6;
+  _handleseventsinviewer = YES;
+  _eventconverter = [[SCEventConverter alloc] initWithController:self];
+  
+}
 
 
 /*" Sets up and activates a Coin scene manager. Sets up and schedules
@@ -686,12 +698,7 @@ small near clipping plane distances are disallowed.
 - (id) initWithCoder:(NSCoder *) coder
 {
   if (self = [super initWithCoder:coder]) {
-    if (!_coinInitialized) [SCController initCoin];
-    _camera = [[SCCamera alloc] init];
-    [_camera setController:self];
-    _autoclipvalue = 0.6;
-    _handleseventsinviewer = YES;
-    _eventconverter = [[SCEventConverter alloc] initWithController:self];
+    [self commonInit];
   }
   return self;
 }

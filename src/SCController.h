@@ -25,9 +25,13 @@ class SoSceneManager;
 /*" Static initialization "*/
 + (void) initCoin;
 
-/*" Initializing an SCController "*/
+/*" Initializing and encoding/decoding an SCController "*/
 - (id) init;
+- (id) initWithCoder:(NSCoder *)coder;
+- (void) commonInit;
 - (void) awakeFromNib;
+- (void) encodeWithCoder:(NSCoder *)coder;
+
 
 /*" Getting the view associated with the controller "*/
 - (void) setView:(SCView *) view;
@@ -68,9 +72,6 @@ class SoSceneManager;
 - (void) setDelayQueueInterval:(NSTimeInterval)interval;
 - (NSTimeInterval) delayQueueInterval;
 
-/*" NSCoding conformance "*/
-- (void) encodeWithCoder:(NSCoder *)coder;
-- (id) initWithCoder:(NSCoder *)coder;
 
   /*" Autoclipping "*/
 - (float) bestValueForNearPlane:(float)near farPlane:(float)far;
