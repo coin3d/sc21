@@ -222,10 +222,15 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   // FIXME: Do clearing here instead of in SoSceneManager to support
   // alpha values? Alternatively, add SbColor4f support the necessary
   // places in Coin (kintel 20040502)
-  [self _SC_viewSizeChanged];
-  [[self->sceneGraph camera] updateClippingPlanes:self->sceneGraph];
-  SELF->scenemanager->render(SELF->clearcolorbuffer, SELF->cleardepthbuffer);
-  [self->eventHandler update];
+  if (SELF->drawable) {
+    NSRect frame = [SELF->drawable frame];
+    SELF->scenemanager->
+      setViewportRegion(SbViewportRegion((short)frame.size.width,
+                                         (short)frame.size.height));
+    [self->eventHandler update];
+    [[self->sceneGraph camera] updateClippingPlanes:self->sceneGraph];
+    SELF->scenemanager->render(SELF->clearcolorbuffer, SELF->cleardepthbuffer);
+  }
 }
 
 #pragma mark --- event handling ---
@@ -748,19 +753,6 @@ Returns the receiver's delegate.
 {
   [[NSNotificationCenter defaultCenter] 
     postNotificationName:SCCursorChangedNotification object:self];
-}
-
-/* This method is called when %view's size has been changed. 
-    It makes the necessary adjustments for the new size in 
-    the Coin subsystem.
- */
-- (void)_SC_viewSizeChanged
-{
-  if (!SELF->scenemanager || !SELF->drawable) return;
-  NSRect frame = [SELF->drawable frame];
-  SELF->scenemanager->
-    setViewportRegion(SbViewportRegion((short)frame.size.width,
-                                       (short)frame.size.height));
 }
 
 /*
