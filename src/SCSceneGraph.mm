@@ -36,6 +36,7 @@
 #import <Inventor/nodekits/SoBaseKit.h>
 #import <Inventor/nodes/SoPerspectiveCamera.h>
 #import <Inventor/nodes/SoDirectionalLight.h>
+#import <Inventor/VRMLnodes/SoVRMLGroup.h>
 
 #import "SCUtil.h"
 
@@ -75,12 +76,9 @@
 - (id)initWithContentsOfFile:(NSString *)filename
 {
   if (self = [self init]) {
-    SoGroup * fileroot = [self _SC_readFile:filename];
-    if (fileroot == NULL) {
+    if (![self readFromFile:filename]) {
       [self release];
       self = nil;
-    } else {
-      [self setRoot:fileroot];
     }
   }
   return self;
@@ -95,22 +93,11 @@
 "*/
 - (id)initWithContentsOfURL:(NSURL *)URL
 {
-  // local file system path - treat as regular file
-  if ([URL isFileURL]) {
-    return [self initWithContentsOfFile:[URL path]];
-  }
-  
-  // ... otherwise, load data from the Internet
   if (self = [self init]) {
-    
-#if 1  // FIXME: Implement downloading (use NSURLDownload?) kyrah 20040802 
-    SC21_DEBUG(@"URL downloading not implemented!");    
-    [[NSNotificationCenter defaultCenter]
-        postNotificationName:SCCouldNotReadFileNotification object:self];
-    [self release];
-    self = nil;
-#endif
-    
+    if (![self readFromURL:URL]) {
+      [self release];
+      self = nil;
+    }
   }
   return self;
 }
@@ -127,9 +114,8 @@
 
 - (void) dealloc
 {
+  [self setRoot:NULL];
   [SELF->camera release];
-  if (SELF->superscenegraph) { SELF->superscenegraph->unref(); }
-  else if (SELF->scenegraph) { SELF->scenegraph->unref(); }
   [SELF release];
 }
 
@@ -137,27 +123,25 @@
 
 - (BOOL)readFromFile:(NSString *)name 
 {
-  SoGroup * fileroot = [self _SC_readFile:name];
-  if (fileroot) { 
-    [self setRoot:fileroot];
-    return YES; 
+  BOOL ret = NO;
+  SoInput in;
+  if (!in.openFile([name UTF8String])) {  
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:SCCouldNotReadFileNotification object:self];
+  } else {
+    ret = [self _SC_readFromSoInput:&in];
+    in.closeFile();
   }
-  return NO;
+  return ret;
 }
 
 - (BOOL)readFromURL:(NSURL *)URL
 {
-  // local file system path - treat as regular file
-  if ([URL isFileURL]) {
-    return [self readFromFile:[URL path]];
-  } else {
-#if 1  // FIXME: Implement downloading (use NSURLDownload?) kyrah 20040802 
-    SC21_DEBUG(@"URL downloading not implemented!");    
-    [[NSNotificationCenter defaultCenter]
-        postNotificationName:SCCouldNotReadFileNotification object:self];
-#endif
-    return NO; 
+  NSData * data = [URL resourceDataUsingCache:YES];
+  if (data) {
+    return [self loadDataRepresentation:data];
   }
+  return NO;
 }
 
 - (BOOL)writeToFile:(NSString *)filename
@@ -173,6 +157,13 @@
       postNotificationName:SCCouldNotWriteFileNotification object:self]; 
   }
   return NO;
+}
+
+- (BOOL)loadDataRepresentation:(NSData *)data
+{
+  SoInput input;
+  input.setBuffer((void *)[data bytes], [data length]);
+  return [self _SC_readFromSoInput:&input];
 }
 
 #pragma mark --- camera handling ---
@@ -273,17 +264,17 @@ and !{NO} otherwise.
 "*/
 - (void)setRoot:(SoGroup *)root
 {
-  if (root == NULL) { return; }
-  
+  SC21_DEBUG(@"SCSceneGraph.setRoot: %p", root);
   // Clean up existing scenegraph
   if (SELF->scenegraph) { SELF->scenegraph->unref(); }
   if (SELF->superscenegraph) { SELF->superscenegraph->unref(); }
   SELF->scenegraph = SELF->superscenegraph = NULL;  
-  
-  SELF->scenegraph = root;
   SELF->headlight = NULL;
   SELF->addedlight = NO;
-
+  
+  if ((SELF->scenegraph = root) == NULL) { return; }
+  SELF->scenegraph->ref();    
+  
   // SELF->createsuperscenegraph is controlled through the IB inspector.
   BOOL createsuperscenegraph = SELF->createsuperscenegraph;
   
@@ -300,23 +291,24 @@ and !{NO} otherwise.
       createsuperscenegraph = NO;
     }
   }
+
   if (createsuperscenegraph) {
-    [self _SC_createSuperSceneGraph];
+    SELF->superscenegraph = [self _SC_createSuperSceneGraph:SELF->scenegraph];
   } else { 
     if (self->delegate &&
         [self->delegate respondsToSelector:@selector(createSuperSceneGraph:)]) {
       SELF->superscenegraph = [delegate createSuperSceneGraph:SELF->scenegraph];
-      SELF->superscenegraph->ref();
     } else {
       SELF->superscenegraph = NULL;
-      SELF->scenegraph->ref();    
     }
   }
+  if (SELF->superscenegraph) SELF->superscenegraph->ref();
   
   // Set active camera to use in viewer. Note that we have to do this after the 
   // delegate had the chance to create its own superscenegraph to make sure the
   // right camera is picked up.
-  SoCamera * scenecamera  = [self _SC_findCameraInSceneGraph:SELF->superscenegraph];
+  SoCamera * scenecamera = 
+    [self _SC_findCameraInSceneGraph:SELF->superscenegraph];
   if (scenecamera != NULL) {
     [SELF->camera setSoCamera:scenecamera];
   }
@@ -390,6 +382,13 @@ and !{NO} otherwise.
   return self;
 }
 
+- (id)retain
+{
+  id obj = [super retain];
+  SC21_DEBUG(@"SCSceneGraph.retain: %d", [self retainCount]);
+  return obj;
+}
+
 @end
 
 @implementation SCSceneGraph (InternalAPI)
@@ -461,18 +460,14 @@ and !{NO} otherwise.
   SELF->addedcamera = yn;
 }
 
-- (void)_SC_createSuperSceneGraph
+- (SoGroup *)_SC_createSuperSceneGraph:(SoGroup *)root
 {
-  SELF->superscenegraph = new SoSeparator;
-  SELF->superscenegraph->ref();
-  
-  // Must ref before applying action!
-  SELF->scenegraph->ref();
+  SoSeparator * superscenegraph = new SoSeparator;
   
   // Handle lighting
   if (![self _SC_findLight]) {
     SELF->headlight = new SoDirectionalLight;
-    SELF->superscenegraph->addChild(SELF->headlight);
+    superscenegraph->addChild(SELF->headlight);
     SELF->addedlight = YES;
     [[NSNotificationCenter defaultCenter]
         postNotificationName:SCNoLightFoundInSceneNotification object:self];
@@ -481,48 +476,36 @@ and !{NO} otherwise.
   }
   
   // Handle camera
-  SoCamera * scenecamera  = [self _SC_findCameraInSceneGraph:SELF->scenegraph];
+  SoCamera * scenecamera  = [self _SC_findCameraInSceneGraph:root];
   if (scenecamera == NULL) {
     SELF->addedcamera = YES;
-    SELF->superscenegraph->addChild(new SoPerspectiveCamera);
+    superscenegraph->addChild(new SoPerspectiveCamera);
     [[NSNotificationCenter defaultCenter]
         postNotificationName:SCNoCameraFoundInSceneNotification object:self];
   } else {
     SELF->addedcamera = NO;
   }
 
-  SELF->superscenegraph->addChild(SELF->scenegraph);
-  
-  // We ref'ed the scenegraph earlier so we could savely
-  // apply a search action. Now that it is part of the 
-  // superscenegraph, we can savely unref it again.
-  SELF->scenegraph->unref();
+  superscenegraph->addChild(root);
+  return superscenegraph;
 }
 
-- (SoGroup *)_SC_readFile:(NSString *)filename
+- (BOOL)_SC_readFromSoInput:(SoInput *)input
 {
   SoGroup * fileroot = NULL;
-  SoInput in;
-  if (!in.openFile([filename UTF8String])) {  
-    [[NSNotificationCenter defaultCenter]
-        postNotificationName:SCCouldNotReadFileNotification object:self];
-    return NULL;
+  if (input->isFileVRML2()) {
+    fileroot = SoDB::readAllVRML(input);
   } else {
-    if (in.isFileVRML2()) {
-      fileroot = (SoGroup *)SoDB::readAllVRML(&in);
-    } else {
-      fileroot = SoDB::readAll(&in);
-    }
-    // Note that this is not strictly necessary, but I consider it bad 
-    // practice to leave the closing of my resources to the destructor...
-    // *shrug*, kyrah
-    in.closeFile();
-    if (fileroot == NULL) {
-      [[NSNotificationCenter defaultCenter]
-          postNotificationName:SCCouldNotReadFileNotification object:self];
-    }
+    fileroot = SoDB::readAll(input);
   }
-  return fileroot;
+  if (fileroot) { 
+    [self setRoot:fileroot];
+    return YES; 
+  } else {
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:SCCouldNotReadFileNotification object:self];
+    return NO;
+  }
 }
 
 
