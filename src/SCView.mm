@@ -123,6 +123,9 @@
   
   if ((pixelFormat = [self createPixelFormat:rect]) != nil) {
     if (self = [super initWithFrame:rect pixelFormat:pixelFormat]) {
+      // flush buffer only during the vertical retrace of the monitor
+      const long int vals[1] = {1};
+      [[self openGLContext] setValues:vals forParameter:NSOpenGLCPSwapInterval];
       [[self openGLContext] makeCurrentContext];
       [self _initMenu];
     }
@@ -179,8 +182,11 @@
     newContext = [[NSOpenGLContext alloc] initWithFormat:pixelFormat
                                             shareContext:nil ];
     if (newContext != nil) {
+      const long int vals[1] = {1};
       [super setFrame:[self frame]];
       [super setOpenGLContext:newContext];
+      // flush buffer only during the vertical retrace of the monitor
+      [newContext setValues:vals forParameter:NSOpenGLCPSwapInterval];
       [newContext makeCurrentContext];
       success = TRUE;
     }
@@ -320,6 +326,8 @@
 
 - (void) drawRect:(NSRect)rect
 {
+  [[self openGLContext] makeCurrentContext];
+  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // FIXME: needed?
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_LIGHTING);
   [controller render];
@@ -527,6 +535,21 @@
   NSSize s = [self bounds].size;
   return s;
 }
+
+/*" Returns the width of the SCView. "*/
+
+- (float) width
+{
+  return [self bounds].size.width;
+}
+
+/*" Returns the height of the SCView. "*/
+
+- (float) height
+{
+  return [self bounds].size.height;
+}
+
 
 /*" Returns the aspect ratio of the SCView. "*/
 
