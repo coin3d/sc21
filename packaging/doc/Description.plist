@@ -5,10 +5,10 @@
 	<key>IFPkgDescriptionDeleteWarning</key>
 	<string></string>
 	<key>IFPkgDescriptionDescription</key>
-	<string>Sc21 0.1.2 by Systems in Motion AS</string>
+	<string>Sc21 0.9.0 by Systems in Motion AS</string>
 	<key>IFPkgDescriptionTitle</key>
 	<string>Sc21 doc</string>
 	<key>IFPkgDescriptionVersion</key>
-	<string>0.1.2</string>
+	<string>0.9.0</string>
 </dict>
 </plist>
