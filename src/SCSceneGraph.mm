@@ -58,13 +58,6 @@ void error_cb(const class SoError * error, void * data)
 #define PRIVATE(p) ((p)->_sc_scenegraph)
 #define SELF PRIVATE(self)
 
-// Note: I find it really degoutant that this class should be named
-// SCSceneGraph instead of SCScenegraph -- scenegraph is one word,
-// for Goddess' sake! But the folks who designed the original Inventor
-// API Thought Different, and hence are using setSceneGraph() &c.
-// all over the place... so for consistency's sake, let's trudge along.
-// kyrah 20040716
-
 @implementation SCSceneGraph
 
 /*" 
