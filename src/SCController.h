@@ -43,7 +43,6 @@ class SoGetBoundingBoxAction;
 /*" Initializing an SCController "*/
 - (id) init;
 - (void) awakeFromNib;
-- (void) stopTimers;
 
 /*" Getting the view associated with the controller "*/
 - (SCView *) view;
@@ -66,13 +65,19 @@ class SoGetBoundingBoxAction;
 
 - (NSString *) coinVersion;
 
-
 /*" Event handling "*/
 - (void) handleEvent:(NSEvent *) event;
 - (void) handleEventAsCoinEvent:(NSEvent *) event;
 - (void) handleEventAsViewerEvent:(NSEvent *) event;
 - (void) setHandlesEventsInViewer:(BOOL)yn;
 - (BOOL) handlesEventsInViewer;
+
+/*" Timer management. "*/
+- (void) stopTimers;
+- (void) setTimerInterval:(NSTimeInterval)interval;
+- (NSTimeInterval) timerInterval;
+- (void) setDelayQueueInterval:(NSTimeInterval)interval;
+- (NSTimeInterval) delayQueueInterval;
 
 /*" NSCoding conformance "*/
 - (void) encodeWithCoder:(NSCoder *) coder;
@@ -86,4 +91,11 @@ class SoGetBoundingBoxAction;
 - (void) openPanelDidEnd:(NSOpenPanel*)panel returnCode:(int)rc contextInfo:(void *) ctx;
 
 @end
+
+
+/*" Notifications posted by SCController. "*/
+
+extern NSString * SCModeChangedNotification;
+extern NSString * SCSceneGraphChangedNotification;
+
 

@@ -42,8 +42,17 @@ redraw_cb(void * user, SoSceneManager * manager) {
 }
 
 
-// Obj-C does not support class variables, so: static :(
+// Obj-C does not support class variables, so: static...
 static BOOL _coinInitialized = NO;
+
+
+// ---------------------- Notifications ----------------------------
+
+NSString * SCModeChangedNotification = @"SCModeChangedNotification";
+NSString * SCSceneGraphChangedNotification = @"SCSceneGraphChangedNotification";
+
+
+
 
 @implementation SCController
 
@@ -88,6 +97,7 @@ static BOOL _coinInitialized = NO;
 - (IBAction) toggleModes:(id)sender
 {
   [self setHandlesEventsInViewer:([self handlesEventsInViewer] ? NO : YES)];
+  [[NSNotificationCenter defaultCenter] postNotificationName:SCModeChangedNotification object:self];
 }
 
 
@@ -160,11 +170,6 @@ static BOOL _coinInitialized = NO;
   return self;
 }
 
-- (void) stopTimers
-{
-  if ([_timerqueuetimer isValid]) [_timerqueuetimer invalidate];
-  if ([_delayqueuetimer isValid]) [_delayqueuetimer invalidate];
-}
 
 
 /*" Sets up and activates a Coin scene manager. Sets up and schedules
@@ -194,15 +199,15 @@ static BOOL _coinInitialized = NO;
   // NSTimer does not allow you to start/stop the timer - you have
   // to invalidate it and create a new one.
   // Also, there is not really a concept of "application is idle"
-  // in cocoa, so the delay queue is currently only processed each
-  // 100 milliseconds. (Might be able to use NSNotificationQueue
+  // in cocoa, so the delay queue is currently only processed once 
+  // every millisecond. (Might be able to use NSNotificationQueue
   // with style NSPostWhenIdle, I'll have to verify that.)
   // kyrah 20030713
 
   // Setup timers.
   _timerqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:0.001 target:self
     selector:@selector(_processTimerQueue:) userInfo:nil repeats:YES] retain];
-  _delayqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:0.1 target:self
+  _delayqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:0.001 target:self
     selector:@selector(_processDelayQueue:) userInfo:nil repeats:YES] retain];
   
   [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSModalPanelRunLoopMode];
@@ -223,7 +228,6 @@ static BOOL _coinInitialized = NO;
   [self stopTimers];
   [_eventconverter release];
   [_camera release];
-  _scenegraph->unref();
   delete _scenemanager;
   [super dealloc];
 }
@@ -253,9 +257,10 @@ static BOOL _coinInitialized = NO;
     
 - (void) setSceneGraph:(SoGroup *)sg
 {
-  sg->ref();
+  _scenegraph = sg;
+  _scenemanager->setSceneGraph(_scenegraph);
 
-  SoCamera * scenecamera = [self findCameraInSceneGraph:sg];
+  SoCamera * scenecamera = [self findCameraInSceneGraph:_scenegraph];
   if (scenecamera) {
     [_camera setSoCamera:scenecamera];
     [_camera setControllerHasCreatedCamera:NO];
@@ -263,15 +268,14 @@ static BOOL _coinInitialized = NO;
     NSLog(@"No camera found in scene, you won't be able to see anything");
   }
   
-  if (![self findLightInSceneGraph:sg]) {
+  if (![self findLightInSceneGraph:_scenegraph]) {
     NSLog(@"No light found in scene, you won't be able to see anything");
   }
-
-  if (_scenegraph) _scenegraph->unref();
-  _scenegraph = sg;
-  _scenemanager->setSceneGraph(_scenegraph);
   [_camera updateClippingPlanes:_scenegraph];
   [view setNeedsDisplay:YES];
+
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:SCSceneGraphChangedNotification object:self];
 }
 
 /*" Returns the current scene graph used for rendering. "*/
@@ -494,7 +498,77 @@ otherwise NULL.
   return _handleseventsinviewer;
 }
 
+// -------------------- Timer management. ----------------------
 
+
+/*" Stops and releases the timers for timer queue and delay queue
+    processing.
+ "*/
+
+- (void) stopTimers
+{
+  if ([_timerqueuetimer isValid]) [_timerqueuetimer invalidate];
+  [_timerqueuetimer release];
+  if ([_delayqueuetimer isValid]) [_delayqueuetimer invalidate];
+  [_delayqueuetimer release];
+}
+
+/*" Sets the frequency how often we process the timer sensor queue,
+    in seconds. Default value is 0.001.
+ "*/
+
+- (void) setTimerInterval:(NSTimeInterval) interval
+{
+  if ([_timerqueuetimer timeInterval] == interval) return;
+  if ([_timerqueuetimer isValid]) [_timerqueuetimer invalidate];
+  
+  _timerqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:interval target:self
+    selector:@selector(_processTimerQueue:) userInfo:nil repeats:YES] retain];
+
+  [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSModalPanelRunLoopMode];
+  [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSEventTrackingRunLoopMode];
+}
+
+
+/*" Returns the frequency how often we process the timer sensor
+    queue.
+ "*/
+
+- (NSTimeInterval) timerInterval
+{
+  return [_timerqueuetimer timeInterval];
+}
+
+
+/*" Sets the frequency how often we process the delay sensor queue,
+    in seconds. Default value is 0.001.
+
+    Note: Do not use the SoSensorManager::setDelaySensorTimeout()
+    method - the value set by that function is ignored. Use this
+    function here instead.
+"*/
+
+- (void) setDelayQueueInterval:(NSTimeInterval) interval
+{
+  if ([_delayqueuetimer timeInterval] == interval) return;
+  if ([_delayqueuetimer isValid]) [_delayqueuetimer invalidate];
+
+  _delayqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:interval target:self
+  selector:@selector(_processDelayQueue:) userInfo:nil repeats:YES] retain];
+
+  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSModalPanelRunLoopMode];
+  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSEventTrackingRunLoopMode];
+}
+
+
+/*" Returns the frequency how often we process the delay sensor 
+    queue.
+"*/
+
+- (NSTimeInterval) delayQueueInterval
+{
+  return [_delayqueuetimer timeInterval];
+}
 
 // ----------------- Debugging aids ----------------------------
 
