@@ -57,24 +57,19 @@ typedef enum _SCCameraType {
 }
 
 /*" Initializing an SCCamera "*/
-- (id)initWithSceneGraph:(SCSceneGraph *)scenegraph;
-
-/*" Switching between orthographic and perspective mode "*/
-- (SCCameraType)type;
-- (BOOL)convertToType:(SCCameraType)type;
+- (id)init;
 
 /*" Positioning the camera "*/
 - (void)reorient:(SbRotation)rot;
 - (void)translate:(SbVec3f)v;
 - (void)zoom:(float)delta;
-- (void)viewAll;
-- (void)updateClippingPlanes:(SoGroup *)scenegraph;
+- (void)viewAll:(SCSceneGraph *)scenegraph;
+- (void)updateClippingPlanes:(SCSceneGraph *)scenegraph;
 
 /*" Accessors "*/ 
+- (SCCameraType)type;
 - (void)setSoCamera:(SoCamera *)camera;
-- (void)setSoCamera:(SoCamera *)camera deleteOldCamera:(BOOL)deletecamera;
 - (SoCamera *)soCamera;
-- (void)setSceneGraph:(SCSceneGraph *)scenegraph;
 - (void)setAutoClipValue:(float)autoclipvalue;
 - (float)autoClipValue;
 @end

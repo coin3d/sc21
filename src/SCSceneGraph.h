@@ -62,6 +62,7 @@
 /*" Camera handling. "*/
 - (SCCamera *)camera;
 - (BOOL)hasAddedCamera;
+- (void)viewAll;
 
 /*" Accessing the actual Coin scenegraph. "*/
 - (SoGroup *)superSceneGraph; 

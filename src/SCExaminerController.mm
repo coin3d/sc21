@@ -132,26 +132,16 @@
 - (void)render
 {
   if (![self sceneGraph]) return;
-  [[[self sceneGraph] camera] updateClippingPlanes:[[self sceneGraph] root]];
+  [[[self sceneGraph] camera] updateClippingPlanes:[self sceneGraph]];
   [super render];
 }
 
-
-/*" Sets the type of the camera we are using for viewing the scene.
-    Currently supported types are %SCCameraPerspective and
-    %SCCameraOrthographic (see SCCamera.h).
- "*/
-
-- (void)setCameraType:(SCCameraType)type
-{
-  [[[self sceneGraph] camera] convertToType:type];
-}
 
 /*" Repositions the camera so that we can se the whole scene. "*/
 
 - (void)viewAll
 {
-  [[self->scenegraph camera] viewAll]; // SCViewAllNotification sent by _camera
+  [self->scenegraph viewAll]; // SCViewAllNotification sent by _camera
 }
 
 #if 0

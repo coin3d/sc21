@@ -58,7 +58,7 @@
 
 #pragma mark --- initialization and cleanup ---
 
-/*" Initializes a newly allocated SCCamera in the scenegraph scenegraph.
+/*" Initializes a newly allocated SCCamera.
     Note that you must set the actual camera in the Coin scenegraph explicitly 
     using the #setSoCamera: method before being able to use the camera.
 
@@ -66,115 +66,22 @@
     class. Returns !{self}.
  "*/
 
-- (id)initWithSceneGraph:(SCSceneGraph *)scenegraph
+- (id)init
 {
   if (self = [super init]) {
     [self _SC_commonInit];
-    [self setSceneGraph:scenegraph];
     SELF->autoclipvalue = 0.6;
   }
   return self;
 }
 
-/*" Initializes a newly allocated SCCamera. Note that you must set
-    the actual camera in the Coin scenegraph and the SCSceneGraph
-    representing the scenegraph explicitly using #setSceneGraph:
-    and #setSoCamera: before being able to use the camera.
-
-    Returns !{self}.
- "*/
- 
-- (id)init
-{
-  return [self initWithSceneGraph:nil];
-}
 
 - (void)dealloc
 {
-  [self setSceneGraph:nil];
   if (SELF->camera) SELF->camera->unref();
   delete SELF->autoclipboxaction;
   [SELF release];
   [super dealloc];
-}
-
-
-#pragma mark --- switching orthographic/perspective ---
-
-/*" Returns !{SCCameraPerspective} if the camera is a perspective camera,
-    !{SCCameraOrthographic} if the camera is an orthographic camera, and
-    !{SCUnknown} otherwise.
- "*/
-
-- (SCCameraType)type
-{
-  if (SELF->camera == NULL) { return SCCameraNone; }
-  
-  if (SELF->camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
-    return SCCameraPerspective;
-  } 
-  
-  if (SELF->camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
-    return SCCameraOrthographic;
-  } 
-
-  return SCCameraUnknown;
-}
-
-
-/*" Converts from perspective to orthographic camera and vice versa.
-    Possible values for type are !{SCCameraPerspective} and
-    !{SCCameraOrthographic}.
-
-    A new camera of the intended type is created and initialized
-    with the values of the current camera. It is then inserted in
-    the scenegraph and set to be the new current camera by calling
-    the #setSoCamera: method.
-
-    Returns !{YES} if the camera was changed, and !{NO} if there was
-    an error.
-
-    An !{SCCameraTypeChangedNotification} is posted if the camera
-    has been converted successfully. Note that even if you
-    have an orthographic camera and set it to an orthographic
-    camera, you will trigger this notification.
-
- "*/
-
-- (BOOL)convertToType:(SCCameraType)type
-{
-  // FIXME: The actual camera conversion code is copied from
-  // SoQt. Morten mentioned recently[*] that there might be a 
-  // bug in this conversion code. We should either look at this ourselves, 
-  // or at least sync with SoQt when it is fixed there.  kyrah 20040729
-  // [*] Message-ID: <Pine.LNX.4.58.0407262004550.6340@valhalla.trh.sim.no> 
-  
-  BOOL ok = NO;
-
-  if (SELF->camera == NULL) {
-    SC21_DEBUG(@"No camera.");
-  }
-  else {
-    switch (type) {
-      case SCCameraNone:
-        SC21_DEBUG(@"Cannot convert camera to type SCCameraNone.");
-        break;
-      case SCCameraOrthographic:
-        ok = [self _SC_convertToType:SoOrthographicCamera::getClassTypeId()];
-        break;
-      case SCCameraPerspective:
-        ok =[self _SC_convertToType:SoPerspectiveCamera::getClassTypeId()];
-        break;
-      default:
-        SC21_DEBUG(@"Unknown camera type.");
-        break;
-    }
-    if (ok) {
-      [[NSNotificationCenter defaultCenter]
-        postNotificationName:SCCameraTypeChangedNotification object:self];
-    }
-  }
-  return ok;
 }
 
 
@@ -262,11 +169,11 @@ Translate camera relative to its own coordinate system.
 
 /*" Positions the camera so that we can see the whole scene. "*/
 
-- (void)viewAll
+- (void)viewAll:(SCSceneGraph *)sceneGraph
 {
-  if (SELF->camera == NULL || SELF->scenegraph == nil) return;
-  SELF->camera->viewAll((SoNode *)([SELF->scenegraph root]),
-                        [SELF->scenegraph sceneManager]->getViewportRegion());
+  if (SELF->camera == NULL || sceneGraph == nil) return;
+  SELF->camera->viewAll((SoNode *)([sceneGraph root]),
+                        [sceneGraph sceneManager]->getViewportRegion());
 
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCViewAllNotification object:self];
@@ -277,7 +184,7 @@ Translate camera relative to its own coordinate system.
     (the greater the ratio far/near, the less effective the depth buffer).
  "*/
  
-- (void)updateClippingPlanes:(SoGroup *)sg
+- (void)updateClippingPlanes:(SCSceneGraph *)sceneGraph
 {
   // FIXME: Need autoclipcb callback function? Investigate.
   // kyrah 20030509
@@ -295,8 +202,8 @@ Translate camera relative to its own coordinate system.
   // action to the SG creates a valid bounding box cache, needed
   // for caching. kyrah 20030622
 
-  assert ([SELF->scenegraph sceneManager]);
-  SoGLRenderAction * renderaction = [SELF->scenegraph sceneManager]->getGLRenderAction();
+  assert ([sceneGraph sceneManager]);
+  SoGLRenderAction * renderaction = [sceneGraph sceneManager]->getGLRenderAction();
   
   if (SELF->autoclipboxaction == NULL)
     SELF->autoclipboxaction = new
@@ -304,9 +211,9 @@ Translate camera relative to its own coordinate system.
   else
     SELF->autoclipboxaction->setViewportRegion(renderaction->getViewportRegion());
 
-  SELF->autoclipboxaction->apply(sg);
+  SELF->autoclipboxaction->apply([sceneGraph root]);
   xbox =  SELF->autoclipboxaction->getXfBoundingBox();
-  [self _SC_getCameraCoordinateSystem:cameramatrix inverse:inverse];
+  [self _SC_getCoordinateSystem:cameramatrix inverse:inverse inSceneGraph:sceneGraph];
   xbox.transform(inverse);
 
   m.setTranslate(-SELF->camera->position.getValue());
@@ -334,34 +241,41 @@ Translate camera relative to its own coordinate system.
 
 #pragma mark --- accessor methods ---
 
+
+/*" 
+  Returns !{SCCameraPerspective} if the camera is a perspective camera,
+  !{SCCameraOrthographic} if the camera is an orthographic camera, and
+  !{SCUnknown} otherwise.
+"*/
+
+// FIXME: Since we don't do type conversion anymore, maybe we should
+// remove the SCCameraType concept altogether. kyrah 20040801.
+
+- (SCCameraType)type
+{
+  if (SELF->camera == NULL) { return SCCameraNone; }
+  
+  if (SELF->camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
+    return SCCameraPerspective;
+  } 
+  
+  if (SELF->camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
+    return SCCameraOrthographic;
+  } 
+  
+  return SCCameraUnknown;
+}
+
+
 /*" Sets the actual camera in the Coin scene graph to cam. 
-    It is first checked if the camera was created as part of the 
-    superscenegraph, and if yes, this camera is deleted. 
     
     Note that cam is expected to be part of the scenegraph already;
     it is not inserted into it.
  "*/
 
-- (void)setSoCamera:(SoCamera *)camera
-{
-  // By default, we want to delete the old camera. The only
-  // point in time I can think of where we don't want to do 
-  // this is the first time around, when there _is_ not old camera.
-  [self setSoCamera:camera deleteOldCamera:YES]; 
-}
-
-// FIXME: Remove this method totally, and figure out ourselves when
-// the old camera should be deleted. kyrah 20040717
-- (void)setSoCamera:(SoCamera *)camera deleteOldCamera:(BOOL)deletecamera
+- (void)setSoCamera:(SoCamera *)camera 
 {
   if (camera == NULL) return;
-
-  // delete camera if we created it and if requested
-  if ([SELF->scenegraph hasAddedCamera] && deletecamera) { 
-    SoGroup * camparent = [self _SC_getParentOfCamera];
-    camparent->removeChild(SELF->camera);
-    [SELF->scenegraph _SC_setHasAddedCamera:NO];
-  }
   if (SELF->camera) SELF->camera->unref();
   SELF->camera = camera;
   SELF->camera->ref();
@@ -373,14 +287,6 @@ Translate camera relative to its own coordinate system.
 - (SoCamera *)soCamera
 {
   return SELF->camera; 
-}
-
-- (void)setSceneGraph:(SCSceneGraph *)scenegraph
-{
-  if (SELF->scenegraph != scenegraph) {
-    [SELF->scenegraph release];
-    SELF->scenegraph = [scenegraph retain];
-  }
 }
 
 // FIXME: Do we really need this? I mean, it's a very internal
@@ -407,103 +313,11 @@ Translate camera relative to its own coordinate system.
   SELF = [[_SCCameraP alloc] init];
 }
 
-/* Converts from perspective to orthographic camera and vice versa.
-   Possible values for type are !{SoPerspectiveCamera::getTypeId()}
-   and !{SoOrthographicCamera::getClassTypeId()}.
-
-   A new camera of the intended type is created and initialized
-   with the values of the current camera. It is then inserted in
-   the scenegraph and set to be the new current camera by calling
-   the #setSoCamera: method.
-*/
-
-- (BOOL)_SC_convertToType:(SoType)type
-{
-  // FIXME: Maybe a better solution would be to have a switch
-  // node containing both a perspective and an orthographic
-  // camera whose fields are connected, and then just change
-  // whichChild, instead of inserting and removing cameras every
-  // time we change? kyrah 20030713
-
-  if (SELF->camera == NULL) return NO;
-
-  // FIXME: Check how SoQt handles this - maybe it should be possible to
-  // change camera type if even the cam is part of user SG? kyrah 20030711
-  if (![SELF->scenegraph hasAddedCamera]) {
-    SC21_DEBUG(@"Camera is part of user scenegraph, cannot convert.");
-    return NO;
-  }
-  
-  // Don't do anything if camera is already requested type.
-  // Note that we still return YES, since !{NO} would indicate an error
-  // in the conversion.
-  BOOL settoperspective = type.isDerivedFrom(SoPerspectiveCamera::getClassTypeId());
-  if (([self type] == SCCameraPerspective && settoperspective) ||
-      ([self type] == SCCameraOrthographic && !settoperspective)) return YES;
-
-  SoCamera * newcam = (SoCamera *) type.createInstance();
-  if (settoperspective)
-    [self _SC_cloneFromOrthographicCamera:(SoPerspectiveCamera *)newcam];
-  else
-    [self _SC_cloneFromPerspectiveCamera:(SoOrthographicCamera *)newcam];
-
-  // insert into SG
-  SoGroup * camparent = [self _SC_getParentOfCamera];
-  camparent->insertChild(newcam, camparent->findChild(SELF->camera));
-
-  [self setSoCamera:newcam deleteOldCamera:YES];
-  [SELF->scenegraph _SC_setHasAddedCamera:YES];
-  return YES;
-}
-
-/*" Initializes orthocam to have the same settings as the current camera.
-    Note: The current camera must be a perspective camera.
-"*/
-
-- (void)_SC_cloneFromPerspectiveCamera:(SoOrthographicCamera *)orthocam
-{
-  assert(SELF->camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId()));
-  SoPerspectiveCamera * pcam = (SoPerspectiveCamera *) SELF->camera;
-
-  orthocam->aspectRatio.setValue(pcam->aspectRatio.getValue());
-  orthocam->focalDistance.setValue(pcam->focalDistance.getValue());
-  orthocam->orientation.setValue(pcam->orientation.getValue());
-  orthocam->position.setValue(pcam->position.getValue());
-  orthocam->viewportMapping.setValue(pcam->viewportMapping.getValue());
-  float focaldist = pcam->focalDistance.getValue();
-  orthocam->height = 2.0f * focaldist * (float)tan(pcam->heightAngle.getValue() / 2.0);
-}
-
-
-/*" Initializes perspectivecam to have the same settings as the current camera.
-    Note: The current camera must be an orthographic camera.
-"*/
-
-- (void)_SC_cloneFromOrthographicCamera:(SoPerspectiveCamera *)perspectivecam
-{
-  assert(SELF->camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId()));
-  SoOrthographicCamera * ocam = (SoOrthographicCamera *)SELF->camera;
-
-  perspectivecam->aspectRatio.setValue(ocam->aspectRatio.getValue());
-  perspectivecam->focalDistance.setValue(ocam->focalDistance.getValue());
-  perspectivecam->orientation.setValue(ocam->orientation.getValue());
-  perspectivecam->position.setValue(ocam->position.getValue());
-  perspectivecam->viewportMapping.setValue(ocam->viewportMapping.getValue());
-  float focaldist = ocam->focalDistance.getValue();
-  if (focaldist != 0.0f) {
-    perspectivecam->heightAngle = 2.0f *
-    (float)atan(ocam->height.getValue() / 2.0 / focaldist);
-  }
-  else { // scene empty -> use default value of 45 degrees.
-    perspectivecam->heightAngle = (float)(M_PI / 4.0);
-  }
-}
-
 /* Get the camera's object coordinate system. */
 
-- (void)_SC_getCameraCoordinateSystem: (SbMatrix &)m inverse:(SbMatrix &)inv
+- (void)_SC_getCoordinateSystem: (SbMatrix &)m inverse:(SbMatrix &)inv inSceneGraph:(SCSceneGraph *)sg
 {
-  SoGroup * root = [SELF->scenegraph root];
+  SoGroup * root = [sg root];
   SoSearchAction searchaction;
   SoGetMatrixAction matrixaction(SbViewportRegion(100,100));
 
@@ -547,27 +361,6 @@ Translate camera relative to its own coordinate system.
 
   if (near < nearlimit) return nearlimit;
   else return near;
-}
-
-/* Get the parent node of node */
-
-- (SoGroup *)_SC_getParentOfCamera
-{
-  if (!SELF->camera) {
-    SC21_DEBUG(@"_SC_getParentOfCamera called with no active SoCamera");
-    return NULL;
-  }
-  SoGroup * root = [SELF->scenegraph superSceneGraph];
-  SbBool wassearchingchildren = SoBaseKit::isSearchingChildren();
-  SoBaseKit::setSearchingChildren(TRUE);
-  SoSearchAction search;
-  search.setSearchingAll(TRUE);
-  search.setNode(SELF->camera);
-  search.apply(root);
-  if (search.getPath() == NULL) return NULL;
-  SoGroup * parent = (SoGroup*) ((SoFullPath *)search.getPath())->getNodeFromTail(1);
-  SoBaseKit::setSearchingChildren(wassearchingchildren);
-  return parent;
 }
 
 @end

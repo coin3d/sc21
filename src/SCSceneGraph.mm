@@ -213,7 +213,7 @@
   // right camera is picked up.
   SoCamera * scenecamera  = [self _SC_findCameraInSceneGraph:SELF->superscenegraph];
   if (scenecamera != NULL) {
-    [SELF->camera setSoCamera:scenecamera deleteOldCamera:NO];
+    [SELF->camera setSoCamera:scenecamera];
   }
   
   // Give delegate the chance to do postprocessing, regardless of 
@@ -261,6 +261,12 @@
 - (BOOL) hasAddedCamera
 {
   return SELF->addedcamera;
+}
+
+
+- (void)viewAll
+{
+  [SELF->camera viewAll:self];
 }
 
 // ----------------- Automatic headlight configuration -----------------
@@ -340,7 +346,7 @@
 - (void)_SC_commonInit
 {
   SELF = [[_SCSceneGraphP alloc] init];
-  SELF->camera = [[SCCamera alloc] initWithSceneGraph:self];
+  SELF->camera = [[SCCamera alloc] init];
   SELF->addedcamera = NO;
   SELF->addedlight = NO;
 }

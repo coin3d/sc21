@@ -223,7 +223,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   // alpha values? Alternatively, add SbColor4f support the necessary
   // places in Coin (kintel 20040502)
   [self _SC_viewSizeChanged];
-  [[self->scenegraph camera] updateClippingPlanes:[self->scenegraph root]];
+  [[self->scenegraph camera] updateClippingPlanes:self->scenegraph];
   SELF->scenemanager->render(SELF->clearcolorbuffer, SELF->cleardepthbuffer);
   [self->eventhandler update];
 }

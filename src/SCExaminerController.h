@@ -48,7 +48,6 @@ class SoDirectionalLight;
 
 /*" Coin rendering and related functionality "*/
 - (void)render;
-- (void)setCameraType:(SCCameraType)type;
 
 #if 0
 /*" Interaction with the viewer. "*/

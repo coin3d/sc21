@@ -34,7 +34,6 @@
 
 @interface _SCCameraP : NSObject
 {
-  SCSceneGraph * scenegraph;
   SoCamera * camera;
   SoGetBoundingBoxAction * autoclipboxaction;
   float autoclipvalue;
@@ -43,10 +42,6 @@
 
 @interface SCCamera (InternalAPI)
 - (void)_SC_commonInit;
-- (BOOL)_SC_convertToType:(SoType)type;
-- (void)_SC_getCameraCoordinateSystem:(SbMatrix &)matrix inverse:(SbMatrix &)inverse;
-- (void)_SC_cloneFromPerspectiveCamera:(SoOrthographicCamera *)orthocam;
-- (void)_SC_cloneFromOrthographicCamera:(SoPerspectiveCamera *)perspectivecam;
+- (void)_SC_getCoordinateSystem:(SbMatrix &)matrix inverse:(SbMatrix &)inverse inSceneGraph:(SCSceneGraph *)sg;
 - (float)_SC_bestValueForNearPlane:(float)near farPlane:(float)far;
-- (SoGroup *)_SC_getParentOfCamera;
 @end
