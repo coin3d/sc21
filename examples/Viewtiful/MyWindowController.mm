@@ -27,7 +27,7 @@
 
 #import "MyWindowController.h"
 #import "MyDocument.h"
-#import <SC21/SCView.h>
+#import <SC21/SCDebug.h>
 #import <Inventor/nodes/SoSeparator.h>
 
 @implementation MyWindowController
@@ -49,7 +49,6 @@
 {
   NSLog(@"MyWindowController.awakeFromNib");
   [self documentChanged:self];
-  [[self window] makeFirstResponder:[controller view]];
 }
 
 - (void)windowWillLoad
@@ -95,7 +94,7 @@
 
 - (IBAction)showDebugInfo:(id)sender
 {
-  NSString *info = [controller debugInfo];
+  NSString *info = SCOpenGLInfo();
   NSWindow *panel = NSGetInformationalAlertPanel(@"Debug info",
                                                  info, @"Dismiss", nil, nil );
   [NSApp runModalForWindow:panel];

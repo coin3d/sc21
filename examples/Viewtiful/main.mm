@@ -7,11 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <Inventor/SoDB.h>
-#import <SC21/SCController.h>
+#import <SC21/SC21.h>
 
 int main(int argc, const char *argv[])
 {
-    [SCController initCoin];
-    return NSApplicationMain(argc, argv);
+  [SCController initCoin];
+  return NSApplicationMain(argc, argv);
 }
