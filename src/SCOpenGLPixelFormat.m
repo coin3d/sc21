@@ -131,4 +131,15 @@
   return self;
 }
 
+// NSCopying compliance
+
+- (id)copyWithZone:(NSZone *)zone
+{
+  SCOpenGLPixelFormat * copy = [[[self class] allocWithZone:zone] init];
+  copy->_nspixelformat = nil;
+  copy->_attrdict = [[NSMutableDictionary 
+                       dictionaryWithDictionary:self->_attrdict] retain];
+  return copy;
+}
+
 @end

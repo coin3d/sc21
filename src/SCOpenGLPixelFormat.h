@@ -1,6 +1,6 @@
 #import <AppKit/NSOpenGL.h>
 
-@interface SCOpenGLPixelFormat : NSObject <NSCoding>
+@interface SCOpenGLPixelFormat : NSObject <NSCoding, NSCopying>
 {
   NSMutableDictionary * _attrdict;
   NSOpenGLPixelFormat * _nspixelformat;
