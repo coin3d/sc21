@@ -90,9 +90,11 @@
 #pragma mark --- positioning the camera ---
 
 /*" 
-  Reorients the receiver's SoCamera camera by rot. Note that this does
-  not replace the previous values but is accumulative: rot will be
-  multiplied together with the previous orientation.
+  Reorients the receiver's SoCamera camera by rotation. 
+
+  Note that this does not replace the previous values but is
+  accumulative: the current orientation will be multiplied with
+  rotation.
 "*/
 
 - (void)reorient:(SbRotation)rot
@@ -113,10 +115,10 @@
   SELF->camera->position = focalpt - SELF->camera->focalDistance.getValue()*dir;
 }
 
-/*"
-  Translates the receiver's SoCamera relative to its own coordinate
-  system.(In its own coordinate system, the camera is pointing in
-  negative Z direction with the Y axis being up.)
+/*" 
+  Translates the receiver's SoCamera by vector relative to its own
+  coordinate system.(In its own coordinate system, the camera is
+  pointing in negative Z direction with the Y axis being up.)
 "*/
 
 - (void)translate:(SbVec3f)v
@@ -131,7 +133,13 @@
 }
 
 /*" 
-  Zooms in if delta is > 0, else zoom out. 
+  Zooms in if delta is > 0, else zoom out.
+
+  This method is designed so it can easily be connected to mouse
+  movement, using the difference between normalized mouse coordinates
+  as input. Therefore, typical delta values are expected to be in the
+  area of 0.001 - 0.005; the actual zoom factor is calculated based on
+  delta.
 "*/
 
 - (void)zoom:(float)delta
@@ -175,7 +183,8 @@
 }
 
 /*" 
-  Positions the receiver's SoCamera so the whole scene is visible. 
+  Positions the receiver's SoCamera so the whole scene in scenegraph
+  is visible. The SoCamera must be part of the scenegraph.
 "*/
 
 - (void)viewAll:(SCSceneGraph *)sceneGraph
