@@ -55,7 +55,9 @@ class SoGetBoundingBoxAction;
 - (NSColor *) backgroundColor;
 - (void) viewSizeChanged:(NSRect)size;
 - (const SbViewportRegion &) viewportRegion;
-- (SoCamera *) findCameraInSceneGraph: (SoGroup *) root; 
+- (SoCamera *) findCameraInSceneGraph: (SoGroup *) root;
+- (void) setCamera:(SoCamera *) camera;
+- (SoCamera *) camera;
 
 /*" Debugging aids. "*/
 

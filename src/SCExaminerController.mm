@@ -226,25 +226,6 @@
 }
 
 
-/*" Sets the SoCamera used for viewing the scene to cam.
-    It is first checked if the scenegraph contains a camera created by
-    the controller, and if yes, this camera is deleted.
-
-    Note that cam is expected to be part of the scenegraph already;
-    it is not inserted into it.
-"*/
-
-- (void) setCamera:(SoCamera *) cam
-{
-  [camera setSoCamera:cam];
-}
-
-/*" Returns the current SoCamera used for viewing. "*/
-
-- (SoCamera *) camera
-{
-  return [camera soCamera];
-}
 
 
 // ----------------- Automatic headlight configuration -----------------

@@ -45,8 +45,7 @@ class SoDirectionalLight;
 /*" Coin rendering and related functionality "*/
 - (void) render;
 - (void) setSceneGraph:(SoSeparator *)sg;
-- (void) setCamera:(SoCamera *) camera;
-- (SoCamera *) camera;
+
 
 /*" Automatic headlight configuration "*/
 - (SoDirectionalLight *) headlight;
