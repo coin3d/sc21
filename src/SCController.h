@@ -66,9 +66,9 @@ class SoGetBoundingBoxAction;
 - (NSString *) coinVersion;
 
 /*" Event handling "*/
-- (void) handleEvent:(NSEvent *) event;
-- (void) handleEventAsCoinEvent:(NSEvent *) event;
-- (void) handleEventAsViewerEvent:(NSEvent *) event;
+- (BOOL) handleEvent:(NSEvent *) event;
+- (BOOL) handleEventAsCoinEvent:(NSEvent *) event;
+- (BOOL) handleEventAsViewerEvent:(NSEvent *) event;
 - (void) setHandlesEventsInViewer:(BOOL)yn;
 - (BOOL) handlesEventsInViewer;
 

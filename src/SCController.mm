@@ -435,49 +435,71 @@ otherwise NULL.
     passing it on to the scenegraph via #handleEventAsCoinEvent:, 
     or handle it in the viewer itself via #handleEventAsViewerEvent: 
     to allow examination of the scene (spinning, panning, zoom etc.)
-    
+
     How events are treated can be controlled via the 
     #setHandlesEventsInViewer: method.
-    
+
+    Returns YES if the event has been handled, NO otherwise. 
+
     All events are sent from %view to the controller via the
     #handleEvent: message. 
     Note that this is a different approach from the one taken in
-    NSView and its subclasses, which handle events directly. 
+    NSView and its subclasses, which handle events directly.
+
+    Note that if you press the left mouse button while holding
+    down the ctrl key, you will not receive a mouseDown event.
+    Instead, the view's default context menu will be shown. (This
+    behavior in SCView is inherited from NSView.) If you want to handle
+    ctrl-click yourself, you have to subclass SCView and override
+    #{- (NSMenu *)menuForEvent:(NSEvent *)event} to return nil and
+    pass on the event to the controller "manually" - 
+    %{[controller handleEvent:event]} - so that it can be handled here.
 "*/
  
-- (void) handleEvent:(NSEvent *) event
+- (BOOL) handleEvent:(NSEvent *) event
 {
   if ([self handlesEventsInViewer] == NO) {
-    [self handleEventAsCoinEvent:event];
+    return [self handleEventAsCoinEvent:event];
   } else {
-    [self handleEventAsViewerEvent:event];
+    return [self handleEventAsViewerEvent:event];
   }
 }
 
 /*" Handles event as Coin event, i.e. creates an SoEvent and passes 
-    it on to the scenegraph. 
+    it on to the scenegraph.
+
+    Returns YES if the event has been handled, NO otherwise.
  "*/
  
-- (void) handleEventAsCoinEvent:(NSEvent *) event
+- (BOOL) handleEventAsCoinEvent:(NSEvent *) event
 {
   SoEvent * se = [_eventconverter createSoEvent:event];
   if (se) {
-    _scenemanager->processEvent(se);
+    BOOL handled = _scenemanager->processEvent(se);
     delete se;
+    return handled;
   }
+  return NO;
 }
 
 /*" Handles event as viewer event, i.e. does not send it to the scene
     graph but interprets it as input for controlling the viewer. 
- 
-    The default implementation does nothing. Use SCExaminerController
-    to get built-in functionality for examining the scene (camera
-    control through the mouse etc.).
+
+    Returns YES if the event has been handled, NO otherwise.
+
+    The default implementation pops up a context menu when the right mouse
+    button has been pressed, and does nothing otherwise. Use
+    SCExaminerController to get built-in functionality for examining
+    the scene (camera control through the mouse etc.).
  "*/
  
-- (void) handleEventAsViewerEvent:(NSEvent *) event
+- (BOOL) handleEventAsViewerEvent:(NSEvent *) event
 {
-  // default does nothing
+  if ([event type] == NSRightMouseDown) {
+    [NSMenu popUpContextMenu:[view menu] withEvent:event forView:view];
+    return YES;
+  }
+  return NO;
 }
 
 /*" Sets whether events should be interpreted as viewer events, i.e.
