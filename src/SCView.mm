@@ -35,6 +35,8 @@
     the Coin version we are using, and the current OpenGL settings
     (color depth, z buffer, accumulation buffer). Displays this
     information by calling the #displayInfo: method.
+
+    The sender argument is ignored.
  "*/
 
 - (IBAction) debugInfo:(id)sender

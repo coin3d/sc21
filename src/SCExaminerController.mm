@@ -53,14 +53,20 @@
 
 // --------------------- actions -----------------------------
 
-/*" Repositions the camera so that we can se the whole scene. "*/
+/*" Repositions the camera so that we can se the whole scene.
+
+    The sender argument is ignored.
+ "*/
 
 - (IBAction) viewAll:(id)sender
 {
   [_camera viewAll];
 }
 
-/*" Toggles between perspective and orthographic camera. "*/
+/*" Toggles between perspective and orthographic camera.
+
+    The sender argument is ignored.
+ "*/
 
 - (IBAction) toggleCameraType:(id)sender
 {
@@ -69,7 +75,10 @@
   [_camera convertToType: ([_camera isPerspective] ? ortho : persp)];
 }
 
-/*" Switches the headlight on and off. "*/
+/*" Switches the headlight on and off.
+
+    The sender argument is ignored.
+"*/
 
 - (IBAction) toggleHeadlight:(id)sender
 {

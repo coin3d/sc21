@@ -81,6 +81,8 @@ static BOOL _coinInitialized = NO;
 /*" Toggles whether events should be interpreted as viewer events, i.e.
     if they should be regarded as input for controlling the viewer or 
     sent to the scene graph directly. Calls #setHandlesEventsInViewer:
+
+    The sender argument is ignored.
 "*/
 
 - (IBAction) toggleModes:(id)sender
@@ -90,7 +92,7 @@ static BOOL _coinInitialized = NO;
 
 
 
-/*" Displays a standard file open dialog. "*/
+/*" Displays a standard file open dialog. The sender argument is ignored. "*/
 
 - (IBAction)open:(id)sender
 {
@@ -108,6 +110,8 @@ static BOOL _coinInitialized = NO;
     XXX-dump.iv, where XXX is a number calculated based on the
     current time. The file will be stored in the current working
     directory.
+
+    The sender argument is ignored.
 "*/
 
 - (IBAction) dumpSceneGraph:(id)sender
