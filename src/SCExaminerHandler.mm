@@ -191,6 +191,13 @@
   
   unsigned int modifierflags = [event modifierFlags];
   
+  if (![self _SC_usesEvent:event]) {
+    if([event type] == NSScrollWheel && SELF->scrollwheelzoomenabled) {
+      [[[controller sceneGraph] camera] zoom:[event deltaY]/500.0f];
+    }
+    return NO;
+  }
+
   Class mode = [[self _SC_currentMode] class];
   if (eventtype == NSLeftMouseUp ||
       eventtype == NSRightMouseUp ||
@@ -206,7 +213,7 @@
       [[NSCursor arrowCursor] set];
       [[NSNotificationCenter defaultCenter]
         postNotificationName:SCCursorChangedNotification object:self];  
-      handled = YES;
+      //handled = YES;
     }
   } 
   else if (eventtype == NSLeftMouseDown ||
@@ -367,6 +374,21 @@
 {
   if (emulator != SELF->emulator) [SELF->emulator release];
   SELF->emulator = [emulator retain];
+}
+
+#pragma mark --- other stuff ---
+
+- (BOOL)_SC_usesEvent:(NSEvent *)event
+{
+  int nr = [event buttonNumber];
+  unsigned int modifierflags = [event modifierFlags];
+  
+  if ((nr == SELF->panbutton && ((modifierflags & SELF->panmodifier) == SELF->panmodifier)) || 
+      (nr == SELF->rotatebutton && ((modifierflags & SELF->rotatemodifier) == SELF->rotatemodifier)) ||
+      (nr == SELF->zoombutton && ((modifierflags & SELF->zoommodifier) == SELF->zoommodifier)))
+    return YES;
+    
+  return NO;
 }
 
 @end

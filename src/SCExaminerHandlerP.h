@@ -50,4 +50,5 @@
 - (Class)_SC_modeForButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
 - (SCEmulator *)_SC_emulator;
 - (void)_SC_setEmulator:(SCEmulator *)emulator;
+- (BOOL)_SC_usesEvent:(NSEvent *)event;
 @end
