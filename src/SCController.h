@@ -93,8 +93,6 @@ class SoSceneManager;
 /*" Timer management. "*/
 - (void)startTimers;
 - (void)stopTimers;
-- (void)setTimerInterval:(NSTimeInterval)interval;
-- (NSTimeInterval)timerInterval;
 - (void)setDelayQueueInterval:(NSTimeInterval)interval;
 - (NSTimeInterval)delayQueueInterval;
 

@@ -557,33 +557,6 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   SoDB::getSensorManager()->setChangedCallback(sensorqueuechanged_cb, self);
 }
 
-/*" Sets the frequency how often we process the timer sensor queue,
-    in seconds. 
- "*/
-
-- (void)setTimerInterval:(NSTimeInterval)interval
-{
-  if ([_timerqueuetimer timeInterval] == interval) return;
-  if ([_timerqueuetimer isValid]) [_timerqueuetimer invalidate];
-  
-  _timerqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:interval target:self
-    selector:@selector(_timerQueueTimerFired:) userInfo:nil repeats:YES] retain];
-
-  [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSModalPanelRunLoopMode];
-  [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSEventTrackingRunLoopMode];
-}
-
-
-/*" Returns the frequency how often we process the timer sensor
-    queue.
- "*/
-
-- (NSTimeInterval)timerInterval
-{
-  return [_timerqueuetimer timeInterval];
-}
-
-
 /*" Sets the frequency how often we process the delay sensor queue,
     in seconds. 
 
@@ -796,7 +769,6 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
       postNotificationName:SCNoLightFoundInSceneNotification object:self];
   }
 }
-
 
 /* Find light in root. Returns a pointer to the light, if found,
     otherwise NULL.
