@@ -165,8 +165,9 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 {
   // Prevent controller from continuing to draw into our view.
   [controller stopTimers];
+  [controller setView:nil];
   [controller release];
-  [super dealloc];  
+  [super dealloc];
 }
 
 
@@ -560,6 +561,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 {
   NSLog(@"SCView.awakeAfterUsingCoder:");
   if (_oldview) {
+    NSLog(@"  upgrading old instance.");
     int colorbits, depthbits;
     [coder decodeValueOfObjCType:@encode(int) at:&colorbits];
     [coder decodeValueOfObjCType:@encode(int) at:&depthbits];
