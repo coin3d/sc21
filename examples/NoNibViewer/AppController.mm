@@ -63,31 +63,21 @@
 - (void)openPanelDidEnd:(NSOpenPanel *)panel returnCode:(int)rc contextInfo:(void *)ctx
 {
   if (rc == NSOKButton) {
-    NSString * path = [panel filename];
-    SoInput in;
-    if (in.openFile([path cString])) {
-      SoSeparator * sg = SoDB::readAll(&in);
-      in.closeFile();
-      if (sg) {
-        // Create an new SCExaminerController
-        SCExaminerController * sccontroller = 
-          [[[SCExaminerController alloc] init] autorelease];
-        // Create the view<->controller connection
-        [view setController:sccontroller]; // retained by view
-        // Set the scene graph
-        [sccontroller setSceneGraph:sg];
-        [sccontroller viewAll];
+    SCSceneGraph * scenegraph = [[SCSceneGraph alloc] initWithContentsOfFile:[panel filename]];
+    SCController * sccontroller = [[[SCController alloc] init] autorelease];
+    [view setController:sccontroller]; // retained by view
+    [sccontroller setSceneGraph:scenegraph];
+    [sccontroller setHandlesEventsInViewer:YES];
+    [sccontroller setEventHandler:[[[SCExaminerHandler alloc] init] autorelease]];
+    [scenegraph viewAll];
 
-        // Add a "View All" context menu item.
-        [view setMenu:[[[NSMenu alloc] initWithTitle:@"Context menu"] autorelease]];
-        
-        NSMenuItem * item = [[[NSMenuItem alloc] init] autorelease];
-        [item setTitle:@"View All"];
-        [item setTarget:sccontroller];
-        [item setAction:@selector(viewAll)];
-        [[view menu] addItem:item];
-      }
-    }
+    // Add a "View All" context menu item.
+    [view setMenu:[[[NSMenu alloc] initWithTitle:@"Context menu"] autorelease]];
+    NSMenuItem * item = [[[NSMenuItem alloc] init] autorelease];
+    [item setTitle:@"View All"];
+    [item setTarget:sccontroller];
+    [item setAction:@selector(viewAll)];
+    [[view menu] addItem:item];
   }
 }
 

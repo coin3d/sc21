@@ -31,6 +31,8 @@
 
 int main(int argc, const char *argv[])
 {
+  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+  
   [SCController initCoin];
   [NSApplication sharedApplication];
 
@@ -60,4 +62,5 @@ int main(int argc, const char *argv[])
 
   [NSApp run];
   [ctrl release];
+  [pool release];
 }
