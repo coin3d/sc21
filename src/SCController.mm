@@ -98,7 +98,7 @@ static void
 redraw_cb(void * user, SoSceneManager *)
 {
   SCController * controller = (SCController *)user; 
-  [controller->drawable display];
+  [PRIVATE(controller)->drawable display];
 }
 
 // This function is the SoSensorManager change callback.
@@ -274,7 +274,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   SC21_DEBUG(@"SCController.handleEventAsCoinEvent:");
   BOOL handled = NO;
   SoEvent * se = [SELF->eventconverter createSoEvent:event 
-                      inDrawable:self->drawable];
+                      inDrawable:SELF->drawable];
   if (se) {
     handled = SELF->scenemanager->processEvent(se);
     delete se;
@@ -395,14 +395,14 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (void)setDrawable:(id<SCDrawable>)newdrawable
 {
-  self->drawable = newdrawable;
+  SELF->drawable = newdrawable;
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCDrawableChangedNotification object:self];
 }
 
 - (id<SCDrawable>)drawable
 {
-  return self->drawable;
+  return SELF->drawable;
 }
 
 /*" Sets the scene graph that shall be rendered. 
@@ -700,7 +700,7 @@ Returns the receiver's delegate.
   // SC21_DEBUG(@"timerQueueTimerFired:");
   // The timer might fire after the view has
   // already been destroyed...
-  if (!self->drawable) return; 
+  if (!SELF->drawable) return; 
   SoDB::getSensorManager()->processTimerQueue();
   [self _SC_sensorQueueChanged];
 }
@@ -712,7 +712,7 @@ Returns the receiver's delegate.
   // SC21_DEBUG(@"_idle:");
   // We might get the notification after the view has
   // already been destroyed...
-  if (!self->drawable) return; 
+  if (!SELF->drawable) return; 
   SoDB::getSensorManager()->processTimerQueue();
   SoDB::getSensorManager()->processDelayQueue(TRUE);
   [self _SC_sensorQueueChanged];
@@ -771,8 +771,8 @@ Returns the receiver's delegate.
  "*/
 - (void)_SC_viewSizeChanged
 {
-  if (!SELF->scenemanager || !self->drawable) return;
-  NSRect frame = [self->drawable frame];
+  if (!SELF->scenemanager || !SELF->drawable) return;
+  NSRect frame = [SELF->drawable frame];
   SELF->scenemanager->
     setViewportRegion(SbViewportRegion((short)frame.size.width,
                                        (short)frame.size.height));

@@ -49,7 +49,6 @@ class SoSceneManager;
   id delegate;
   SCSceneGraph * scenegraph;
   id<SCEventHandling> eventhandler;
-  id<SCDrawable> drawable;
 }
 
 /*" Static initialization "*/

@@ -32,6 +32,7 @@ class SoSceneManager;
 
 @interface _SCControllerP : NSObject
 {
+  id<SCDrawable> drawable;
   SCEventConverter * eventconverter;
   NSTimer * timerqueuetimer;
   SoSceneManager * scenemanager;
