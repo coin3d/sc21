@@ -155,6 +155,7 @@
   controller = newcontroller;
   // Use [self display] as a redraw handler
   [controller setRedrawHandler:self];
+  [self reshape]; // Initialize viewport
 }
 
 
