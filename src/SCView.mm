@@ -26,10 +26,10 @@
  * ============================================================== */
  
 
-#import "SCView.h"
-#import "SCController.h"
-#import "SCExaminerController.h"
-#import "SCCursors.h"
+#import <SC21/SCView.h>
+#import <SC21/SCController.h>
+#import <SC21/SCExaminerController.h>
+#import <SC21/SCCursors.h>
 
 // ---------------------- Notifications ----------------------------
 

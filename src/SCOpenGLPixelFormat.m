@@ -1,4 +1,4 @@
-#import "SCOpenGLPixelFormat.h"
+#import <SC21/SCOpenGLPixelFormat.h>
 
 @implementation SCOpenGLPixelFormat
 

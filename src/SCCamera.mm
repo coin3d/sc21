@@ -26,9 +26,9 @@
  * ============================================================== */
  
 
-#import "SCCamera.h"
-#import "SCController.h"
-#import "SCExaminerController.h" // for notifications
+#import <SC21/SCCamera.h>
+#import <SC21/SCController.h>
+#import <SC21/SCExaminerController.h> // for notifications
 
 #import <OpenGL/gl.h> // for GLint
 

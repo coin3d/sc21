@@ -25,8 +25,8 @@
  |                                                                |
  * ============================================================== */
 
-#import "SCCursors.h"
-#import "SCView.h"
+#import <SC21/SCCursors.h>
+#import <SC21/SCView.h>
 
 @implementation NSCursor (SCCursors)
 

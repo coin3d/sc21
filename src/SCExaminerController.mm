@@ -26,9 +26,9 @@
  * ============================================================== */
  
 
-#import "SCExaminerController.h"
-#import "SCView.h"
-#import "SCCursors.h"
+#import <SC21/SCExaminerController.h>
+#import <SC21/SCView.h>
+#import <SC21/SCCursors.h>
 
 #import <Inventor/SoSceneManager.h>
 #import <Inventor/SbMatrix.h>

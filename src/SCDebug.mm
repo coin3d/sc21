@@ -1,7 +1,7 @@
-#import "SCDebug.h"
+#import <SC21/SCDebug.h>
+#import <SC21/SCOpenGLPixelFormat.h>
 #import <Cocoa/Cocoa.h>
 #import <OpenGL/CGLRenderers.h>
-#import <SC21/SCOpenGLPixelFormat.h>
 
 NSString *SCRendererIdToString(int rendererID)
 {

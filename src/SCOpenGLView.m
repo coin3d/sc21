@@ -1,7 +1,7 @@
  #import <OpenGL/OpenGL.h>
  #import <OpenGL/gl.h>
- #import "SCOpenGLView.h"
- #import "SCOpenGLPixelFormat.h"
+ #import <SC21/SCOpenGLView.h>
+ #import <SC21/SCOpenGLPixelFormat.h>
 
  @interface SCOpenGLView(InternalAPI)
  - (void)_commonInit;

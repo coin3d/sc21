@@ -26,9 +26,9 @@
  * ============================================================== */
  
 
-#import "SCEventConverter.h"
-#import "SCController.h"
-#import "SCView.h"
+#import <SC21/SCEventConverter.h>
+#import <SC21/SCController.h>
+#import <SC21/SCView.h>
 
 struct key1map {
   unichar nsvalue;

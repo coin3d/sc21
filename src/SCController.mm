@@ -26,8 +26,8 @@
  * ============================================================== */
  
 
-#import "SCController.h"
-#import "SCView.h"
+#import <SC21/SCController.h>
+#import <SC21/SCView.h>
 
 #import <Inventor/SoDB.h>
 #import <Inventor/SoInteraction.h>
