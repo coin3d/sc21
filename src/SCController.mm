@@ -137,10 +137,11 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   _scenemanager->activate();
 
   if (_scenegraph == NULL) {
-    SoSeparator * root = new SoSeparator;
-    [self setSceneGraph:root];
+    [self setSceneGraph:NULL];
+  } else {
+    _scenemanager->setSceneGraph(_scenegraph);    
   }
-
+  
   // FIXME: The timer and delay queue handling here is very
   // primitive and should be re-written. Currently, we are processing
   // the queues even if there are no pending sensors. The problem
@@ -220,10 +221,17 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     
 - (void) setSceneGraph:(SoGroup *)sg
 {
-  if (sg == NULL) sg = new SoSeparator;
 
+  // Check if somebody passes the scenegraph that is already set.
+  if (sg != NULL && sg == _scenegraph) {
+    NSLog(@"setSceneGraph called with the same root as already set");
+    return;
+  }
+  
+  if (sg == NULL) sg = new SoSeparator;
+  
   _scenegraph = sg;
-  _scenemanager->setSceneGraph(_scenegraph);
+  if (_scenemanager) _scenemanager->setSceneGraph(_scenegraph);
 
   SoCamera * scenecamera = [self findCameraInSceneGraph:_scenegraph];
   if (scenecamera) {

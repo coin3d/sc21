@@ -193,7 +193,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     [_camera setControllerHasCreatedCamera:NO];
   }
 
-  _scenemanager->setSceneGraph(root);
+  if (_scenemanager) _scenemanager->setSceneGraph(root);
   root->unref(); // ref'ed by scenemanager
   _scenegraph = root;
 
@@ -202,7 +202,6 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCSceneGraphChangedNotification object:self];
-
 }
 
 /*" Sets the type of the camera we are using for viewing the scene.
