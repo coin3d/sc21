@@ -84,8 +84,7 @@ static BOOL _coinInitialized = NO;
 
 
 
-/*" Displays a standard file open dialog.
-    Note that we have to be NSApp delegate for this to work... "*/
+/*" Displays a standard file open dialog. "*/
 
 - (IBAction)open:(id)sender
 {
