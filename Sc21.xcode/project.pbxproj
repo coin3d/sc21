@@ -61,6 +61,10 @@
 		};
 		E01100B50605E71900F93EC1 = {
 			children = (
+				E0EB29080613442800C54774,
+				E0EB29090613442800C54774,
+				E0EB290A0613442800C54774,
+				E0EB290B0613442800C54774,
 				E09CFA8B060249EF0000E227,
 				E09CFA8C060249EF0000E227,
 				E09CFA8D060249EF0000E227,
@@ -103,6 +107,7 @@
 				GCC_CW_ASM_SYNTAX = NO;
 				GCC_ENABLE_PASCAL_STRINGS = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
@@ -454,6 +459,8 @@
 				E09CFA99060249EF0000E227,
 				E09CFA9B060249EF0000E227,
 				E09CFA9D060249EF0000E227,
+				E0EB290C0613442800C54774,
+				E0EB290E0613442800C54774,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -473,6 +480,8 @@
 				E09CFA9A060249EF0000E227,
 				E09CFA9C060249EF0000E227,
 				E09CFA9E060249EF0000E227,
+				E0EB290D0613442800C54774,
+				E0EB290F0613442800C54774,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1126,6 +1135,72 @@
 			};
 			isa = PBXBuildStyle;
 			name = install;
+		};
+		E0EB29080613442800C54774 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCOpenGLPixelFormat.h;
+			path = src/SCOpenGLPixelFormat.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0EB29090613442800C54774 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SCOpenGLPixelFormat.m;
+			path = src/SCOpenGLPixelFormat.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0EB290A0613442800C54774 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCOpenGLView.h;
+			path = src/SCOpenGLView.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0EB290B0613442800C54774 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SCOpenGLView.m;
+			path = src/SCOpenGLView.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0EB290C0613442800C54774 = {
+			fileRef = E0EB29080613442800C54774;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E0EB290D0613442800C54774 = {
+			fileRef = E0EB29090613442800C54774;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E0EB290E0613442800C54774 = {
+			fileRef = E0EB290A0613442800C54774;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E0EB290F0613442800C54774 = {
+			fileRef = E0EB290B0613442800C54774;
+			isa = PBXBuildFile;
+			settings = {
+			};
 		};
 	};
 	rootObject = E0765C56060222BB0099F78E;
