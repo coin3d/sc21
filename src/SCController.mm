@@ -158,7 +158,8 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 /* Clean up after ourselves. */
 - (void) dealloc
 {
-  [self stopTimers];
+  // FIXME: release timers. Disabled since it causes a
+  // freak crash in IB. kyrah 20030714
   [_eventconverter release];
   [_camera release];
   delete _scenemanager;
@@ -484,9 +485,7 @@ otherwise NULL.
 - (void) stopTimers
 {
   if ([_timerqueuetimer isValid]) [_timerqueuetimer invalidate];
-  [_timerqueuetimer release];
   if ([_delayqueuetimer isValid]) [_delayqueuetimer invalidate];
-  [_delayqueuetimer release];
 }
 
 /*" Sets the frequency how often we process the timer sensor queue,
