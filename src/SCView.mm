@@ -30,6 +30,7 @@
 #import <Sc21/SCExaminerController.h>
 #import "SCUtil.h"
 #import "SCOpenGLViewP.h"
+#import <Inventor/actions/SoGLRenderAction.h>
 #import <Inventor/misc/SoContextHandler.h>
 
 @interface _SCViewP : NSObject
@@ -390,7 +391,21 @@
   [self addCursorRect:[self visibleRect] cursor:SELF->cursor];
 }
 
-#pragma mark --- accessor methods ---
+
+#pragma mark --- SCDrawable conformance ---
+
+// Dummy implementations needed to get rid of compiler warning 
+// about not fully implementing the protocol.
+
+- (void)display
+{
+  [super display];
+}
+
+- (NSRect)frame
+{
+  return [super frame];
+}
 
 /*" 
 Returns the currently used SCController.
@@ -410,16 +425,14 @@ Sets the controller to newcontroller. newcontroller is retained.
   [self->controller release];
   self->controller = newcontroller;
   // Use [self display] as a redraw handler
-//   [self->controller setRedrawHandler:self];
-//   [self->controller setRedrawSelector:@selector(display)];
+  //   [self->controller setRedrawHandler:self];
+  //   [self->controller setRedrawSelector:@selector(display)];
   [self->controller setDrawable:self];
   [self reshape]; // Initialize viewport
   [[NSNotificationCenter defaultCenter] 
     addObserver:self selector:@selector(_SC_cursorChanged:) 
-    name:SCCursorChangedNotification object:self->controller];
+           name:SCCursorChangedNotification object:self->controller];
 }
-
-
 
 #pragma mark --- NSCoding conformance ---
 
