@@ -570,6 +570,7 @@
 				E000678C06259B5900F49FCD,
 				E000678D06259B5900F49FCD,
 				3D93ABA206EF21400049C761,
+				E0C2F37206F9F6D200524C32,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1491,9 +1492,8 @@
 			buildRules = (
 			);
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 3;
-				DYLIB_COMPATIBILITY_VERSION = 3;
-				DYLIB_CURRENT_VERSION = 3;
+				DYLIB_COMPATIBILITY_VERSION = 4;
+				DYLIB_CURRENT_VERSION = 4;
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/Sc21_Prefix.pch;
@@ -1502,8 +1502,6 @@
 				INSTALL_ROOT = "$(DSTROOT)/framework";
 				OTHER_LDFLAGS = "-headerpad_max_install_names -seg1addr 0x2f000000";
 				PRODUCT_NAME = Sc21;
-				SC21_VERSION = 0.0.2;
-				VERSIONING_SYSTEM = "apple-generic";
 			};
 			dependencies = (
 			);
@@ -1733,6 +1731,7 @@
 		};
 		E09A0E0206660511003EE738 = {
 			children = (
+				E0C2F37306F9F6EB00524C32,
 				E01100A40605E5B200F93EC1,
 				3D016AAD06B6EDE500AD1116,
 				E000678706259B3000F49FCD,
@@ -1758,6 +1757,7 @@
 		};
 		E09A0E0306660514003EE738 = {
 			children = (
+				E0C2F37106F9F6D200524C32,
 				E0765C62060223120099F78E,
 				E057B67C0621EA210012C546,
 				E057B6780621BC7F0012C546,
@@ -1835,6 +1835,7 @@
 				3DA8F98606DFEFB500173C27,
 				3DA8F98706DFEFB500173C27,
 				3DA8F98806DFEFB500173C27,
+				E0C2F37406F9F6EB00524C32,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2274,6 +2275,36 @@
 		};
 		E0BE12B806C419AA00923172 = {
 			fileRef = E0BE12B706C419AA00923172;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E0C2F37106F9F6D200524C32 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text.xml;
+			name = version.plist;
+			path = Resources/framework/version.plist;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0C2F37206F9F6D200524C32 = {
+			fileRef = E0C2F37106F9F6D200524C32;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E0C2F37306F9F6EB00524C32 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text.xml;
+			name = version.plist;
+			path = Resources/palette/version.plist;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0C2F37406F9F6EB00524C32 = {
+			fileRef = E0C2F37306F9F6EB00524C32;
 			isa = PBXBuildFile;
 			settings = {
 			};
