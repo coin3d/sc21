@@ -27,6 +27,7 @@
 
 #import <Sc21/SCSceneGraph.h>
 #import <Sc21/SCCamera.h>
+#import <Sc21/SCString.h>
 #import "SCUtil.h"
 
 #import <Inventor/SoDB.h>
@@ -34,12 +35,22 @@
 #import <Inventor/SoOutput.h>
 #import <Inventor/actions/SoSearchAction.h>
 #import <Inventor/actions/SoWriteAction.h>
+#import <Inventor/errors/SoReadError.h>
 #import <Inventor/nodekits/SoBaseKit.h>
 #import <Inventor/nodes/SoPerspectiveCamera.h>
 #import <Inventor/nodes/SoDirectionalLight.h>
 #import <Inventor/VRMLnodes/SoVRMLGroup.h>
 
 #import "SCSceneGraphP.h"
+
+void error_cb(const class SoError * error, void * data)
+{
+  SCSceneGraph * scenegraph = (SCSceneGraph *)data;
+  NSString * errstr = [NSString stringWithSbString:error->getDebugString()];
+  [[NSNotificationCenter defaultCenter]
+   postNotificationName:SCCouldNotReadSceneNotification object:scenegraph
+   userInfo:[NSDictionary dictionaryWithObject:errstr forKey:@"description"]];
+}
 
 @implementation SCSceneGraphP
 @end
@@ -64,17 +75,16 @@
 
   When a scene is read that contains no light or no camera, nothing
   would be visible, so by default SCSceneGraph inserts a light or
-  camera if none is found. This behaviour can be controlled in several
-  ways.
+  camera if none is found. This is called %{superscenegraph creation}
+  can be controlled in several ways:
 
-  Here is an overview of how we determine superscenegraph creation:
+  (1) !{shouldCreateDefaultSuperSceneGraph} delegate method (if present)
 
-  (1) value of SCSceneGraph's IB inspector (default setting is !{YES})
+  (2) else: !{createSuperSceneGraph} delegate method
+      (called instead of internal default)
 
-  (2) !{shouldCreateDefaultSuperSceneGraph} delegate method (if present)
-
-  (3) !{createSuperSceneGraph} delegate method (called instead of
-      internal default if present)
+  (3) else: use the value of SCSceneGraph's IB
+      inspector (default setting is !{YES})
 
   For more information about the delegate methods refer to the 
   #{NSObject(SCSceneGraphDelegate)} documentation.
@@ -88,10 +98,11 @@
   a full or relative pathname and should include an extension that
   identifies the data type in the file.
   
-  After finishing the initialization, this method returns an
-  initialized object. However, if a valid Open Inventor scenegraph
-  cannot be read from the specified file, the receiver is freed, and
-  nil is returned.
+  If the file cannot be opened, an !{SCCouldNotOpenFileNotification}
+  is posted. If the file does not contain a valid scenegraph, an
+  !{SCCouldNotReadSceneNotification} is posted. In either of these
+  cases, the receiver is freed, and nil is returned.
+
 "*/
 
 - (id)initWithContentsOfFile:(NSString *)filename
@@ -107,10 +118,11 @@
 
 /*"
   Initializes the receiver, a newly allocated SCSceneGraph instance,
-  with the contents of the URL url. After finishing the
-  initialization, this method returns an initialized object. However,
-  if a valid Open Inventor scenegraph cannot be read from the
-  specified file, the receiver is freed, and nil is returned.
+  with the contents of the URL url. 
+
+  If the URL does not contain a valid scenegraph, an
+  !{SCCouldNotReadSceneNotification} is posted, the receiver is freed,
+  and nil is returned.
 "*/
 - (id)initWithContentsOfURL:(NSURL *)URL
 {
@@ -142,19 +154,43 @@
 
 #pragma mark --- file system access --- 
 
+/*"
+  Read a new Coin scenegraph from the file name.
+
+  Posts an !{SCCouldNotOpenFileNotification} if the file cannot be
+  read.
+
+  Posts an !{SCCouldNotReadSceneNotification} if the file does not
+  contain a valid scenegraph.
+
+  Returns !{YES} if reading the scenegraph was successful, and !{NO}
+  otherwise.
+"*/
+
 - (BOOL)readFromFile:(NSString *)name 
 {
   BOOL ret = NO;
   SoInput in;
   if (!in.openFile([name UTF8String])) {  
     [[NSNotificationCenter defaultCenter]
-      postNotificationName:SCCouldNotReadFileNotification object:self];
+      postNotificationName:SCCouldNotOpenFileNotification object:self];
   } else {
     ret = [self _SC_readFromSoInput:&in];
     in.closeFile();
   }
   return ret;
 }
+
+/*"
+  Read a new Coin scenegraph from URL.
+
+  Posts an !{SCCouldNotReadSceneNotification} if the URL does not
+  contain a valid scenegraph.
+
+  Returns !{YES} if reading the scenegraph was successful, and !{NO}
+  otherwise.
+
+"*/
 
 - (BOOL)readFromURL:(NSURL *)URL
 {
@@ -165,6 +201,16 @@
   return NO;
 }
 
+/*" 
+  Read scene from data using !{SoInput::setBuffer()}.
+
+  Posts an !{SCCouldNotReadSceneNotification} if the file does not
+  contain a valid scenegraph.
+
+  Returns !{YES} if reading the scenegraph was successful, and !{NO}
+  otherwise. 
+"*/
+
 - (BOOL)loadDataRepresentation:(NSData *)data
 {
   SoInput input;
@@ -174,14 +220,13 @@
 
 #pragma mark --- camera handling ---
 
-/*"
-Sets the SoCamera used for viewing the scene to cam. It is first
- checked if the scenegraph contains a camera created by the
- controller, and if yes, this camera is deleted.
- 
- Note that cam is expected to be part of the scenegraph already; it
- is not inserted into it.
- "*/
+/*" 
+  Returns the camera used for viewing the scene. Note that 
+  SCCamera is a only a proxy class, so you'll have to use SCCamera's
+  !{soCamera} and !{setSoCamera:} methods to access the actual Coin
+  camera.
+"*/
+
 - (SCCamera *)camera
 {
   return SELF->camera; 
@@ -196,8 +241,10 @@ Sets the SoCamera used for viewing the scene to cam. It is first
 
 #pragma mark --- headlight access ---
 
-/*" If an additional light was added as part of the superscenegraph, this
-method returns this headlight. Otherwise, NULL is returned. "*/
+/*" 
+  If an additional light was added as part of the superscenegraph, this
+  method returns this headlight. Otherwise, NULL is returned. 
+"*/
 
 - (SoDirectionalLight *)headlight
 {
@@ -224,6 +271,8 @@ method returns this headlight. Otherwise, NULL is returned. "*/
   found, a headlight (i.e. a light following the active camera) will
   be added. If a camera is found, it will be used as active camera;
   otherwise, a perspective camera will be added before the scenegraph.
+  (See the class introduction at the top of this page for more
+  information on how to control this behaviour.)
 
   After a scene graph is set, the delegate method -didSetSceneGraph:
   is called with the superscenegraph as parameter.
@@ -344,6 +393,9 @@ method returns this headlight. Otherwise, NULL is returned. "*/
   SELF->camera = [[SCCamera alloc] init];
   SELF->addedcamera = NO;
   SELF->addedlight = NO;
+
+  SoReadError::setHandlerCallback(error_cb, self);
+
 }
 
 /* Find light in root. Returns a pointer to the light, if found,
@@ -447,8 +499,6 @@ method returns this headlight. Otherwise, NULL is returned. "*/
     [self setRoot:fileroot];
     return YES; 
   } else {
-    [[NSNotificationCenter defaultCenter]
-      postNotificationName:SCCouldNotReadFileNotification object:self];
     return NO;
   }
 }

@@ -80,18 +80,27 @@ class SoDirectionalLight;
 
 // ------------------ Notifications -----------------------
 
-/*" Posted if opening a requested file for reading failed, either
-    because the file does not exist or cannot be read  (i.e. 
-    !{SoInput::openFile()} failed), or because no valid scenegraph 
-    could be read from the file (i.e. !{SoDB::readAll()} returned NULL).                                             
+/*" Posted if opening a requested file for reading failed 
+    because the file does not exist or cannot be read.
 "*/
-SC21_EXTERN NSString * SCCouldNotReadFileNotification;
+SC21_EXTERN NSString * SCCouldNotOpenFileNotification;
+
+/*" 
+  Posted if reading from a file or memory buffer failed.
+
+  The actual error message reported by SoInput is stored in the
+  notification's !{userInfo} dictionary (as value for the
+  key %{description}).
+"*/
+
+SC21_EXTERN NSString * SCCouldNotReadSceneNotification;
 
 /*" Posted if !{setSceneGraph:} is called with a scenegraph that
     does not contain a camera. Register for this notification if
     you want to issue a warning to your users that they will not
     be able to see anything. 
 "*/
+
 SC21_EXTERN NSString * SCNoCameraFoundInSceneNotification;
 
 /*" Posted if !{setSceneGraph:} is called with a scenegraph that
@@ -100,7 +109,9 @@ SC21_EXTERN NSString * SCNoCameraFoundInSceneNotification;
     be able to see much in the scene (since only ambient light
     will be used.)
 "*/
+
 SC21_EXTERN NSString * SCNoLightFoundInSceneNotification;
 
 /*" Posted when the scenegraph is changed through !{setRoot:} "*/
+
 SC21_EXTERN NSString * SCSceneGraphChangedNotification;
