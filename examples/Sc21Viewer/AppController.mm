@@ -38,7 +38,7 @@
 - (id)init
 {
   self = [super init];
-  return self;
+  return self; 
 }
 
 - (void)awakeFromNib
