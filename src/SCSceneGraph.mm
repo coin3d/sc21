@@ -499,26 +499,19 @@ method returns this headlight. Otherwise, NULL is returned. "*/
 "*/
 
 /*" 
-  Implement this method to return !{NO} to skip superscenegraph creation.
+  Return !{NO} to skip superscenegraph creation.
 "*/
 - (BOOL)shouldCreateDefaultSuperSceneGraph
 {
   
 }
 /*" 
+  If present, this method will be called instead of the internal
+  implementation to create a superscenegraph.
 
-  Implement this delegate method to skip the default superscenegraph
-  creation and call your own code instead.
-
-  The scenegraph argument is the root node of the Coin scene graph
-  that will be rendered. The method is expected to return a new node
-  that contains scenegraph as one of its children, or scenegraph itself.
-
-  Note that if !{createSuperSceneGraph:} is implemented, creation of
-  the default superscenegraph is always turned off, overriding the
-  return value of !{shouldCreateSuperSceneGraph} and the settings made
-  in the IB inspector.
-
+  The scenegraph argument is the root node of the Coin scene
+  graph. The method is expected to return a new node that contains
+  scenegraph as one of its children, or scenegraph itself.
 "*/
 - (SoGroup *)createSuperSceneGraph:(SoGroup *)scenegraph
 {
@@ -526,10 +519,9 @@ method returns this headlight. Otherwise, NULL is returned. "*/
 }
 /*" 
 
-  Called after the superscenegraph was created to allow
-  post-processing. 
+  Implement this method to do postprocessing after creation of superscenegraph.
 
-  Note that this method will be called both if the superscenegraph was
+  Note that this method will be called both if superscenegraph was
   created using the internal default implementation, or the
   !{createSuperSceneGraph:} delegate method.
 
