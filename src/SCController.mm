@@ -225,7 +225,11 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
                                          (short)frame.size.height));
     [[self->sceneGraph camera] updateClippingPlanes:self->sceneGraph];
     SELF->scenemanager->render(SELF->clearcolorbuffer, SELF->cleardepthbuffer);
-    [self->eventHandler update:self];
+    SCEventHandler * currenthandler = self->eventHandler;
+    while (currenthandler) {
+      [currenthandler update:self];
+      currenthandler = [currenthandler nextEventHandler];
+    }
   }
 }
 
@@ -250,7 +254,6 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 - (BOOL)handleEvent:(NSEvent *)event
 {
   SC21_LOG_METHOD;
-
   BOOL handled = NO;
   SCEventHandler * currenthandler = self->eventHandler;
   while (currenthandler &&
