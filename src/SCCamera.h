@@ -8,7 +8,7 @@ class SbVec3f;
 class SbViewportRegion;
 class SoCamera;
 class SoType;
-class SoSeparator;
+class SoGroup;
 class SoGetBoundingBoxAction;
 class SoPerspectiveCamera;
 class SoOrthographicCamera;
@@ -35,7 +35,7 @@ class SoOrthographicCamera;
 - (void) zoom:(float) delta;
 - (void) reorient:(SbRotation)rot;
 - (void) viewAll;
-- (void) updateClippingPlanes:(SoSeparator *) scenegraph;
+- (void) updateClippingPlanes:(SoGroup *) scenegraph;
 
 // internal
 

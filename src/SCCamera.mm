@@ -265,7 +265,7 @@
     (the greater the ratio far/near, the less effective the depth buffer).
  "*/
  
-- (void) updateClippingPlanes:(SoSeparator *) scenegraph
+- (void) updateClippingPlanes:(SoGroup *) scenegraph
 {
   // FIXME: Need autoclipcb callback function? Investigate.
   // kyrah 20030509

@@ -3,7 +3,6 @@
 #import <Cocoa/Cocoa.h>
 #import "SCController.h"
 
-class SoSeparator;
 class SoCamera;
 class SoGroup;
 class SbSphereSheetProjector;
@@ -27,7 +26,7 @@ class SoDirectionalLight;
   SoDirectionalLight * headlight;  
   SbSphereSheetProjector * spinprojector;
   SbRotation * spinrotation;
-  SoSeparator * userscenegraph;  
+  SoGroup * userscenegraph;  
 
   BOOL iswaitingforseek;  
 
@@ -44,7 +43,7 @@ class SoDirectionalLight;
 
 /*" Coin rendering and related functionality "*/
 - (void) render;
-- (void) setSceneGraph:(SoSeparator *)sg;
+- (void) setSceneGraph:(SoGroup *)sg;
 
 /*" Automatic headlight configuration "*/
 - (SoDirectionalLight *) headlight;

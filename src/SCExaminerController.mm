@@ -178,7 +178,7 @@
     A camera is added before the scenegraph, if it does not contain one.
  "*/
 
-- (void) setSceneGraph:(SoSeparator *)sg
+- (void) setSceneGraph:(SoGroup *)sg
 {
   SoSeparator * root;
 

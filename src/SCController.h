@@ -21,7 +21,7 @@ class SoGetBoundingBoxAction;
   SCEventConverter * _eventconverter;
   NSTimer * _timer;
   NSRect _viewframe;
-  SoSeparator * scenegraph;	  // the whole scenegraph
+  SoGroup * scenegraph;	  // the whole scenegraph
   SoSceneManager * _scenemanager;
   BOOL _handleseventsinviewer;
   float autoclipvalue;
@@ -48,7 +48,7 @@ class SoGetBoundingBoxAction;
 - (SCView *) view;
 
 /*" Coin rendering and related functionality "*/
-- (void) setSceneGraph:(SoSeparator *)sg;
+- (void) setSceneGraph:(SoGroup *)sg;
 - (SoNode *) sceneGraph;
 - (SoSceneManager *) sceneManager;
 - (void) render;

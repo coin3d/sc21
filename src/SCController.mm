@@ -223,7 +223,7 @@ static BOOL _coinInitialized = NO;
     #SCExaminerController class.
  "*/
     
-- (void) setSceneGraph:(SoSeparator *)sg
+- (void) setSceneGraph:(SoGroup *)sg
 {
   sg->ref();
 
