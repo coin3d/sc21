@@ -26,8 +26,8 @@
  * ============================================================== */
 
 #import "AppController.h"
-#import <SC21/SCExaminerController.h>
-#import <SC21/SCView.h>
+#import <SC21/SC21.h>
+#import <SC21/SCDebug.h>
 #import <Inventor/SoInput.h>
 #import <Inventor/nodes/SoSeparator.h>
 
@@ -76,7 +76,7 @@
 
 - (void)showDebugInfo
 {
-  NSString * info = [coincontroller debugInfo];
+  NSString * info = SCOpenGLInfo();
   NSWindow * panel = NSGetInformationalAlertPanel(@"Debug info",
                                                   info, @"Dismiss", nil, nil);
   [NSApp runModalForWindow:panel];
