@@ -30,27 +30,15 @@
 #import <Sc21/SCOpenGLView.h>
 #import <Sc21/SCOpenGLPixelFormat.h>
 
-#define PRIVATE(p) ((p)->scopenglviewpriv)
-#define SELF PRIVATE(self)
-
-@interface _SCOpenGLViewP : NSObject
-{
- @public
-  NSOpenGLContext * openGLContext;
-  SCOpenGLPixelFormat * pixelformat;
-}
-@end
+#import "SCOpenGLViewP.h"
 
 @implementation _SCOpenGLViewP
 @end
 
- @interface SCOpenGLView(InternalAPI)
- - (void)_SC_commonInit;
- - (void)_SC_updateNeeded:(NSNotification *)notification;
- - (void)_SC_reshapeNeeded:(NSNotification *)notification;
- @end
+#define PRIVATE(p) ((p)->scopenglviewpriv)
+#define SELF PRIVATE(self)
 
- @implementation SCOpenGLView
+@implementation SCOpenGLView
 
  /*"  
    Designated initializer.
@@ -359,6 +347,15 @@
 
 @implementation SCOpenGLView(InternalAPI)
 
+/*" 
+  Shared initialization code that is called both from 
+  #initWithFrame:pixelFormat and #initWithCoder:.
+  
+  NB! If you override this method, you must:
+  o call [super _SC_commonInit] as the first call in your
+    implementation to make sure everything is set up properly.
+  o _not_ call this method from init or initWithCoder in the subclass
+  "*/
 - (void)_SC_commonInit
 {
   SELF = [[_SCOpenGLViewP alloc] init];
