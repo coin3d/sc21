@@ -378,8 +378,9 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (void)render
 {
-  //FIXME: Do clearing here instead of in SoSceneManager to support
-  // alpha values? (kintel 20040502)
+  // FIXME: Do clearing here instead of in SoSceneManager to support
+  // alpha values? Alternatively, add SbColor4f support the necessary
+  // places in Coin (kintel 20040502)
   SELF->scenemanager->render(SELF->clearcolorbuffer, SELF->cleardepthbuffer);
 }
 
