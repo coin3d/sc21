@@ -33,8 +33,8 @@
 
 @interface SCEventConverter : NSObject
 {
-  SbDict * _keydict;
-  SbDict * _printabledict;
+  SbDict * keydict;
+  SbDict * printabledict;
 }
 
 /*" Initializing an SCEventConverter "*/
