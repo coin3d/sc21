@@ -39,8 +39,10 @@
 
 - (void)dealloc
 {
+#if 0 // disabled, caused crash in IB. kyrah 20040728
   [SELF->flymode release];
   [SELF release];
+#endif
 }
 
 - (void)setInversePitch:(BOOL)yesno

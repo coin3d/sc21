@@ -25,55 +25,43 @@
  |                                                                 |
  * =============================================================== */
  
-#import <InterfaceBuilder/InterfaceBuilder.h>
-#import <Sc21/SCController.h>
-#import <Sc21/SCExaminerHandler.h>
+
+#import "SCFlyHandlerInspector.h"
 #import <Sc21/SCFlyHandler.h>
-#import <Sc21/SCSceneGraph.h>
-#import <Sc21/SCView.h>
+#import "SCUtil.h"
 
-@interface Sc21Palette : IBPalette
+@implementation SCFlyHandlerInspector
+
+- (id)init
 {
-  IBOutlet NSImageView * scviewitem;
-  IBOutlet NSImageView * sccontrolleritem;
-  IBOutlet NSImageView * scexaminerhandleritem;
-  IBOutlet NSImageView * scflyhandleritem;
-  IBOutlet NSImageView * scscenegraphitem;
-
-  SCView * scview;
-  SCController * sccontroller;
-  SCExaminerHandler * scexaminerhandler;
-  SCFlyHandler * scflyhandler;
-  SCSceneGraph * scscenegraph;
+  SC21_DEBUG(@"SCFlyHandlerInspector.init");
+  self = [super init];
+  BOOL ok = [NSBundle loadNibNamed:@"SCFlyHandlerInspector" owner:self];
+  if (ok == NO) {
+    SC21_DEBUG(@"SCFlyHandlerInspector.init: Failed loading nib");
+    return nil;
+  }
+  return self;
 }
-@end
 
-// -------- IBObjectProtocol ---------
+- (void)ok:(id)sender
+{
+  NSLog(@"SCFlyHandlerInspector.ok:");
+  SCFlyHandler * scflyhandler = [self object];
 
-@interface SCOpenGLView (Sc21PaletteInspector)
-- (NSString *)inspectorClassName;
-@end
+  // FIXME: Set examinerhandler outlets according to inspector state.
 
-@interface SCView (Sc21PaletteInspector)
-- (NSString *)inspectorClassName;
-@end
+  [super ok:sender];
+}
 
-@interface SCController (Sc21PaletteInspector)
-- (NSString *)inspectorClassName;
-- (NSString *)classInspectorClassName;
-@end
+- (void)revert:(id)sender
+{
+  NSLog(@"SCFlyHandlerInspector.revert:");
+  SCFlyHandler * scflyhandler = [self object];
+  
+  // FIXME: Set inspector state according to examinerhandler state
 
-@interface SCExaminerHandler (Sc21PaletteInspector)
-- (NSString *)inspectorClassName;
-- (NSString *)classInspectorClassName;
-@end
+  [super revert:sender];
+}
 
-@interface SCFlyHandler (Sc21PaletteInspector)
-- (NSString *)inspectorClassName;
-- (NSString *)classInspectorClassName;
-@end
-
-@interface SCSceneGraph (Sc21PaletteInspector)
-- (NSString *)inspectorClassName;
-- (NSString *)classInspectorClassName;
 @end

@@ -46,7 +46,7 @@
 		1058C7A0FEA54F0111CA2CBB = {
 			children = (
 				E05D267806074D0300C6A248,
-				E0436F7B0621908200376DF6,
+				3D9595C806AC565C003E7F9F,
 				1058C7A1FEA54F0111CA2CBB,
 			);
 			isa = PBXGroup;
@@ -55,8 +55,7 @@
 			sourceTree = "<group>";
 		};
 		1058C7A1FEA54F0111CA2CBB = {
-			fallbackIsa = PBXFileReference;
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
 			name = Cocoa.framework;
 			path = /System/Library/Frameworks/Cocoa.framework;
@@ -184,8 +183,7 @@
 			sourceTree = "<group>";
 		};
 		29B97324FDCFA39411CA2CEA = {
-			fallbackIsa = PBXFileReference;
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
 			name = AppKit.framework;
 			path = /System/Library/Frameworks/AppKit.framework;
@@ -193,8 +191,7 @@
 			sourceTree = "<absolute>";
 		};
 		29B97325FDCFA39411CA2CEA = {
-			fallbackIsa = PBXFileReference;
-			isa = PBXFrameworkReference;
+			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
 			name = Foundation.framework;
 			path = /System/Library/Frameworks/Foundation.framework;
@@ -224,14 +221,36 @@
 //322
 //323
 //324
+//3D0
+//3D1
+//3D2
+//3D3
+//3D4
+		3D9595C806AC565C003E7F9F = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = Sc21.framework;
+			path = /Library/Frameworks/Sc21.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		3D9595C906AC565C003E7F9F = {
+			fileRef = 3D9595C806AC565C003E7F9F;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+//3D0
+//3D1
+//3D2
+//3D3
+//3D4
 //4A0
 //4A1
 //4A2
 //4A3
 //4A4
 		4A9504CCFFE6A4B311CA0CBA = {
-			buildRules = (
-			);
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -244,8 +263,6 @@
 			name = Development;
 		};
 		4A9504CDFFE6A4B311CA0CBA = {
-			buildRules = (
-			);
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
@@ -274,6 +291,7 @@
 			buildRules = (
 			);
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = /tmp/Sc21.dst/framework/Library/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sc21Viewer_Prefix.pch;
@@ -342,7 +360,7 @@
 			files = (
 				8D11072F0486CEB800E47090,
 				E05D267906074D0300C6A248,
-				E0436F7C0621908200376DF6,
+				3D9595C906AC565C003E7F9F,
 			);
 			isa = PBXFrameworksBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -379,20 +397,6 @@
 //E02
 //E03
 //E04
-		E0436F7B0621908200376DF6 = {
-			isa = PBXFileReference;
-			lastKnownFileType = wrapper.framework;
-			name = Sc21.framework;
-			path = /Library/Frameworks/Sc21.framework;
-			refType = 0;
-			sourceTree = "<absolute>";
-		};
-		E0436F7C0621908200376DF6 = {
-			fileRef = E0436F7B0621908200376DF6;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		E05D256A06074CA900C6A248 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
