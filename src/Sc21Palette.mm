@@ -90,7 +90,7 @@
 
 - (NSString *)inspectorClassName
 {
-  return nil;
+  return @"SCControllerInspector";
 }
 
 - (NSString *)classInspectorClassName
@@ -118,6 +118,9 @@
 }
 
 @end
+
+
+// --------------- IB workarounds --------------
 
 // Due to a bug in Interface Builder, custom NSOpenGLViews are not
 // displayed in IB's "design" mode (they are shown in the same

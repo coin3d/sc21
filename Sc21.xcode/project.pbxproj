@@ -5,6 +5,88 @@
 	};
 	objectVersion = 39;
 	objects = {
+		E000676A062598DD00F49FCD = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCControllerInspector.h;
+			path = src/SCControllerInspector.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E000676B062598DD00F49FCD = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = SCControllerInspector.mm;
+			path = src/SCControllerInspector.mm;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E000676C062598DD00F49FCD = {
+			fileRef = E000676A062598DD00F49FCD;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E000676D062598DD00F49FCD = {
+			fileRef = E000676B062598DD00F49FCD;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E000678706259B3000F49FCD = {
+			children = (
+				E000678806259B3000F49FCD,
+			);
+			isa = PBXVariantGroup;
+			name = SCControllerInspector.nib;
+			path = "";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E000678806259B3000F49FCD = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.nib;
+			name = English;
+			path = Resources/English.lproj/SCControllerInspector.nib;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E000678906259B3000F49FCD = {
+			fileRef = E000678706259B3000F49FCD;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E000678A06259B4B00F49FCD = {
+			buildActionMask = 2147483647;
+			files = (
+				E000678B06259B5900F49FCD,
+				E000678C06259B5900F49FCD,
+				E000678D06259B5900F49FCD,
+			);
+			isa = PBXResourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E000678B06259B5900F49FCD = {
+			fileRef = E057B67C0621EA210012C546;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E000678C06259B5900F49FCD = {
+			fileRef = E057B6780621BC7F0012C546;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E000678D06259B5900F49FCD = {
+			fileRef = E057B67D0621EA210012C546;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		E01100A40605E5B200F93EC1 = {
 			children = (
 				E09CFAAE06024B1F0000E227,
@@ -25,7 +107,7 @@
 				E09CFAAB06024B130000E227,
 			);
 			isa = PBXVariantGroup;
-			name = SC21Inspector.nib;
+			name = SCOpenGLViewInspector.nib;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -49,6 +131,8 @@
 		};
 		E01100B40605E71200F93EC1 = {
 			children = (
+				E000676A062598DD00F49FCD,
+				E000676B062598DD00F49FCD,
 				E09CFA83060249D50000E227,
 				E09CFA84060249D50000E227,
 				E09CFA85060249D50000E227,
@@ -402,12 +486,6 @@
 			refType = 4;
 			sourceTree = "<group>";
 		};
-		E057B6790621BC7F0012C546 = {
-			fileRef = E057B6780621BC7F0012C546;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		E057B67C0621EA210012C546 = {
 			isa = PBXFileReference;
 			lastKnownFileType = image.tiff;
@@ -423,18 +501,6 @@
 			path = Resources/curs_zoom.tiff;
 			refType = 4;
 			sourceTree = "<group>";
-		};
-		E057B67E0621EA210012C546 = {
-			fileRef = E057B67C0621EA210012C546;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		E057B67F0621EA210012C546 = {
-			fileRef = E057B67D0621EA210012C546;
-			isa = PBXBuildFile;
-			settings = {
-			};
 		};
 		E070FB1E0608992200A60FCA = {
 			fileEncoding = 30;
@@ -560,16 +626,6 @@
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E0765C5C060223120099F78E = {
-			buildActionMask = 2147483647;
-			files = (
-				E057B6790621BC7F0012C546,
-				E057B67E0621EA210012C546,
-				E057B67F0621EA210012C546,
-			);
-			isa = PBXResourcesBuildPhase;
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E0765C5D060223120099F78E = {
 			buildActionMask = 2147483647;
 			files = (
@@ -598,7 +654,7 @@
 		E0765C5F060223120099F78E = {
 			buildPhases = (
 				E0765C5B060223120099F78E,
-				E0765C5C060223120099F78E,
+				E000678A06259B4B00F49FCD,
 				E0765C5D060223120099F78E,
 				E0765C5E060223120099F78E,
 			);
@@ -735,6 +791,7 @@
 			files = (
 				E09CFA87060249D50000E227,
 				E09CFA89060249D50000E227,
+				E000676C062598DD00F49FCD,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -749,6 +806,7 @@
 				E01100A70605E5B800F93EC1,
 				E01100A50605E5B200F93EC1,
 				E09C036B06024BEF0000E227,
+				E000678906259B3000F49FCD,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -758,6 +816,7 @@
 			files = (
 				E09CFA88060249D50000E227,
 				E09CFA8A060249D50000E227,
+				E000676D062598DD00F49FCD,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1162,9 +1221,10 @@
 		E09CFAB206024B510000E227 = {
 			children = (
 				E01100A40605E5B200F93EC1,
+				E000678706259B3000F49FCD,
 				E01100A60605E5B800F93EC1,
-				E057B6780621BC7F0012C546,
 				E057B67C0621EA210012C546,
+				E057B6780621BC7F0012C546,
 				E057B67D0621EA210012C546,
 				E09CFAA006024AD40000E227,
 				E09CFAA106024AD40000E227,
