@@ -70,8 +70,11 @@ class SoDirectionalLight;
 @end
 
 @interface NSObject (SCSceneGraphDelegate)
+/*" Turning off default superscenegraph creation "*/
 - (BOOL)shouldCreateDefaultSuperSceneGraph;
+/*" Supplying your own code for superscenegraph creation "*/
 - (SoGroup *)createSuperSceneGraph:(SoGroup *)scenegraph;
+/*" Postprocessing "*/
 - (void)didCreateSuperSceneGraph:(SoGroup *)superscenegraph;
 @end
 
