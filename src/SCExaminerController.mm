@@ -165,7 +165,10 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   }
 
   // Do not insert camera and headlight if scenegraph is NULL.
-  if (sg == NULL) [super setSceneGraph:NULL];
+  if (sg == NULL) {
+    [super setSceneGraph:NULL];
+    return;
+  }
 
   _userscenegraph = sg;     // store user-supplied SG
   
@@ -193,8 +196,10 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     [_camera setControllerHasCreatedCamera:NO];
   }
 
-  if (_scenemanager) _scenemanager->setSceneGraph(root);
-  root->unref(); // ref'ed by scenemanager
+  if (_scenemanager) {
+    _scenemanager->setSceneGraph(root);
+  }
+
   _scenegraph = root;
 
   if (_scenemanager && [_camera controllerHasCreatedCamera]) [self viewAll];
