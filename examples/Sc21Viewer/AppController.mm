@@ -45,10 +45,14 @@
 {
   [filenametext setStringValue:@"None"];
   
+  // Register for notifications so that we can show an alert panel
+  // if a file cannot be read.
   [[NSNotificationCenter defaultCenter] 
     addObserver:self selector:@selector(reportError:) 
     name:SCCouldNotReadSceneNotification object:[coincontroller sceneGraph]];
 }
+
+// Display information about OpenGL version and pixelformat settings.
 
 - (IBAction)showDebugInfo:(id)sender
 {
@@ -60,23 +64,30 @@
   NSReleaseAlertPanel(panel);
 }
 
-// Switches the headlight on and off.
+// Switches the headlight on and off. ("Headlight" refers to the
+// lightsource that is automatically inserted as part of the
+// "superscenegraph" if a scene without any lights is loaded. See the
+// SCSceneGraph documentation for more information.)
 
 - (IBAction)toggleHeadlight:(id)sender
 {
   SoLight * light = [[coincontroller sceneGraph] headlight];
   if (light) {
-    NSLog(@"Toggling headlight");
     light->on.setValue(!light->on.getValue());
   } else {
     NSLog(@"Tried to toggle headlight, but there is no headlight in scene.");
   }
 }
 
+// Position the camera so that the whole scene is visible.
+
 - (IBAction)viewAll:(id)sender
 {
   [[coincontroller sceneGraph] viewAll];
 }
+
+// Debug: Save the whole scenegraph to disk. (See the SCDebug
+// documentation for more information.)
 
 - (IBAction)dumpSceneGraph:(id)sender
 {
@@ -91,15 +102,14 @@
   [panel beginSheetForDirectory:nil
                            file:nil
                           types:[NSArray arrayWithObjects:@"wrl", @"iv", nil]
-                 modalForWindow:[view window]
+                 modalForWindow:[NSApp mainWindow]
                   modalDelegate:self
                  didEndSelector:@selector(openPanelDidEnd:returnCode:contextInfo:)
                     contextInfo:nil];
 }
 
-// Delegate method for NSOpenPanel used in open:
-// Tries to read scene data from the file and sets the scenegraph to
-// the read root node. 
+// Delegate method for NSOpenPanel used in open: Tries to read scene
+// data from the file and sets the scenegraph to the read root node.
 
 - (void)openPanelDidEnd:(NSOpenPanel*)panel returnCode:(int)rc contextInfo:(void *)ctx
 {
@@ -110,26 +120,16 @@
   }
 }
 
-// Delegate implementation to quit application when window is being closed:
-// This is not a document-based implementation, so you cannot close the main
-// window and open a new one at will without doing more setup work.
+// Delegate implementation to quit application when window is closed.
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)nsapp
 {
   return YES;
 }
 
-// SCSceneGraph delegate implementation
+// Display an alert if the file cannot be read (called when an
+// SCCouldNotReadSceneNotification is received).
 
-#if 0
-- (void)didCreateSuperSceneGraph:(SoSeparator *)superscenegraph
-{
-  // just checking that it works....
-  NSLog(@"Superscenegraph created.");
-}
-#endif
-
-// Display an alert if the file cannot be read.
 - (void)reportError:(NSNotification *)notification;
 {
   NSString * errorstr = [[notification userInfo] valueForKey:@"description"];
