@@ -28,6 +28,7 @@
 
 #import "SC21Inspector.h"
 #import <SC21/SCOpenGLView.h>
+#import <SC21/SCOpenGLPixelFormat.h>
 
 @implementation SC21Inspector
 
@@ -45,101 +46,134 @@
 {
   NSLog(@"SC21Inspector.ok:");
   SCOpenGLView *scview = [self object];
+  SCOpenGLPixelFormat *pixelformat = [scview pixelFormat];
+  //FIXME: only set later if values != default?
+  if (!pixelformat) {
+    pixelformat = [[SCOpenGLPixelFormat alloc] init];
+    [scview setPixelFormat:pixelformat];
+  }
 
-#if 0
-  NSMutableDictionary *dict;
-  [dict setObject:[NSNumber numberWithBool:YES] forKey:[NSNumber numberWithInt:NSOpenGLPFADoubleBuffer]];
+  //FIXME: Reconsider this
+  [pixelformat setAttribute:NSOpenGLPFADoubleBuffer];
 
+  // Hidden handling
+  [scview setHidden:([hidden state] == NSOnState)];
+
+  // Renderer handling
+  if ([renderer selectedRow] == 1)
+    [pixelformat setAttribute:NSOpenGLPFAAccelerated];
+  else
+    [pixelformat removeAttribute:NSOpenGLPFAAccelerated];
+
+  // Color and alpha handling
+  int colorsize = -1;
+  int alphasize = -1;
   switch ([coloralpha indexOfSelectedItem]) {
   case 1:
-    NSOpenGLPFAColorSize = 5;
-    NSOpenGLPFAAlphaSize = 0;
+    colorsize = 15;
+    alphasize = 0;
   break;
   case 2:
-    NSOpenGLPFAColorSize = 5;
-    NSOpenGLPFAAlphaSize = 1;
+    colorsize = 15;
+    alphasize = 1;
     break;
   case 3:
-    NSOpenGLPFAColorSize = 5;
-    NSOpenGLPFAAlphaSize = 8;
+    colorsize = 15;
+    alphasize = 8;
     break;
   case 4:
-    NSOpenGLPFAColorSize = 8;
-    NSOpenGLPFAAlphaSize = 0;
+    colorsize = 24;
+    alphasize = 0;
     break;
   case 5:
-    NSOpenGLPFAColorSize = 8;
-    NSOpenGLPFAAlphaSize = 8;
-    break;
-  default:
-    //Remove color&alpha hints
+    colorsize = 24;
+    alphasize = 8;
     break;
   }
+  if (colorsize >= 0)
+    [pixelformat setAttribute:NSOpenGLPFAColorSize toValue:colorsize]; 
+  else
+    [pixelformat removeAttribute:NSOpenGLPFAColorSize];
 
+  if (alphasize >= 0)
+    [pixelformat setAttribute:NSOpenGLPFAAlphaSize toValue:alphasize];
+  else
+    [pixelformat removeAttribute:NSOpenGLPFAAlphaSize];
+
+  // Depth handling
+  int depthsize = -1;
   switch ([depth indexOfSelectedItem]) {
   case 0:
-    none;
+    depthsize = 0;
     break;
   case 1:
-    min;
+    depthsize = 8; //FIXME: What is the real min? (kintel 20040402)
     break;
   case 2:
-    16;
+    depthsize = 16;
     break;
   case 3:
-    24;
+    depthsize = 24;
     break;
   case 4:
-    32;
+    depthsize = 32;
     break;
   case 5:
-    max;
+    depthsize = 64; //FIXME: What is the real max? (kintel 20040402)
     break;
   }
-
+  if (depthsize >= 0) 
+    [pixelformat setAttribute:NSOpenGLPFADepthSize toValue:depthsize];
+  else
+    [pixelformat removeAttribute:NSOpenGLPFADepthSize];
+      
+  // Stencil handling
+  int stencilsize = -1;
   switch ([stencil indexOfSelectedItem]) {
   case 0:
-    none;
+    stencilsize = 0;
     break;
   case 1:
-    min;
+    stencilsize = 1; //FIXME: What is the real min? (kintel 20040402)
     break;
   case 2:
-    8;
+    stencilsize = 8;
     break;
   case 3:
-    16;
+    stencilsize = 16;
     break;
   case 4:
-    max;
+    stencilsize = 32; //FIXME: What is the real max? (kintel 20040402)
     break;
   }
+  if (stencilsize >= 0) 
+    [pixelformat setAttribute:NSOpenGLPFAStencilSize toValue:stencilsize];
+  else
+    [pixelformat removeAttribute:NSOpenGLPFAStencilSize];
 
+  // Accumulation handling
+  int accumsize = -1;
   switch ([accum indexOfSelectedItem]) {
   case 0:
-    none;
+    accumsize = 0;
     break;
   case 1:
-    888;
+    accumsize = 24; // 888 RGB
     break;
   case 2:
-    8888;
+    accumsize = 32; // 8888 ARGB
     break;
   case 3:
-    16x3 rgb;
+    accumsize = 48; // 16x3 RGB
     break;
   case 4:
-    16x4 rgb;
+    accumsize = 64; // 16x4 ARGB
     break;
   }
-
-  NSOpenGLPFAAccelerated;
-  NSOpenGLPFAColorSize;
-  NSOpenGLPFAAlphaSize;
-  NSOpenGLPFADepthSize;
-  NSOpenGLPFAStencilSize;
-  NSOpenGLPFAAccumSize;
-#endif
+  if (accumsize >= 0) 
+    [pixelformat setAttribute:NSOpenGLPFAAccumSize toValue:accumsize];
+  else
+    [pixelformat removeAttribute:NSOpenGLPFAAccumSize];
 
   [super ok:sender];
 }
@@ -148,6 +182,102 @@
 {
   NSLog(@"SC21Inspector.revert:");
   
+  SCOpenGLView *scview = [self object];
+  SCOpenGLPixelFormat *pixelformat = [scview pixelFormat];
+  if (pixelformat) {
+    // Hidden handling
+    [hidden setState:[scview isHidden]?NSOnState:NSOffState];
+      
+    // Renderer handling
+    int accel;
+    [pixelformat getValue:&accel forAttribute:NSOpenGLPFAAccelerated];
+    [renderer selectCellAtRow:accel column:0];
+
+    // Color and alpha handling
+    int colorsize = -1;
+    int alphasize = -1;
+    [pixelformat getValue:&colorsize forAttribute:NSOpenGLPFAColorSize];
+    [pixelformat getValue:&alphasize forAttribute:NSOpenGLPFAAlphaSize];
+
+    int idx = 0;
+    switch (colorsize) {
+    case 15:
+      if (alphasize == 0) idx = 1;
+      else if (alphasize == 1) idx = 2;
+      else idx = 3;
+      break;
+    case 24:
+      if (alphasize == 0) idx = 4;
+      else idx = 5;
+      break;
+    }
+    [coloralpha selectItemAtIndex:idx];
+
+    // Depth handling
+    int depthsize = -1;
+    [pixelformat getValue:&depthsize forAttribute:NSOpenGLPFADepthSize];
+    idx = 0;
+    switch (depthsize) {
+    case 8:
+      idx = 1; 
+      break;
+    case 16:
+      idx = 2; 
+      break;
+    case 24:
+      idx = 3; 
+      break;
+    case 32:
+      idx = 4; 
+      break;
+    case 64:
+      idx = 5; 
+      break;
+    }
+    [depth selectItemAtIndex:idx];
+
+    // Stencil handling
+    int stencilsize = -1;
+    [pixelformat getValue:&stencilsize forAttribute:NSOpenGLPFAStencilSize];
+    idx = 0;
+    switch (stencilsize) {
+    case 1:
+      idx = 1;
+      break;
+    case 8:
+      idx = 2;
+      break;
+    case 16:
+      idx = 3;
+      break;
+    case 32:
+      idx = 4;
+      break;
+    }
+    [stencil selectItemAtIndex:idx];
+
+    // Accum handling
+    int accumsize = -1;
+    [pixelformat getValue:&accumsize forAttribute:NSOpenGLPFAAccumSize];
+    idx = 0;
+    switch (accumsize) {
+    case 24:
+      idx = 1;
+      break;
+    case 32:
+      idx = 2;
+      break;
+    case 48:
+      idx = 3;
+      break;
+    case 64:
+      idx = 4;
+      break;
+    }
+    [accum selectItemAtIndex:idx];
+  }
+  //FIXME: else default values? (kintel 20040405)
+
   [super revert:sender];
 }
 

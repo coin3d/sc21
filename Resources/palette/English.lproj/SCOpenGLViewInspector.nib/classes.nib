@@ -1,7 +1,19 @@
 {
     IBClasses = (
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
-        {CLASS = SC21Inspector; LANGUAGE = ObjC; SUPERCLASS = IBInspector; }
+        {
+            CLASS = SC21Inspector; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                accum = NSPopUpButton; 
+                coloralpha = NSPopUpButton; 
+                depth = NSPopUpButton; 
+                hidden = NSButton; 
+                renderer = NSMatrix; 
+                stencil = NSPopUpButton; 
+            }; 
+            SUPERCLASS = IBInspector; 
+        }
     ); 
     IBVersion = 1; 
 }

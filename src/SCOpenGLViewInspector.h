@@ -30,14 +30,11 @@
 
 @interface SC21Inspector : IBInspector
 {
-  // FIXME Use NSMatrix instead? (kintel 20030324)
-  IBOutlet NSButtonCell *best;
-  IBOutlet NSButtonCell *hardware;
+  IBOutlet NSMatrix *renderer;
   IBOutlet NSPopUpButton *coloralpha;
   IBOutlet NSPopUpButton *depth;
   IBOutlet NSPopUpButton *stencil;
   IBOutlet NSPopUpButton *accum;
   IBOutlet NSButton *hidden;
-  
 }
 @end
