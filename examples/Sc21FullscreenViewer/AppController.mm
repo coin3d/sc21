@@ -86,15 +86,6 @@
     setHandlesEventsInViewer:([coincontroller handlesEventsInViewer]?NO:YES)];
 }
 
-// Toggles between perspective and orthographic camera.
-
-- (IBAction)toggleCameraType:(id)sender
-{
-  SCCamera * camera = [[coincontroller sceneGraph] camera];
-  [camera convertToType:([camera type] == SCCameraPerspective ? 
-                         SCCameraOrthographic : SCCameraPerspective)];
-}
-
 
 // Switches the headlight on and off.
 
@@ -126,7 +117,7 @@
 
 - (IBAction)viewAll:(id)sender
 {
-  [[[coincontroller sceneGraph] camera] viewAll];
+  [[coincontroller sceneGraph] viewAll];
 }
 
 - (IBAction)dumpSceneGraph:(id)sender
@@ -142,13 +133,9 @@
 - (void)openPanelDidEnd:(NSOpenPanel*)panel returnCode:(int)rc contextInfo:(void *)ctx
 {
   if (rc == NSOKButton) {
-    SCSceneGraph * sg = [[SCSceneGraph alloc] initWithContentsOfFile:[panel filename]];
-    if (sg) {
-      [coincontroller setSceneGraph:sg];
-      [self viewAll:self];
-      [filenametext setStringValue:[panel filename]];
-    }
-    [sg release];
+    [[coincontroller sceneGraph] readFromFile:[panel filename]];
+    [[coincontroller sceneGraph] viewAll];
+    [filenametext setStringValue:[panel filename]];
   }
 }
 
@@ -218,21 +205,14 @@
   uint32_t oldcachecontext = gra->getCacheContext();
   gra->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
 
-  // Save the current swap interval so we can restore it later, and then set the new swap interval to lock us to the display's refresh rate.
+  // Save the current swap interval so we can restore it later, and then set 
+  // the new swap interval to lock us to the display's refresh rate.
   cglContext = CGLGetCurrentContext();
   CGLGetParameter(cglContext, kCGLCPSwapInterval, &oldSwapInterval);
   newSwapInterval = 1;
   CGLSetParameter(cglContext, kCGLCPSwapInterval, &newSwapInterval);
 
-  [coincontroller setRedrawHandler:self];
-  
-  // Tell the scene the dimensions of the area it's going to render to, 
-  // so it can set up an appropriate viewport and viewing transformation.
-  [coincontroller 
-    viewSizeChanged:NSMakeRect(0, 
-                               0, 
-                               CGDisplayPixelsWide(kCGDirectMainDisplay), 
-                               CGDisplayPixelsHigh(kCGDirectMainDisplay))];
+  [coincontroller setDrawable:self];
   
   // Now that we've got the screen, we enter a loop in which we alternately 
   // process input events and computer and render the next frame of our 
@@ -265,7 +245,7 @@
         break;
       }
       if (stayInFullScreenMode) {
-        handled = [coincontroller handleEvent:event inView:view];
+        handled = [coincontroller handleEvent:event];
       }
       if (!handled) {
         NSLog(@"Event: %d", [event type]);
@@ -276,15 +256,17 @@
     // trigger delivery of idle notifications. The latter seems
     // to give jerky movement though. kintel 20040728
 
-    // Force constant rerendering
+#if 0 // force constant rerendering
     //     [self display];
 
-    // Trigger delivery of idle notifications
-    NSNotification * notification = [NSNotification notificationWithName:@"_SCIdleNotification" object:nil];
+#else  // Trigger delivery of idle notifications
+    
+    NSNotification * notification = 
+      [NSNotification notificationWithName:@"_SCIdleNotification" object:nil];
     [[NSNotificationQueue defaultQueue] 
       dequeueNotificationsMatching:notification 
       coalesceMask:NSNotificationCoalescingOnName];
-
+#endif
 
     // Clean up any autoreleased objects that were created this 
     // time through the loop.
@@ -313,9 +295,7 @@
   CGDisplayRelease(displayid);
 //   CGReleaseAllDisplays();
   
-  [coincontroller setRedrawHandler:view];
-  // Mark our view as needing drawing
-  [coincontroller viewSizeChanged:[view visibleRect]];
+  [coincontroller setDrawable:view];
   gra->setCacheContext(oldcachecontext);
 }
 
@@ -325,6 +305,27 @@
 //   NSLog(@"AppController.display");
   [coincontroller render];
   [_fullScreenContext flushBuffer];
+}
+
+- (NSRect)frame
+{
+  if (_fullScreenContext) {
+    return NSMakeRect(0, 0, 
+                      CGDisplayPixelsWide(kCGDirectMainDisplay), 
+                      CGDisplayPixelsHigh(kCGDirectMainDisplay));
+  } else {
+    return [view frame];
+  }
+}
+
+- (SCController *)controller
+{
+  return coincontroller; 
+}
+- (void)setController:(SCController *)controller
+{
+  if (controller != coincontroller) [coincontroller release];
+  coincontroller = [controller retain];
 }
 
 @end

@@ -27,7 +27,7 @@
 
 #import <Sc21/Sc21.h>
 
-@interface AppController : NSObject
+@interface AppController : NSObject <SCDrawable>
 {
   IBOutlet SCController * coincontroller;
   IBOutlet SCView * view;
@@ -39,11 +39,15 @@
 - (IBAction)open:(id)sender;
 - (IBAction)toggleModes:(id)sender;
 - (IBAction)toggleHeadlight:(id)sender;
-- (IBAction)toggleCameraType:(id)sender;
 - (IBAction)viewAll:(id)sender;
 - (IBAction)showDebugInfo:(id)sender;
 - (IBAction)dumpSceneGraph:(id)sender;
 - (IBAction)fullScreen:(id)sender;
 - (void)openPanelDidEnd:(NSOpenPanel *)panel returnCode:(int)rc contextInfo:(void *)ctx;
 - (void)display;
+
+- (void)display;
+- (NSRect)frame;
+- (SCController *)controller;
+- (void)setController:(SCController *)controller;
 @end
