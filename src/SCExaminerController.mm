@@ -15,6 +15,13 @@
 #import <Inventor/projectors/SbSphereSheetProjector.h>
 
 
+// ---------------------- Notifications ----------------------------
+
+NSString * SCViewAllNotification = @"SCViewAllNotification";
+NSString * SCCameraTypeChangedNotification = @"SCCameraTypeChangedNotification";
+NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
+
+
 @interface SCExaminerController (InternalAPI)
   - (void) _spin;
   - (void) _pan;
@@ -60,7 +67,7 @@
 
 - (IBAction) viewAll:(id)sender
 {
-  [_camera viewAll];
+  [_camera viewAll]; // SCViewAllNotification sent by _camera
 }
 
 /*" Toggles between perspective and orthographic camera.
@@ -240,6 +247,8 @@
 
   if ([_camera controllerHasCreatedCamera]) [self viewAll:nil];
 
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:SCSceneGraphChangedNotification object:self];
 }
 
 
@@ -262,6 +271,9 @@
 {
   if (_headlight == NULL) return;
   _headlight-> on = yn ? TRUE : FALSE;
+
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:SCHeadlightChangedNotification object:self];
 }
 
 /*" Returns the headlight of the current scene graph. "*/

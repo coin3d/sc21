@@ -8,6 +8,7 @@
 
 #import "SCCamera.h"
 #import "SCController.h"
+#import "SCExaminerController.h" // for notifications
 
 #import <Inventor/SbRotation.h>
 #import <Inventor/SbMatrix.h>
@@ -201,6 +202,10 @@
   homep->unref();
 #endif
 
+
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:SCCameraTypeChangedNotification object:self];
+
 }
 
 
@@ -256,6 +261,9 @@
   if (_camera == NULL || _controller == nil) return;
   _camera->viewAll([_controller sceneGraph],
                   [_controller sceneManager]->getViewportRegion());
+
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:SCViewAllNotification object:self];
 }
 
 

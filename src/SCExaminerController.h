@@ -67,3 +67,12 @@ class SoDirectionalLight;
 
 
 @end
+
+/*" Notifications posted by SCController. "*/
+
+extern NSString * SCViewAllNotification;
+extern NSString * SCCameraTypeChangedNotification;
+extern NSString * SCHeadlightChangedNotification;
+
+
+
