@@ -84,7 +84,8 @@ static BOOL _coinInitialized = NO;
 
 
 
-/*" Displays a standard file open dialog. "*/
+/*" Displays a standard file open dialog.
+    Note that we have to be NSApp delegate for this to work... "*/
 
 - (IBAction)open:(id)sender
 {
@@ -156,9 +157,8 @@ static BOOL _coinInitialized = NO;
 
 /*" Sets up and activates a Coin scene manager. Sets up and schedules
     a timer for animation. Adds default entries to the context menu.
-    Registers the SCController object as delegate to NSApp.
-    Called after the object has been 
-    loaded from an Interface Builder archive or nib file. 
+    Called after the object has been loaded from an Interface Builder
+    archive or nib file. 
 "*/
 
 - (void) awakeFromNib
@@ -169,10 +169,6 @@ static BOOL _coinInitialized = NO;
   _scenemanager->getGLRenderAction()->setCacheContext(
     SoGLCacheContextElement::getUniqueCacheContext());
   _scenemanager->activate();
-
-  // Register ourselves as delegate. Needed to be able to quit the 
-  // application when the last window is closed.
-  [NSApp setDelegate:self];  
      
   if (scenegraph == NULL) {
     SoSeparator * root = new SoSeparator;
@@ -490,15 +486,6 @@ otherwise NULL.
 
 
 // ------------------------ NSApp delegate methods -------------------------
-
-
-/*" Delegate implementation: Returns YES to make the application quit 
-    when its last window is closed. 
- "*/
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed: (NSApplication *)application
-{
-  return YES;
-}
 
 /*" Delegate method for NSOpenPanel used in #open: 
     Tries to read scene data from the file and sets the scenegraph to 

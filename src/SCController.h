@@ -82,7 +82,6 @@ class SoGetBoundingBoxAction;
 - (float) bestValueForNearPlane:(float)near farPlane:(float) far;
 
 /*" Delegate methods implemented by SCController "*/
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *) application;
 - (void) openPanelDidEnd:(NSOpenPanel*)panel returnCode:(int)rc contextInfo:(void *) ctx;
 
 @end
