@@ -143,6 +143,7 @@
 		};
 		29B97317FDCFA39411CA2CEA = {
 			children = (
+				E0F8689306C2B5B10022BF2A,
 				8D1107310486CEB800E47090,
 				089C165CFE840E0CC02AAC07,
 				29B97318FDCFA39411CA2CEA,
@@ -291,7 +292,6 @@
 			buildRules = (
 			);
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = /tmp/Sc21.dst/framework/Library/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sc21Viewer_Prefix.pch;
@@ -330,6 +330,7 @@
 			files = (
 				8D11072A0486CEB800E47090,
 				8D11072B0486CEB800E47090,
+				E0F8689406C2B5B10022BF2A,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -449,6 +450,19 @@
 		};
 		E05D267906074D0300C6A248 = {
 			fileRef = E05D267806074D0300C6A248;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E0F8689306C2B5B10022BF2A = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.icns;
+			path = coin.icns;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0F8689406C2B5B10022BF2A = {
+			fileRef = E0F8689306C2B5B10022BF2A;
 			isa = PBXBuildFile;
 			settings = {
 			};

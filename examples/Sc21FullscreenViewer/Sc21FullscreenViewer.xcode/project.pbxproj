@@ -125,6 +125,7 @@
 		};
 		29B97317FDCFA39411CA2CEA = {
 			children = (
+				E054537C06C2B7B9000EED3C,
 				8D1107310486CEB800E47090,
 				29B97318FDCFA39411CA2CEA,
 			);
@@ -285,6 +286,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072A0486CEB800E47090,
+				E054537D06C2B7B9000EED3C,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -356,6 +358,19 @@
 		};
 		E0436F7C0621908200376DF6 = {
 			fileRef = E0436F7B0621908200376DF6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E054537C06C2B7B9000EED3C = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.icns;
+			path = coin.icns;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E054537D06C2B7B9000EED3C = {
+			fileRef = E054537C06C2B7B9000EED3C;
 			isa = PBXBuildFile;
 			settings = {
 			};
