@@ -343,6 +343,36 @@
 			settings = {
 			};
 		};
+		3D883EAC06BFB0CA0048CDB7 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCSpinMode.h;
+			path = src/SCSpinMode.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3D883EAD06BFB0CA0048CDB7 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = SCSpinMode.mm;
+			path = src/SCSpinMode.mm;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3D883EAE06BFB0CA0048CDB7 = {
+			fileRef = 3D883EAC06BFB0CA0048CDB7;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		3D883EAF06BFB0CA0048CDB7 = {
+			fileRef = 3D883EAD06BFB0CA0048CDB7;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		3D8AD59606B7C6CF00D618DB = {
 			isa = PBXFileReference;
 			lastKnownFileType = image.tiff;
@@ -1213,6 +1243,8 @@
 				E0662930065383D600FB6420,
 				E0662931065383D600FB6420,
 				E0662932065383D600FB6420,
+				3D883EAC06BFB0CA0048CDB7,
+				3D883EAD06BFB0CA0048CDB7,
 				E080C71406B132550088958C,
 				E080C71506B132550088958C,
 			);
@@ -1428,6 +1460,7 @@
 				E0D6A23206BA6FD900FF8E28,
 				E0D6A27106BA74ED00FF8E28,
 				3DE326EB06BC6A4900C5518B,
+				3D883EAE06BFB0CA0048CDB7,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1456,6 +1489,7 @@
 				E0E5D14806B15E6E009165C8,
 				E011760706B67E450042ADED,
 				3DC6408706BD305800301065,
+				3D883EAF06BFB0CA0048CDB7,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
