@@ -42,10 +42,15 @@
 - (void)finishInstantiate
 {
   NSLog(@"SC21Palette.finishInstantiate");
+  scopenglview = [[SCOpenGLView alloc] initWithFrame:[scopenglviewitem bounds]];
   scview = [[SCView alloc] initWithFrame:[scviewitem bounds]];
   sccontroller = [[SCController alloc] init];
   scexaminercontroller = [[SCExaminerController alloc] init];
   
+  [self associateObject:scopenglview
+        ofType:IBViewPboardType
+        withView:scopenglviewitem];
+
   [self associateObject:scview
         ofType:IBViewPboardType
         withView:scviewitem];
@@ -61,8 +66,6 @@
   [self associateObject:scexaminercontroller
         ofType:IBObjectPboardType
         withView:testitem];
-
-  [scview reshape];
 }
 
 @end
