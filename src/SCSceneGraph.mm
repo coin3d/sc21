@@ -42,7 +42,7 @@
 #define SELF PRIVATE(self)
 
 // Note: I find it really degoutant that this class should be named
-// SCSceneGraph instead of SCSceneGraph -- scenegraph is one word,
+// SCSceneGraph instead of SCScenegraph -- scenegraph is one word,
 // for goddess sake! But the folks who designed the original Inventor
 // API Thought Different, and hence are using setSceneGraph() &c.
 // all over the place... so for consistency's sake, let's trudge along.
@@ -65,15 +65,17 @@
     SoSeparator * s = nil;
     SoInput in;
     if (!in.openFile([filename cString])) {  
-      // FIXME: Post notification or call delegate method
+      [[NSNotificationCenter defaultCenter]
+        postNotificationName:SCCouldNotOpenFileNotification object:self];
       [self release];
     } else {
       s = SoDB::readAll(&in);
       // Note that this is not strictly necessary, but I consider it bad practice to leave 
       // the closing of my resources to the destructor... *shrug*, kyrah
       in.closeFile();      
-      if (s == nil) {
-        // FIXME: Post notification or call delegate method
+      if (s == nil) { 
+        [[NSNotificationCenter defaultCenter]
+          postNotificationName:SCCouldNotReadFileNotification object:self];
         [self release];
         return nil;
       } else {
@@ -158,28 +160,27 @@
     // FIXME: Post notification?
     return; 
   }
-  root->ref();
   
   // Clean up existing scenegraph
   if (SELF->scenegraph) { SELF->scenegraph->unref(); }
   if (SELF->superscenegraph) { SELF->superscenegraph->unref(); }
   SELF->scenegraph = SELF->superscenegraph = NULL;  
-
+  
+  SELF->scenegraph = root;
   SELF->headlight = NULL;
   SELF->addedlight = NO;
   
-  // FIXME: Give delegate chance to handle this.
+  // FIXME: Give delegate chance to handle this. 
   // (Please note the FIXME comment in the #ifdef'ed code 
   // in SCController at the same place.)
-  SELF->superscenegraph = [self _SC_createSuperSceneGraph:root];
+  [self _SC_createSuperSceneGraph];
   
-  if (SELF->superscenegraph) { // Successful superscenegraph creation
-    SELF->scenegraph = root;
-    SELF->superscenegraph->ref();
-  } else {
-    // NULL super scene graph => leave everything at NULL
-    root->unrefNoDelete();
-  }
+  // FIXME: Check if superscenegraph creation failed (can it
+  // fail at all?) - if so, unref root and post notification. 
+  // kyrah 20040717
+  
+  // FIXME: If delegate decides to cancel superscenegraph 
+  // creation, don't forget to ref() the scenegraph!
 }
 
 - (void) setSceneManager:(SoSceneManager *)sm
@@ -218,8 +219,6 @@
   return SELF->addedcamera;
 }
 
-
-
 // ----------------- Automatic headlight configuration -----------------
 
 // Note that I intentionally removed the methods for turning the
@@ -247,8 +246,6 @@
 @end
 
 @implementation SCSceneGraph (InternalAPI)
-
-      
     
 - (void)_SC_commonInit
 {
@@ -261,17 +258,16 @@
    otherwise NULL.
 */
 
-- (SoLight *)_SC_findLightInSceneGraph:(SoGroup *)root
+- (SoLight *)_SC_findLight
 {
-  if (root == NULL) return NULL;
-  
+  assert (SELF->scenegraph);  
   SoLight * light = NULL;
   SbBool oldsearch = SoBaseKit::isSearchingChildren();
   SoBaseKit::setSearchingChildren(TRUE);
   SoSearchAction sa;
   sa.reset();
   sa.setType(SoLight::getClassTypeId());
-  sa.apply(root);
+  sa.apply(SELF->scenegraph);
   SoBaseKit::setSearchingChildren(oldsearch);
   if (sa.getPath() != NULL) {
     SoFullPath * fullpath = (SoFullPath *) sa.getPath();
@@ -284,15 +280,16 @@
     otherwise NULL.
  */
 
-- (SoCamera *)_SC_findCameraInSceneGraph:(SoGroup *)root
+- (SoCamera *)_SC_findCamera
 {
+  assert (SELF->scenegraph);
   SoCamera * scenecamera = NULL;
   SbBool oldsearch = SoBaseKit::isSearchingChildren();
   SoBaseKit::setSearchingChildren(TRUE);
   SoSearchAction sa;
   sa.reset();
   sa.setType(SoCamera::getClassTypeId());
-  sa.apply(root);
+  sa.apply(SELF->scenegraph);
   SoBaseKit::setSearchingChildren(oldsearch);
   if (sa.getPath() != NULL) {
     SoFullPath * fullpath = (SoFullPath *) sa.getPath();
@@ -316,34 +313,45 @@
   SELF->addedcamera = yn;
 }
 
-- (SoSeparator *)_SC_createSuperSceneGraph:(SoGroup *)sg
+- (void)_SC_createSuperSceneGraph
 {
-  SoSeparator *supersg = new SoSeparator;
+  SELF->superscenegraph = new SoSeparator;
+  SELF->superscenegraph->ref();
+  
+  // Must ref before applying action!
+  SELF->scenegraph->ref();
   
   // Handle lighting
-  if (![self _SC_findLightInSceneGraph:sg]) {
+  if (![self _SC_findLight]) {
     SELF->headlight = new SoDirectionalLight;
-    supersg->addChild(SELF->headlight);
+    SELF->superscenegraph->addChild(SELF->headlight);
     SELF->addedlight = YES;
+    [[NSNotificationCenter defaultCenter]
+        postNotificationName:SCNoLightFoundInSceneNotification object:self];
   } else {
     SELF->addedlight = NO;
   }
   
   // Handle camera
-  SoCamera * scenecamera  = [self _SC_findCameraInSceneGraph:sg];
+  SoCamera * scenecamera  = [self _SC_findCamera];
   if (scenecamera == NULL) {
     scenecamera = new SoPerspectiveCamera;
     [SELF->camera setSoCamera:scenecamera deleteOldCamera:NO];
     SELF->addedcamera = YES;
-    supersg->addChild(scenecamera);
+    SELF->superscenegraph->addChild(scenecamera);
+    [[NSNotificationCenter defaultCenter]
+        postNotificationName:SCNoCameraFoundInSceneNotification object:self];
   } else {
     [SELF->camera setSoCamera:scenecamera deleteOldCamera:NO];
     SELF->addedcamera = NO;
   }
+
+  SELF->superscenegraph->addChild(SELF->scenegraph);
   
-  supersg->addChild(sg);
-  
-  return supersg;
+  // We ref'ed the scenegraph earlier so we could savely
+  // apply a search action. Now that it is part of the 
+  // superscenegraph, we can savely unref it again.
+  SELF->scenegraph->unref();
 }
 
 @end

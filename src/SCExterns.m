@@ -1,12 +1,17 @@
-// -------- SCController ---------
-NSString * SCModeChangedNotification = @"SCModeChangedNotification";
-NSString * SCSceneGraphChangedNotification = @"SCSceneGraphChangedNotification";
+// Notification names in SCScenegraph
+NSString * SCCouldNotOpenFileNotification = @"SCCouldNotOpenFileNotification";
+NSString * SCCouldNotReadFileNotification = @"SCCouldNotReadFileNotification";
 NSString * SCNoCameraFoundInSceneNotification = @"SCNoCameraFoundInSceneNotification";
 NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotification";
-NSString * SCRedrawNotification = @"SCRedrawNotification";
 
-// -------- SCExaminerController ---------
+// Notification names in SCController
+NSString * SCModeChangedNotification = @"SCModeChangedNotification";
+NSString * SCSceneGraphChangedNotification = @"SCSceneGraphChangedNotification";
+
+// Notification names in SCCamera
 NSString * SCViewAllNotification = @"SCViewAllNotification";
 NSString * SCCameraTypeChangedNotification = @"SCCameraTypeChangedNotification";
 
+// FIXME: Currently unused. kyrah 20040717 
+NSString * SCRedrawNotification = @"SCRedrawNotification";
 

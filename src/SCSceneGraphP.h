@@ -41,8 +41,8 @@
 
 @interface SCSceneGraph (InternalAPI)
 - (void)_SC_commonInit;
-- (SoLight *)_SC_findLightInSceneGraph:(SoGroup *)root;
-- (SoCamera *)_SC_findCameraInSceneGraph:(SoGroup *)root;
-- (void) _SC_setHasAddedCamera:(BOOL)yn;
-- (SoSeparator *)_SC_createSuperSceneGraph:(SoGroup *)scenegraph;
+- (SoLight *)_SC_findLight;
+- (SoCamera *)_SC_findCamera;
+- (void)_SC_setHasAddedCamera:(BOOL)yn;
+- (void)_SC_createSuperSceneGraph;
 @end  

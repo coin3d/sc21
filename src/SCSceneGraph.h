@@ -50,7 +50,7 @@
 
   /*" Automatic headlight configuration "*/
 - (SoDirectionalLight *)headlight;
-- (BOOL) hasAddedLight;
+- (BOOL)hasAddedLight;
 
   /*" Camera handling. "*/
 - (SCCamera *)camera;
@@ -74,6 +74,18 @@
 
 // ------------------ Notifications -----------------------
 
+/*" Posted if the user tries to open a file which does not
+    exist or cannot be read (i.e. #{SoInput::openFile()} 
+    failed).
+ "*/
+SC21_EXTERN NSString * SCCouldNotOpenFileNotification;
+
+/*" Posted if opening a requested file was successful, but
+    no valid scenegraph could be read from the file (i.e.
+    #{SoDB::readAll()} returned NULL).                                             
+"*/
+SC21_EXTERN NSString * SCCouldNotReadFileNotification;
+
 /*" Posted if #setSceneGraph: is called with a scenegraph that
     does not contain a camera. Register for this notification if
     you want to issue a warning to your users that they will not
@@ -90,4 +102,3 @@ SC21_EXTERN NSString * SCNoCameraFoundInSceneNotification;
     will be used.)
 "*/
 SC21_EXTERN NSString * SCNoLightFoundInSceneNotification;
-
