@@ -41,4 +41,5 @@
 - (IBAction)showDebugInfo:(id)sender;
 - (IBAction)dumpSceneGraph:(id)sender;
 - (void)openPanelDidEnd:(NSOpenPanel *)panel returnCode:(int)rc contextInfo:(void *)ctx;
+- (void)reportError:(NSNotification *)notification;
 @end
