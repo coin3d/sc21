@@ -27,7 +27,7 @@
  
 
 #import <InterfaceBuilder/InterfaceBuilder.h>
-#import "SCView.h"
+#import <SC21/SCView.h>
 
 @interface SC21Palette : IBPalette
 {

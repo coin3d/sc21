@@ -27,7 +27,7 @@
  
 
 #import "SC21Inspector.h"
-#import "SCView.h"
+#import <SC21/SCView.h>
 
 @implementation SC21Inspector
 

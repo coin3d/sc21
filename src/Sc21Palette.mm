@@ -27,7 +27,7 @@
  
 
 #import "SC21Palette.h"
-#import "SCExaminerController.h"
+#import <SC21/SCExaminerController.h>
 
 #import <Inventor/SoDB.h>
 
