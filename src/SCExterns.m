@@ -4,9 +4,11 @@ NSString * SCCouldNotReadFileNotification = @"SCCouldNotReadFileNotification";
 NSString * SCNoCameraFoundInSceneNotification = @"SCNoCameraFoundInSceneNotification";
 NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotification";
 
+// Notification names in SCController and SCSceneGraph
+NSString * SCSceneGraphChangedNotification = @"SCSceneGraphChangedNotification";
+
 // Notification names in SCController
 NSString * SCModeChangedNotification = @"SCModeChangedNotification";
-NSString * SCSceneGraphChangedNotification = @"SCSceneGraphChangedNotification";
 
 // Notification names in SCCamera
 NSString * SCViewAllNotification = @"SCViewAllNotification";
