@@ -39,7 +39,7 @@
  @protected
   SCViewP * _sc_view;
  @private
-  SCController * controller;
+  IBOutlet SCController * controller;
 }
 
 /*" Initializing an SCView. "*/
