@@ -121,19 +121,19 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 
 /*" 
   An SCController is the main component for rendering Coin scene
-  graphs. It handles all actual scene management, rendering, event
-  translation etc.
+  graphs. It handles all actual scene management and rendering,
+  passes events on to the eventhandler chain, &c..
 
   The simplest use of this class is to connect to it from an SCView
   instance and set a scene graph using -setSceneGraph:.
   
   Since Coin is a data driven API, redraws are usually requested by
   the scene graph itself. To handle these redraws, the controller must
-  be given an object and a selector that should called upon such a
+  be given a "drawable" that should called upon such a
   redraw request. This is automatically handled by SCView but if you
   want to use an SCController without having an SCView (e.g. when
-  doing fullscreen rendering), you should supply an SCDrawable instead
-  and set this using -setDrawble:.
+  doing fullscreen rendering), you have to supply set an SCDrawable 
+  using -setDrawble:.
   "*/
 
 #pragma mark --- static methods ----
@@ -210,6 +210,8 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 
 /*" 
   Renders the scene by calling the current SoSceneManager's render() funtion. 
+  After rendering, an !{update:} message is sent to each eventhandler in the
+  event handler chain, starting at the controller's !{eventHandler}.
  "*/
 
 - (void)render
@@ -236,19 +238,21 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 #pragma mark --- event handling ---
 
 /*"
-    Handling events in the viewer will pass it on to the event handler,
-    allowing the use to control camera movement; examination of the scene
-    or flying through the scene.
+    Handle events by sending events down the event handler chain, starting
+    at the controller's !{eventHandler}. If !{eventHandler} returns !{NO},
+    the event is sent to the !{eventHandler}'s !{nextEventHandler}, and so
+    on.
 
-    Returns !{YES} if the event has been handled, !{NO} otherwise. 
-
+    Note that the Sc21 way of handling events is different from the one taken
+    in NSView and its subclasses. (We send all the events from the view to the
+    controller's handleEvent message.)
     All events are sent from %view to the controller via the
-    #handleEvent: message. 
-    Note that this is a different approach from the one taken in
-    NSView and its subclasses, which handle events directly.
+    !{handleEvent:} message. 
 
     For overriding the default behavior of ctrl-clicks (context menu),
-    see -SCView.mouseDown:
+    see !{-SCView.mouseDown:}
+ 
+    Returns !{YES} if the event has been handled, !{NO} otherwise. 
 "*/
  
 - (BOOL)handleEvent:(NSEvent *)event
@@ -270,6 +274,8 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
     self->eventHandler = [handler retain];
   }
 }
+
+/*" Returns first eventhandler in the eventhandler chain. "*/
 
 - (SCEventHandler *)eventHandler
 {
@@ -313,6 +319,11 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 
 #pragma mark --- accessor methods ---
 
+/*" 
+  Set the controller's drawable. Note that you do not have to call this 
+  method if you are using an SCView.
+ "*/
+
 - (void)setDrawable:(id<SCDrawable>)newdrawable
 {
   SELF->drawable = newdrawable;
@@ -321,6 +332,8 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   // until the first event or scene change.
   [self sceneManager]->scheduleRedraw();
 }
+
+/*" Returns the current drawable. "*/
 
 - (id<SCDrawable>)drawable
 {
@@ -361,6 +374,8 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   [self _SC_sceneGraphChanged:nil];
 }
 
+/*" Returns the controller's scenegraph "*/
+
 - (SCSceneGraph *)sceneGraph 
 { 
   return sceneGraph; 
@@ -376,8 +391,11 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   scene manager is created for you while initializing.
 "*/
 
+// FIXME: Should this method be part of the public API at all?
+// kyrah 20040809
 - (void)setSceneManager:(SoSceneManager *)scenemanager
 {
+
   if (scenemanager != SELF->scenemanager) {
     if (SELF->hascreatedscenemanager) {
       delete SELF->scenemanager;

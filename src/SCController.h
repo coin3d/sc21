@@ -54,7 +54,7 @@ class SoSceneManager;
 /*" Coin rendering and related functionality "*/
 - (void)render;
 
-/*" Accesors "*/
+/*" Accessors "*/
 - (void)setDrawable:(id<SCDrawable>)newdrawable;
 - (id<SCDrawable>)drawable;
 - (void)setSceneGraph:(SCSceneGraph *)scenegraph;
