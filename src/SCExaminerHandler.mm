@@ -161,13 +161,9 @@
 
 - (BOOL)_SC_performActionForEvent:(NSEvent *)event camera:(SCCamera *)camera
 {
-  if ([event type] == NSScrollWheel &&
-      SELF->scrollwheelzoomenabled) {
-    float deltay = [event deltaY];
-    if (deltay > 0.0f) {
-      [camera zoom:deltay];
-      return YES;
-    }
+  if ([event type] == NSScrollWheel && SELF->scrollwheelzoomenabled) {
+    [camera zoom:[event deltaY]/500.0f];
+    return YES;
   }
   return NO;
 }
