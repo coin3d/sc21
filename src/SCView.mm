@@ -108,11 +108,12 @@
 - (void)dealloc
 {
   SC21_DEBUG(@"SCView.dealloc");
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   // Prevent controller from continuing to draw into our view.
 //   [self->controller setRedrawHandler:nil];
   [self->controller setDrawable:nil];
   [self->controller stopTimers];
-  [self->controller release];
+  [self setController:nil];
   [SELF release];
   [super dealloc];
 }
@@ -418,9 +419,19 @@ Sets the controller to newcontroller. newcontroller is retained.
 "*/
 - (void)setController:(SCController *)newcontroller
 {
-  [newcontroller retain];
-  [self->controller release];
-  self->controller = newcontroller;
+  if (newcontroller == self->controller) { return; }
+
+  if (self->controller) {
+    // Remove ourselves as observer for the existing controller
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                          name:SCCursorChangedNotification 
+                                          object:self->controller];
+    [self->controller release];
+    //FIXME: Remove old drawable? (kintel 20040804)
+  }
+
+  self->controller = [newcontroller retain];
+
   [self->controller setDrawable:self];
   [self reshape]; // Initialize viewport
   [[NSNotificationCenter defaultCenter] 
