@@ -145,9 +145,6 @@
     int effectivebutton = [SELF->emulator emulatedButtonForButton:[event buttonNumber] 
                                                          modifier:modifierflags];
     
-    NSLog(@"Mousedown: %d (button = %d, effectivebutton = %d)", 
-          eventtype, [event buttonNumber], effectivebutton);
-    
     Class newmode = [self _SC_modeForButton:effectivebutton 
                                    modifier:modifierflags];
     if (newmode != Nil) mode = newmode;
