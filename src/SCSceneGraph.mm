@@ -152,24 +152,6 @@
   return [self _SC_readFromSoInput:&input];
 }
 
-static void *buffer_realloc(void *bufptr, size_t size)
-{
-  return realloc(bufptr, size);
-}
-
-- (NSData *)dataRepresentation
-{
-  SoOutput out;
-  size_t buffer_size = 102400;
-  char * buffer = (char *)malloc(buffer_size);
-  out.setBuffer(buffer, buffer_size, buffer_realloc);
-  SoWriteAction wra(&out);
-  wra.apply([self root]);
-
-  return [NSData dataWithBytesNoCopy:buffer length:buffer_size];
-}
-
-
 #pragma mark --- camera handling ---
 
 /*"
@@ -185,20 +167,6 @@ Sets the SoCamera used for viewing the scene to cam. It is first
   return SELF->camera; 
 }
 
-// Note that I removed the methods for getting and setting the
-// SoCamera -- app programmers should get the current SCCamera 
-// and access the SoCamera this way.
-
-/*" Returns !{YES} if a camera was added in the superscenegraph,
-and !{NO} if the camera is part of the user-supplied
-scenegraph.
-"*/
-- (BOOL) hasAddedCamera
-{
-  return SELF->addedcamera;
-}
-
-
 - (void)viewAll
 {
   [SELF->camera viewAll:self];
@@ -206,25 +174,12 @@ scenegraph.
 
 #pragma mark --- headlight access ---
 
-// Note that I intentionally removed the methods for turning the
-// headlight on and off. This can easily be done by the application
-// programmer by first getting the scenegraph's headlight and then
-// modifying its values directly. kyrah 20040717.
-
 /*" If an additional light was added as part of the superscenegraph, this
 method returns this headlight. Otherwise, NULL is returned. "*/
 
 - (SoDirectionalLight *)headlight
 {
   return (SELF->addedlight) ? SELF->headlight : NULL;
-}
-
-/*" Returns !{YES} if a light was added in the superscenegraph,
-and !{NO} otherwise.
-"*/
-- (BOOL)hasAddedLight
-{
-  return SELF->addedlight;
 }
 
 #pragma mark --- Coin scenegraph access ---

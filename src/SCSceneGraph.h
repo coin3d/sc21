@@ -50,9 +50,7 @@ class SoDirectionalLight;
 /*" File I/O "*/
 - (BOOL)readFromFile:(NSString *)filename;
 - (BOOL)readFromURL:(NSURL *)URL;
-
 - (BOOL)loadDataRepresentation:(NSData *)data;
-- (NSData *)dataRepresentation;
 
 /*" Accessors for the scenegraph's scenemanager. "*/
 - (void)setSceneManager:(SoSceneManager *)scenemanager;
@@ -60,11 +58,9 @@ class SoDirectionalLight;
 
 /*" Automatic headlight configuration "*/
 - (SoDirectionalLight *)headlight;
-- (BOOL)hasAddedLight;
 
 /*" Camera handling. "*/
 - (SCCamera *)camera;
-- (BOOL)hasAddedCamera;
 - (void)viewAll;
 
 /*" Accessing the actual Coin scenegraph. "*/
