@@ -32,7 +32,7 @@
 
 - (void)dealloc
 {
-  //[SELF->emulator release];
+  [SELF->emulator release];
   [SELF release];
 }
 
