@@ -424,14 +424,11 @@ Sets the controller to newcontroller. newcontroller is retained.
   [newcontroller retain];
   [self->controller release];
   self->controller = newcontroller;
-  // Use [self display] as a redraw handler
-  //   [self->controller setRedrawHandler:self];
-  //   [self->controller setRedrawSelector:@selector(display)];
   [self->controller setDrawable:self];
   [self reshape]; // Initialize viewport
   [[NSNotificationCenter defaultCenter] 
     addObserver:self selector:@selector(_SC_cursorChanged:) 
-           name:SCCursorChangedNotification object:self->controller];
+    name:SCCursorChangedNotification object:self->controller];
 }
 
 #pragma mark --- NSCoding conformance ---
