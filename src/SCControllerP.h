@@ -38,6 +38,7 @@ class SoSceneManager;
   SCEventConverter * eventconverter;
   NSTimer * timerqueuetimer;
   SoSceneManager * scenemanager;
+  BOOL hascreatedscenemanager;
   BOOL handleseventsinviewer;
   BOOL modifierforcoinevent;
   NSRect viewrect;

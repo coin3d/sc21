@@ -500,17 +500,22 @@ scene manager is created for you while initializing.
 
 - (void)setSceneManager:(SoSceneManager *)scenemanager
 {
-  //FIXME: Keep old background color if set? (kintel 20040406)
-  //FIXME: Delete old scenemanager? Only if we created it ourselves?
-  // (kintel 20040412)
-  SELF->scenemanager = scenemanager;
-  SELF->scenemanager->setRenderCallback(redraw_cb, (void *)self);
-  SoGLRenderAction * glra = SELF->scenemanager->getGLRenderAction();
-  glra->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
-  glra->setTransparencyType(SoGLRenderAction::DELAYED_BLEND);
-  SELF->scenemanager->activate();
-  if (scenegraph) {
-    SELF->scenemanager->setSceneGraph([scenegraph superSceneGraph]);
+  if (scenemanager != SELF->scenemanager) {
+    if (SELF->hascreatedscenemanager) {
+      delete SELF->scenemanager;
+      SELF->hascreatedscenemanager = NO;
+    }
+    SELF->scenemanager = scenemanager;
+    //FIXME: Keep old background color if set? (kintel 20040406)
+    SELF->scenemanager->setRenderCallback(redraw_cb, (void *)self);
+    SoGLRenderAction * glra = SELF->scenemanager->getGLRenderAction();
+    glra->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
+    glra->setTransparencyType(SoGLRenderAction::DELAYED_BLEND);
+    SELF->scenemanager->activate();
+    if (scenegraph) {
+      SELF->scenemanager->setSceneGraph([scenegraph superSceneGraph]);
+      [scenegraph setSceneManager:SELF->scenemanager];
+    }
   }
 }
 
@@ -727,6 +732,7 @@ Returns the receiver's delegate.
   SELF->redrawselector = @selector(display);
 
   [self setSceneManager:new SoSceneManager];
+  SELF->hascreatedscenemanager = YES;
 
   [[NSNotificationCenter defaultCenter] 
     addObserver:self
