@@ -3,7 +3,7 @@
 Separator {
   # rotorcube
   Separator {
-    Rotor{ speed 0.1 }
+    Rotor{ speed -0.1591 }
     Cube {}
   }
 
