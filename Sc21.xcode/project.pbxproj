@@ -1405,8 +1405,10 @@
 				E0765C5F060223120099F78E,
 				E09CFA55060245710000E227,
 				E0DD072F0654F9CA009C673A,
+				E0F867C806C2750B0022BF2A,
 				E056E6D70609F9FE0068145A,
 				E06867AC0633FC8700F702EA,
+				E0F867D006C276D40022BF2A,
 				E0DD073F06550C23009C673A,
 				E079478506341DCE006B5824,
 				E056E6EA0609FA880068145A,
@@ -1569,6 +1571,8 @@
 				E079478806341DCE006B5824,
 				E0DD07320654F9CA009C673A,
 				E0DD074206550C23009C673A,
+				E0F867CA06C2750B0022BF2A,
+				E0F867D306C276D40022BF2A,
 			);
 			isa = PBXGroup;
 			name = Products;
@@ -1620,6 +1624,7 @@
 			dependencies = (
 				E079478B06341DF3006B5824,
 				E079478D06341E03006B5824,
+				E0F8680E06C27CA60022BF2A,
 			);
 			isa = PBXNativeTarget;
 			name = "Sc21 meta pkg";
@@ -2714,6 +2719,117 @@
 					Public,
 				);
 			};
+		};
+		E0F867C806C2750B0022BF2A = {
+			buildPhases = (
+				E0F867C906C2750B0022BF2A,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Examples";
+				INSTALL_ROOT = "$(DSTROOT)/examples";
+				PRODUCT_NAME = Sc21;
+			};
+			dependencies = (
+			);
+			isa = PBXNativeTarget;
+			name = "Sc21 examples";
+			productInstallPath = /usr/local/bin;
+			productName = "Sc21 doc";
+			productReference = E0F867CA06C2750B0022BF2A;
+			productType = "com.apple.product-type.tool";
+		};
+		E0F867C906C2750B0022BF2A = {
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			isa = PBXShellScriptBuildPhase;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Script: Sc21 examples\"\nset -x\nmkdir -p $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME\ntar c -C examples README Sc21Viewer/main.m Sc21Viewer/AppController.h Sc21Viewer/AppController.mm Sc21Viewer/Sc21Viewer_Prefix.pch Sc21Viewer/Info.plist Sc21Viewer/version.plist Sc21Viewer/English.lproj/InfoPlist.strings Sc21Viewer/English.lproj/MainMenu.nib/classes.nib Sc21Viewer/English.lproj/MainMenu.nib/data.dependency Sc21Viewer/English.lproj/MainMenu.nib/info.nib Sc21Viewer/English.lproj/MainMenu.nib/keyedobjects.nib Sc21Viewer/Sc21Viewer.xcode/project.pbxproj Sc21FullscreenViewer/main.m Sc21FullscreenViewer/AppController.h Sc21FullscreenViewer/AppController.mm Sc21FullscreenViewer/Sc21FullscreenViewer_Prefix.pch Sc21FullscreenViewer/Info.plist Sc21FullscreenViewer/version.plist Sc21FullscreenViewer/English.lproj/MainMenu.nib/classes.nib Sc21FullscreenViewer/English.lproj/MainMenu.nib/data.dependency Sc21FullscreenViewer/English.lproj/MainMenu.nib/info.nib Sc21FullscreenViewer/English.lproj/MainMenu.nib/keyedobjects.nib Sc21FullscreenViewer/Sc21FullscreenViewer.xcode/project.pbxproj NoNibViewer/main.mm NoNibViewer/AppController.h NoNibViewer/AppController.mm NoNibViewer/NoNibViewer_Prefix.pch NoNibViewer/NoNibViewer.xcode/project.pbxproj NoNibViewer/build.sh Viewtiful/main.mm Viewtiful/MyCoinController.h Viewtiful/MyCoinController.mm Viewtiful/MyDocument.h Viewtiful/MyDocument.mm Viewtiful/MyWindowController.h Viewtiful/MyWindowController.mm Viewtiful/AppController.h Viewtiful/AppController.mm Viewtiful/Viewtiful_Prefix.pch Viewtiful/coin.icns Viewtiful/Info.plist Viewtiful/version.plist Viewtiful/English.lproj/InfoPlist.strings Viewtiful/English.lproj/MainMenu.nib/classes.nib Viewtiful/English.lproj/MainMenu.nib/info.nib Viewtiful/English.lproj/MainMenu.nib/keyedobjects.nib Viewtiful/English.lproj/MyDocument.nib/classes.nib Viewtiful/English.lproj/MyDocument.nib/data.dependency Viewtiful/English.lproj/MyDocument.nib/info.nib Viewtiful/English.lproj/MyDocument.nib/keyedobjects.nib Viewtiful/Viewtiful.xcode/project.pbxproj | tar x -C $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME\nretval=$?\nexit $retval\n";
+		};
+		E0F867CA06C2750B0022BF2A = {
+			explicitFileType = "compiled.mach-o.executable";
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = Sc21;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E0F867D006C276D40022BF2A = {
+			buildPhases = (
+				E0F867D206C276D40022BF2A,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/examples/Description.plist;
+				INFOPLIST_FILE = packaging/examples/Info.plist;
+				INSTALL_PATH = /;
+				PRODUCT_NAME = "$(PROJECT_NAME) examples.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/examples";
+				RESOURCE_DIR = packaging/examples/Resources;
+			};
+			dependencies = (
+				E0F867DD06C277120022BF2A,
+			);
+			isa = PBXNativeTarget;
+			name = "Sc21 examples pkg";
+			productInstallPath = /usr/local/bin;
+			productName = "Sc21 doc pkg";
+			productReference = E0F867D306C276D40022BF2A;
+			productType = "com.apple.product-type.tool";
+		};
+		E0F867D206C276D40022BF2A = {
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			isa = PBXShellScriptBuildPhase;
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(PRODUCT_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Script: Sc21 examples pkg\"\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\nexit $retval";
+		};
+		E0F867D306C276D40022BF2A = {
+			explicitFileType = "compiled.mach-o.executable";
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = "Sc21 examples.pkg";
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E0F867DC06C277120022BF2A = {
+			containerPortal = E0765C56060222BB0099F78E;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E0F867C806C2750B0022BF2A;
+			remoteInfo = "Sc21 examples";
+		};
+		E0F867DD06C277120022BF2A = {
+			isa = PBXTargetDependency;
+			target = E0F867C806C2750B0022BF2A;
+			targetProxy = E0F867DC06C277120022BF2A;
+		};
+		E0F8680D06C27CA60022BF2A = {
+			containerPortal = E0765C56060222BB0099F78E;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E0F867C806C2750B0022BF2A;
+			remoteInfo = "Sc21 examples";
+		};
+		E0F8680E06C27CA60022BF2A = {
+			isa = PBXTargetDependency;
+			target = E0F867C806C2750B0022BF2A;
+			targetProxy = E0F8680D06C27CA60022BF2A;
 		};
 	};
 	rootObject = E0765C56060222BB0099F78E;
