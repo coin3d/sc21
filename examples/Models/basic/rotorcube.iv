@@ -1,0 +1,6 @@
+#Inventor V2.1 ascii
+
+Separator {
+  SoRotor{ speed 0.1 }
+  Cube {}
+}
