@@ -36,13 +36,28 @@
 - (id)init
 {
   NSLog(@"MyWindowController.init");
-  self = [super initWithWindowNibName:@"MyDocument"];
+  if (self = [super initWithWindowNibName:@"MyDocument"]) {
+
+    [[NSNotificationCenter defaultCenter] 
+      addObserver:self
+      selector:@selector(applicationDidHide:)
+      name:NSApplicationDidHideNotification object:nil];    
+    
+    [[NSNotificationCenter defaultCenter] 
+      addObserver:self
+      selector:@selector(applicationDidUnhide:)
+      name:NSApplicationDidUnhideNotification object:nil];    
+  }
+
   return self;
 }
 
 - (void)dealloc
 {
   NSLog(@"MyWindowController.dealloc");
+
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+
   [super dealloc];
 }
 
@@ -60,7 +75,18 @@
 - (void)windowDidLoad
 {
   NSLog(@"MyWindowController.windowDidLoad");
-  
+}
+
+- (void)windowDidMiniaturize:(NSNotification *)notif
+{
+  NSLog(@"MyWindowController.windowDidMiniturize");
+  [controller sceneManager]->deactivate();
+}
+
+- (void)windowDidDeminiaturize:(NSNotification *)notif
+{
+  NSLog(@"MyWindowController.windowDidDeminiturize");
+  [controller sceneManager]->activate();
 }
 
 - (IBAction)modeButtonClicked:(id)sender
@@ -111,6 +137,20 @@
 
   [typetext setStringValue:[doc fileType]];
   [sizetext setStringValue:[doc fileSize]];
+}
+
+- (void)applicationDidHide:(NSNotification *)notif
+{
+  NSLog(@"MyWindowController.applicationDidHide");
+  [controller sceneManager]->deactivate();
+}
+
+- (void)applicationDidUnhide:(NSNotification *)notif
+{
+  NSLog(@"MyWindowController.applicationDidUnhide");
+  if (![[self window] isMiniaturized]) {
+    [controller sceneManager]->activate();
+  }
 }
 
 @end
