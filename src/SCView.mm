@@ -29,6 +29,7 @@
 #import "SCView.h"
 #import "SCController.h"
 #import "SCExaminerController.h"
+#import "SCCursors.h"
 
 // ---------------------- Notifications ----------------------------
 
@@ -475,6 +476,18 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 }
 
 
+/*" Forwards event to %controller by sending it the #handleEvent:
+    message.  If the event is not handled by the controller, it will
+    be forwarded through the responder chain as usual.
+ "*/
+
+- (void)keyUp:(NSEvent *)event {
+  if (![controller handleEvent:event]) {
+    [[self nextResponder] keyUp:event];
+  } 
+}
+
+
 /*" Returns !{YES} to confirm becoming first responder.
     Needed to receive keyboard events
  "*/
@@ -506,6 +519,20 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
   NSSize s = [self _size];
   return s.width/s.height;
 }
+
+// -------- Cursor handling ----------
+- (void)resetCursorRects
+{
+  NSLog(@"SCView.resetCursorRects");
+  [self addCursorRect:[self visibleRect] cursor:_cursor];
+}
+
+- (void)setCursor:(NSCursor *)cursor
+{
+  _cursor = cursor;
+  [_cursor set];
+}
+
 
 // ----------------------- NSCoding -------------------------
 // FIXME: Rewrite to use keyed archiving (kintel 20030324)
@@ -557,6 +584,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
       [self setToolTip:[_oldview toolTip]];
       [_oldview release];
       _oldview = nil;
+      [self commonInit];
     }
   }
   return self;

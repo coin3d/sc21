@@ -37,6 +37,7 @@
 {
   IBOutlet SCController * controller; 
   NSOpenGLView * _oldview;
+  NSCursor * _cursor;
 }
 
 /*" Initializing an SCView "*/
@@ -57,26 +58,27 @@
 - (SCOpenGLPixelFormat *)createPixelFormat:(NSRect)frame;
 
 /*" Event handling "*/
-- (void)rightMouseDown:(NSEvent *)event;
 - (void)mouseDown:(NSEvent *)event;
 - (void)mouseUp:(NSEvent *)event;
 - (void)mouseDragged:(NSEvent *)event;
 - (void)otherMouseDown:(NSEvent *)event;
+- (void)otherMouseUp:(NSEvent *)event;
 - (void)otherMouseDragged:(NSEvent *)event;
+- (void)rightMouseDown:(NSEvent *)event;
+- (void)rightMouseUp:(NSEvent *)event;
+- (void)rightMouseDragged:(NSEvent *)event;
 - (void)scrollWheel:(NSEvent *)event;
 - (void)keyDown:(NSEvent *)event;
+- (void)keyUp:(NSEvent *)event;
 - (BOOL)becomeFirstResponder;
 - (BOOL)acceptsFirstResponder;
+
+/*" Cursor handling "*/
+- (void)setCursor:(NSCursor *)cursor;
 
 /*" Convenience methods and shortcuts "*/
 - (float)aspectRatio;
 - (NSPoint)normalizePoint:(NSPoint)point;
-
-/*" NSCoding conformance "*/
-//FIXME: We could remove the declarations, as this seems to be the strategy 
-//       elsewhere (kintel 20030324)
-- (void)encodeWithCoder:(NSCoder *)coder;
-- (id)initWithCoder:(NSCoder *)coder;
 
 @end
 
