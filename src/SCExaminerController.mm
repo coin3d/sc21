@@ -147,6 +147,14 @@
   [[[self sceneGraph] camera] convertToType:type];
 }
 
+/*" Repositions the camera so that we can se the whole scene. "*/
+
+- (void)viewAll
+{
+  [[self->scenegraph camera] viewAll]; // SCViewAllNotification sent by _camera
+}
+
+#if 0
 // -------------------- Event handling -----------------------
 
 /*" Handles event as viewer event, i.e. does not send it to the scene
@@ -246,6 +254,9 @@
 
 - (void)startDraggingWithPoint:(NSPoint)point
 {
+  SC21_DEBUG(@"startDraggingWithPoint:");
+  
+
   NSValue * v = [NSValue valueWithPoint:point];
   // Clear log and project to the last position we stored.
   [_mouselog removeAllObjects];
@@ -406,6 +417,7 @@
   // Do nothing.
 }
 
+#endif
 
 
 // ---------------- NSCoder conformance -------------------------------

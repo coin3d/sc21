@@ -50,6 +50,7 @@ class SoDirectionalLight;
 - (void)render;
 - (void)setCameraType:(SCCameraType)type;
 
+#if 0
 /*" Interaction with the viewer. "*/
 - (void)startDraggingWithPoint:(NSPoint)point;
 - (void)startPanningWithPoint:(NSPoint)point;
@@ -59,6 +60,7 @@ class SoDirectionalLight;
 - (void)zoomWithDelta:(float)delta;
 - (void)zoomWithPoint:(NSPoint)point;
 - (void)ignore:(NSValue *)v;
+#endif
 
 @end
 
