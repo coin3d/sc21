@@ -1,0 +1,43 @@
+/* Hack to make AutoDoc generate protocol description. */
+
+@implementation SCDrawable
+/*" Formal protocol defining a type that SCController can draw
+into. "*/
+
+  
+/*" 
+  Render a frame, and swap the front and back buffers. 
+
+  SCView does this by simply sending !{display} to NSView. 
+
+  When implementing this method yourself, you would typically
+  send the !{render} message to your SCController and flush the
+  buffers of your context.
+"*/ 
+- (void)display
+{} 
+
+
+{
+  if (_fullScreenContext) {
+    return NSMakeRect(0, 0, 
+                      CGDisplayPixelsWide(_displayid), 
+                      CGDisplayPixelsHigh(_displayid));
+  } else {
+    return [view frame];
+  }
+}
+
+/*" 
+  Returns the position and size of the drawable.
+  
+  SCView returns it's own frame (as returned by NSView's method
+  of the same name).
+
+  When running in fullscreen mode, you should return an NSRect of the
+  dimensions (0, 0, %displaywidth, %displayheight).
+"*/
+- (NSRect)frame
+{} 
+@end
+
