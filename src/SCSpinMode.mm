@@ -81,7 +81,10 @@
     rot.scaleAngle(float(0.2 / dt));
     _spinrotation->setValue(rot.getValue());
 
-    [camera soCamera]->touch();
+    SoCamera * socamera = [camera soCamera];
+    if (socamera) {
+      socamera->touch();
+    }
   }
   else _spinrotation->setValue(SbVec3f(1.0f, 0.0f, 0.0f), 0.0f);
 }
