@@ -48,7 +48,6 @@
   SC21_DEBUG(@"SCControllerInspector.ok:");
   SCController *sccontroller = [self object];
 
-  [sccontroller setHandlesEventsInViewer:([handleEvents selectedCell] == handleEventsInViewer)];
   [sccontroller setClearsColorBuffer:([clearcolorbuffer state] == NSOnState)];
   [sccontroller setClearsDepthBuffer:([cleardepthbuffer state] == NSOnState)];
 
@@ -60,9 +59,6 @@
   SC21_DEBUG(@"SCControllerInspector.revert:");
   SCController *sccontroller = [self object];
 
-  [handleEvents selectCell: 
-    ([sccontroller handlesEventsInViewer] ? 
-     handleEventsInViewer : handleEventsInSceneGraph)];
   [clearcolorbuffer 
     setState:([sccontroller clearsColorBuffer] ? NSOnState : NSOffState)];
   [cleardepthbuffer 

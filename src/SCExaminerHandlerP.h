@@ -39,17 +39,14 @@
   BOOL scrollwheelzoomenabled;
   SCEmulator * emulator;
   SCMode * currentmode;
-  id<SCDrawable> currentdrawable;
-  SCCamera * currentcamera;  
 }
 @end
 
 @interface SCExaminerHandler (InternalAPI)
 - (void)_SC_commonInit;
-- (BOOL)_SC_performActionForEvent:(NSEvent *)event camera:(SCCamera *)camera;
 - (void)_SC_setCurrentMode:(SCMode *)mode;
 - (SCMode *)_SC_currentMode;
-- (void)_SC_activateMode:(SCMode *)mode event:(NSEvent *)event point:(NSPoint *)pn;
+- (void)_SC_activateMode:(SCMode *)mode camera:(SCCamera *)camera event:(NSEvent *)event point:(NSPoint *)pn;
 - (Class)_SC_modeForButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
 - (SCEmulator *)_SC_emulator;
 - (void)_SC_setEmulator:(SCEmulator *)emulator;

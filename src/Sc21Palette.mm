@@ -37,6 +37,7 @@
   [scview release];
   [sccontroller release];
   [scexaminerhandler release];
+  [sccoinhandler release];
   [scscenegraph release];
   [super dealloc];
 }
@@ -47,6 +48,7 @@
   scview = [[SCView alloc] initWithFrame:[scviewitem bounds]];
   sccontroller = [[SCController alloc] init];
   scexaminerhandler = [[SCExaminerHandler alloc] init];
+  sccoinhandler = [[SCCoinHandler alloc] init];
   scscenegraph = [[SCSceneGraph alloc] init];
   
   [self associateObject:scview
@@ -64,8 +66,12 @@
   [self associateObject:scexaminerhandler
         ofType:IBObjectPboardType
         withView:scexaminerhandleritem];
+ 
+  [self associateObject:sccoinhandler
+        ofType:IBObjectPboardType
+        withView:sccoinhandleritem];
 
-  [self associateObject:scscenegraph
+ [self associateObject:scscenegraph
         ofType:IBObjectPboardType
         withView:scscenegraphitem];
 }
@@ -114,6 +120,19 @@
 {
   return  @"SCExaminerHandlerInspector";
 }
+
+- (NSString *)classInspectorClassName
+{
+  return @"IBCustomClassInspector";
+}
+@end
+
+@implementation SCCoinHandler (Sc21PaletteInspector)
+
+// - (NSString *)inspectorClassName
+// {
+//   return  @"SCCoinHandlerInspector";
+// }
 
 - (NSString *)classInspectorClassName
 {

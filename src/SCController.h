@@ -29,25 +29,20 @@
 #import <Sc21/SCDefines.h>
 #import <Sc21/SCCamera.h>
 #import <Sc21/SCSceneGraph.h>
-#import <Sc21/SCEventHandling.h>
+#import <Sc21/SCEventHandler.h>
 #import <Sc21/SCDrawable.h>
 
 class SoSceneManager;
 @class SCEventConverter;
 @class SCControllerP;
-@class SCMode;
-@class SCMouseMode;
-@class SCKeyboardMode;
 
 @interface SCController : NSObject <NSCoding>
 {
  @protected
   SCControllerP * _sc_controller;
-  // FIXME: Are we sure we don't want the delegate to be protected? kyrah 20040716
  @private
-  id delegate;
   IBOutlet SCSceneGraph * sceneGraph;
-  id<SCEventHandling> eventHandler;
+  IBOutlet SCEventHandler * eventHandler;
 }
 
 /*" Static initialization "*/
@@ -55,10 +50,6 @@ class SoSceneManager;
 
 /*" Initializing an SCController "*/
 - (id)init;
-
-/*" Delegate handling. "*/
-- (void)setDelegate:(id)delegate;
-- (id)delegate;
 
 /*" Coin rendering and related functionality "*/
 - (void)render;
@@ -79,14 +70,8 @@ class SoSceneManager;
 
 /*" Event handling "*/
 - (BOOL)handleEvent:(NSEvent *)event;
-- (BOOL)handleEventAsCoinEvent:(NSEvent *)event;
-- (BOOL)handleEventAsViewerEvent:(NSEvent *)event;
-- (void)setHandlesEventsInViewer:(BOOL)yn;
-- (BOOL)handlesEventsInViewer;
-- (void)setModifierForCoinEvent:(unsigned int)modifier;
-- (unsigned int)modifierForCoinEvent;
-- (void)setEventHandler:(id<SCEventHandling>)handler;
-- (id<SCEventHandling>)eventHandler;
+- (void)setEventHandler:(SCEventHandler *)handler;
+- (SCEventHandler *)eventHandler;
 
 /*" Timer management. "*/
 - (void)startTimers;
@@ -96,16 +81,5 @@ class SoSceneManager;
 
 // --------------------- Notifications ------------------------
 
-/*" Posted whenever the viewer mode (pass events to the scenegraph
-    vs. interpret events as viewer manipulation) changes.
- "*/
-SC21_EXTERN NSString * SCModeChangedNotification;
-
 /*" Posted when the scenegraph is changed through #setSceneGraph: "*/
 SC21_EXTERN NSString * SCSceneGraphChangedNotification;
-
-/*" FIXME: Document "*/
-SC21_EXTERN NSString * SCDrawableChangedNotification;
-
-/*" FIXME: Document "*/
-SC21_EXTERN NSString * SCCameraChangedNotification;

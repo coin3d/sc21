@@ -25,13 +25,11 @@
  |                                                                 |
  * =============================================================== */
 
-#import <Cocoa/Cocoa.h>
-#import "SCDefines.h"
-#import <Sc21/SCEventHandling.h>
+#import <Sc21/SCEventHandler.h>
 
 @class SCExaminerHandlerP;
 
-@interface SCExaminerHandler : NSObject <NSCoding, SCEventHandling>
+@interface SCExaminerHandler : SCEventHandler <NSCoding>
 {
  @protected
   SCExaminerHandlerP * _sc_examinerhandler;
@@ -60,9 +58,4 @@
 - (void)setScrollWheelZoomEnabled:(BOOL)enabled;
 - (BOOL)scrollWheelZoomEnabled;
 
-/*" SCEventHandling conformance "*/
-- (BOOL)handleEvent:(NSEvent *)event;
-- (void)update;
-- (void)drawableDidChange:(NSNotification *)notification;
-- (void)sceneGraphDidChange:(NSNotification *)notification;
 @end

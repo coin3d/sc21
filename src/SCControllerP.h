@@ -33,13 +33,9 @@ class SoSceneManager;
 @interface SCControllerP : NSObject
 {
   id<SCDrawable> drawable;
-  SCEventConverter * eventconverter;
   NSTimer * timerqueuetimer;
   SoSceneManager * scenemanager;
   BOOL hascreatedscenemanager;
-  BOOL handleseventsinviewer;
-  unsigned int modifierforcoinevent;
-  NSResponder * oldcontroller;
   BOOL clearcolorbuffer;
   BOOL cleardepthbuffer;
 }

@@ -161,10 +161,10 @@
 
 #pragma mark --- SCEventHandler conformance ---
 
-- (BOOL)handleEvent:(NSEvent *)event
+- (BOOL)controller:(SCController *)controller handleEvent:(NSEvent *)event
 { 
   SC21_LOG_METHOD;
-  NSRect frame = [SELF->currentdrawable frame];
+  NSRect frame = [[controller drawable] frame];
   NSPoint p = [event locationInWindow];
   NSPoint pn;
   pn.x = (p.x - frame.origin.x) / frame.size.width;
@@ -178,13 +178,13 @@
     SCMode * currentmode = [self _SC_currentMode];
     if (currentmode) {
       if (![currentmode isActive]) {
-        [self _SC_activateMode:currentmode event:event point:&pn];
+        [self _SC_activateMode:currentmode camera:[[controller sceneGraph] camera] event:event point:&pn];
       } else {
         [[SCMouseLog defaultMouseLog] appendPoint:&pn 
                                       timestamp:[event timestamp]];
       }
-      handled = [currentmode modifyCamera:SELF->currentcamera 
-                                withValue:[currentmode valueForEvent:event]];
+      handled = [currentmode modifyCamera:[[controller sceneGraph] camera]
+                             withValue:[currentmode valueForEvent:event]];
     }
     return handled;
   }
@@ -195,8 +195,9 @@
   if (eventtype == NSLeftMouseUp ||
       eventtype == NSRightMouseUp ||
       eventtype == NSOtherMouseUp) {
-    if (mode) { 
-      if (mode == [SCRotateMode class]) {
+    if (mode) {
+      if (SELF->spinenabled && mode == [SCRotateMode class]) {
+        //FIXME: Check contents of mouselog before enabling spin
         mode = [SCSpinMode class];
       }
       else {
@@ -208,11 +209,9 @@
       handled = YES;
     }
   } 
-
   else if (eventtype == NSLeftMouseDown ||
            eventtype == NSRightMouseDown ||
            eventtype == NSOtherMouseDown) {    
-    
     // Check for emulations
     int effectivebutton = [event buttonNumber];
     if (SELF->emulator) {
@@ -229,34 +228,26 @@
     if (mode) {
       SCMode * newmode = [[[mode alloc] init] autorelease];
       [self _SC_setCurrentMode:newmode];
-      [self _SC_activateMode:newmode event:event point:&pn];
+      [self _SC_activateMode:newmode camera:[[controller sceneGraph] camera] event:event point:&pn];
     }
     else [self _SC_setCurrentMode:nil];
     handled = YES;
   }
 
-  if (!handled) 
-    return [self _SC_performActionForEvent:event camera:SELF->currentcamera];
-  
-  else return YES;
+  if (!handled &&
+      [event type] == NSScrollWheel && 
+      SELF->scrollwheelzoomenabled) {
+    [[[controller sceneGraph] camera] zoom:[event deltaY]/500.0f];
+    handled = YES;
+  }
+
+  return handled;
 }
 
-- (void)update
+- (void)update:(SCController *)controller
 {
   NSTimeInterval currtime = [NSDate timeIntervalSinceReferenceDate];
-  [SELF->currentmode modifyCamera:SELF->currentcamera withTimeInterval:currtime];
-}
-
-- (void)drawableDidChange:(NSNotification *)notification
-{
-  SCController * controller = (SCController *)[notification object];
-  SELF->currentdrawable = [controller drawable];
-}
-
-- (void)sceneGraphDidChange:(NSNotification *)notification
-{
-  SCController * controller = (SCController *)[notification object];
-  SELF->currentcamera = [[controller sceneGraph] camera];
+  [SELF->currentmode modifyCamera:[[controller sceneGraph] camera] withTimeInterval:currtime];
 }
 
 #pragma mark --- NSCoding conformance ---
@@ -311,16 +302,6 @@
   SELF = [[SCExaminerHandlerP alloc] init];
 }
 
-- (BOOL)_SC_performActionForEvent:(NSEvent *)event camera:(SCCamera *)camera
-{
-  if ([event type] == NSScrollWheel && SELF->scrollwheelzoomenabled) {
-    [camera zoom:[event deltaY]/500.0f];
-    return YES;
-  }
-  return NO;
-}
-
-
 - (void)_SC_setCurrentMode:(SCMode *)mode
 {
   [mode retain];
@@ -333,10 +314,10 @@
   return SELF->currentmode;
 }
 
-- (void)_SC_activateMode:(SCMode *)newmode event:(NSEvent *)event
-                   point:(NSPoint *)pn
+- (void)_SC_activateMode:(SCMode *)newmode camera:(SCCamera *)camera
+                   event:(NSEvent *)event point:(NSPoint *)pn
 {
-  [newmode activate:event point:pn camera:SELF->currentcamera];
+  [newmode activate:event point:pn camera:camera];
   [[SCMouseLog defaultMouseLog] setStartPoint:pn timestamp:[event timestamp]];
   [[newmode cursor] set];
   [[NSNotificationCenter defaultCenter]

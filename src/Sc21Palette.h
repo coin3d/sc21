@@ -28,6 +28,7 @@
 #import <InterfaceBuilder/InterfaceBuilder.h>
 #import <Sc21/SCController.h>
 #import <Sc21/SCExaminerHandler.h>
+#import <Sc21/SCCoinHandler.h>
 #import <Sc21/SCSceneGraph.h>
 #import <Sc21/SCView.h>
 
@@ -36,13 +37,15 @@
   IBOutlet NSImageView * scviewitem;
   IBOutlet NSTextField * scviewtextfielditem;
   IBOutlet NSImageView * sccontrolleritem;
-  IBOutlet NSImageView * scexaminerhandleritem;
   IBOutlet NSImageView * scscenegraphitem;
+  IBOutlet NSImageView * scexaminerhandleritem;
+  IBOutlet NSImageView * sccoinhandleritem;
 
   SCView * scview;
   SCController * sccontroller;
-  SCExaminerHandler * scexaminerhandler;
   SCSceneGraph * scscenegraph;
+  SCExaminerHandler * scexaminerhandler;
+  SCCoinHandler * sccoinhandler;
 }
 @end
 
@@ -63,6 +66,11 @@
 
 @interface SCExaminerHandler (Sc21PaletteInspector)
 - (NSString *)inspectorClassName;
+- (NSString *)classInspectorClassName;
+@end
+
+@interface SCCoinHandler (Sc21PaletteInspector)
+// - (NSString *)inspectorClassName;
 - (NSString *)classInspectorClassName;
 @end
 

@@ -27,7 +27,6 @@
  
 #import <Sc21/SCController.h>
 #import <Sc21/SCEventHandler.h>
-#import "SCEventConverter.h"
 #import "SCUtil.h"
 
 #import <Inventor/SbTime.h>
@@ -189,8 +188,6 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 {
   if (self = [super init]) {
     [self _SC_commonInit];
-    SELF->handleseventsinviewer = YES;
-    SELF->modifierforcoinevent = NSAlternateKeyMask; //FIXME: -> inspector
     SELF->clearcolorbuffer = YES;
     SELF->cleardepthbuffer = YES;
   }
@@ -203,7 +200,6 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [self setSceneGraph:nil];
   [self stopTimers];
-  [SELF->eventconverter release];
   [self setEventHandler:nil];
   delete SELF->scenemanager;
   [SELF release];
@@ -227,24 +223,18 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
     SELF->scenemanager->
       setViewportRegion(SbViewportRegion((short)frame.size.width,
                                          (short)frame.size.height));
-    [self->eventHandler update];
     [[self->sceneGraph camera] updateClippingPlanes:self->sceneGraph];
     SELF->scenemanager->render(SELF->clearcolorbuffer, SELF->cleardepthbuffer);
+    [self->eventHandler update:self];
   }
 }
 
 #pragma mark --- event handling ---
 
-/*" Handles event by either converting it to an %SoEvent and 
-    passes it on to the scenegraph via #handleEventAsCoinEvent:, 
-    or handles it in the viewer itself via #handleEventAsViewerEvent:.
-    
+/*"
     Handling events in the viewer will pass it on to the event handler,
     allowing the use to control camera movement; examination of the scene
     or flying through the scene.
-
-    How events are treated can be controlled via the 
-    #setHandlesEventsInViewer: method.
 
     Returns !{YES} if the event has been handled, !{NO} otherwise. 
 
@@ -260,119 +250,25 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 - (BOOL)handleEvent:(NSEvent *)event
 {
   SC21_LOG_METHOD;
-  if ([self handlesEventsInViewer] == NO ||
-      ([event modifierFlags] & [self modifierForCoinEvent])) {
-    return [self handleEventAsCoinEvent:event];
-  } else {
-    return [self handleEventAsViewerEvent:event];
-  }
-}
 
-/*" Handles event as Coin event, i.e. creates an SoEvent and passes 
-    it on to the scenegraph.
-
-    Returns !{YES} if the event has been handled, !{NO} otherwise.
- "*/
- 
-- (BOOL)handleEventAsCoinEvent:(NSEvent *)event
-{
-  SC21_DEBUG(@"SCController.handleEventAsCoinEvent:");
   BOOL handled = NO;
-  SoEvent * se = [SELF->eventconverter createSoEvent:event 
-                      inDrawable:SELF->drawable];
-  if (se) {
-    handled = SELF->scenemanager->processEvent(se);
-    delete se;
+  SCEventHandler * currenthandler = self->eventHandler;
+  while (currenthandler &&
+         !(handled = [currenthandler controller:self handleEvent:event])) {
+    currenthandler = [currenthandler nextEventHandler];
   }
   return handled;
 }
 
-/*" Handles event as viewer event, i.e. does not send it to the scene
-    graph but interprets it as input for controlling the viewer. 
-
-    Returns !{YES} if the event has been handled, !{NO} otherwise.
-
-    The default implementation does nothing and returns !{NO}.
- "*/
- 
-- (BOOL)handleEventAsViewerEvent:(NSEvent *)event
-{
-  SC21_DEBUG(@"SCController.handleEventAsViewerEvent:");
-  return [self->eventHandler handleEvent:event];
-}
-
-/*" 
-  Sets whether events should be interpreted as viewer events, i.e.
-  are regarded as input for controlling the viewer (yn == YES), or 
-  should be sent to the scene graph directly (yn = NO).
-
-  Events are interpreted as viewer events by default.
-"*/
- 
-- (void)setHandlesEventsInViewer:(BOOL)yn
-{
-  SELF->handleseventsinviewer = yn;
-  [[NSNotificationCenter defaultCenter] 
-    postNotificationName:SCModeChangedNotification object:self];
-}
-
-
-/*" 
-  Returns TRUE if events are interpreted as viewer events, i.e.
-  are regarded as input for controlling the viewer. Returns 
-  FALSE if events are sent to the scene graph directly.
-
-  Events are interpreted as viewer events by default.
-  "*/
-
-- (BOOL)handlesEventsInViewer
-{
-  return SELF->handleseventsinviewer;
-}
-
-- (void)setModifierForCoinEvent:(unsigned int)modifier
-{
-  SELF->modifierforcoinevent = modifier;
-}
-
-- (unsigned int)modifierForCoinEvent
-{
-  return SELF->modifierforcoinevent;
-}
-
-- (void)setEventHandler:(id<SCEventHandling>)handler
+- (void)setEventHandler:(SCEventHandler *)handler
 {
   if (handler != self->eventHandler) {
-
-    if (self->eventHandler) {
-      [[NSNotificationCenter defaultCenter] removeObserver:self->eventHandler 
-                                            name:SCDrawableChangedNotification 
-                                            object:self];
-      [[NSNotificationCenter defaultCenter] removeObserver:self->eventHandler 
-                                            name:SCSceneGraphChangedNotification 
-                                            object:self];
-      [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                            name:SCCursorChangedNotification 
-                                            object:self->eventHandler];
-      [self->eventHandler release];
-    }
-
-    self->eventHandler = handler;
-    if (self->eventHandler) {
-      [self->eventHandler retain];
-      NSNotification * notification = [NSNotification notificationWithName:SCDrawableChangedNotification object:self];
-      [self->eventHandler drawableDidChange:notification];
-      notification = [NSNotification notificationWithName:SCSceneGraphChangedNotification object:self];
-      [self->eventHandler sceneGraphDidChange:notification];
-      
-      [[NSNotificationCenter defaultCenter] addObserver:self->eventHandler selector:@selector(drawableDidChange:) name:SCDrawableChangedNotification object:self];
-      [[NSNotificationCenter defaultCenter] addObserver:self->eventHandler selector:@selector(sceneGraphDidChange:) name:SCSceneGraphChangedNotification object:self];
-      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_SC_cursorDidChange:) name:SCCursorChangedNotification object:self->eventHandler];
-    }
+    [self->eventHandler release];
+    self->eventHandler = [handler retain];
   }
 }
 
-- (id<SCEventHandling>)eventHandler
+- (SCEventHandler *)eventHandler
 {
   return self->eventHandler;
 }
@@ -421,9 +317,6 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   // Force a redraw - otherwise the display wouldn't be refreshed 
   // until the first event or scene change.
   [self sceneManager]->scheduleRedraw();
-  
-  [[NSNotificationCenter defaultCenter]
-    postNotificationName:SCDrawableChangedNotification object:self];
 }
 
 - (id<SCDrawable>)drawable
@@ -585,30 +478,6 @@ Returns YES if the depth buffer is automatically cleared
   return SELF->cleardepthbuffer;
 }
 
-#pragma mark --- delegate handling ---
-
-/*"
-Makes newdelegate the receiver's delegate.
- 
- FIXME: Document what notifications the delegate automatically will
- be registered for (kintel 20040616).
- 
- The delegate doesn't need to implement all of the delegate methods.
- "*/
-- (void)setDelegate:(id)newdelegate
-{
-  SC21_DEBUG(@"SCController.setDelegate");
-  self->delegate = newdelegate;
-}
-
-/*"
-Returns the receiver's delegate.
- "*/
-- (id)delegate
-{
-  return self->delegate;
-}
-
 #pragma mark --- NSCoding conformance ---
 
 /*" Encodes the SCController using encoder coder "*/
@@ -616,10 +485,6 @@ Returns the receiver's delegate.
 - (void)encodeWithCoder:(NSCoder *)coder
 {
   if ([coder allowsKeyedCoding]) {
-    [coder encodeBool:SELF->handleseventsinviewer 
-           forKey:@"SC_handleseventsinviewer"];
-    [coder encodeInt:SELF->modifierforcoinevent 
-           forKey:@"SC_modifierforcoinevent"];
     [coder encodeBool:SELF->clearcolorbuffer 
            forKey:@"SC_clearcolorbuffer"];
     [coder encodeBool:SELF->cleardepthbuffer 
@@ -635,14 +500,10 @@ Returns the receiver's delegate.
   if (self = [super init]) {
     [self _SC_commonInit];
     if ([coder allowsKeyedCoding]) {
-      // We don't need to check for existence since these four keys
+      // We don't need to check for existence since these two keys
       // will always exist.
-      SELF->handleseventsinviewer = 
-        [coder decodeBoolForKey:@"SC_handleseventsinviewer"];
       SELF->clearcolorbuffer = [coder decodeBoolForKey:@"SC_clearcolorbuffer"];
       SELF->cleardepthbuffer = [coder decodeBoolForKey:@"SC_cleardepthbuffer"];
-      SELF->modifierforcoinevent = 
-        [coder decodeIntForKey:@"SC_modifierforcoinevent"];
     }
   }
   return self;
@@ -668,9 +529,6 @@ Returns the receiver's delegate.
   SELF = [[SCControllerP alloc] init];
   sceneGraph = nil;
   
-  SELF->eventconverter = [[SCEventConverter alloc] init];
-//   SELF->redrawselector = @selector(display);
-
   [self setSceneManager:new SoSceneManager];
   SELF->hascreatedscenemanager = YES;
 

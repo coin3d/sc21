@@ -34,10 +34,6 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 // Notification names in SCController and SCSceneGraph
 NSString * SCSceneGraphChangedNotification = @"SCSceneGraphChangedNotification";
 
-// Notification names in SCController
-NSString * SCModeChangedNotification = @"SCModeChangedNotification";
-NSString * SCDrawableChangedNotification = @"SCDrawableChangedNotification";
-
 // Notification names in SCCamera
 NSString * SCViewAllNotification = @"SCViewAllNotification";
 NSString * SCCameraTypeChangedNotification = @"SCCameraTypeChangedNotification";

@@ -25,12 +25,78 @@
  |                                                                 |
  * =============================================================== */
 
-#import <Sc21/SCEventHandler.h>
+#import <Sc21/SCCoinhandler.h>
+#import <Sc21/SCController.h>
+#import "SCEventConverter.h"
+#import "SCUtil.h"
 
-@interface SCEventHandlerP : NSObject
+@interface SCCoinHandlerP : NSObject
 {
+  SCEventConverter * eventconverter;
 }
 @end
 
-@interface SCEventHandler (InternalAPI)
+@implementation SCCoinHandlerP
+@end
+
+@interface SCCoinHandler (InternalAPI)
+- (void)_SC_commonInit;
+@end
+
+#define SELF self->_sc_coinhandler
+
+@implementation SCCoinHandler
+
+- (id)init
+{
+  if (self = [super init]) {
+    [self _SC_commonInit];
+  }
+  return self;
+}
+
+- (void)dealloc
+{
+  [SELF->eventconverter release];
+  [SELF release];
+  [super dealloc];
+}
+
+- (BOOL)controller:(SCController *)controller handleEvent:(NSEvent *)event
+{
+  SC21_DEBUG(@"SCController.handleEventAsCoinEvent:");
+  BOOL handled = NO;
+  SoEvent * se = [SELF->eventconverter createSoEvent:event 
+                      inDrawable:[controller drawable]];
+  if (se) {
+    handled = [controller sceneManager]->processEvent(se);
+    delete se;
+  }
+  return handled;
+}
+
+#pragma mark --- NSCoding conformance ---
+
+- (void)encodeWithCoder:(NSCoder *)coder
+{
+}
+
+- (id)initWithCoder:(NSCoder *)coder
+{
+  if (self = [super init]) {
+    [self _SC_commonInit];
+  }
+  return self;
+}
+
+@end
+
+@implementation SCCoinHandler (InternalAPI)
+
+- (void)_SC_commonInit
+{
+  SELF = [[SCCoinHandlerP alloc] init];
+  SELF->eventconverter = [[SCEventConverter alloc] init];
+}
+
 @end

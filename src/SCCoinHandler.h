@@ -27,10 +27,13 @@
 
 #import <Sc21/SCEventHandler.h>
 
-@interface SCEventHandlerP : NSObject
+@class SCCoinHandlerP;
+
+@interface SCCoinHandler : SCEventHandler <NSCoding>
 {
+ @protected
+  SCCoinHandlerP * _sc_coinhandler;
 }
+
 @end
 
-@interface SCEventHandler (InternalAPI)
-@end
