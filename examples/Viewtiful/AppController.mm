@@ -83,7 +83,7 @@
 {
   NSData *data = [pb dataForType:@"VRML1PboardType"];
   if (data) {
-    MyDocument *doc = [[MyDocument alloc] init];
+    MyDocument *doc = [[[MyDocument alloc] init] autorelease];
     if ([doc loadDataRepresentation:data ofType:@"VRML"]) {
       NSLog(@"loadDataRepresentation OK");
     }
