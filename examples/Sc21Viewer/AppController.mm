@@ -84,15 +84,6 @@
     setHandlesEventsInViewer:([coincontroller handlesEventsInViewer]?NO:YES)];
 }
 
-// Toggles between perspective and orthographic camera.
-
-- (IBAction)toggleCameraType:(id)sender
-{
-  SCCamera * camera = [[coincontroller sceneGraph] camera];
-  [camera convertToType:([camera type] == SCCameraPerspective ? 
-  SCCameraOrthographic : SCCameraPerspective)];
-}
-
 
 // Switches the headlight on and off.
 
@@ -123,7 +114,7 @@
 
 - (IBAction)viewAll:(id)sender
 {
-  [[[coincontroller sceneGraph] camera] viewAll];
+  [[coincontroller sceneGraph] viewAll];
 }
 
 - (IBAction)dumpSceneGraph:(id)sender

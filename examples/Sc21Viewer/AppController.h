@@ -40,7 +40,6 @@
 - (IBAction)open:(id)sender;
 - (IBAction)toggleModes:(id)sender;
 - (IBAction)toggleHeadlight:(id)sender;
-- (IBAction)toggleCameraType:(id)sender;
 - (IBAction)viewAll:(id)sender;
 - (IBAction)showDebugInfo:(id)sender;
 - (IBAction)dumpSceneGraph:(id)sender;
