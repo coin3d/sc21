@@ -145,6 +145,8 @@
 		};
 		E01100B50605E71900F93EC1 = {
 			children = (
+				E04A08450637E7E0002F2C04,
+				E04A08460637E7E0002F2C04,
 				E057B6260621B6E10012C546,
 				E057B6270621B6E10012C546,
 				E057B59A06219ADC0012C546,
@@ -241,6 +243,39 @@
 			path = src/SC21_Prefix.pch;
 			refType = 4;
 			sourceTree = "<group>";
+		};
+		E04A08450637E7E0002F2C04 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCDebug.h;
+			path = src/SCDebug.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E04A08460637E7E0002F2C04 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = SCDebug.mm;
+			path = src/SCDebug.mm;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E04A08470637E7E0002F2C04 = {
+			fileRef = E04A08450637E7E0002F2C04;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E04A08480637E7E0002F2C04 = {
+			fileRef = E04A08460637E7E0002F2C04;
+			isa = PBXBuildFile;
+			settings = {
+			};
 		};
 		E0547AB706073E170089FA12 = {
 			isa = PBXFileReference;
@@ -675,6 +710,7 @@
 				E0EB290E0613442800C54774,
 				E057B59B06219ADC0012C546,
 				E057B6280621B6E10012C546,
+				E04A08470637E7E0002F2C04,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -690,6 +726,7 @@
 				E0EB290D0613442800C54774,
 				E0EB290F0613442800C54774,
 				E057B6290621B6E10012C546,
+				E04A08480637E7E0002F2C04,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
