@@ -61,18 +61,18 @@
  "*/
 
 @interface NSTimer (Sc21Extensions)
-- (void)deactivate;
-- (BOOL)isActive;
+- (void)_SC_deactivate;
+- (BOOL)_SC_isActive;
 @end
 
 @implementation NSTimer (Sc21Extensions)
 
-- (void)deactivate
+- (void)_SC_deactivate
 {
   [self setFireDate:[NSDate distantFuture]];
 }
 
-- (BOOL)isActive
+- (BOOL)_SC_isActive
 {
   // A timer is "active" if its fire date is less than 10000 seconds from now.
   // Note that we cannot compare for "== distantFuture" here, since distantFuture
@@ -568,7 +568,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
                               selector:@selector(_SC_timerQueueTimerFired:) 
                               userInfo:nil 
                               repeats:YES];
-  [SELF->timerqueuetimer deactivate];
+  [SELF->timerqueuetimer _SC_deactivate];
   [[NSRunLoop currentRunLoop] addTimer:SELF->timerqueuetimer 
                               forMode:NSModalPanelRunLoopMode];
   [[NSRunLoop currentRunLoop] addTimer:SELF->timerqueuetimer 
@@ -759,7 +759,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     [SELF->timerqueuetimer 
       setFireDate:[NSDate dateWithTimeIntervalSinceNow:interval.getValue()]];
   } else {
-    [SELF->timerqueuetimer deactivate];
+    [SELF->timerqueuetimer _SC_deactivate];
   }
   
   // If there are any pending SoDelayQueueSensors
