@@ -50,7 +50,6 @@
 - (BOOL) acceptsFirstResponder;
 
 /*" Convenience methods and shortcuts "*/
-- (NSMenuItem *) addMenuEntry:(NSString *)title target:(id)target action:(SEL)selector;
 - (float) aspectRatio;
 - (NSPoint) normalizePoint:(NSPoint)point;
 

@@ -577,23 +577,6 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 // --------------- Convenience methods --------------------
 
-/*" Adds a new menu entry "title" to the view's context menu. When the
-    entry is selected, the action message is sent to target.
-
-    Returns the menu item, in case you want to set more parameters.
- "*/
- 
-- (NSMenuItem *) addMenuEntry:(NSString *)title target:(id)target action:(SEL)selector
-{
-  NSMenuItem * item = [[NSMenuItem alloc] init];
-  [item setTitle:title];
-  [item setTarget:target];
-  [item setAction:selector];
-  [[self menu] addItem:item];
-  [item release]; // retained by menu
-  return item;
-}
-
 /*" Returns the aspect ratio of the SCView. "*/
 
 - (float) aspectRatio
