@@ -30,6 +30,7 @@
 #import <Sc21/SCDebug.h>
 #import <Inventor/SoInput.h>
 #import <Inventor/nodes/SoSeparator.h>
+#import <Inventor/SoSceneManager.h>
 
 @implementation AppController
 
@@ -122,7 +123,7 @@
 
 - (IBAction)dumpSceneGraph:(id)sender
 {
-  [coincontroller dumpSceneGraph];
+  SCDumpSceneGraph([coincontroller sceneManager]->getSceneGraph());
 }
 
 // Delegate method for NSOpenPanel used in open:

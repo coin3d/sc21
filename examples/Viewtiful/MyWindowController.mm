@@ -29,6 +29,7 @@
 #import "MyDocument.h"
 #import <Sc21/SCDebug.h>
 #import <Inventor/nodes/SoSeparator.h>
+#import <Inventor/SoSceneManager.h>
 
 @implementation MyWindowController
 
@@ -80,7 +81,7 @@
 - (IBAction)dumpScenegraph:(id)sender
 {
   NSLog(@"MyWindowController.dumpScenegraph");
-  [controller dumpSceneGraph];
+  SCDumpSceneGraph([controller sceneManager]->getSceneGraph());
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)item
