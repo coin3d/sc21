@@ -28,8 +28,6 @@
 #import "AppController.h"
 #import <Sc21/Sc21.h>
 #import <Sc21/SCDebug.h>
-#import <Sc21/SCExaminerHandler.h>
-#import <Sc21/SCFlyHandler.h>
 #import <Inventor/SoInput.h>
 #import <Inventor/nodes/SoSeparator.h>
 #import <Inventor/SoSceneManager.h>
@@ -125,7 +123,7 @@
 
 - (IBAction)viewAll:(id)sender
 {
-  [coincontroller viewAll];
+  [[[coincontroller sceneGraph] camera] viewAll];
 }
 
 - (IBAction)dumpSceneGraph:(id)sender
@@ -144,7 +142,7 @@
     SCSceneGraph * sg = [[SCSceneGraph alloc] initWithContentsOfFile:[panel filename]];
     if (sg) {
       [coincontroller setSceneGraph:sg];
-      [coincontroller viewAll];
+      [self viewAll:self];
       [filenametext setStringValue:[panel filename]];
     }
     [sg release];

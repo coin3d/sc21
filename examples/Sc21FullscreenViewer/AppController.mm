@@ -126,7 +126,7 @@
 
 - (IBAction)viewAll:(id)sender
 {
-  [coincontroller viewAll];
+  [[[coincontroller sceneGraph] camera] viewAll];
 }
 
 - (IBAction)dumpSceneGraph:(id)sender
@@ -145,7 +145,7 @@
     SCSceneGraph * sg = [[SCSceneGraph alloc] initWithContentsOfFile:[panel filename]];
     if (sg) {
       [coincontroller setSceneGraph:sg];
-      [coincontroller viewAll];
+      [self viewAll:self];
       [filenametext setStringValue:[panel filename]];
     }
     [sg release];
