@@ -37,18 +37,6 @@
 @class SCSceneGraph;
 @class SCCameraP;
 
-/*" Possible camera types in the scene graph.
-    !{SCCameraPerspective} describes an !{SoPerspectiveCamera},
-    and !{SCCameraOrthographic} means an !{SoOrthographicCamera}.
- "*/
-
-typedef enum _SCCameraType {
-  SCCameraUnknown       = -1,
-  SCCameraNone          =  0,
-  SCCameraPerspective   =  1,
-  SCCameraOrthographic  =  2
-} SCCameraType;
-
 @interface SCCamera : NSObject
 {
  @protected
@@ -71,9 +59,8 @@ typedef enum _SCCameraType {
 - (BOOL)updatesClippingPlanes;
 - (void)setUpdatesClippingPlanes:(BOOL)yn;
 
-/*" Accessors "*/ 
-- (SCCameraType)type;
-- (void)setSoCamera:(SoCamera *)camera;
+/*" Accessing the SoCamera "*/ 
+- (void)setSoCamera:(SoCamera *)newcamera;
 - (SoCamera *)soCamera;
 
   /*" Delegate handling. "*/
@@ -86,11 +73,6 @@ typedef enum _SCCameraType {
 - (void)adjustNearClippingPlane:(float *)near 
   farClippingPlane:(float *)far;
 @end
-
-/*" Posted whenever the camera has been repositioned so that
-    the whole scene can be seen.
-"*/
-SC21_EXTERN NSString * SCViewAllNotification;
 
 /*" Posted whenever the camera type has been changed.
 "*/
