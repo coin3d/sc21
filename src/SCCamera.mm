@@ -181,8 +181,6 @@
 
 - (void)zoom:(float)delta
 {
-  NSLog(@"SCCamera.zoom: %f", delta);
-
   if (delta == 0 || SELF->camera == NULL) return;
   
   float factor = float(exp(delta * 20.0f)); // Multiply by 20 to get a good
@@ -381,13 +379,15 @@
 }
 
 /*"
-Translate camera relative to its own coordinate system.
- 
- In its own coordinate system, the camera is pointing in negative
- Z direction with the Y axis being up.
- "*/
+  Translate camera relative to its own coordinate system.
+  
+  In its own coordinate system, the camera is pointing in negative
+  Z direction with the Y axis being up.
+  "*/
 - (void)translate:(SbVec3f)v
 {
+  if (SELF->camera == NULL) return;
+
   SbVec3f pos = SELF->camera->position.getValue();
   SbRotation r = SELF->camera->orientation.getValue();
   r.multVec(v, v);
