@@ -184,6 +184,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     [self _SC_commonInit];
     SELF->autoclipvalue = 0.6;
     SELF->handleseventsinviewer = YES;
+    SELF->clearcolorbuffer = YES;
+    SELF->cleardepthbuffer = YES;
   }
   return self;
 }
@@ -711,12 +713,12 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     
 - (id)initWithCoder:(NSCoder *)coder
 {
+  // FIXME: Change to [SCController version]. kyrah 20040629.
   if ([coder versionForClassName:@"SCController"] == 0) {
     [self _SC_commonInit];
     SELF->oldcontroller = [[NSResponder alloc] initWithCoder:coder];
     return self;
-  }
-  else if (self = [super init]) {
+  } else if (self = [super init]) {
     [self _SC_commonInit];
     if ([coder allowsKeyedCoding]) {
       // We don't need to check for existence since these four keys
@@ -915,6 +917,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   }
   return light;
 }
+
+
 
 
 /*" Find camera in root. Returns a pointer to the camera, if found,
