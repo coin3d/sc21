@@ -39,7 +39,7 @@
 void selection_cb(void *userdata, SoPath *path)
 {
   NSLog(@"Selected object!");
-  ((SoGroup *)userdata)->touch();
+  path->getTail()->touch();
 }
 
 @implementation AppController
@@ -130,7 +130,7 @@ void selection_cb(void *userdata, SoPath *path)
   root->addChild(new SoDirectionalLight);
   root->addChild(new SoPerspectiveCamera);
   SoSelection * selection = new SoSelection;
-  selection->addSelectionCallback(selection_cb, scenegraph);
+  selection->addSelectionCallback(selection_cb, NULL);
   selection->addChild(scenegraph);
   root->addChild(selection);
   return root;
