@@ -5,10 +5,10 @@
 	<key>IFPkgDescriptionDeleteWarning</key>
 	<string></string>
 	<key>IFPkgDescriptionDescription</key>
-	<string>SC21 framework @VERSION@ by Systems in Motion</string>
+	<string>SC21 0.1.2 by Systems in Motion AS</string>
 	<key>IFPkgDescriptionTitle</key>
-	<string>SC21</string>
+	<string>SC21 framework</string>
 	<key>IFPkgDescriptionVersion</key>
-	<string>@VERSION@</string>
+	<string>0.1.2</string>
 </dict>
 </plist>
