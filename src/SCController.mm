@@ -245,10 +245,10 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
     on.
 
     Note that the Sc21 way of handling events is different from the one taken
-    in NSView and its subclasses. (We send all the events from the view to the
-    controller's handleEvent message.)
-    All events are sent from %view to the controller via the
-    !{handleEvent:} message. 
+    in NSView and its subclasses: All the events received by the view are sent to the
+    controller's !{handleEvent:} method. Please refer to
+    http://www.coin3d.org/mac/Sc21/eventhandling/ for an overview of
+    the Sc21 eventhandling system.
 
     For overriding the default behavior of ctrl-clicks (context menu),
     see !{-SCView.mouseDown:}
@@ -269,10 +269,8 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 }
 
 /*" 
-  Set the Controller's eventhandler. Note that this eventhandler is really
-  the start of an eventhandler chain -- see
-  http://www.coin3d.org/mac/Sc21/eventhandling/ for an overview of the
-  Sc21 eventhandling system.
+  Set the Controller's eventhandler, which will be the start of the
+  eventhandler chain.(See handleEvent: for more information.)
 "*/
     
 - (void)setEventHandler:(SCEventHandler *)handler
@@ -348,11 +346,12 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   return sceneGraph; 
 }
 
-/*"
+/*" 
   Sets the current scene manager to scenemanager. The scene manager's
-  render callback will be set to %redraw_cb (SCController's default
-  redraw callback), and it will be activated. Also, if a scenegraph
-  has been set earlier, scenemanager's scenegraph will be set to it.
+  render callback will be set to SCController's internal redraw
+  callback implementation; and scenemanager will be activated. Also,
+  if a scenegraph has been set earlier, scenemanager's scenegraph will
+  be set to it.
   
   Note that you should not normally need to call that method, since a
   scene manager is created for you while initializing.

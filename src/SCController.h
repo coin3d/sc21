@@ -54,13 +54,17 @@ class SoSceneManager;
 /*" Coin rendering and related functionality "*/
 - (void)render;
 
-/*" Accessors "*/
+/*" Accessing the drawable "*/
 - (void)setDrawable:(id<SCDrawable>)newdrawable;
 - (id<SCDrawable>)drawable;
+
+/*" Accessing the scenegraph and scenemanager "*/
 - (void)setSceneGraph:(SCSceneGraph *)scenegraph;
 - (SCSceneGraph *)sceneGraph;
 - (void)setSceneManager:(SoSceneManager *)scenemanager;
 - (SoSceneManager *)sceneManager;
+
+/*" Render settings "*/
 - (void)setBackgroundColor:(NSColor *)color;
 - (NSColor *)backgroundColor;
 - (void)setClearsColorBuffer:(BOOL)yesno;
