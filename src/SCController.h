@@ -73,12 +73,10 @@ class SoSceneManager;
 - (SoSceneManager *)sceneManager;
 - (void)setBackgroundColor:(NSColor *)color;
 - (NSColor *)backgroundColor;
-- (void)setAutoClipValue:(float)autoclipvalue;
-- (float)autoClipValue;
-- (void)setClearColorBuffer:(BOOL)yesno;
-- (BOOL)clearColorBuffer;
-- (void)setClearDepthBuffer:(BOOL)yesno;
-- (BOOL)clearDepthBuffer;
+- (void)setClearsColorBuffer:(BOOL)yesno;
+- (BOOL)clearsColorBuffer;
+- (void)setClearsDepthBuffer:(BOOL)yesno;
+- (BOOL)clearsDepthBuffer;
 - (void)viewSizeChanged:(NSRect)size;
 
 /*" Event handling "*/
@@ -101,8 +99,6 @@ class SoSceneManager;
 @interface NSObject (SCControllerDelegate)
 - (unsigned int)modifierForCoinEvent;
 - (BOOL)handleEvent:(NSEvent *)event inView:(NSView *)view;
-- (SoGroup *)willSetSceneGraph:(SoGroup *)scenegraph;
-- (void)didSetSceneGraph:(SoGroup *)superscenegraph;
 @end
 
 // --------------------- Notifications ------------------------

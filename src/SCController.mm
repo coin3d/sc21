@@ -347,30 +347,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   return SELF->scenemanager; 
 }
 
-/*" Sets the autoclip value to value.
-
-    This value influences the automatic setting of the near and
-    far clipping plane. The default should be good enough in most 
-    cases, so if you do not know what this means, don't worry.
-    If you are interested, check out the code in
-    !{- (float) _bestValueForNearPlane:(float)near farPlane:(float) far}
-    in SCCamera.
-
-    The default value is 0.6.
- "*/
-
-- (void)setAutoClipValue:(float)autoclipvalue
-{
-  [[scenegraph camera] setAutoClipValue:autoclipvalue];
-}
-
-/*" Returns the current autoclipvalue. The default value is 0.6. "*/
-
-- (float)autoClipValue
-{
-  return [[scenegraph camera] autoClipValue];
-}
-
 /*" Renders the scene. "*/
 
 - (void)render
@@ -421,7 +397,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   
   The default value is YES.
   "*/
-- (void)setClearColorBuffer:(BOOL)yesno
+- (void)setClearsColorBuffer:(BOOL)yesno
 {
   SELF->clearcolorbuffer = yesno;
 }
@@ -432,7 +408,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   
   The default value is YES.
   "*/
-- (BOOL)clearColorBuffer
+- (BOOL)clearsColorBuffer
 {
   return SELF->clearcolorbuffer;
 }
@@ -443,7 +419,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   
   The default value is YES.
   "*/
-- (void)setClearDepthBuffer:(BOOL)yesno
+- (void)setClearsDepthBuffer:(BOOL)yesno
 {
   SELF->cleardepthbuffer = yesno;
 }
@@ -454,7 +430,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   
   The default value is YES.
   "*/
-- (BOOL)clearDepthBuffer
+- (BOOL)clearsDepthBuffer
 {
   return SELF->cleardepthbuffer;
 }
@@ -856,6 +832,5 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     if ([sig numberOfArguments] == 3) [SELF->redrawinvocation setArgument:self atIndex:2];
   }
 }
- 
 
 @end

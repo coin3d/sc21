@@ -49,8 +49,8 @@
   SCController *sccontroller = [self object];
 
   [sccontroller setHandlesEventsInViewer:([handleEvents selectedCell] == handleEventsInViewer)];
-  [sccontroller setClearColorBuffer:([clearcolorbuffer state] == NSOnState)];
-  [sccontroller setClearDepthBuffer:([cleardepthbuffer state] == NSOnState)];
+  [sccontroller setClearsColorBuffer:([clearcolorbuffer state] == NSOnState)];
+  [sccontroller setClearsDepthBuffer:([cleardepthbuffer state] == NSOnState)];
 
   [super ok:sender];
 }
@@ -64,9 +64,9 @@
     ([sccontroller handlesEventsInViewer] ? 
      handleEventsInViewer : handleEventsInSceneGraph)];
   [clearcolorbuffer 
-    setState:([sccontroller clearColorBuffer] ? NSOnState : NSOffState)];
+    setState:([sccontroller clearsColorBuffer] ? NSOnState : NSOffState)];
   [cleardepthbuffer 
-    setState:([sccontroller clearDepthBuffer] ? NSOnState : NSOffState)];
+    setState:([sccontroller clearsDepthBuffer] ? NSOnState : NSOffState)];
 
   [super revert:sender];
 }
