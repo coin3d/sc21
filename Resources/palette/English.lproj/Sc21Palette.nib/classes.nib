@@ -1,6 +1,7 @@
 {
     IBClasses = (
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = NSObject; LANGUAGE = ObjC; }, 
         {
             CLASS = SC21Palette; 
             LANGUAGE = ObjC; 
@@ -13,7 +14,12 @@
             }; 
             SUPERCLASS = IBPalette; 
         }, 
-        {CLASS = SCController; LANGUAGE = ObjC; SUPERCLASS = NSResponder; }, 
+        {
+            CLASS = SCController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {delegate = id; }; 
+            SUPERCLASS = NSObject; 
+        }, 
         {CLASS = SCExaminerController; LANGUAGE = ObjC; SUPERCLASS = SCController; }, 
         {CLASS = SCOpenGLView; LANGUAGE = ObjC; SUPERCLASS = NSView; }, 
         {
