@@ -30,65 +30,6 @@
 
 // --------------------- Actions ---------------------------
 
-/*" Collects debugging information about the OpenGL implementation
-    (vendor, renderer, version, available extensions, limitations),
-    the Coin version we are using, and the current OpenGL settings
-    (color depth, z buffer, accumulation buffer). Displays this
-    information by calling the #displayInfo: method.
-
-    The sender argument is ignored.
- "*/
-
-- (IBAction) debugInfo:(id)sender
-{
-  GLint depth;
-  GLint colors[4];
-  GLint accum[4];
-  GLint maxviewportdims[2];
-  GLint maxtexsize, maxlights, maxplanes;
-  
-  GLboolean doublebuffered;
-  const GLubyte * vendor = glGetString(GL_VENDOR);
-  const GLubyte * renderer = glGetString(GL_RENDERER);
-  const GLubyte * version = glGetString(GL_VERSION);
-  const GLubyte * extensions = glGetString(GL_EXTENSIONS);
-
-  glGetIntegerv(GL_DEPTH_BITS, &depth);
-  glGetIntegerv(GL_RED_BITS, &colors[0]);
-  glGetIntegerv(GL_GREEN_BITS, &colors[1]);
-  glGetIntegerv(GL_BLUE_BITS, &colors[2]);
-  glGetIntegerv(GL_ALPHA_BITS, &colors[3]);
-  glGetIntegerv(GL_ACCUM_RED_BITS, &accum[0]);
-  glGetIntegerv(GL_ACCUM_GREEN_BITS, &accum[1]);
-  glGetIntegerv(GL_ACCUM_BLUE_BITS, &accum[2]);
-  glGetIntegerv(GL_ACCUM_ALPHA_BITS, &accum[3]);
-  glGetIntegerv(GL_MAX_VIEWPORT_DIMS, maxviewportdims);
-  glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxtexsize);
-  glGetIntegerv(GL_MAX_LIGHTS, &maxlights);
-  glGetIntegerv(GL_MAX_CLIP_PLANES, &maxplanes);
-  glGetBooleanv(GL_DOUBLEBUFFER, &doublebuffered);
-
-  NSMutableString * info = [NSMutableString stringWithCapacity:100];
-  [info appendFormat:@"Coin version: %@\n", [controller coinVersion]];
-  [info appendFormat:@"Vendor: %s\n", (const char *)vendor];
-  [info appendFormat:@"Renderer: %s\n", (const char *)renderer];
-  [info appendFormat:@"Version: %s\n", (const char *)version];
-  [info appendFormat:@"Color depth (RGBA): %d, %d, %d, %d\n",
-    colors[0], colors[1], colors[2], colors[3]];
-  [info appendFormat:@"Accumulation buffer depth (RGBA): %d, %d, %d, %d\n",
-    accum[0], accum[1], accum[2], accum[3]];
-  [info appendFormat:@"Depth buffer: %d\n", depth];
-  [info appendFormat:@"Doublebuffering: %s\n", doublebuffered ? "on" : "off"];
-  [info appendFormat:@"Maximum viewport dimensions: <%d, %d>\n",
-                     maxviewportdims[0], maxviewportdims[1]];
-  [info appendFormat:@"Maximum texture size: %d\n", maxtexsize];
-  [info appendFormat:@"Maximum number of lights: %d\n", maxlights];
-  [info appendFormat:@"Maximum number of clipping planes: %d\n", maxplanes];
-  [info appendFormat:@"OpenGL extensions: %s\n", (const char *)extensions];
-  
-  [self displayInfo:info];
-}
-
 
 // ----------------- initialization and cleanup ----------------------
 

@@ -15,9 +15,6 @@
   int _depthbits;  /*" specifies the z buffer resolution. "*/
 }
 
-/*" Actions "*/
-- (IBAction) debugInfo:(id)sender;
-
 /*" Initializing an SCView "*/
 - (id) initWithFrame:(NSRect)rect;
 - (void) awakeFromNib;
