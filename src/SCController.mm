@@ -61,6 +61,7 @@
 
 @interface NSTimer (SC21Extensions)
 - (void)deactivate;
+- (BOOL)isActive;
 @end
 
 @implementation NSTimer (SC21Extensions)
@@ -68,6 +69,14 @@
 - (void)deactivate
 {
   [self setFireDate:[NSDate distantFuture]];
+}
+
+- (BOOL)isActive
+{
+  // A timer is "active" if its fire date is less than 10000 seconds from now.
+  // Note that we cannot compare for "== distantFuture" here, since distantFuture
+  // is "current time + a high number" (i.e. the actual date changes with time)
+  return ([self fireDate] < [NSDate dateWithTimeIntervalSinceNow:10000]);
 }
 @end
 
@@ -109,7 +118,9 @@ NSString * SCModeChangedNotification = @"SCModeChangedNotification";
 NSString * SCSceneGraphChangedNotification = @"SCSceneGraphChangedNotification";
 NSString * SCNoCameraFoundInSceneNotification = @"SCNoCameraFoundInSceneNotification";
 NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotification";
-NSString * SCIdleNotification = @"SCIdleNotification";
+
+// internal
+NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 @implementation SCController
 
@@ -183,8 +194,10 @@ NSString * SCIdleNotification = @"SCIdleNotification";
   [self setSceneManager:new SoSceneManager];
 
   [[NSNotificationCenter defaultCenter] addObserver:self
-    selector:@selector(_idle:) name:SCIdleNotification
-    object:nil];
+    selector:@selector(_idle:) name:_SCIdleNotification
+    object:self];
+
+  SoDB::setRealTimeInterval(SbTime(1/60.0));
 
   [self _sensorQueueChanged];
 }
@@ -700,7 +713,10 @@ NSString * SCIdleNotification = @"SCIdleNotification";
 
 - (void)_timerQueueTimerFired:(NSTimer *)t
 {
-  // NSLog(@"timerQueueTimerFired");
+  // The timer might fire after the view has
+  // already been destroyed...
+  if (!view) return; 
+  //NSLog(@"timerQueueTimerFired");
   SoDB::getSensorManager()->processTimerQueue();
   [self _sensorQueueChanged];
 }
@@ -709,7 +725,10 @@ NSString * SCIdleNotification = @"SCIdleNotification";
 
 - (void)_delayQueueTimerFired:(NSTimer *)t
 {
-  // NSLog(@"delayQueueTimerFired");
+  // The timer might fire after the view has
+  // already been destroyed...
+  if (!view) return; 
+  //NSLog(@"delayQueueTimerFired");
   SoDB::getSensorManager()->processTimerQueue();
   SoDB::getSensorManager()->processDelayQueue(FALSE);
   [self _sensorQueueChanged];
@@ -719,8 +738,10 @@ NSString * SCIdleNotification = @"SCIdleNotification";
 
 - (void)_idle:(NSNotification *)notification
 {
-  // FIXME: Implement mechanism to call this function  
-  // NSLog(@"doing idle processing");
+  // We might get the notification after the view has
+  // already been destroyed...
+  if (!view) return; 
+  //NSLog(@"doing idle processing");
   SoDB::getSensorManager()->processTimerQueue();
   SoDB::getSensorManager()->processDelayQueue(TRUE);
   [self _sensorQueueChanged];
@@ -745,13 +766,17 @@ NSString * SCIdleNotification = @"SCIdleNotification";
   
   if (sm->isDelaySensorPending()) {
     [[NSNotificationQueue defaultQueue] enqueueNotification:[NSNotification 
-      notificationWithName:SCIdleNotification object:self]
+      notificationWithName:_SCIdleNotification object:self]
       postingStyle:NSPostWhenIdle coalesceMask:NSNotificationCoalescingOnName
-      forModes:[NSArray arrayWithObjects: NSDefaultRunLoopMode, 
-      NSModalPanelRunLoopMode, NSEventTrackingRunLoopMode, nil]];
-    [_delayqueuetimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:0.08]];
+      forModes:[NSArray arrayWithObjects: NSDefaultRunLoopMode, NSModalPanelRunLoopMode,
+      NSEventTrackingRunLoopMode, nil]];
+    if (![_delayqueuetimer isActive]) {
+      [_delayqueuetimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:0.08]];
+    }
   } else {
-    [_delayqueuetimer deactivate];
+    if ([_delayqueuetimer isActive]) {
+      [_delayqueuetimer deactivate];
+    }
   }
 }
 
