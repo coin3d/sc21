@@ -313,7 +313,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
       
     case NSOtherMouseDragged:
       p = [view convertPoint:[event locationInWindow] fromView:nil];
-      [self dragWithPoint:p];
+      [self panWithPoint:p];
       handled = YES;
       break;
 
