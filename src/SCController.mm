@@ -25,7 +25,6 @@
  |                                                                 |
  * =============================================================== */
  
-
 #import <Sc21/SCController.h>
 #import <Sc21/SCEventConverter.h>
 
@@ -53,13 +52,14 @@
 #define PRIVATE(p) ((p)->sccontrollerpriv)
 #define SELF PRIVATE(self)
 
-/*" Provide interface for deaction of NSTimer instance.  The
-    current implementation sets the timer's fireDate to
-    "distantFuture" (cf. NSDate) but hopefully activation and
-    deactivation will be supported in the timer itself in the
-    future.
- "*/
-
+/*" 
+  Provide interface for deaction of NSTimer instance.
+  
+  The current implementation sets the timer's fireDate to
+  "distantFuture" (cf. NSDate) but hopefully activation and
+  deactivation will be supported in the timer itself in the
+  future.
+  "*/
 @interface NSTimer (Sc21Extensions)
 - (void)_SC_deactivate;
 - (BOOL)_SC_isActive;
@@ -75,14 +75,20 @@
 - (BOOL)_SC_isActive
 {
   // A timer is "active" if its fire date is less than 10000 seconds from now.
-  // Note that we cannot compare for "== distantFuture" here, since distantFuture
-  // is "current time + a high number" (i.e. the actual date changes with time)
+  // Note that we cannot compare for "== distantFuture" here, since
+  // distantFuture is "current time + a high number" (i.e. the actual 
+  // date changes with time)
   return ([self fireDate] < [NSDate dateWithTimeIntervalSinceNow:10000]);
 }
 @end
 
-// -------------------- Callback function ------------------------
+// -------------------- Callback functions ------------------------
 
+// This function is the SoSceneManager render callback.
+// Will tell our redraw handler (typically an SCView, but can
+// be anyone maintaining an OpenGL context) to redraw.
+// The invoked redraw method usually makes its OpenGL context
+// active and calls SCController's -render method.
 static void
 redraw_cb(void * user, SoSceneManager *)
 {
@@ -90,43 +96,57 @@ redraw_cb(void * user, SoSceneManager *)
   [PRIVATE(selfp)->redrawinv invoke];
 }
 
+// This function is the SoSensorManager change callback.
+// Note that in a multi-threaded Coin app, this callback
+// can be called simultaneously from multiple threads.
+// FIXME: Make sure that this function and whatever is called
+// is thread-safe and will execute tasks in the correct threads
+// (e.g. rendering in the main thread) (kintel 20040616).
 static void
 sensorqueuechanged_cb(void * data)
 {
-  // NSLog(@"sensorqueuechanged_cb");
-  SCController * ctrl = (SCController *)data;
-  [ctrl _SC_sensorQueueChanged];
+  SCController * selfp = (SCController *)data;
+  [selfp _SC_sensorQueueChanged];
 }
 
-// internal
+// Internal. Used for triggering delayqueue sensors when idle.
 NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 @implementation SCController
 
-/*" An SCController is the main component for rendering Coin 
-    scenegraphs. It handles all actual scene management, 
-    rendering, event translation etc.
+/*" 
+  An SCController is the main component for rendering Coin scene
+  graphs. It handles all actual scene management, rendering, event
+  translation etc.
 
-    Note that since Coin is a data driven API, redraws can be
-    requested by the scene graph itself. To handle these redraws,
-    the controller must be given an object and a selector that should
-    called upon such a redraw request. This is automatically handled
-    by SCView but if you want to use an SCController without having 
-    an SCView (e.g. when doing fullscreen rendering), you should 
-    setup this yourself using -setRedrawHandler and -setRedrawSelector.
- "*/
+  The simplest use of this class is to connect to it from an SCView
+  instance and set a scene graph using -setSceneGraph:.
+  
+  Since Coin is a data driven API, redraws are usually requested by
+  the scene graph itself. To handle these redraws, the controller must
+  be given an object and a selector that should called upon such a
+  redraw request. This is automatically handled by SCView but if you
+  want to use an SCController without having an SCView (e.g. when
+  doing fullscreen rendering), you should setup this yourself using
+  -setRedrawHandler and -setRedrawSelector.
+  "*/
 
 
-/*" Initializes Coin by calling !{SoDB::init()},
-    !{SoInteraction::init()} and !{SoNodeKit::init()}.
+/*" 
+  Initializes Coin.
 
-    Call this method if you want to use Coin functionality before actually
-    instantiating an SCController in your application (e.g. if you want to
-    read a 3D models using SoDB::readAll() and load the nib file containing
-    your SCView and SCController only if the file was read successfully).
+  SCController automatically calls this method if needed.
 
-    SCController's initializer automatically calls this function if needed. 
-"*/
+  You need to call this method explicitly only if you want to use Coin
+  functionality before actually instantiating an SCController in your
+  application (e.g. if you want to read a 3D models using
+  SoDB::readAll() and load the nib file containing your SCView and
+  SCController only if the file was read successfully).
+  
+
+  This method calls !{SoDB::init()}, !{SoInteraction::init()} and
+  !{SoNodeKit::init()}.
+  "*/
 + (void)initCoin
 {       
   // This is _not_ done in +initialize since we want to allow people
@@ -136,9 +156,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     SoDB::init();
     SoInteraction::init();
     SoNodeKit::init();
-    //FIXME: After the sensor fixes in Coin, this is probably
-    //       not needed anymore (kintel 20040513)
-    SoDB::setRealTimeInterval(SbTime(1/60.0));
     initialized = YES;
   }
 }
@@ -155,15 +172,11 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   [SCController setVersion:1];
 }
 
-/*" Initializes a newly allocated SCController, and calls #initCoin
-    By default, events will be interpreted as viewer events (see 
-    #handleEvent: documentation for more information about
-    the event handling model).
-
-    This method is the designated initializer for the SCController
-    class. Returns !{self}.
- "*/
-
+/*"
+  Designated initializer.
+  
+  Initializes a newly allocated SCController and calls #initCoin.
+  "*/
 - (id)init
 {
   if (self = [super init]) {
@@ -174,13 +187,12 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   return self;
 }
 
-/* Clean up after ourselves. */
 - (void)dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [self stopTimers];
   SELF->redrawhandler = nil;
-  [self _SC_setupRedrawInvocation];
+  [self _SC_setupRedrawInvocation]; // will release related objects
   [SELF->eventconverter release];
   [SELF->camera release];
   delete SELF->scenemanager;
@@ -188,12 +200,23 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   [super dealloc];
 }
 
+/*"
+  Makes newdelegate the receiver's delegate.
+
+  FIXME: Document what notifications the delegate automatically will
+  be registered for (kintel 20040616).
+
+  The delegate doesn't need to implement all of the delegate methods.
+  "*/
 - (void)setDelegate:(id)newdelegate
 {
   NSLog(@"SCController.setDelegate");
   self->delegate = newdelegate;
 }
 
+/*"
+  Returns the receiver's delegate.
+  "*/
 - (id)delegate
 {
   return self->delegate;
@@ -201,30 +224,32 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 // ------------------- rendering and scene management ---------------------
 
-/*!
+/*"
   Sets the object that should handle redraw messages generated
   by the scene graph.
 
   This is automatically set by SCView.setController and should only
   need to be set when not rendering into an SCView (e.g. when doing
   fullscreen rendering).
-*/
+
+  #{See Also:} #{-redrawHandler}, #{-setRedrawSelector}
+  "*/
 - (void)setRedrawHandler:(id)handler
 {
   SELF->redrawhandler = handler;
   [self _SC_setupRedrawInvocation];
 }
 
-/*!
-  Returns the redraw handler previously set by -setRedrawHandler
+/*"
+  Returns the redraw handler previously set by -setRedrawHandler:
   or nil if no redraw handler has been set.
-*/
+  "*/
 - (id)redrawHandler
 {
   return SELF->redrawhandler;
 }
 
-/*!
+/*"
   Sets the selector to be performed on the object set by -setRedrawHandler.
 
   This defaults to @selector(display), but can be changed to any selector
@@ -233,48 +258,53 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
   If the given selector doesn't conform, an NSInvalidArgumentException
   will be raised.
-*/
+  "*/
 - (void)setRedrawSelector:(SEL)sel
 {
   SELF->redrawsel = sel;
   [self _SC_setupRedrawInvocation];
 }
 
-/*!
+/*"
   Returns the redraw selector previously set by -setRedrawSelector or
   nil if no redraw selector has been set.
-
-  FIXME: Should we use nil for selectors or NULL, 0 or smth.?
-  (kintel 20040513)
-*/
+  "*/
 - (SEL)redrawSelector
 {
   return SELF->redrawsel;
 }
 
-/*" FIXME: Write doc for delegate methods
-    Sets the scene graph that shall be rendered. You do not need to 
-    !{ref()} the node before passing it to this method. If sg is NULL,
-    an empty scenegraph consisting of a single SoSeparator node will
-    be created and set. 
+/*"
+  Sets the scene graph that shall be rendered.
 
-    Note that the scenegraph is not modified in any way, i.e. you must
-    set up your own headlight and camera to be able to see anything. For
-    automatic setup of a camera and headlight if needed, use the
-    #SCExaminerController class.
+  If scenegraph is NULL, an empty scenegraph consisting of a single 
+  SoSeparator node will be created and set. 
 
-    If no light is found in the scenegraph, an
-    %SCNoLightFoundInSceneNotification notification is posted. If no
-    camera is found in the scenegraph, an
-    %SCNoCameraFoundInSceneNotification is posted. Register for these
-    notifications if you want to warn your users that they will not be
-    able to see anything.
- "*/
+  Before the scene graph is set, the delegate method -willSetSceneGraph:
+  will be called. The return value of this method will be used as the
+  actual scene graph. This delegate method can be used to set up a
+  super scene graph containing lights, cameras etc. If this method
+  returns NULL, no scene graph will be set.
+  If no delegate has been set for this class or if it doesn't implement
+  the -willSetSceneGraph: method, we will fall back to an internal
+  implementation which does the following:
+  o Adds a headlight.
+  o Enables the headlight if no lights are found in the scene graph
+  o Create a perspective camera if no cameras are found in the scene graph
+  o Use the first found camera as the active camera
 
+  After a scene graph is set, the delegate method -didSetSceneGraph:
+  is called with the super scene graph as parameter.
+
+
+
+  Both the passed and the actual scene graph will be !{ref()}'ed.
+  "*/
 - (void)setSceneGraph:(SoGroup *)scenegraph
 {
-  NSLog(@"SetSceneGraph called with %p", scenegraph);
   if (scenegraph == SELF->scenegraph) return;
+
+  // Clean up existing scene graph
   if (SELF->scenegraph) SELF->scenegraph->unref();
   if (SELF->superscenegraph) SELF->superscenegraph->unref();
   SELF->scenegraph = SELF->superscenegraph = NULL;
@@ -282,13 +312,18 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   [self setHeadlightIsOn:NO];
 
   if (scenegraph == NULL) {
+    [self stopTimers];   // Don't waste cycles by animating an empty scene
+    // Create an empty scene graph
+    // Why do we create an SoSeparator instead of keeping the scenegraph
+    // as NULL? (kintel 20040616)
     SELF->superscenegraph = SELF->scenegraph = new SoSeparator;
-    [self stopTimers];   // Don't waste cycles by animating an empty scene. 
     SELF->superscenegraph->ref();
     SELF->scenegraph->ref();
   }
   else {
     scenegraph->ref();
+
+    // super scene graph creation
     if (self->delegate && 
         [self->delegate respondsToSelector:@selector(willSetSceneGraph:)]) {
       SELF->superscenegraph = (SoGroup *)[self->delegate willSetSceneGraph:scenegraph];
@@ -296,6 +331,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     else {
       SELF->superscenegraph = [self _SC_createSuperSceneGraph:scenegraph];
     }
+
+    // Successful super scene graph creation
     if (SELF->superscenegraph) {
       SELF->scenegraph = scenegraph;
       SELF->superscenegraph->ref();
@@ -315,7 +352,9 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
       [self startTimers];
     }
     else {
+      // NULL super scene graph => leave everything at NULL
       scenegraph->unrefNoDelete();
+      if (SELF->scenemanager) SELF->scenemanager->setSceneGraph(NULL);
     }
   }
 
@@ -359,7 +398,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   return SELF->scenemanager; 
 }
 
-/*" Sets the autoclip value to value. The default value is 0.6.
+/*" Sets the autoclip value to value.
 
     This value influences the automatic setting of the near and
     far clipping plane. The default should be good enough in most 
@@ -367,6 +406,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     If you are interested, check out the code in
     !{- (float) _bestValueForNearPlane:(float)near farPlane:(float) far}
     in SCCamera.
+
+    The default value is 0.6.
  "*/
 
 - (void)setAutoClipValue:(float)autoclipvalue
@@ -538,9 +579,12 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   return NO;
 }
 
-/*" Sets whether events should be interpreted as viewer events, i.e.
-    are regarded as input for controlling the viewer (yn == YES), or 
-    should be sent to the scene graph directly (yn = NO) 
+/*" 
+  Sets whether events should be interpreted as viewer events, i.e.
+  are regarded as input for controlling the viewer (yn == YES), or 
+  should be sent to the scene graph directly (yn = NO).
+
+  Events are interpreted as viewer events by default.
 "*/
  
 - (void)setHandlesEventsInViewer:(BOOL)yn
@@ -551,10 +595,13 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 }
 
 
-/*" Returns TRUE if events are interpreted as viewer events, i.e.
-    are regarded as input for controlling the viewer. Returns 
-    FALSE if events are sent to the scene graph directly.
- "*/
+/*" 
+  Returns TRUE if events are interpreted as viewer events, i.e.
+  are regarded as input for controlling the viewer. Returns 
+  FALSE if events are sent to the scene graph directly.
+
+  Events are interpreted as viewer events by default.
+  "*/
 
 - (BOOL)handlesEventsInViewer
 {
@@ -593,7 +640,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
                               forMode:NSModalPanelRunLoopMode];
   [[NSRunLoop currentRunLoop] addTimer:SELF->timerqueuetimer 
                               forMode:NSEventTrackingRunLoopMode];
-  
+
   SoDB::getSensorManager()->setChangedCallback(sensorqueuechanged_cb, self);
 }
 
