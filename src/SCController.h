@@ -55,10 +55,8 @@ class SoSceneManager;
 
 /*" Initializing and encoding/decoding an SCController "*/
 - (id) init;
-- (id) initWithCoder:(NSCoder *)coder;
 - (void) commonInit;
 - (void) activate;
-- (void) encodeWithCoder:(NSCoder *)coder;
 
 /*" Getting the view associated with the controller "*/
 - (void) setView:(SCView *) newview;

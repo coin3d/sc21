@@ -47,8 +47,6 @@ class SoDirectionalLight;
 /*" Initializing and encoding/decoding an SCExaminerController "*/
 - (id) init;
 - (void) commonInit;
-- (id) initWithCoder:(NSCoder *) coder;
-- (void) encodeWithCoder:(NSCoder *) coder;
 
 /*" Coin rendering and related functionality "*/
 - (void) render;
