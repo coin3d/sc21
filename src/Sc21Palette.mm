@@ -27,48 +27,97 @@
  
 
 #import "SC21Palette.h"
-#import <SC21/SCExaminerController.h>
-
 #import <Inventor/SoDB.h>
 
 @implementation SC21Palette
 
+- (void)dealloc
+{
+  [scview release];
+  [sccontroller release];
+  [scexaminercontroller release];
+  [super dealloc];
+}
+
 - (void)finishInstantiate
 {
   NSLog(@"SC21Palette.finishInstantiate");
-  scview = [[SCView alloc] initWithFrame:[viewbutton bounds]];
-  [self associateObject:scview
-                 ofType:IBViewPboardType
-               withView:viewbutton];
+  scview = [[SCView alloc] initWithFrame:[scviewitem bounds]];
+  sccontroller = [[SCController alloc] init];
+  scexaminercontroller = [[SCExaminerController alloc] init];
   
-  [self associateObject:[[SCController alloc] init]
-                 ofType:IBObjectPboardType
-               withView:controllerbutton];
+  [self associateObject:scview
+        ofType:IBViewPboardType
+        withView:scviewitem];
+  
+  [self associateObject:sccontroller
+        ofType:IBObjectPboardType
+        withView:sccontrolleritem];
+  
+  [self associateObject:scexaminercontroller
+        ofType:IBObjectPboardType
+        withView:scexaminercontrolleritem];
 
-  [self associateObject:[[SCExaminerController alloc] init] 	
-	         ofType:IBObjectPboardType
-               withView:examinerbutton];
+  [self associateObject:scexaminercontroller
+        ofType:IBObjectPboardType
+        withView:testitem];
 
   [scview reshape];
 }
+
 @end
+
+// ---------- IBObjectProtocol -----------
 
 @implementation SCOpenGLView (SC21PaletteInspector)
 
 - (NSString *)inspectorClassName
 {
-    return @"SC21Inspector";
+  return @"SCOpenGLViewInspector";
 }
+
 @end
 
 @implementation SCView (SC21PaletteInspector)
 
 - (NSString *)inspectorClassName
 {
-    return @"SC21Inspector";
+  return [super inspectorClassName];
 }
 @end
 
+@implementation SCController (SC21PaletteInspector)
+
+- (NSString *)inspectorClassName
+{
+  return nil;
+}
+
+- (NSString *)classInspectorClassName
+{
+  // FIXME: This is not documented or mentioned _anywhere_,
+  // but some guesswork and testing suggests that it should work.
+  // FIXME: Test this by instantiating some common objects
+  // from within IB and call this method.
+  // (kintel 20040407)
+  return @"IBCustomClassInspector";
+}
+
+@end
+
+@implementation SCExaminerController (SC21PaletteInspector)
+
+- (NSString *)inspectorClassName
+{
+  return [super inspectorClassName];
+}
+
+- (NSString *)classInspectorClassName
+{
+  return [super classInspectorClassName];
+}
+
+@end
 
 // Due to a bug in Interface Builder, custom NSOpenGLViews are not
 // displayed in IB's "design" mode (they are shown in the same

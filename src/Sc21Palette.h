@@ -25,20 +25,26 @@
  |                                                                |
  * ============================================================== */
  
-
 #import <InterfaceBuilder/InterfaceBuilder.h>
 #import <SC21/SCView.h>
+#import <SC21/SCExaminerController.h>
 
 @interface SC21Palette : IBPalette
 {
-  IBOutlet NSButton *openglviewbutton;
-  IBOutlet NSButton *viewbutton;
-  IBOutlet NSButton *controllerbutton;
-  IBOutlet NSButton *examinerbutton;
-  SCOpenGLView *scopenglview;
-  SCView *scview;
+  IBOutlet id scopenglviewitem;
+  IBOutlet id scviewitem;
+  IBOutlet id sccontrolleritem;
+  IBOutlet id scexaminercontrolleritem;
+  IBOutlet id testitem;
+
+  SCOpenGLView * scopenglview;
+  SCView * scview;
+  SCController * sccontroller;
+  SCExaminerController * scexaminercontroller;
 }
 @end
+
+// -------- IBObjectProtocol ---------
 
 @interface SCOpenGLView (SC21PaletteInspector)
 - (NSString *)inspectorClassName;
@@ -46,4 +52,14 @@
 
 @interface SCView (SC21PaletteInspector)
 - (NSString *)inspectorClassName;
+@end
+
+@interface SCController (SC21PaletteInspector)
+- (NSString *)inspectorClassName;
+- (NSString *)classInspectorClassName;
+@end
+
+@interface SCExaminerController (SC21PaletteInspector)
+- (NSString *)inspectorClassName;
+- (NSString *)classInspectorClassName;
 @end
