@@ -271,9 +271,8 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
   // intended to be completely overridden by each subclass that
   // performs drawing, do _not_ invoke [super drawRect] here!
   
-  //FIXME: Shouldn't be needed since we shouldn't call drawRect ourselves.
-  [[self openGLContext] makeCurrentContext];
-  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // FIXME: Remove: This is done by SoSceneManager::render()
+  // FIXME: Remove: This is done by SoSceneManager::render()
+  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); 
   // FIXME: do this only once, after creating a context and binding it
   // (kintel 20040323)
   glEnable(GL_DEPTH_TEST);
