@@ -1,7 +1,16 @@
 {
     IBClasses = (
         {
-            ACTIONS = {modeChanged = id; open = id; toggleModes = id; }; 
+            ACTIONS = {
+                dumpSceneGraph = id; 
+                modeChanged = id; 
+                open = id; 
+                showDebugInfo = id; 
+                toggleCameraType = id; 
+                toggleHeadlight = id; 
+                toggleModes = id; 
+                viewAll = id; 
+            }; 
             CLASS = AppController; 
             LANGUAGE = ObjC; 
             OUTLETS = {

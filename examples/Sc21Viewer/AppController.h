@@ -36,11 +36,13 @@
   IBOutlet NSButton * mode;
   IBOutlet NSTextField * filenametext;
 }
-- (IBAction)open:(id) sender;
-- (void)toggleModes:(id) sender;
-- (void)toggleHeadlight;
-- (void)toggleCameraType;
-- (void)modeChanged:(id) sender;
+- (void)modeChanged:(id)sender;
+- (IBAction)open:(id)sender;
+- (IBAction)toggleModes:(id)sender;
+- (IBAction)toggleHeadlight:(id)sender;
+- (IBAction)toggleCameraType:(id)sender;
+- (IBAction)viewAll:(id)sender;
+- (IBAction)showDebugInfo:(id)sender;
+- (IBAction)dumpSceneGraph:(id)sender;
 - (void)openPanelDidEnd:(NSOpenPanel *)panel returnCode:(int)rc contextInfo:(void *)ctx;
-- (NSMenuItem *)addMenuEntry:(NSString *)title target:(id)target action:(SEL)selector;
 @end

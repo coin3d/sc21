@@ -45,19 +45,6 @@
   [self modeChanged:nil];
   [filenametext setStringValue:@"None"];
 
-  [mode setTarget:self];
-  [mode setAction:@selector(toggleModes:)];
-
-  // Add context meny entries
-  [view setMenu:[[[NSMenu alloc] initWithTitle:@"Context menu"] autorelease]];
-
-  [self  addMenuEntry:@"toggle mode" target:self action:@selector(toggleModes:)];
-  [self  addMenuEntry:@"toggle headlight" target:self action:@selector(toggleHeadlight)];
-  [self  addMenuEntry:@"toggle camera type" target:self action:@selector(toggleCameraType)];
-  [self  addMenuEntry:@"viewAll" target:coincontroller action:@selector(viewAll)];
-  [self  addMenuEntry:@"show debug info" target:self action:@selector(showDebugInfo)];
-  [self  addMenuEntry:@"dumpSceneGraph" target:coincontroller action:@selector(dumpSceneGraph)];
-  
   // Register for notification: we want to know when to mode
   // is changed, so that we can update the UI. (The mode might be changed
   // both from the menu or via the checkbox.)
@@ -74,7 +61,7 @@
   else [mode setState:NSOnState];
 }
 
-- (void)showDebugInfo
+- (IBAction)showDebugInfo:(id)sender
 {
   NSString * info = SCOpenGLInfo();
   NSWindow * panel = NSGetInformationalAlertPanel(@"Debug info",
@@ -88,7 +75,7 @@
 // if they should be regarded as input for controlling the viewer or
 // sent to the scene graph directly.
 
-- (void)toggleModes:(id)sender
+- (IBAction)toggleModes:(id)sender
 {
   [coincontroller 
     setHandlesEventsInViewer:([coincontroller handlesEventsInViewer]?NO:YES)];
@@ -96,7 +83,7 @@
 
 // Toggles between perspective and orthographic camera.
 
-- (void)toggleCameraType
+- (IBAction)toggleCameraType:(id)sender
 {
   [coincontroller 
     setCameraType:([coincontroller cameraType] == SCCameraPerspective ? 
@@ -106,7 +93,7 @@
 
 // Switches the headlight on and off.
 
-- (void)toggleHeadlight
+- (IBAction)toggleHeadlight:(id)sender
 {
   [coincontroller setHeadlightIsOn:([coincontroller headlightIsOn] ? NO : YES)];
 }
@@ -125,7 +112,15 @@
          contextInfo:nil];
 }
 
+- (IBAction)viewAll:(id)sender
+{
+  [coincontroller viewAll];
+}
 
+- (IBAction)dumpSceneGraph:(id)sender
+{
+  [coincontroller dumpSceneGraph];
+}
 
 // Delegate method for NSOpenPanel used in open:
 // Tries to read scene data from the file and sets the scenegraph to
@@ -148,18 +143,6 @@
   }
 }
 
-// Adds a new menu entry "title" to the view's context menu.
-
-- (NSMenuItem *)addMenuEntry:(NSString *)title target:(id)target action:(SEL)selector
-{
-  NSMenuItem * item = [[[NSMenuItem alloc] init] autorelease];
-  [item setTitle:title];
-  [item setTarget:target];
-  [item setAction:selector];
-  [[view menu] addItem:item];
-  return item;
-}
-
 // Delegate implementation to quit application when window is being closed:
 // This is not a document-based implementation, so you cannot close the main
 // window and open a new one at will without doing more setup work.
@@ -168,6 +151,5 @@
 {
   return YES;
 }
-
 
 @end
