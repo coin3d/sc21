@@ -65,27 +65,12 @@
 {
   if (self = [super init]) {
     [self _SC_commonInit];
-    SoSeparator * fileroot = NULL;
-    SoInput in;
-    if (!in.openFile([filename UTF8String])) {  
-      [[NSNotificationCenter defaultCenter]
-        postNotificationName:SCCouldNotOpenFileNotification object:self];
+    SoSeparator * fileroot = [self _SC_readFile:filename];
+    if (fileroot == NULL) {
       [self release];
       self = nil;
     } else {
-      fileroot = SoDB::readAll(&in);
-      // Note that this is not strictly necessary, but I consider it bad 
-      // practice to leave the closing of my resources to the destructor...
-      // *shrug*, kyrah
-      in.closeFile();
-      if (fileroot == NULL) {
-        [[NSNotificationCenter defaultCenter]
-          postNotificationName:SCCouldNotReadFileNotification object:self];
-        [self release];
-        self = nil;
-      } else {
-        [self setRoot:fileroot];
-      }
+      [self setRoot:fileroot];
     }
   }
   return self;
@@ -103,6 +88,14 @@
   if (self = [super init]) {
     [self _SC_commonInit];
     // FIXME: Implement reading file from URL.
+  }
+  return self;
+}
+
+- (id)init
+{
+  if (self = [super init]) {
+    [self _SC_commonInit];
   }
   return self;
 }
@@ -135,6 +128,18 @@
   [SELF release];
 }
 
+
+- (BOOL)readFromFile:(NSString *)name 
+{
+  SoSeparator * fileroot = [self _SC_readFile:name];
+  if (fileroot) { 
+    [self setRoot:fileroot];
+    return YES; 
+  }
+
+  return NO;
+}
+
 /*"
   Returns the name assigned to the scenegraph, or nil if no name has
   been assigned. This name corresponds to the node name of the Open
@@ -151,8 +156,9 @@
   "*/
 - (BOOL)setName:(NSString *)name
 {
-  // FIXME: Does name have to be unique? (If we want to make it correspond to the saved filename
-  // in the bundle, then we probably want to do that... -> cf. NSImage setName:) kyrah 20040715
+  // FIXME: Does name have to be unique? (If we want to make it correspond to 
+  // the saved filename in the bundle, then we probably want to do that... -> 
+  // cf. NSImage setName:) kyrah 20040715
   
   // FIXME: Implement.
   return YES;
@@ -214,9 +220,11 @@
   // supply createSuperSceneGraph: to return its own superscenegraph.
   BOOL createsuperscenegraph = YES;
   if (self->delegate) {
-    if ([self->delegate respondsToSelector:@selector(shouldCreateDefaultSuperSceneGraph)]) {
+    if ([self->delegate 
+      respondsToSelector:@selector(shouldCreateDefaultSuperSceneGraph)]) {
       createsuperscenegraph = [delegate shouldCreateDefaultSuperSceneGraph];    
-    } else if ([self->delegate respondsToSelector:@selector(createSuperSceneGraph:)]) {
+    } else if ([self->delegate 
+        respondsToSelector:@selector(createSuperSceneGraph:)]) {
       createsuperscenegraph = NO;
     }
   }
@@ -225,7 +233,7 @@
   } else { 
     if (self->delegate &&
         [self->delegate respondsToSelector:@selector(createSuperSceneGraph:)]) {
-      SELF->superscenegraph = (SoSeparator *)[self->delegate createSuperSceneGraph:SELF->scenegraph];
+      SELF->superscenegraph = [delegate createSuperSceneGraph:SELF->scenegraph];
     } else {
       SELF->superscenegraph = NULL;
       SELF->scenegraph->ref();    
@@ -235,7 +243,7 @@
   // Give delegate the chance to do postprocessing, regardless of 
   // whether the superscenegraph was created by us or by the delegate.
   if (SELF->superscenegraph && self->delegate &&
-      [self->delegate respondsToSelector:@selector(didCreateSuperSceneGraph:)]) {
+    [self->delegate respondsToSelector:@selector(didCreateSuperSceneGraph:)]) {
     [self->delegate didCreateSuperSceneGraph:SELF->superscenegraph];
   } 
 }
@@ -426,4 +434,25 @@
   SELF->scenegraph->unref();
 }
 
+- (SoSeparator *)_SC_readFile:(NSString *)filename
+{
+  SoSeparator * fileroot = NULL;
+  SoInput in;
+  if (!in.openFile([filename UTF8String])) {  
+    [[NSNotificationCenter defaultCenter]
+        postNotificationName:SCCouldNotOpenFileNotification object:self];
+    return NULL;
+  } else {
+    fileroot = SoDB::readAll(&in);
+    // Note that this is not strictly necessary, but I consider it bad 
+    // practice to leave the closing of my resources to the destructor...
+    // *shrug*, kyrah
+    in.closeFile();
+    if (fileroot == NULL) {
+      [[NSNotificationCenter defaultCenter]
+          postNotificationName:SCCouldNotReadFileNotification object:self];
+    }
+  }
+  return fileroot;
+}
 @end

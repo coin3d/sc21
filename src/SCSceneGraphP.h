@@ -45,4 +45,5 @@
 - (SoCamera *)_SC_findCamera;
 - (void)_SC_setHasAddedCamera:(BOOL)yn;
 - (void)_SC_createSuperSceneGraph;
+- (SoSeparator*)_SC_readFile:(NSString *)name;
 @end  

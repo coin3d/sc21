@@ -39,12 +39,15 @@
 {
  @protected
   _SCSceneGraphP * scscenegraphpriv;
+  @private
   id delegate;
 }
 
 /*" Initialization "*/
 - (id)initWithContentsOfFile:(NSString *)filename;
 - (id)initWithContentsOfURL:(NSURL *)url;
+
+- (BOOL)readFromFile:(NSString *)filename;
 
 /*" Accessors for the scenegraph's scenemanager. "*/
 - (void)setSceneManager:(SoSceneManager *)scenemanager;
