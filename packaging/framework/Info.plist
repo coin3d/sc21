@@ -5,7 +5,7 @@
 	<key>CFBundleGetInfoString</key>
 	<string>Sc21 @VERSION@</string>
 	<key>CFBundleIdentifier</key>
-	<string>no.sim.sc21.framework</string>
+	<string>org.coin3d.sc21.framework.pkg</string>
 	<key>CFBundleName</key>
 	<string>Sc21 framework</string>
 	<key>CFBundleShortVersionString</key>
