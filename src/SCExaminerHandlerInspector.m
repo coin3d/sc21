@@ -84,6 +84,8 @@
   // menu items being "no emulation", "command", "alt", "shift";
   // order of buttons being "left", "right", "middle", "none";
   // and modifier settings on the order "command", "alt", "shift".
+  
+  // FIXME: Use tags instead of relying on order. kyrah 20040807
 
   SCExaminerHandler * scexaminerhandler = [self object];
 
