@@ -322,15 +322,26 @@ void error_cb(const class SoError * error, void * data)
   }
   if (SELF->superscenegraph) SELF->superscenegraph->ref();
   
-  // Set active camera to use in viewer. Note that we have to do this after the 
-  // delegate had the chance to create its own superscenegraph to make sure the
-  // right camera is picked up.
+  // Set active camera to use in viewer. Note that we have to do this
+  // after the delegate had the chance to create its own
+  // superscenegraph to make sure the right camera is picked up.
   SoCamera * scenecamera = 
     [self _SC_findCameraInSceneGraph:SELF->superscenegraph];
-  if (scenecamera != NULL) {
+  if (scenecamera) {
     [SELF->camera setSoCamera:scenecamera];
+  } else {
+    [[NSNotificationCenter defaultCenter]
+        postNotificationName:SCNoCameraFoundInSceneNotification object:self];
   }
   
+  // Check if there is a light in the scenegraph (we have to do this
+  // here since one might have been added when creating the
+  // superscenegraph) 
+  if (![self _SC_findLightInSceneGraph:SELF->superscenegraph]) {
+    [[NSNotificationCenter defaultCenter]
+        postNotificationName:SCNoLightFoundInSceneNotification object:self];
+  } 
+
   // Give delegate the chance to do postprocessing, regardless of 
   // whether the superscenegraph was created by us or by the delegate.
   if (SELF->superscenegraph && self->delegate &&
@@ -403,16 +414,16 @@ void error_cb(const class SoError * error, void * data)
    otherwise NULL.
 */
 
-- (SoLight *)_SC_findLight
+- (SoLight *)_SC_findLightInSceneGraph:(SoGroup *)sg
 {
-  assert (SELF->scenegraph);  
+  assert (sg);  
   SoLight * light = NULL;
   SbBool oldsearch = SoBaseKit::isSearchingChildren();
   SoBaseKit::setSearchingChildren(TRUE);
   SoSearchAction sa;
   sa.reset();
   sa.setType(SoLight::getClassTypeId());
-  sa.apply(SELF->scenegraph);
+  sa.apply(sg);
   SoBaseKit::setSearchingChildren(oldsearch);
   if (sa.getPath() != NULL) {
     SoFullPath * fullpath = (SoFullPath *) sa.getPath();
@@ -463,12 +474,10 @@ void error_cb(const class SoError * error, void * data)
   SoSeparator * superscenegraph = new SoSeparator;
   
   // Handle lighting
-  if (![self _SC_findLight]) {
+  if (![self _SC_findLightInSceneGraph:root]) {
     SELF->headlight = new SoDirectionalLight;
     superscenegraph->addChild(SELF->headlight);
     SELF->addedlight = YES;
-    [[NSNotificationCenter defaultCenter]
-        postNotificationName:SCNoLightFoundInSceneNotification object:self];
   } else {
     SELF->addedlight = NO;
   }
@@ -478,8 +487,6 @@ void error_cb(const class SoError * error, void * data)
   if (scenecamera == NULL) {
     SELF->addedcamera = YES;
     superscenegraph->addChild(new SoPerspectiveCamera);
-    [[NSNotificationCenter defaultCenter]
-        postNotificationName:SCNoCameraFoundInSceneNotification object:self];
   } else {
     SELF->addedcamera = NO;
   }

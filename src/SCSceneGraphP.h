@@ -46,7 +46,7 @@ class SoInput;
 
 @interface SCSceneGraph (InternalAPI)
 - (void)_SC_commonInit;
-- (SoLight *)_SC_findLight;
+- (SoLight *)_SC_findLightInSceneGraph:(SoGroup *)sg;
 - (SoCamera *)_SC_findCameraInSceneGraph:(SoGroup *)sg;
 - (void)_SC_setHasAddedCamera:(BOOL)yn;
 - (SoGroup *)_SC_createSuperSceneGraph:(SoGroup *)root;
