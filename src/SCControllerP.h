@@ -38,7 +38,7 @@ class SoSceneManager;
   SoSceneManager * scenemanager;
   BOOL hascreatedscenemanager;
   BOOL handleseventsinviewer;
-  BOOL modifierforcoinevent;
+  unsigned int modifierforcoinevent;
   NSResponder * oldcontroller;
   BOOL clearcolorbuffer;
   BOOL cleardepthbuffer;
