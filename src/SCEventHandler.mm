@@ -35,6 +35,8 @@
 #define PRIVATE(p) ((p)->_sc_eventhandler)
 #define SELF PRIVATE(self)
 
+// FIXME: Document.
+
 @implementation SCEventHandler
 
 - (id)init
