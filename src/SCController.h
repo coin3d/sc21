@@ -29,7 +29,7 @@
 #import <Sc21/SCDefines.h>
 #import <Sc21/SCCamera.h>
 #import <Sc21/SCSceneGraph.h>
-#import <Sc21/SCEventHandler.h>
+#import <Sc21/SCEventHandling.h>
 #import <Sc21/SCDrawable.h>
 
 class SoSceneManager;

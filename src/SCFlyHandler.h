@@ -25,7 +25,7 @@
  |                                                                 |
  * =============================================================== */
 
-#import <Sc21/SCEventHandler.h>
+#import "SCEventHandler.h"
 
 @class SCFlyHandlerP;
 

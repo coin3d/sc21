@@ -28,7 +28,6 @@
 #import <InterfaceBuilder/InterfaceBuilder.h>
 #import <Sc21/SCController.h>
 #import <Sc21/SCExaminerHandler.h>
-#import <Sc21/SCFlyHandler.h>
 #import <Sc21/SCSceneGraph.h>
 #import <Sc21/SCView.h>
 

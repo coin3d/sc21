@@ -27,7 +27,7 @@
  
 
 #import "SCFlyHandlerInspector.h"
-#import <Sc21/SCFlyHandler.h>
+#import "SCFlyHandler.h"
 #import "SCUtil.h"
 
 @implementation SCFlyHandlerInspector
