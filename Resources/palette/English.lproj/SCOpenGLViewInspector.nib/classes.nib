@@ -8,7 +8,6 @@
                 accum = NSPopUpButton; 
                 coloralpha = NSPopUpButton; 
                 depth = NSPopUpButton; 
-                hidden = NSButton; 
                 renderer = NSMatrix; 
                 stencil = NSPopUpButton; 
             }; 

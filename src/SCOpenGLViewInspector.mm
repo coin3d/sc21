@@ -61,9 +61,6 @@
   [self beginUndoGrouping];
   [self noteAttributesWillChangeForObject:scview];
   
-  // Hidden handling
-  [scview setHidden:([hidden state] == NSOnState)];
-
   // Renderer handling
   if ([renderer selectedRow] == 1)
     [pixelformat setAttribute:NSOpenGLPFAAccelerated];
@@ -190,9 +187,6 @@
   SCOpenGLView *scview = [self object];
   SCOpenGLPixelFormat *pixelformat = [scview pixelFormat];
   if (pixelformat) {
-    // Hidden handling
-    [hidden setState:[scview isHidden]?NSOnState:NSOffState];
-      
     // Renderer handling
     int accel;
     [pixelformat getValue:&accel forAttribute:NSOpenGLPFAAccelerated];
@@ -286,19 +280,4 @@
   [super revert:sender];
 }
 
-@end
-
-
-// Undo support workaround:
-// IB wants a standard accessor method - it does not accept NSView's isHidden
-
-@interface SCView (UndoSupport)
-- (BOOL)hidden;
-@end
-
-@implementation SCView (UndoSupport)
-- (BOOL)hidden
-{
-  return [self isHidden];
-}
 @end

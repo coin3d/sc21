@@ -34,6 +34,5 @@
   IBOutlet NSPopUpButton * depth;
   IBOutlet NSPopUpButton * stencil;
   IBOutlet NSPopUpButton * accum;
-  IBOutlet NSButton * hidden;
 }
 @end
