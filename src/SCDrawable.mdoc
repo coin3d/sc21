@@ -28,8 +28,21 @@
 /* Hack to make AutoDoc generate protocol description. */
 
 @implementation SCDrawable
-/*" Formal protocol defining a type that SCController can draw
-into. "*/
+
+/*" 
+  Formal protocol defining a type that SCController can draw into.
+
+  The SCView class conforms to this protocol and handles setting the
+  controller's drawable behind the scenes; in most cases you will
+  be able to simply use an SCView for drawing. 
+
+  However, if you do not have a view (i.e. an NSView-derived instance,
+  such as SCView), you have to create an object that conforms to this
+  protocol and set your SCController's !{drawable} outlet. A typical
+  case where you have to use this approach is "real" fullscreen
+  rendering. (Refer to the Sc21 fullscreen example that ships with
+  Sc21 for an example on how to do this.)
+"*/
 
   
 /*" 
