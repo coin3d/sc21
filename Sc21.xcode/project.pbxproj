@@ -147,6 +147,7 @@
 		};
 		E01100B50605E71900F93EC1 = {
 			children = (
+				E07485500675CC1F0052D77F,
 				E0114C980670C15F002D7A19,
 				E0EC5B2E0653F88100DA8092,
 				E0EC5B2F0653F88100DA8092,
@@ -650,6 +651,21 @@
 			refType = 4;
 			sourceTree = "<group>";
 		};
+		E07485500675CC1F0052D77F = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCOpenGLViewP.h;
+			path = src/SCOpenGLViewP.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E07485510675CC1F0052D77F = {
+			fileRef = E07485500675CC1F0052D77F;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		E0765C52060222BB0099F78E = {
 			children = (
 				E09CFA9F060249F60000E227,
@@ -748,6 +764,7 @@
 				E04A08470637E7E0002F2C04,
 				E0EC5B300653F88100DA8092,
 				E0114C990670C15F002D7A19,
+				E07485510675CC1F0052D77F,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
