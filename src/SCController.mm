@@ -139,7 +139,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   if (_scenegraph == NULL) {
     [self setSceneGraph:NULL];
   } else {
-    _scenemanager->setSceneGraph(_scenegraph);    
+    _scenemanager->setSceneGraph(_scenegraph); 
   }
   
   // FIXME: The timer and delay queue handling here is very
