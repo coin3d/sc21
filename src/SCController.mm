@@ -381,22 +381,26 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 {
   //FIXME: Make clearing of color and depth buffer configurable?
   //(kintel 20040429)
+  //FIXME: Do clearing here instead of in SoSceneManager to support
+  // alpha values? (kintel 20040502)
   _scenemanager->render();
 }
 
 /*" Sets the background color of the scene to color. Raises an exception if
-    color is not an RGB color.
+    color cannot be converted to an RGB color.
  "*/
 
 - (void)setBackgroundColor:(NSColor *)color
 {
-  // FIXME: use smth. like colorUsingColorSpaceName:NSCalibratedRGBColorSpace
-  // instead of raising exception. Use Calibrated or Device colors?
-  // (kintel 20040406)
-  float red = [color redComponent];
-  float green = [color greenComponent];
-  float blue = [color blueComponent];
-
+  NSColor * rgb = [color colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+  if (!rgb) {
+    [NSException raise:NSInternalInconsistencyException
+                 format:@"setBackgroundColor: Color not convertible to RGB"];
+  }
+  
+  float red, green, blue;
+  [color getRed:&red green:&green blue:&blue alpha:NULL];
+  
   _scenemanager->setBackgroundColor(SbColor(red, green, blue));
   _scenemanager->scheduleRedraw();  
 }
@@ -406,12 +410,10 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 - (NSColor *)backgroundColor
 {
   SbColor sbcolor = _scenemanager->getBackgroundColor();
-  float red = sbcolor[0];
-  float green = sbcolor[1];
-  float blue = sbcolor[2];
-  
-  NSColor * color = [NSColor colorWithDeviceRed:red
-                             green:green blue:blue alpha:1];
+  NSColor * color = [NSColor colorWithCalibratedRed:sbcolor[0]
+                             green:sbcolor[1] 
+                             blue:sbcolor[2] 
+                             alpha:0.0f];
   return color;	
 }
 
