@@ -2,8 +2,4 @@ This is the ProjectBuilder project for creating the
 SC21.palette. 
 
 Note that the actual palette contents lie in ../framework. 
-If you are compiling the palette yourself, you will probably have
-to remove the *.h and *.mm files and add them to the project
-again. If anybody knows how to make PB store relative paths
-instead of absolute ones, please let me know.
 
