@@ -447,7 +447,8 @@
 
 - (id)initWithCoder:(NSCoder *)coder
 {
-  SC21_DEBUG(@"SCView.initWithCoder:");
+  SC21_DEBUG(@"SCView.initWithCoder: (coder says version is %d)", 
+             [coder versionForClassName:@"SCView"]);
   // This is support for reading archives from Sc21 public beta
   // FIXME: We should remove this after a grace period (say Sc21 V1.0.1)
   // (kintel 20040404)

@@ -1,6 +1,6 @@
 #import <Sc21/SCFlyHandler.h>
 #import <Sc21/SCCamera.h>
-#import "SCModes.h"
+#import "SCFlyMode.h"
 #import "SCMouseLog.h"
 #import "SCUtil.h"
 #import <Sc21/SCEventHandlerP.h>
