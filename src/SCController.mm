@@ -97,12 +97,12 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 - (id) init
 {
   if (self = [super init]) {
+    if (!_coinInitialized) [SCController initCoin];
     _camera = [[SCCamera alloc] init];
     [_camera setController:self];
     _autoclipvalue = 0.6;
     _handleseventsinviewer = YES;
     _eventconverter = [[SCEventConverter alloc] initWithController:self];
-    if (!_coinInitialized) [SCController initCoin];
   }
   return self;
 }
@@ -685,12 +685,12 @@ small near clipping plane distances are disallowed.
 - (id) initWithCoder:(NSCoder *) coder
 {
   if (self = [super initWithCoder:coder]) {
+    if (!_coinInitialized) [SCController initCoin];
     _camera = [[SCCamera alloc] init];
     [_camera setController:self];
     _autoclipvalue = 0.6;
     _handleseventsinviewer = YES;
     _eventconverter = [[SCEventConverter alloc] initWithController:self];
-    if (!_coinInitialized) [SCController initCoin];
   }
   return self;
 }
