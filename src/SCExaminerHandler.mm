@@ -27,6 +27,9 @@
 
 @implementation SCExaminerHandler
 
+
+#pragma mark --- initialization and cleanup ---
+
 - (id)init
 {
   self = [super init];
@@ -45,6 +48,8 @@
 {
   [SELF release];
 }
+
+#pragma mark --- accessor methods --- 
 
 - (void)setSpinEnabled:(BOOL)enabled
 {
@@ -65,6 +70,8 @@
 {
   return SELF->scrollwheelzoomenabled;
 }
+
+#pragma mark --- SCEventHandler conformance ---
 
 - (BOOL)handleEvent:(NSEvent *)event inView:(NSView *)view camera:(SCCamera *)camera
 { 
@@ -126,7 +133,7 @@
   if (!handled) return [self _SC_performActionForEvent:event camera:camera];
 }
 
-// ---------------- NSCoding conformance -------------------------------
+#pragma mark --- NSCoding conformance ---
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {

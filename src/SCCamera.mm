@@ -98,7 +98,8 @@
   [super dealloc];
 }
 
-// ---------- Switching between orthographic and perspective mode -------
+
+#pragma mark --- switching orthographic/perspective ---
 
 /*" Returns !{SCCameraPerspective} if the camera is a perspective camera,
     !{SCCameraOrthographic} if the camera is an orthographic camera, and
@@ -177,7 +178,46 @@
 }
 
 
-// -------------- Positioning the camera --------------------------
+#pragma mark --- positioning the camera ---
+
+/*" Reorients the camera by rot. Note that this does not
+replace the previous values but is accumulative: rot
+will be multiplied together with the previous orientation.
+"*/
+
+- (void)reorient:(SbRotation)rot
+{
+  SbVec3f dir, focalpt;
+  if (SELF->camera == NULL) return;
+  
+  // Find global coordinates of focal point.
+  SELF->camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), dir);
+  focalpt = SELF->camera->position.getValue() + SELF->camera->focalDistance.getValue() * dir;
+  
+  // Set new orientation value by accumulating the new rotation.
+  SELF->camera->orientation = rot * SELF->camera->orientation.getValue();
+  
+  // Reposition camera so we are still pointing at the same old focal point.
+  SELF->camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), dir);
+  SELF->camera->position = focalpt - SELF->camera->focalDistance.getValue() * dir;
+}
+
+/*"
+Translate camera relative to its own coordinate system.
+ 
+ In its own coordinate system, the camera is pointing in negative
+ Z direction with the Y axis being up.
+ "*/
+- (void)translate:(SbVec3f)v
+{
+  if (SELF->camera == NULL) return;
+  
+  SbVec3f pos = SELF->camera->position.getValue();
+  SbRotation r = SELF->camera->orientation.getValue();
+  r.multVec(v, v);
+  SELF->camera->position = SELF->camera->position.getValue() + v;
+  pos = SELF->camera->position.getValue();
+}
 
 /*" Zooms in if delta is > 0, else zooms out. "*/
 
@@ -292,7 +332,7 @@
   SELF->camera->farDistance = farval * (1.0f + SLACK);
 }
 
-// ------------------ Accessor methods ----------------------------
+#pragma mark --- accessor methods ---
 
 /*" Sets the actual camera in the Coin scene graph to cam. 
     It is first checked if the camera was created as part of the 
@@ -358,48 +398,9 @@
 {
   return SELF->autoclipvalue;
 }
+@end
 
-
-/*" Reorients the camera by rot. Note that this does not
-    replace the previous values but is accumulative: rot
-    will be multiplied together with the previous orientation.
- "*/
-
-- (void)reorient:(SbRotation)rot
-{
-  SbVec3f dir, focalpt;
-  if (SELF->camera == NULL) return;
-  
-  // Find global coordinates of focal point.
-  SELF->camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), dir);
-  focalpt = SELF->camera->position.getValue() + SELF->camera->focalDistance.getValue() * dir;
-  
-  // Set new orientation value by accumulating the new rotation.
-  SELF->camera->orientation = rot * SELF->camera->orientation.getValue();
-  
-  // Reposition camera so we are still pointing at the same old focal point.
-  SELF->camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), dir);
-  SELF->camera->position = focalpt - SELF->camera->focalDistance.getValue() * dir;
-}
-
-/*"
-  Translate camera relative to its own coordinate system.
-  
-  In its own coordinate system, the camera is pointing in negative
-  Z direction with the Y axis being up.
-  "*/
-- (void)translate:(SbVec3f)v
-{
-  if (SELF->camera == NULL) return;
-
-  SbVec3f pos = SELF->camera->position.getValue();
-  SbRotation r = SELF->camera->orientation.getValue();
-  r.multVec(v, v);
-  SELF->camera->position = SELF->camera->position.getValue() + v;
-  pos = SELF->camera->position.getValue();
-}
-
-// ----------------------- InternalAPI --------------------------
+@implementation SCCamera (InternalAPI)
 
 - (void)_SC_commonInit
 {

@@ -64,11 +64,11 @@ typedef enum _SCCameraType {
 - (BOOL)convertToType:(SCCameraType)type;
 
 /*" Positioning the camera "*/
-- (void)zoom:(float)delta;
 - (void)reorient:(SbRotation)rot;
+- (void)translate:(SbVec3f)v;
+- (void)zoom:(float)delta;
 - (void)viewAll;
 - (void)updateClippingPlanes:(SoSeparator *)scenegraph;
-- (void)translate:(SbVec3f)v;
 
 /*" Accessors "*/ 
 - (void)setSoCamera:(SoCamera *)camera;

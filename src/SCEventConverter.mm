@@ -150,8 +150,7 @@ static struct key1map KeyMap[] = {
     events (SoEvents).
  "*/
 
-
-// ---------------- Initialisation and cleanup -------------------------
+#pragma mark --- initialization and cleanup ---
 
 /*" Initializes a newly allocated SCEventConverter. 
 
@@ -184,9 +183,7 @@ static struct key1map KeyMap[] = {
   [super dealloc];
 }
 
-
-// ------------------ Event conversion ---------------------------
-
+#pragma mark --- event conversion ---
 
 /*" Creates an SoEvent from the NSEvent event, setting the mouse button and
     mouse state (for mouse events) or key information (for keyboard events), and

@@ -29,6 +29,8 @@
 
 @implementation SCFlyHandler
 
+#pragma mark --- initialization and cleanup ---
+
 - (id)init
 {
   self = [super init];
@@ -45,6 +47,8 @@
 #endif
 }
 
+#pragma mark --- accessor methods --- 
+
 - (void)setInversePitch:(BOOL)yesno
 {
   SELF->inversepitch = yesno;
@@ -54,6 +58,8 @@
 {
   return SELF->inversepitch;
 }
+
+#pragma mark --- SCEventHandler conformance ---
 
 - (BOOL)handleEvent:(NSEvent *)event inView:(NSView *)view camera:(SCCamera *)camera
 { 
@@ -159,6 +165,8 @@
 
   [SELF->flymode modifyCamera:camera withTimeInterval:currtime];
 }
+
+#pragma mark --- NSCoding conformance ---
 
 @end
 

@@ -48,6 +48,7 @@
 - (id)initWithContentsOfFile:(NSString *)filename;
 - (id)initWithContentsOfURL:(NSURL *)url;
 
+/*" File system access. "*/
 - (BOOL)readFromFile:(NSString *)filename;
 
 /*" Accessors for the scenegraph's scenemanager. "*/

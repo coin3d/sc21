@@ -51,6 +51,12 @@
 @implementation SCSceneGraph
 
 /*" 
+  SCSceneGraph... FIXME: Add doc.
+"*/
+ 
+#pragma mark --- initialization and cleanup ---
+
+/*" 
   Initializes the receiver, a newly allocated SCSceneGraph instance,
   with the contents of the file filename. The filename argument may be
   a full or relative pathname and should include an extension that
@@ -61,6 +67,7 @@
   cannot be read from the specified file, the receiver is freed, and
   nil is returned.
 "*/
+
 - (id)initWithContentsOfFile:(NSString *)filename
 {
   if (self = [self init]) {
@@ -99,29 +106,6 @@
   return self;
 }
 
-- (id)initWithCoder:(NSCoder *)coder
-{
-  if (self = [super init]) {
-    [self _SC_commonInit];
-    if ([coder allowsKeyedCoding]) {
-      SELF->createsuperscenegraph = 
-        [coder decodeBoolForKey:@"SC_createsuperscenegraph"];
-      SELF->addedlight = [coder decodeBoolForKey:@"SC_addedlight"];
-      SELF->addedcamera = [coder decodeBoolForKey:@"SC_addedcamera"];
-    }
-  }
-  return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)coder
-{
-  if ([coder allowsKeyedCoding]) {
-    [coder encodeBool:SELF->createsuperscenegraph 
-      forKey:@"SC_createsuperscenegraph"];
-    [coder encodeBool:SELF->addedlight forKey:@"SC_addedlight"];
-    [coder encodeBool:SELF->addedcamera forKey:@"SC_addedcamera"];
-  }
-}
 
 - (void) dealloc
 {
@@ -131,6 +115,7 @@
   [SELF release];
 }
 
+#pragma mark --- file system access --- 
 
 - (BOOL)readFromFile:(NSString *)name 
 {
@@ -141,6 +126,8 @@
   }
   return NO;
 }
+
+#pragma mark --- accessor methods ---
 
 /*"
   Returns the root node in the receiver's Open Inventor scenegraph, or
@@ -299,6 +286,8 @@
   return SELF->addedlight;
 }
 
+#pragma mark --- delegate handling ---
+
 /*" Makes newdelegate the receiver's delegate. "*/
 
 - (void)setDelegate:(id)newdelegate
@@ -311,6 +300,36 @@
 - (id)delegate
 {
   return self->delegate;
+}
+
+
+
+
+#pragma mark --- NSCoding conformance ---
+
+- (void)encodeWithCoder:(NSCoder *)coder
+{
+  if ([coder allowsKeyedCoding]) {
+    [coder encodeBool:SELF->createsuperscenegraph 
+               forKey:@"SC_createsuperscenegraph"];
+    [coder encodeBool:SELF->addedlight forKey:@"SC_addedlight"];
+    [coder encodeBool:SELF->addedcamera forKey:@"SC_addedcamera"];
+  }
+}
+
+
+- (id)initWithCoder:(NSCoder *)coder
+{
+  if (self = [super init]) {
+    [self _SC_commonInit];
+    if ([coder allowsKeyedCoding]) {
+      SELF->createsuperscenegraph = 
+      [coder decodeBoolForKey:@"SC_createsuperscenegraph"];
+      SELF->addedlight = [coder decodeBoolForKey:@"SC_addedlight"];
+      SELF->addedcamera = [coder decodeBoolForKey:@"SC_addedcamera"];
+    }
+  }
+  return self;
 }
 
 @end

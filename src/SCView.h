@@ -45,15 +45,12 @@
 - (id)initWithFrame:(NSRect)rect pixelFormat:(SCOpenGLPixelFormat *)format;
 - (id)initWithFrame:(NSRect)rect;
 
-/*" Accessing the SCController. "*/
-- (SCController *)controller;
-- (void)setController:(SCController *)controller;
-
-/*" Drawing, viewing, and view-dependant calculations "*/
+/*" Drawing and resizing. "*/
 - (void)drawRect:(NSRect)rect;
 - (void)reshape;
 
 /*" Event handling "*/
+- (void)mouseMoved:(NSEvent *)event;
 - (void)mouseDown:(NSEvent *)event;
 - (void)mouseUp:(NSEvent *)event;
 - (void)mouseDragged:(NSEvent *)event;
@@ -67,9 +64,12 @@
 - (void)keyDown:(NSEvent *)event;
 - (void)keyUp:(NSEvent *)event;
 - (void)flagsChanged:(NSEvent *)event;
-- (void)mouseMoved:(NSEvent *)event;
 
 /*" Cursor handling "*/
 - (void)setCursor:(NSCursor *)cursor;
+
+  /*" Accessing the SCController. "*/
+- (SCController *)controller;
+- (void)setController:(SCController *)controller;
 
 @end

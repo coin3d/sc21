@@ -135,6 +135,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   -setRedrawHandler and -setRedrawSelector.
   "*/
 
+#pragma mark --- static methods ----
 
 /*" 
   Initializes Coin.
@@ -163,8 +164,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     initialized = YES;
   }
 }
- 
-// ----------------- initialization and cleanup ----------------------
+
 
 + (void)initialize
 {
@@ -175,6 +175,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   // we only support keyed archiving.
   [SCController setVersion:1];
 }
+
+#pragma mark --- initialization and cleanup ---
 
 /*"
   Designated initializer.
@@ -207,147 +209,11 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   [super dealloc];
 }
 
-/*"
-  Makes newdelegate the receiver's delegate.
+#pragma mark --- rendering ---
 
-  FIXME: Document what notifications the delegate automatically will
-  be registered for (kintel 20040616).
-
-  The delegate doesn't need to implement all of the delegate methods.
-  "*/
-- (void)setDelegate:(id)newdelegate
-{
-  SC21_DEBUG(@"SCController.setDelegate");
-  self->delegate = newdelegate;
-}
-
-/*"
-  Returns the receiver's delegate.
-  "*/
-- (id)delegate
-{
-  return self->delegate;
-}
-
-// ------------------- rendering and scene management ---------------------
-
-/*"
-  Sets the object that should handle redraw messages generated
-  by the scene graph.
-
-  This is automatically set by SCView.setController and should only
-  need to be set when not rendering into an SCView (e.g. when doing
-  fullscreen rendering).
-
-  #{See Also:} #{-redrawHandler}, #{-setRedrawSelector}
-  "*/
-- (void)setRedrawHandler:(id)handler
-{
-  SELF->redrawhandler = handler;
-  [self _SC_setupRedrawInvocation];
-}
-
-/*"
-  Returns the redraw handler previously set by -setRedrawHandler:
-  or nil if no redraw handler has been set.
-  "*/
-- (id)redrawHandler
-{
-  return SELF->redrawhandler;
-}
-
-/*"
-  Sets the selector to be performed on the object set by -setRedrawHandler.
-
-  This defaults to @selector(display), but can be changed to any selector
-  with and optional id argument. If an id argument exists, this controller
-  object will be sent.
-
-  If the given selector doesn't conform, an NSInvalidArgumentException
-  will be raised.
-  "*/
-- (void)setRedrawSelector:(SEL)sel
-{
-  SELF->redrawselector = sel;
-  [self _SC_setupRedrawInvocation];
-}
-
-/*"
-  Returns the redraw selector previously set by -setRedrawSelector or
-  nil if no redraw selector has been set.
-  "*/
-- (SEL)redrawSelector
-{
-  return SELF->redrawselector;
-}
-
-/*" Sets the scene graph that shall be rendered. If nil is passed,
-    this method returns immediately.
+/*" 
+  Renders the scene by calling the current SoSceneManager's render() funtion. 
  "*/
-- (void)setSceneGraph:(SCSceneGraph *)sg
-{
-  if (sg == scenegraph || sg == nil) { return; }
-
-  if (scenegraph) { [scenegraph release]; }
-  scenegraph = [sg retain];    
-  [scenegraph setSceneManager:SELF->scenemanager];
-  
-  if (SELF->scenemanager) {
-    SELF->scenemanager->setSceneGraph([scenegraph superSceneGraph]);
-  }
-
-  SELF->scenemanager->scheduleRedraw(); 
-  // FIXME: Do we need this? (kintel 20040604)
-  // Update kyrah 20040716. Yes: In case the scenegraph is set to nil,
-  // we will stop all timers. We do want one last re-render to clear the
-  // screen to our background color...
-  
-  // Don't waste cycles by animating an empty scene
-  if (scenegraph == nil) { [self stopTimers]; }
-  else { [self startTimers]; }
-  
-  [[NSNotificationCenter defaultCenter]
-    postNotificationName:SCSceneGraphChangedNotification object:self];
-}
-
-- (SCSceneGraph *)sceneGraph 
-{ 
-  return scenegraph; 
-}
-
-/*" Sets the current scene manager to scenemanager. The scene manager's
-    render callback will be set to %redraw_cb (SCController's default
-    redraw callback), and it will be activated. Also, if a scenegraph
-    has been set earlier, scenemanager's scenegraph will be set to it.
-
-    Note that you should not normally need to call that method, since a
-    scene manager is created for you while initializing.
- "*/
-
-- (void)setSceneManager:(SoSceneManager *)scenemanager
-{
-  //FIXME: Keep old background color if set? (kintel 20040406)
-  //FIXME: Delete old scenemanager? Only if we created it ourselves?
-  // (kintel 20040412)
-  SELF->scenemanager = scenemanager;
-  SELF->scenemanager->setRenderCallback(redraw_cb, (void *)self);
-  SoGLRenderAction * glra = SELF->scenemanager->getGLRenderAction();
-  glra->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
-  glra->setTransparencyType(SoGLRenderAction::DELAYED_BLEND);
-  SELF->scenemanager->activate();
-  if (scenegraph) {
-    SELF->scenemanager->setSceneGraph([scenegraph superSceneGraph]);
-  }
-}
-
-/*" Returns the current Coin scene manager instance. "*/
-
-- (SoSceneManager *)sceneManager 
-{ 
-  return SELF->scenemanager; 
-}
-
-/*" Renders the scene. "*/
 
 - (void)render
 {
@@ -359,82 +225,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   SELF->scenemanager->render(SELF->clearcolorbuffer, SELF->cleardepthbuffer);
   [self->eventhandler updateCamera:[self->scenegraph camera]];
 }
-
-/*" Sets the background color of the scene to color. Raises an exception if
-    color cannot be converted to an RGB color.
- "*/
-
-- (void)setBackgroundColor:(NSColor *)color
-{
-  NSColor * rgb = [color colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
-  if (!rgb) {
-    [NSException raise:NSInternalInconsistencyException
-                 format:@"setBackgroundColor: Color not convertible to RGB"];
-  }
-  
-  float red, green, blue;
-  [color getRed:&red green:&green blue:&blue alpha:NULL];
-  
-  SELF->scenemanager->setBackgroundColor(SbColor(red, green, blue));
-  SELF->scenemanager->scheduleRedraw();  
-}
-
-/*" Returns the scene's background color. "*/
-
-- (NSColor *)backgroundColor
-{
-  SbColor sbcolor = SELF->scenemanager->getBackgroundColor();
-  NSColor * color = [NSColor colorWithCalibratedRed:sbcolor[0]
-                             green:sbcolor[1] 
-                             blue:sbcolor[2] 
-                             alpha:0.0f];
-  return color;	
-}
-
-/*"
-  Controls whether the color buffer is automatically cleared
-  before rendering.
-  
-  The default value is YES.
-  "*/
-- (void)setClearsColorBuffer:(BOOL)yesno
-{
-  SELF->clearcolorbuffer = yesno;
-}
-
-/*"
-  Returns YES if the color buffer is automatically cleared
-  before rendering.
-  
-  The default value is YES.
-  "*/
-- (BOOL)clearsColorBuffer
-{
-  return SELF->clearcolorbuffer;
-}
-
-/*"
-  Controls whether the depth buffer is automatically cleared
-  before rendering.
-  
-  The default value is YES.
-  "*/
-- (void)setClearsDepthBuffer:(BOOL)yesno
-{
-  SELF->cleardepthbuffer = yesno;
-}
-
-/*"
-  Returns YES if the depth buffer is automatically cleared
-  before rendering.
-  
-  The default value is YES.
-  "*/
-- (BOOL)clearsDepthBuffer
-{
-  return SELF->cleardepthbuffer;
-}
-
 
 /*" This method is called when %view's size has been changed. 
     It makes the necessary adjustments for the new size in 
@@ -453,7 +243,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 
 
-// ------------------------ event handling -------------------------
+#pragma mark --- event handling ---
 
 /*" Handles event by either converting it to an %SoEvent and 
     passing it on to the scenegraph via #handleEventAsCoinEvent:, 
@@ -581,8 +371,27 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   return self->eventhandler;
 }
 
-// -------------------- Timer management. ----------------------
+#pragma mark --- timer management ---
 
+- (void)startTimers
+{
+  if (SELF->timerqueuetimer != nil) return;
+  
+  // The timer will be controller from _SC_sensorQueueChanged,
+  // so don't activate it yet.
+  SELF->timerqueuetimer = [NSTimer scheduledTimerWithTimeInterval:1000
+                                                           target:self
+                                                         selector:@selector(_SC_timerQueueTimerFired:) 
+                                                         userInfo:nil 
+                                                          repeats:YES];
+  [SELF->timerqueuetimer _SC_deactivate];
+  [[NSRunLoop currentRunLoop] addTimer:SELF->timerqueuetimer 
+                               forMode:NSModalPanelRunLoopMode];
+  [[NSRunLoop currentRunLoop] addTimer:SELF->timerqueuetimer 
+                               forMode:NSEventTrackingRunLoopMode];
+  
+  SoDB::getSensorManager()->setChangedCallback(sensorqueuechanged_cb, self);
+}
 
 /*" Stops and releases the timers for timer queue and delay queue
     processing.
@@ -597,27 +406,226 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   SoDB::getSensorManager()->setChangedCallback(NULL, NULL);
 }
 
-- (void)startTimers
+#pragma mark --- accessor methods ---
+
+/*"
+Sets the object that should handle redraw messages generated
+ by the scene graph.
+ 
+ This is automatically set by SCView.setController and should only
+ need to be set when not rendering into an SCView (e.g. when doing
+                                                   fullscreen rendering).
+ 
+#{See Also:} #{-redrawHandler}, #{-setRedrawSelector}
+ "*/
+- (void)setRedrawHandler:(id)handler
 {
-  if (SELF->timerqueuetimer != nil) return;
-
-  // The timer will be controller from _SC_sensorQueueChanged,
-  // so don't activate it yet.
-  SELF->timerqueuetimer = [NSTimer scheduledTimerWithTimeInterval:1000
-                              target:self
-                              selector:@selector(_SC_timerQueueTimerFired:) 
-                              userInfo:nil 
-                              repeats:YES];
-  [SELF->timerqueuetimer _SC_deactivate];
-  [[NSRunLoop currentRunLoop] addTimer:SELF->timerqueuetimer 
-                              forMode:NSModalPanelRunLoopMode];
-  [[NSRunLoop currentRunLoop] addTimer:SELF->timerqueuetimer 
-                              forMode:NSEventTrackingRunLoopMode];
-
-  SoDB::getSensorManager()->setChangedCallback(sensorqueuechanged_cb, self);
+  SELF->redrawhandler = handler;
+  [self _SC_setupRedrawInvocation];
 }
 
-// ---------------- NSCoding conformance -------------------------------
+/*"
+Returns the redraw handler previously set by -setRedrawHandler:
+ or nil if no redraw handler has been set.
+ "*/
+- (id)redrawHandler
+{
+  return SELF->redrawhandler;
+}
+
+/*"
+Sets the selector to be performed on the object set by -setRedrawHandler.
+ 
+ This defaults to @selector(display), but can be changed to any selector
+ with and optional id argument. If an id argument exists, this controller
+ object will be sent.
+ 
+ If the given selector doesn't conform, an NSInvalidArgumentException
+ will be raised.
+ "*/
+- (void)setRedrawSelector:(SEL)sel
+{
+  SELF->redrawselector = sel;
+  [self _SC_setupRedrawInvocation];
+}
+
+/*"
+Returns the redraw selector previously set by -setRedrawSelector or
+ nil if no redraw selector has been set.
+ "*/
+- (SEL)redrawSelector
+{
+  return SELF->redrawselector;
+}
+
+/*" Sets the scene graph that shall be rendered. If nil is passed,
+this method returns immediately.
+"*/
+- (void)setSceneGraph:(SCSceneGraph *)sg
+{
+  if (sg == scenegraph || sg == nil) { return; }
+  
+  if (scenegraph) { [scenegraph release]; }
+  scenegraph = [sg retain];    
+  [scenegraph setSceneManager:SELF->scenemanager];
+  
+  if (SELF->scenemanager) {
+    SELF->scenemanager->setSceneGraph([scenegraph superSceneGraph]);
+  }
+  
+  SELF->scenemanager->scheduleRedraw(); 
+  // FIXME: Do we need this? (kintel 20040604)
+  // Update kyrah 20040716. Yes: In case the scenegraph is set to nil,
+  // we will stop all timers. We do want one last re-render to clear the
+  // screen to our background color...
+  
+  // Don't waste cycles by animating an empty scene
+  if (scenegraph == nil) { [self stopTimers]; }
+  else { [self startTimers]; }
+  
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:SCSceneGraphChangedNotification object:self];
+}
+
+- (SCSceneGraph *)sceneGraph 
+{ 
+  return scenegraph; 
+}
+
+/*" Sets the current scene manager to scenemanager. The scene manager's
+render callback will be set to %redraw_cb (SCController's default
+                                           redraw callback), and it will be activated. Also, if a scenegraph
+has been set earlier, scenemanager's scenegraph will be set to it.
+
+Note that you should not normally need to call that method, since a
+scene manager is created for you while initializing.
+"*/
+
+- (void)setSceneManager:(SoSceneManager *)scenemanager
+{
+  //FIXME: Keep old background color if set? (kintel 20040406)
+  //FIXME: Delete old scenemanager? Only if we created it ourselves?
+  // (kintel 20040412)
+  SELF->scenemanager = scenemanager;
+  SELF->scenemanager->setRenderCallback(redraw_cb, (void *)self);
+  SoGLRenderAction * glra = SELF->scenemanager->getGLRenderAction();
+  glra->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
+  glra->setTransparencyType(SoGLRenderAction::DELAYED_BLEND);
+  SELF->scenemanager->activate();
+  if (scenegraph) {
+    SELF->scenemanager->setSceneGraph([scenegraph superSceneGraph]);
+  }
+}
+
+/*" Returns the current Coin scene manager instance. "*/
+
+- (SoSceneManager *)sceneManager 
+{ 
+  return SELF->scenemanager; 
+}
+
+
+
+/*" Sets the background color of the scene to color. Raises an exception if
+color cannot be converted to an RGB color.
+"*/
+
+- (void)setBackgroundColor:(NSColor *)color
+{
+  NSColor * rgb = [color colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+  if (!rgb) {
+    [NSException raise:NSInternalInconsistencyException
+                format:@"setBackgroundColor: Color not convertible to RGB"];
+  }
+  
+  float red, green, blue;
+  [color getRed:&red green:&green blue:&blue alpha:NULL];
+  
+  SELF->scenemanager->setBackgroundColor(SbColor(red, green, blue));
+  SELF->scenemanager->scheduleRedraw();  
+}
+
+/*" Returns the scene's background color. "*/
+
+- (NSColor *)backgroundColor
+{
+  SbColor sbcolor = SELF->scenemanager->getBackgroundColor();
+  NSColor * color = [NSColor colorWithCalibratedRed:sbcolor[0]
+                                              green:sbcolor[1] 
+                                               blue:sbcolor[2] 
+                                              alpha:0.0f];
+  return color;	
+}
+
+/*"
+Controls whether the color buffer is automatically cleared
+ before rendering.
+ 
+ The default value is YES.
+ "*/
+- (void)setClearsColorBuffer:(BOOL)yesno
+{
+  SELF->clearcolorbuffer = yesno;
+}
+
+/*"
+Returns YES if the color buffer is automatically cleared
+ before rendering.
+ 
+ The default value is YES.
+ "*/
+- (BOOL)clearsColorBuffer
+{
+  return SELF->clearcolorbuffer;
+}
+
+/*"
+Controls whether the depth buffer is automatically cleared
+ before rendering.
+ 
+ The default value is YES.
+ "*/
+- (void)setClearsDepthBuffer:(BOOL)yesno
+{
+  SELF->cleardepthbuffer = yesno;
+}
+
+/*"
+Returns YES if the depth buffer is automatically cleared
+ before rendering.
+ 
+ The default value is YES.
+ "*/
+- (BOOL)clearsDepthBuffer
+{
+  return SELF->cleardepthbuffer;
+}
+
+#pragma mark --- delegate handling ---
+
+/*"
+Makes newdelegate the receiver's delegate.
+ 
+ FIXME: Document what notifications the delegate automatically will
+ be registered for (kintel 20040616).
+ 
+ The delegate doesn't need to implement all of the delegate methods.
+ "*/
+- (void)setDelegate:(id)newdelegate
+{
+  SC21_DEBUG(@"SCController.setDelegate");
+  self->delegate = newdelegate;
+}
+
+/*"
+Returns the receiver's delegate.
+ "*/
+- (id)delegate
+{
+  return self->delegate;
+}
+
+#pragma mark --- NSCoding conformance ---
 
 /*" Encodes the SCController using encoder coder "*/
 
@@ -699,6 +707,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 }
 
 @end
+
+#pragma mark --- internal API ---
 
 @implementation SCController (InternalAPI)
 

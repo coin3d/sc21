@@ -35,10 +35,13 @@
   _SCOpenGLPixelFormatP * _sc_openglpixelformat;
 }
 
+/*" NSOpenGLPixelFormat creation "*/
+- (NSOpenGLPixelFormat *)pixelFormat;
+
+/*" Attribute handling "*/
 - (void)setAttribute:(NSOpenGLPixelFormatAttribute)attr;
 - (void)setAttribute:(NSOpenGLPixelFormatAttribute)attr toValue:(int)val;
 - (void)removeAttribute:(NSOpenGLPixelFormatAttribute)attr;
 - (BOOL)getValue:(int *)valptr forAttribute:(NSOpenGLPixelFormatAttribute)attr;
-- (NSOpenGLPixelFormat *)pixelFormat;
 
 @end

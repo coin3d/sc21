@@ -58,6 +58,8 @@
   inspector for SCView.
   "*/
 
+#pragma mark --- initialization and cleanup ---
+
 /*!
   Designated initializer.
 */
@@ -78,6 +80,56 @@
   [SELF release];
   [super dealloc];
 }
+
+#pragma mark --- NSOpenGLPixelFormat creation ---
+
+/*"
+If any attributes have been set, creates and returns a new 
+ NSOpenGLPixelFormat instance from these attributes, else return nil.
+ 
+ The returned pixelformat is cached, and the same instance will be returned
+ if the attributes haven't changed since the last invocation of this
+ method.
+ "*/
+- (NSOpenGLPixelFormat *)pixelFormat
+{
+  if (!SELF->nspixelformat && 
+      (SELF->intattributes && [SELF->intattributes count] > 0 ||
+       SELF->boolattributes && [SELF->boolattributes count] > 0)) {
+    // Create an attribute array from dict
+    NSOpenGLPixelFormatAttribute * attrs = 
+    malloc(2*
+           [SELF->intattributes count]*sizeof(NSOpenGLPixelFormatAttribute*)+
+           [SELF->boolattributes count]*sizeof(NSOpenGLPixelFormatAttribute*)+
+           1);
+    
+    NSEnumerator * keys = [SELF->intattributes keyEnumerator];
+    NSNumber * key;
+    int i = 0;
+    while (key = (NSNumber *)[keys nextObject]) {
+      attrs[i++] = [key intValue];
+      attrs[i++] = [[SELF->intattributes objectForKey:key] intValue];
+      SC21_DEBUG(@"Attr: %d, value: %d", attrs[i-2], attrs[i-1]);
+    }
+    keys = [SELF->boolattributes objectEnumerator];
+    while (key = (NSNumber *)[keys nextObject]) {
+      attrs[i++] = [key intValue];
+    }
+    
+    attrs[i++] = nil; // nil-terminate
+    
+    // Create new pixelformat object, copy dict
+    if (SELF->nspixelformat = 
+        [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs]) {
+      SC21_DEBUG(@"  pixelFormat created");
+    }
+    free(attrs);
+  }
+  return SELF->nspixelformat;
+}
+
+
+#pragma mark --- attribute handling ---
 
 /*"
   Sets boolean pixel format attribute.
@@ -150,52 +202,8 @@
   return YES;
 }
 
-/*"
-  If any attributes have been set, creates and returns a new 
-  NSOpenGLPixelFormat instance from these attributes, else return nil.
 
-  The returned pixelformat is cached, and the same instance will be returned
-  if the attributes haven't changed since the last invocation of this
-  method.
-  "*/
-- (NSOpenGLPixelFormat *)pixelFormat
-{
-  if (!SELF->nspixelformat && 
-      (SELF->intattributes && [SELF->intattributes count] > 0 ||
-       SELF->boolattributes && [SELF->boolattributes count] > 0)) {
-    // Create an attribute array from dict
-    NSOpenGLPixelFormatAttribute * attrs = 
-      malloc(2*
-             [SELF->intattributes count]*sizeof(NSOpenGLPixelFormatAttribute*)+
-             [SELF->boolattributes count]*sizeof(NSOpenGLPixelFormatAttribute*)+
-             1);
-
-    NSEnumerator * keys = [SELF->intattributes keyEnumerator];
-    NSNumber * key;
-    int i = 0;
-    while (key = (NSNumber *)[keys nextObject]) {
-      attrs[i++] = [key intValue];
-      attrs[i++] = [[SELF->intattributes objectForKey:key] intValue];
-      SC21_DEBUG(@"Attr: %d, value: %d", attrs[i-2], attrs[i-1]);
-    }
-    keys = [SELF->boolattributes objectEnumerator];
-    while (key = (NSNumber *)[keys nextObject]) {
-      attrs[i++] = [key intValue];
-    }
-
-    attrs[i++] = nil; // nil-terminate
-    
-    // Create new pixelformat object, copy dict
-    if (SELF->nspixelformat = 
-        [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs]) {
-      SC21_DEBUG(@"  pixelFormat created");
-    }
-    free(attrs);
-  }
-  return SELF->nspixelformat;
-}
-
-// ---------------- NSCoding conformance -------------------------------
+#pragma mark --- NSCoding conformance ---
 
 - (void)encodeWithCoder:(NSCoder *)coder 
 {
@@ -226,7 +234,7 @@
   return self;
 }
 
-// ---------------- NSCopying conformance -------------------------------
+#pragma mark --- NSCopying conformance ---
 
 - (id)copyWithZone:(NSZone *)zone
 {

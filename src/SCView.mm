@@ -62,6 +62,8 @@
   to use SCView.
   "*/
 
+#pragma mark --- static methods ----
+
 + (void)initialize
 {
   // The version is set to 1 to be able to distinguish between objects
@@ -71,6 +73,8 @@
   // we only support keyed archiving.
   [SCView setVersion:1];
 }
+
+#pragma mark --- initialization ---
 
 /*"
   Designated initializer.
@@ -111,29 +115,7 @@
 }
 
 
-/*" 
-  Returns the currently used SCController.
-  "*/
-- (SCController *)controller
-{
-  return self->controller;  
-}
-
-
-/*" 
-  Sets the controller to newcontroller. newcontroller is retained.
-  "*/
-- (void)setController:(SCController *)newcontroller
-{
-  [newcontroller retain];
-  [self->controller release];
-  self->controller = newcontroller;
-  // Use [self display] as a redraw handler
-  [self->controller setRedrawHandler:self];
-  [self->controller setRedrawSelector:@selector(display)];
-  [self reshape]; // Initialize viewport
-}
-
+#pragma mark --- drawing and resizing ---
 
 /*"
   Renders the current scene graph into frame rectangle rect.
@@ -171,8 +153,24 @@
   if ([[self openGLContext] view] == self) [[self openGLContext] update];
 }
 
+#pragma mark --- event handling ---
 
-// ----------- Mouse and keyboard event handling --------------------------
+
+/*" 
+  Forwards event to %controller by sending it the #handleEvent:
+  message. If the event is not handled by the controller, it will
+  be forwarded through the responder chain as usual.
+
+  Note: NSWindow.setAcceptsMouseMovedEvents: must be called to enable
+  NSMouseMoved events.
+"*/
+
+- (void)mouseMoved:(NSEvent *)event
+{
+  if (![self->controller handleEvent:event inView:self]) {
+    [super flagsChanged:event];
+  }
+}
 
 /*" 
   Forwards event to %controller by sending it the #handleEvent:inView:
@@ -361,21 +359,13 @@
   } 
 }
 
-/*" Forwards event to %controller by sending it the #handleEvent:
-    message. If the event is not handled by the controller, it will
-    be forwarded through the responder chain as usual.
 
-    NB! NSWindow.setAcceptsMouseMovedEvents: must be called to enable
-    NSMouseMoved events.
- "*/
-- (void)mouseMoved:(NSEvent *)event
+-(BOOL)acceptsFirstResponder
 {
-  if (![self->controller handleEvent:event inView:self]) {
-    [super flagsChanged:event];
-  }
+  return YES;
 }
 
-// --------------------------------------------------------------------
+#pragma mark --- cursor handling ---
 
 // FIXME: Only used by the event handling scheme. Reconsider this as part
 // of redesigning event handling (kintel 20040615).
@@ -397,13 +387,35 @@
   [SELF->cursor set];
 }
 
--(BOOL)acceptsFirstResponder
+
+#pragma mark --- accessor methods ---
+
+/*" 
+Returns the currently used SCController.
+"*/
+- (SCController *)controller
 {
-  return YES;
+  return self->controller;  
 }
 
 
-// ---------------- NSCoding conformance -------------------------------
+/*" 
+Sets the controller to newcontroller. newcontroller is retained.
+"*/
+- (void)setController:(SCController *)newcontroller
+{
+  [newcontroller retain];
+  [self->controller release];
+  self->controller = newcontroller;
+  // Use [self display] as a redraw handler
+  [self->controller setRedrawHandler:self];
+  [self->controller setRedrawSelector:@selector(display)];
+  [self reshape]; // Initialize viewport
+}
+
+
+
+#pragma mark --- NSCoding conformance ---
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {

@@ -61,12 +61,14 @@ class SoSceneManager;
 - (id)delegate;
 
 /*" Coin rendering and related functionality "*/
+- (void)render;
+- (void)viewSizeChanged:(NSRect)size;
 
+/*" Accesors "*/
 - (void)setRedrawHandler:(id)handler;
 - (id)redrawHandler;
 - (void)setRedrawSelector:(SEL)selector;
 - (SEL)redrawSelector;
-- (void)render;
 - (void)setSceneGraph:(SCSceneGraph *)scenegraph;
 - (SCSceneGraph *)sceneGraph;
 - (void)setSceneManager:(SoSceneManager *)scenemanager;
@@ -77,7 +79,6 @@ class SoSceneManager;
 - (BOOL)clearsColorBuffer;
 - (void)setClearsDepthBuffer:(BOOL)yesno;
 - (BOOL)clearsDepthBuffer;
-- (void)viewSizeChanged:(NSRect)size;
 
 /*" Event handling "*/
 - (BOOL)handleEvent:(NSEvent *)event inView:(NSView *)view;

@@ -49,6 +49,36 @@
   this class.
   "*/
 
+#pragma mark --- static methods ---
+
+/*"
+Returns a default #SCOpenGLPixelFormat.
+ "*/
++ (SCOpenGLPixelFormat *)defaultPixelFormat
+{
+  SC21_DEBUG(@"SCOpenGLView.defaultPixelFormat");
+  
+  // FIXME: Loop through an internal prioritized list of pixel format
+  // requirements and select the first valid pixelformat found?
+  // (kintel 20040615)
+  // Suggestion:
+  // o First try to get the same pf as NSOpenGLView.defaultPixelFormat
+  // o If failed, fall back to some lower pf
+  // -> we need to acquire a real NSOpenGLPixelFormat here.
+  
+  SCOpenGLPixelFormat * pixelFormat = [[SCOpenGLPixelFormat alloc] init];
+  [pixelFormat setAttribute:NSOpenGLPFADoubleBuffer];
+  [pixelFormat setAttribute:NSOpenGLPFAAccelerated];
+  [pixelFormat setAttribute:NSOpenGLPFAColorSize toValue:24];
+  [pixelFormat setAttribute:NSOpenGLPFAAlphaSize toValue:8];
+  [pixelFormat setAttribute:NSOpenGLPFADepthSize toValue:32];
+  [pixelFormat autorelease];
+  return pixelFormat;
+}
+
+
+#pragma mark --- initialization and cleanup ---
+
 /*"  
   Designated initializer.
   
@@ -81,6 +111,24 @@
   return [self initWithFrame:frameRect pixelFormat:nil];
 }
 
+/*"
+Used by subclassers to initialize OpenGL state. This function is called
+ once after an OpenGL context is created and the drawable is attached.
+ 
+ Under Panther, NSOpenGLContext will automatically send this message to
+ its view from its -makeCurrentContext method.
+ Under Jaguar, this function is called explicitly from our
+ -openGLContext method, emulating Panther's behavior.
+ "*/
+- (void)prepareOpenGL
+{
+  SC21_DEBUG(@"SCOpenGLView.prepareOpenGL");
+  glEnable(GL_DEPTH_TEST);
+  glClearColor(0.0, 0.0, 0.0, 0.0);
+  glClear(GL_COLOR_BUFFER_BIT);
+}
+
+
 - (void)dealloc
 {
   SC21_DEBUG(@"SCOpenGLView.dealloc");
@@ -93,31 +141,7 @@
   [super dealloc];
 }
 
-
-/*"
-  Returns a default #SCOpenGLPixelFormat.
-  "*/
-+ (SCOpenGLPixelFormat *)defaultPixelFormat
-{
-  SC21_DEBUG(@"SCOpenGLView.defaultPixelFormat");
-  
-  // FIXME: Loop through an internal prioritized list of pixel format
-  // requirements and select the first valid pixelformat found?
-  // (kintel 20040615)
-  // Suggestion:
-  // o First try to get the same pf as NSOpenGLView.defaultPixelFormat
-  // o If failed, fall back to some lower pf
-  // -> we need to acquire a real NSOpenGLPixelFormat here.
-
-  SCOpenGLPixelFormat * pixelFormat = [[SCOpenGLPixelFormat alloc] init];
-  [pixelFormat setAttribute:NSOpenGLPFADoubleBuffer];
-  [pixelFormat setAttribute:NSOpenGLPFAAccelerated];
-  [pixelFormat setAttribute:NSOpenGLPFAColorSize toValue:24];
-  [pixelFormat setAttribute:NSOpenGLPFAAlphaSize toValue:8];
-  [pixelFormat setAttribute:NSOpenGLPFADepthSize toValue:32];
-  [pixelFormat autorelease];
-  return pixelFormat;
-}
+#pragma mark --- pixelformat-related ---
 
 /*"
   Sets the receiver's pixel format.
@@ -145,22 +169,8 @@
   return SELF->pixelformat;
 }
 
-/*"
-  Used by subclassers to initialize OpenGL state. This function is called
-  once after an OpenGL context is created and the drawable is attached.
-  
-  Under Panther, NSOpenGLContext will automatically send this message to
-  its view from its -makeCurrentContext method.
-  Under Jaguar, this function is called explicitly from our
-  -openGLContext method, emulating Panther's behavior.
-  "*/
-- (void)prepareOpenGL
-{
-  SC21_DEBUG(@"SCOpenGLView.prepareOpenGL");
-  glEnable(GL_DEPTH_TEST);
-  glClearColor(0.0, 0.0, 0.0, 0.0);
-  glClear(GL_COLOR_BUFFER_BIT);
-}
+
+#pragma mark --- context-related ---
 
 /*"
   Releases the NSOpenGLContext associated with the receiver. If
@@ -237,6 +247,8 @@
   SELF->openGLContext = context;
 }
 
+#pragma mark --- drawing and updating --- 
+
 /*"
   Called if the visible rectangle or bounds of the receiver change
   (for scrolling or resize). The default implementation does
@@ -294,7 +306,7 @@
   [context makeCurrentContext];
 }
 
-// ---------------- NSCoding conformance -------------------------------
+#pragma mark --- NSCoding conformance ---
 
 - (void)encodeWithCoder:(NSCoder *)coder 
 {

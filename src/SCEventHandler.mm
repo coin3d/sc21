@@ -27,6 +27,8 @@
   [super dealloc];
 }
 
+#pragma mark --- operation bindings ---
+
 - (void)enableOperation:(SCOperation)operation 
         forButton:(int)buttonNumber
         withModifier:(unsigned int)modifierFlags
@@ -74,6 +76,8 @@
   return matchedoperation;
 }
 
+#pragma mark --- mouse button emulation ---
+
 - (void)emulateButton:(int)buttonNumber usingModifier:(unsigned int)modifierFlags;
 {
   [SELF->emulationdict setObject:[NSNumber numberWithUnsignedInt:modifierFlags]
@@ -88,14 +92,8 @@
   else return 0;
 }
 
-- (void)getModifier:(unsigned int *)modifierbuffer forEmulatedButton:(int)buttonNumber
-{
-  if (modifierbuffer) {
-    NSNumber * modifiervalue = 
-      [SELF->emulationdict objectForKey:[NSNumber numberWithInt:buttonNumber]];
-    if (modifiervalue) *modifierbuffer = [modifiervalue unsignedIntValue];
-  }
-}
+
+#pragma mark --- SCEventHandler protocol ---
 
 - (void)updateCamera:(SCCamera *)camera
 {
@@ -108,7 +106,7 @@
   return NO;
 }
 
-// ---------------- NSCoding conformance -------------------------------
+#pragma mark --- NSCoding conformance ---
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {
