@@ -1,9 +1,9 @@
 {
-	SCView = {
-		SuperClass = SCOpenGLView;
-		Attributes = {
+  SCView = {
+    SuperClass = SCOpenGLView;
+    Attributes = {
       hidden = {};
       pixelFormat = {};
-		};
-	};
+    };
+  };
 }

@@ -1,8 +1,8 @@
 {
-	SCSceneGraph = {
-		SuperClass = NSObject;
-		Attributes = {
+  SCSceneGraph = {
+    SuperClass = NSObject;
+    Attributes = {
       createsSuperSceneGraph = {};
-		};
-	};
+    };
+  };
 }

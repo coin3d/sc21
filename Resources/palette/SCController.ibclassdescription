@@ -1,9 +1,9 @@
 {
-	SCController = {
-		SuperClass = NSObject;
-		Attributes = {
+  SCController = {
+    SuperClass = NSObject;
+    Attributes = {
       clearsColorBuffer = {};
       clearsDepthBuffer = {};
-		};
-	};
+    };
+  };
 }
