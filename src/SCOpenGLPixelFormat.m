@@ -114,6 +114,7 @@ If any attributes have been set, creates and returns a new
     keys = [SELF->boolattributes objectEnumerator];
     while (key = (NSNumber *)[keys nextObject]) {
       attrs[i++] = [key intValue];
+      SC21_DEBUG(@"Attr: %d", attrs[i-1]);
     }
     
     attrs[i++] = nil; // nil-terminate
@@ -222,7 +223,7 @@ If any attributes have been set, creates and returns a new
       SELF->boolattributes = [[coder decodeObjectForKey:@"SC_boolattributes"] retain];
     }
     //FIXME: This should not be necessary as these will always exist,
-    //but some old nibs might not have them yet. This can probablt be
+    //but some old nibs might not have them yet. This can probably be
     //removed when everything is in sync. (kintel 20040729).
     if (!SELF->intattributes) {
       SELF->intattributes = [[NSMutableDictionary alloc] init];

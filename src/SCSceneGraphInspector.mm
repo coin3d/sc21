@@ -25,7 +25,6 @@
  |                                                                 |
  * =============================================================== */
  
-
 #import "SCSceneGraphInspector.h"
 #import <Sc21/SCSceneGraph.h>
 #import "SCSceneGraphP.h"

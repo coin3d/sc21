@@ -127,7 +127,7 @@
   "*/
 - (void)drawRect:(NSRect)rect
 {
-   SC21_DEBUG(@"SCView.drawRect");
+//    SC21_DEBUG(@"SCView.drawRect");
   // draw Interface Builder representation: black filled rectangle
   // FIXME: make sure this actually works on Jaguar too. kyrah 20040705
    if ([[self class] respondsToSelector:@selector(isInInterfaceBuilder)] &&

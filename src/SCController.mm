@@ -216,7 +216,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 
 - (void)render
 {
-  SC21_DEBUG(@"SCController.render");
+//   SC21_DEBUG(@"SCController.render");
   // FIXME: Do clearing here instead of in SoSceneManager to support
   // alpha values? Alternatively, add SbColor4f support the necessary
   // places in Coin (kintel 20040502)
@@ -394,7 +394,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 - (void)setDrawable:(id<SCDrawable>)newdrawable
 {
   SELF->drawable = newdrawable;
-  
+
   // Force a redraw - otherwise the display wouldn't be refreshed 
   // until the first event or scene change.
   [self sceneManager]->scheduleRedraw();
@@ -426,7 +426,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
                                            selector:@selector(_SC_sceneGraphChanged:)
                                                name:SCRootChangedNotification
                                              object:sceneGraph];
-  
+
   [self _SC_sceneGraphChanged:nil];
 }
 
