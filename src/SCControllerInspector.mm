@@ -35,10 +35,11 @@
 - (id)init
 {
   SC21_DEBUG(@"SCControllerInspector.init");
-  self = [super init];
-  BOOL ok = [NSBundle loadNibNamed:@"SCControllerInspector" owner:self];
-  if (ok == NO) SC21_DEBUG(@"SCControllerInspector.init: Failed loading nib");
-  //FIXME: Return nil on error? (kintel 20030324)
+  if (self = [super init]) {
+    BOOL ok = [NSBundle loadNibNamed:@"SCControllerInspector" owner:self];
+    if (ok == NO) SC21_DEBUG(@"SCControllerInspector.init: Failed loading nib");
+    //FIXME: Return nil on error? (kintel 20030324)
+  }
   return self;
 }
 
@@ -47,9 +48,7 @@
   SC21_DEBUG(@"SCControllerInspector.ok:");
   SCController *sccontroller = [self object];
 
-  [sccontroller 
-    setHandlesEventsInViewer:([handleEventsInViewer state] == NSOnState)];
-  [sccontroller setAutoClipValue:[autoClipValue floatValue]];
+  [sccontroller setHandlesEventsInViewer:([handleEvents selectedCell] == handleEventsInViewer)];
   [sccontroller setClearColorBuffer:([clearcolorbuffer state] == NSOnState)];
   [sccontroller setClearDepthBuffer:([cleardepthbuffer state] == NSOnState)];
 
@@ -61,13 +60,13 @@
   SC21_DEBUG(@"SCControllerInspector.revert:");
   SCController *sccontroller = [self object];
 
-  [handleEventsInViewer 
-    setState:[sccontroller handlesEventsInViewer]?NSOnState:NSOffState];
-  [autoClipValue setFloatValue:[sccontroller autoClipValue]];
+  [handleEvents selectCell: 
+    ([sccontroller handlesEventsInViewer] ? 
+     handleEventsInViewer : handleEventsInSceneGraph)];
   [clearcolorbuffer 
-    setState:[sccontroller clearColorBuffer]?NSOnState:NSOffState];
+    setState:([sccontroller clearColorBuffer] ? NSOnState : NSOffState)];
   [cleardepthbuffer 
-    setState:[sccontroller clearDepthBuffer]?NSOnState:NSOffState];
+    setState:([sccontroller clearDepthBuffer] ? NSOnState : NSOffState)];
 
   [super revert:sender];
 }
