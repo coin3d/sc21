@@ -282,8 +282,6 @@ static struct key1map KeyMap[] = {
 
 - (void) setController:(SCController *) controller
 {
-  [controller retain];
-  [_controller release];
   _controller = controller;
 }
 
