@@ -373,7 +373,7 @@
 }
 
 
-// ----------------------- NSCoding -------------------------
+// ---------------- NSCoding conformance -------------------------------
 
 /*" Encodes the SCView using encoder coder "*/
 

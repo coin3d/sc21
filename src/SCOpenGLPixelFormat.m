@@ -198,16 +198,12 @@
   return SELF->nspixelformat;
 }
 
-// NSCoding compliance
-//FIXME: Remove non-keyed archiving? Exception on non-keyed archiving? (kintel 20040412)
+// ---------------- NSCoding conformance -------------------------------
 
 - (void)encodeWithCoder:(NSCoder *)coder 
 {
   NSLog(@"SCOpenGLPixelFormat.encodeWithCoder");
-  if (![coder allowsKeyedCoding]) {
-    [coder encodeObject:SELF->attrdict];
-  } else {
-    NSLog(@"  allowsKeyedCoding");
+  if ([coder allowsKeyedCoding]) {
     [coder encodeObject:SELF->attrdict forKey:@"SC_attrdict"];
   }
 }
@@ -217,12 +213,8 @@
   NSLog(@"SCOpenGLPixelFormat.initWithCoder");
   if (self = [super init]) {
     [self _SC_commonInit];
-    if (![coder allowsKeyedCoding]) {
-      SELF->attrdict = [[coder decodeObject] retain];
-    } else {
-      NSLog(@"  allowsKeyedCoding");
-      SELF->attrdict = 
-        [[coder decodeObjectForKey:@"SC_attrdict"] retain];
+    if ([coder allowsKeyedCoding]) {
+      SELF->attrdict = [[coder decodeObjectForKey:@"SC_attrdict"] retain];
     }
   }
   return self;

@@ -310,17 +310,14 @@
   [context makeCurrentContext];
 }
 
-// ----------------- NSCoding compliance --------------------
+// ---------------- NSCoding conformance -------------------------------
 
 - (void)encodeWithCoder:(NSCoder *)coder 
 {
   NSLog(@"SCOpenGLView.encodeWithCoder:");
 
   [super encodeWithCoder:coder];
-  if (![coder allowsKeyedCoding]) {
-    [coder encodeObject:SELF->pixelformat];
-  } else {
-    NSLog(@"  allowsKeyedCoding");
+  if ([coder allowsKeyedCoding]) {
     [coder encodeObject:SELF->pixelformat forKey:@"SC_pixelformat"];
   }
 }
@@ -331,10 +328,7 @@
 
   if (self = [super initWithCoder:coder]) {
     [self _SC_commonInit];
-    if (![coder allowsKeyedCoding]) {
-      SELF->pixelformat = [[coder decodeObject] retain];
-    } else {
-      NSLog(@"  allowsKeyedCoding");
+    if ([coder allowsKeyedCoding]) {
       SELF->pixelformat = [[coder decodeObjectForKey:@"SC_pixelformat"] retain];
     }
   }

@@ -587,13 +587,12 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   SoDB::getSensorManager()->setChangedCallback(sensorqueuechanged_cb, self);
 }
 
-// ---------------- NSCoder conformance -------------------------------
+// ---------------- NSCoding conformance -------------------------------
 
 /*" Encodes the SCController using encoder coder "*/
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {
-  // FIXME: exception or smth. if !keyeed coding? (kintel 20040408)
   if ([coder allowsKeyedCoding]) {
     [coder encodeBool:SELF->handleseventsinviewer 
            forKey:@"SC_handleseventsinviewer"];
@@ -614,7 +613,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   }
   else if (self = [super init]) {
     [self _SC_commonInit];
-    // FIXME: exception or smth. if !keyed coding? (kintel 20040408)
     if ([coder allowsKeyedCoding]) {
       SELF->handleseventsinviewer = 
         [coder decodeBoolForKey:@"SC_handleseventsinviewer"];
