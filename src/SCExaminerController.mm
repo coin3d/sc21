@@ -197,7 +197,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   root->unref(); // ref'ed by scenemanager
   _scenegraph = root;
 
-  if (_scenemanager) && [_camera controllerHasCreatedCamera]) [self viewAll];
+  if (_scenemanager && [_camera controllerHasCreatedCamera]) [self viewAll];
   [view setNeedsDisplay:YES];
   
   [[NSNotificationCenter defaultCenter]
