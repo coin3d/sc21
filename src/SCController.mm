@@ -199,7 +199,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   SC21_DEBUG(@"SCController.dealloc");
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [self setSceneGraph:nil];
-  [self _SC_stopTimers];
+  [self setDrawable:nil];
   [self setEventHandler:nil];
   delete SELF->scenemanager;
   [SELF release];
@@ -293,9 +293,10 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 {
   SELF->drawable = newdrawable;
 
-  // Force a redraw - otherwise the display wouldn't be refreshed 
-  // until the first event or scene change.
-  [self sceneManager]->scheduleRedraw();
+  [self _SC_maintainTimers];
+  if (SELF->drawable) {
+    [self sceneManager]->scheduleRedraw();
+  }
 }
 
 /*" Returns the current drawable. "*/
@@ -327,12 +328,8 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
                                           selector:@selector(_SC_sceneGraphChanged:)
                                           name:SCRootChangedNotification
                                           object:sceneGraph];
-    [self _SC_startTimers];
-  } else {
-    // Don't waste cycles by animating an empty scene
-    [self _SC_stopTimers]; 
   }
-
+  [self _SC_maintainTimers]; 
   [self _SC_sceneGraphChanged:nil];
 }
 
@@ -619,15 +616,15 @@ Returns YES if the depth buffer is automatically cleared
 
 - (void)_SC_startTimers
 {
-  if (SELF->timerqueuetimer != nil) return;
+  if (SELF->timerqueuetimer || !SELF->drawable) return;
   
   // The timer will be controller from _SC_sensorQueueChanged,
   // so don't activate it yet.
   SELF->timerqueuetimer = [NSTimer scheduledTimerWithTimeInterval:1000
-                                                           target:self
-                                                         selector:@selector(_SC_timerQueueTimerFired:) 
-                                                         userInfo:nil 
-                                                          repeats:YES];
+                                   target:self
+                                   selector:@selector(_SC_timerQueueTimerFired:) 
+                                   userInfo:nil 
+                                   repeats:YES];
   [SELF->timerqueuetimer _SC_deactivate];
   [[NSRunLoop currentRunLoop] addTimer:SELF->timerqueuetimer 
                                forMode:NSModalPanelRunLoopMode];
@@ -649,6 +646,20 @@ Returns YES if the depth buffer is automatically cleared
     SELF->timerqueuetimer = nil;
   }
   SoDB::getSensorManager()->setChangedCallback(NULL, NULL);
+}
+
+/* 
+  Starts or stops timers based on internal state (both a scenegraph and
+  a drawable must be present to warrant having timers running).
+*/
+- (void)_SC_maintainTimers
+{
+  if (self->sceneGraph && SELF->drawable) {
+    [self _SC_startTimers];
+  }
+  else {
+    [self _SC_stopTimers];
+  }
 }
 
 @end
