@@ -486,7 +486,7 @@
 		E0047DF404C27BCB00A801B3 = {
 			isa = PBXFrameworkReference;
 			name = SC21.framework;
-			path = /Users/kintel/code/checkout/SC21/framework/SC21/build/SC21.framework;
+			path = /Library/Frameworks/SC21.framework;
 			refType = 0;
 		};
 		E0047DF504C27BCB00A801B3 = {
