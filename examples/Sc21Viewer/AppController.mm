@@ -41,8 +41,6 @@
 
 - (void)awakeFromNib
 {
-  [coincontroller activate];
-  
   // Display current status.
   [self modeChanged:nil];
   [filenametext setStringValue:@"None"];
