@@ -444,7 +444,6 @@
 - (BOOL)_SC_usesEvent:(NSEvent *)event
 {
   int nr = [event buttonNumber];
-  int eventtype = [event type];
   
   // It is not guaranteed that modifierflags == 0 when no modifier keys are
   // pressed, so it is not possible to compare 

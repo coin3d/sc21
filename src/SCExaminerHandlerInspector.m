@@ -245,7 +245,6 @@
 
 - (NSString *)_SC_conflictDescription
 {
-  BOOL conflict = NO;
   BOOL emulatesright = NO, emulatesmiddle = NO;
   BOOL enabled [3];
   enabled[0] = [self rotateButtonIsEnabled];
