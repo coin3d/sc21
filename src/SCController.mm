@@ -48,6 +48,7 @@
 #import <OpenGL/gl.h>
 
 #import "SCControllerP.h"
+#import "SCSceneGraphP.h"
 
 @implementation SCControllerP
 @end
@@ -198,6 +199,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 
 - (void)dealloc
 {
+  SC21_DEBUG(@"SCController.dealloc");
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [self setSceneGraph:nil];
   [self stopTimers];
@@ -336,16 +338,32 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 - (void)setEventHandler:(id<SCEventHandling>)handler
 {
   if (handler != self->eventHandler) {
-    [self->eventHandler release];
-    self->eventHandler = [handler retain];
-    NSNotification * notification = [NSNotification notificationWithName:SCDrawableChangedNotification object:self];
-    [self->eventHandler drawableDidChange:notification];
-    notification = [NSNotification notificationWithName:SCSceneGraphChangedNotification object:self];
-    [self->eventHandler sceneGraphDidChange:notification];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self->eventHandler selector:@selector(drawableDidChange:) name:SCDrawableChangedNotification object:self];
-    [[NSNotificationCenter defaultCenter] addObserver:self->eventHandler selector:@selector(sceneGraphDidChange:) name:SCSceneGraphChangedNotification object:self];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_SC_cursorDidChange:) name:SCCursorChangedNotification object:self->eventHandler];
+    if (self->eventHandler) {
+      [[NSNotificationCenter defaultCenter] removeObserver:self->eventHandler 
+                                            name:SCDrawableChangedNotification 
+                                            object:self];
+      [[NSNotificationCenter defaultCenter] removeObserver:self->eventHandler 
+                                            name:SCSceneGraphChangedNotification 
+                                            object:self];
+      [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                            name:SCCursorChangedNotification 
+                                            object:self->eventHandler];
+      [self->eventHandler release];
+    }
+
+    self->eventHandler = handler;
+    if (self->eventHandler) {
+      [self->eventHandler retain];
+      NSNotification * notification = [NSNotification notificationWithName:SCDrawableChangedNotification object:self];
+      [self->eventHandler drawableDidChange:notification];
+      notification = [NSNotification notificationWithName:SCSceneGraphChangedNotification object:self];
+      [self->eventHandler sceneGraphDidChange:notification];
+      
+      [[NSNotificationCenter defaultCenter] addObserver:self->eventHandler selector:@selector(drawableDidChange:) name:SCDrawableChangedNotification object:self];
+      [[NSNotificationCenter defaultCenter] addObserver:self->eventHandler selector:@selector(sceneGraphDidChange:) name:SCSceneGraphChangedNotification object:self];
+      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_SC_cursorDidChange:) name:SCCursorChangedNotification object:self->eventHandler];
+    }
   }
 }
 
@@ -414,18 +432,30 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 {
   if (sg == sceneGraph) { return; }
   
-  [sceneGraph release];
+  if (sceneGraph) {
+    // Remove ourselves as observer for the existing scenegraph
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                          name:SCRootChangedNotification
+                                          object:sceneGraph];
+    [sceneGraph release];
+  }
+
   sceneGraph = [sg retain];
-   
+
   // Don't waste cycles by animating an empty scene
   if (sceneGraph == nil) { [self stopTimers]; }
   else { [self startTimers]; }
-  
-  // We want to be informed whenever the scenegraph's root node changes.
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(_SC_sceneGraphChanged:)
-                                               name:SCRootChangedNotification
-                                             object:sceneGraph];
+
+  if (sceneGraph) {
+    // We want to be informed whenever the scenegraph's root node changes.
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                          selector:@selector(_SC_sceneGraphChanged:)
+                                          name:SCRootChangedNotification
+                                          object:sceneGraph];
+    [self startTimers];
+  } else {
+    [self stopTimers]; 
+  }
 
   [self _SC_sceneGraphChanged:nil];
 }
