@@ -48,7 +48,6 @@
 - (void)awakeFromNib
 {
   NSLog(@"MyWindowController.awakeFromNib");
-  [controller activate];
   [self documentChanged:self];
   [[self window] makeFirstResponder:[controller view]];
 }
