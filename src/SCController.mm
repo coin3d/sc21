@@ -241,8 +241,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   SELF->scenemanager->scheduleRedraw();  
 }
 
-
-
 #pragma mark --- event handling ---
 
 /*" Handles event by either converting it to an %SoEvent and 
@@ -465,7 +463,7 @@ this method returns immediately.
 {
   if (sg == scenegraph || sg == nil) { return; }
   
-  if (scenegraph) { [scenegraph release]; }
+  [scenegraph release];
   scenegraph = [sg retain];    
   [scenegraph setSceneManager:SELF->scenemanager];
   
