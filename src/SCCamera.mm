@@ -177,8 +177,11 @@
 {
   // FIXME: Actually use delta to determine zoom distance?
   // kyrah 20030621.
+
+  // Greater factor means more is viewed at the same time ("zoom out")
+  if (delta == 0) return;
   
-  float factor = (delta > 0) ? 1.1 : 0.9;
+  float factor = (delta > 0) ? 0.9 : 1.1;
   if (_camera == NULL) return;
   SoType t = _camera->getTypeId();
 
