@@ -53,9 +53,6 @@
                                         selector:@selector(modeChanged:)
                                         name:SCModeChangedNotification
                                         object:nil];
-
-  [self->coincontroller setEventHandler:[[[SCExaminerHandler alloc] init] autorelease]];
-//   [self->coincontroller setEventHandler:[[[SCFlyHandler alloc] init] autorelease]];
 }
 
 - (void)modeChanged:(id)sender
