@@ -33,6 +33,9 @@
     an SoOrthographicCamera, enabling easy conversion between these
     the two camera types. It also offers methods for moving and 
     reorienting the camera.
+
+    Note: This class is used internally in SC21. You probably won't need
+    to ever use it yourself.
  "*/
 
 // ---------------- Initialisation and cleanup -------------------------
@@ -153,6 +156,13 @@
 {
   if (camera == NULL) return;
 
+  // FIXME: Check how SoQt handles this - maybe it should be possible to 
+  // change camera type if even the cam is part of user SG? kyrah 20030711
+  if (!controllerhascreatedcamera) {
+    NSLog(@"Camera is part of user scenegraph, cannot convert.");
+    return; 
+  }
+  
   BOOL settoperspective = type.isDerivedFrom(SoPerspectiveCamera::getClassTypeId());
   
   if (([self isPerspective] && settoperspective) ||
@@ -183,6 +193,7 @@
 #endif
 
   [self setSoCamera:newcam];
+  [self setControllerHasCreatedCamera:YES];
 
 #if 0
   // Restore home position.
@@ -333,7 +344,6 @@
 #if 0
   saveHomePosition;
 #endif
-  controllerhascreatedcamera = YES;
 }
 
 
