@@ -46,7 +46,6 @@
 
 - (void)ok:(id)sender
 {
-  NSLog(@"SCFlyHandlerInspector.ok:");
   SCFlyHandler * scflyhandler = [self object];
 
   // FIXME: Set examinerhandler outlets according to inspector state.
@@ -56,7 +55,6 @@
 
 - (void)revert:(id)sender
 {
-  NSLog(@"SCFlyHandlerInspector.revert:");
   SCFlyHandler * scflyhandler = [self object];
   
   // FIXME: Set inspector state according to examinerhandler state

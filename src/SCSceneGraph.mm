@@ -529,7 +529,6 @@ and !{NO} otherwise.
 - (void)_SC_setCreatesSuperSceneGraph:(BOOL)yn
 {
   SELF->createsuperscenegraph = yn; 
-  NSLog(@"SCSceneGraph set createsuperscenegraph to %d", yn);
 }
 
 - (BOOL)_SC_createsSuperSceneGraph
