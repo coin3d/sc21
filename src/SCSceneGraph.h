@@ -50,6 +50,7 @@
 
 /*" File system access. "*/
 - (BOOL)readFromFile:(NSString *)filename;
+- (BOOL)writeToFile:(NSString *)filename;
 
 /*" Accessors for the scenegraph's scenemanager. "*/
 - (void)setSceneManager:(SoSceneManager *)scenemanager;
@@ -89,17 +90,18 @@
 
 // ------------------ Notifications -----------------------
 
-/*" Posted if the user tries to open a file which does not
-    exist or cannot be read (i.e. #{SoInput::openFile()} 
-    failed).
- "*/
-SC21_EXTERN NSString * SCCouldNotOpenFileNotification;
-
-/*" Posted if opening a requested file was successful, but
-    no valid scenegraph could be read from the file (i.e.
-    #{SoDB::readAll()} returned NULL).                                             
+/*" Posted if opening a requested file for reading failed, either
+    because the file does not exist or cannot be read  (i.e. 
+    #{SoInput::openFile()} failed), or because no valid scenegraph 
+    could be read from the file (i.e. #{SoDB::readAll()} returned NULL).                                             
 "*/
 SC21_EXTERN NSString * SCCouldNotReadFileNotification;
+
+/*" Posted if opening a requested file for writing failed, either
+    because the file does not exist or cannot be written to (i.e. 
+    #{SoOutput::openFile()} failed)
+ "*/
+SC21_EXTERN NSString * SCCouldNotWriteFileNotification;
 
 /*" Posted if #setSceneGraph: is called with a scenegraph that
     does not contain a camera. Register for this notification if

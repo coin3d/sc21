@@ -30,7 +30,9 @@
 
 #import <Inventor/SoDB.h>
 #import <Inventor/SoInput.h>
+#import <Inventor/SoOutput.h>
 #import <Inventor/actions/SoSearchAction.h>
+#import <Inventor/actions/SoWriteAction.h>
 #import <Inventor/nodekits/SoBaseKit.h>
 #import <Inventor/nodes/SoPerspectiveCamera.h>
 #import <Inventor/nodes/SoDirectionalLight.h>
@@ -123,6 +125,21 @@
   if (fileroot) { 
     [self setRoot:fileroot];
     return YES; 
+  }
+  return NO;
+}
+
+- (BOOL)writeToFile:(NSString *)filename
+{
+  SoOutput out;
+  BOOL ok = out.openFile([filename UTF8String]);
+  if (ok) {
+    SoWriteAction wa(&out);
+    wa.apply([self root]);
+    return YES;
+  } else {
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:SCCouldNotWriteFileNotification object:self]; 
   }
   return NO;
 }
@@ -457,7 +474,7 @@ and !{NO} otherwise.
   SoInput in;
   if (!in.openFile([filename UTF8String])) {  
     [[NSNotificationCenter defaultCenter]
-        postNotificationName:SCCouldNotOpenFileNotification object:self];
+        postNotificationName:SCCouldNotReadFileNotification object:self];
     return NULL;
   } else {
     if (in.isFileVRML2()) {
