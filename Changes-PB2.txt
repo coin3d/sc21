@@ -1,5 +1,0 @@
-Public Beta 2
--------------
-
-o Fixed crash when running in "test interface" mode in IB.
-
