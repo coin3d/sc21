@@ -27,6 +27,18 @@
 
 #import <Cocoa/Cocoa.h>
 
+/*
+  Viewtiful is a slightly more involved example showing how to create
+  a Document-Based Application with Sc21. It includes features such as:
+
+  o Double-click on 3D model to open it
+  o Drag and Drop files to the viewer icon
+  o Copy to pasteboard
+  o New from pasteboard
+  o Refresh model
+  o Connection to services
+*/
+
 @interface AppController : NSObject
 {
   // FIXME: Added since we want to connect this to a non-standard selector and
@@ -34,7 +46,6 @@
   IBOutlet NSMenuItem *refreshItem;
 }
 
-- (void)awakeFromNib;
 - (BOOL)newDocumentFromPasteboard:(NSPasteboard *)pb;
 
 @end

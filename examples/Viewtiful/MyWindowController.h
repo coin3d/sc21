@@ -44,5 +44,5 @@
 - (IBAction)dumpScenegraph:(id)sender;
 - (IBAction)showDebugInfo:(id)sender;
 - (IBAction)documentChanged:(id)sender;
-
+- (IBAction)viewAll:(id)sender;
 @end

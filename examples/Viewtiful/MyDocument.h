@@ -32,9 +32,9 @@
 @interface MyDocument : NSDocument
 {
   SCSceneGraph * scenegraph;
-  NSString *_filetype;
-  NSString *_header;
-  int _filesize;
+  NSString *filetype;
+  NSString *header;
+  int filesize;
 }
 
 - (BOOL)readFromFile:(NSString *)fileName ofType:(NSString *)docType;

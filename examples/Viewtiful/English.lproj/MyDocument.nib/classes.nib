@@ -2,12 +2,6 @@
     IBClasses = (
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {
-            ACTIONS = {viewAll = id; }; 
-            CLASS = MyCoinController; 
-            LANGUAGE = ObjC; 
-            SUPERCLASS = SCController; 
-        }, 
-        {
             ACTIONS = {addViewpoint = id; dumpScenegraph = id; }; 
             CLASS = MyDocument; 
             LANGUAGE = ObjC; 
@@ -20,6 +14,7 @@
                 modeButtonClicked = id; 
                 modeMenuSelected = id; 
                 showDebugInfo = id; 
+                viewAll = id; 
             }; 
             CLASS = MyWindowController; 
             LANGUAGE = ObjC; 

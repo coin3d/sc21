@@ -126,8 +126,6 @@
 				E0DD303406074FFA009D1EB4,
 				E0DD303606074FFA009D1EB4,
 				E0DD303706074FFA009D1EB4,
-				E0DD303806074FFA009D1EB4,
-				E0DD303906074FFA009D1EB4,
 				E0DD303A06074FFA009D1EB4,
 				E0DD303B06074FFA009D1EB4,
 			);
@@ -321,7 +319,6 @@
 				8D15AC290486D014006FF6A4,
 				E0DD303C06074FFA009D1EB4,
 				E0DD303F06074FFA009D1EB4,
-				E0DD304106074FFA009D1EB4,
 				E0DD304306074FFA009D1EB4,
 			);
 			isa = PBXHeadersBuildPhase;
@@ -368,7 +365,6 @@
 				E0DD303D06074FFA009D1EB4,
 				E0DD303E06074FFA009D1EB4,
 				E0DD304006074FFA009D1EB4,
-				E0DD304206074FFA009D1EB4,
 				E0DD304406074FFA009D1EB4,
 			);
 			isa = PBXSourcesBuildPhase;
@@ -484,22 +480,6 @@
 			refType = 4;
 			sourceTree = "<group>";
 		};
-		E0DD303806074FFA009D1EB4 = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
-			path = MyCoinController.h;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		E0DD303906074FFA009D1EB4 = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
-			path = MyCoinController.mm;
-			refType = 4;
-			sourceTree = "<group>";
-		};
 		E0DD303A06074FFA009D1EB4 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
@@ -542,18 +522,6 @@
 		};
 		E0DD304006074FFA009D1EB4 = {
 			fileRef = E0DD303706074FFA009D1EB4;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		E0DD304106074FFA009D1EB4 = {
-			fileRef = E0DD303806074FFA009D1EB4;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		E0DD304206074FFA009D1EB4 = {
-			fileRef = E0DD303906074FFA009D1EB4;
 			isa = PBXBuildFile;
 			settings = {
 			};

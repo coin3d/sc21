@@ -89,6 +89,11 @@
   [controller sceneManager]->activate();
 }
 
+- (IBAction)viewAll:(id)sender
+{
+  [[controller sceneGraph] viewAll];
+}
+
 - (IBAction)modeButtonClicked:(id)sender
 {
   if ([modebutton state] == NSOnState) {

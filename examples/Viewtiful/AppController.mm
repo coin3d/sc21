@@ -30,19 +30,16 @@
 
 @implementation AppController
 
-- (void)awakeFromNib
-{
-    NSLog(@"AppController.awakeFromNib");
-}
-
 // NSApplication delegate methods
 
 - (BOOL)application:(NSApplication *)app openFile:(NSString *)filename
 {
-    NSLog(@"AppController.application:openFile:");
-    if ([[NSDocumentController sharedDocumentController] openDocumentWithContentsOfFile:filename display:YES])
+    if ([[NSDocumentController sharedDocumentController] 
+        openDocumentWithContentsOfFile:filename display:YES]) {
         return YES;
-    return NO;
+    } else { 
+      return NO;
+    }
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)item
@@ -57,25 +54,29 @@
 }
 
 // Enable the Services menu items we can use
-- (id)validRequestorForSendType:(NSString *)sendType returnType:(NSString *)returnType
-{
-  BOOL retok = NO, sendok = NO;
-  if (!sendType || [sendType isEqualToString:@"VRML1PboardType"]) sendok = YES;
-  if (!returnType || [returnType isEqualToString:@"VRML1PboardType"]) retok = YES;
 
-  if (sendok && retok) return self;
+- (id)validRequestorForSendType:(NSString *)sendType 
+                     returnType:(NSString *)returnType
+{
+  BOOL return_ok = NO, send_ok = NO;
+
+  if (!sendType || [sendType isEqualToString:@"VRML1PboardType"]) 
+    send_ok = YES;
+
+  if (!returnType || [returnType isEqualToString:@"VRML1PboardType"]) 
+    return_ok = YES;
+
+  if (send_ok && return_ok) return self;
   return nil;
 }
 
 - (BOOL)writeSelectionToPasteboard:(NSPasteboard *)pb types:(NSArray *)types
 {
-  NSLog(@"AppController.writeSelectionToPasteboard");
   return NO;
 }
 
 - (BOOL)readSelectionFromPasteboard:(NSPasteboard *)pb
 {
-  NSLog(@"AppController.readSelectionFromPasteboard");
   return [self newDocumentFromPasteboard:pb];
 }
 
@@ -94,7 +95,9 @@
     return YES;
   }
   return NO;
-  // FIXME: The code below doesn't work: openUntitled... returns nil. Why? (kintel 20030814)
+ 
+  // FIXME: The code below doesn't work: openUntitled... returns nil. Why? 
+  // (kintel 20030814)
   //  MyDocument *doc = [dc openUntitledDocumentOfType:@"MyDocument" display:YES];
   //  if ([doc loadDataRepresentation:data ofType:@"VRML"]) {
   //    NSLog(@"loadDataRepresentation OK");
@@ -111,9 +114,10 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)notif
 {
   NSLog(@"AppController.applicationDidFinishLaunching");
-  [NSApp registerServicesMenuSendTypes:[NSArray arrayWithObject:@"VRML1PboardType"]
-                           returnTypes:[NSArray arrayWithObject:@"VRML1PboardType"]];
-
+  NSArray * sendtypes = [NSArray arrayWithObject:@"VRML1PboardType"];
+  NSArray * returntypes = [NSArray arrayWithObject:@"VRML1PboardType"];
+  [NSApp registerServicesMenuSendTypes:sendtypes returnTypes:returntypes];
+  
   // FIXME: Added since we want to connect this to a non-standard selector and
   // IB doesn't let us do this (kintel 20030814)
   [refreshItem setTarget:nil];

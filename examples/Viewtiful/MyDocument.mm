@@ -44,29 +44,28 @@
 
 - (void)dealloc
 {
-  NSLog(@"MyDocument.dealloc");
-  [_header release];
+  [header release];
   [scenegraph release];
   [super dealloc];
 }
 
 - (NSString *)fileType
 {
-  return _filetype;
+  return filetype;
 }
 
 // Returns a readable file size string
 - (NSString *)fileSize
 {
   NSString *sizestr = nil;
-  if (_filesize > 10*1024*1024) {
-    sizestr = [NSString stringWithFormat:@"%.1f MB", (float)_filesize/(1024*1024)];
+  if (filesize > 10*1024*1024) {
+    sizestr = [NSString stringWithFormat:@"%.1f MB", (float)filesize/(1024*1024)];
   }
-  else if (_filesize > 30*1024) {
-    sizestr = [NSString stringWithFormat:@"%.0f KB", (float)_filesize/1024];
+  else if (filesize > 30*1024) {
+    sizestr = [NSString stringWithFormat:@"%.0f KB", (float)filesize/1024];
   }
   else {
-    sizestr = [NSString stringWithFormat:@"%d", _filesize];
+    sizestr = [NSString stringWithFormat:@"%d", filesize];
   }
   return sizestr;
 }
@@ -91,10 +90,10 @@
       [docType isEqualToString:@"VRML V2.0"] ||
       [docType isEqualToString:@"Inventor"]) {
     if ([scenegraph readFromFile:fileName]) {
-      _filetype = docType;
+      filetype = docType;
       NSDictionary *attr = [[NSFileManager defaultManager] 
                              fileAttributesAtPath:fileName traverseLink:YES];
-      _filesize = [[attr objectForKey:NSFileSize] intValue];
+      filesize = [[attr objectForKey:NSFileSize] intValue];
       return YES;
     }
   }
@@ -108,10 +107,9 @@
 // from the pasteboard.
 - (BOOL)loadDataRepresentation:(NSData *)docData ofType:(NSString *)docType
 {
-  NSLog(@"MyDocument.loadDataRepresentation:ofType:%@", docType);
   if ([scenegraph loadDataRepresentation:docData]) {
-    _filetype = docType;
-    _filesize = [docData length];
+    filetype = docType;
+    filesize = [docData length];
     return YES;
   }
   return NO;
@@ -120,20 +118,9 @@
 // Overridden to use our own WindowController
 - (void)makeWindowControllers
 {
-  NSLog(@"MyDocument.makeWindowControllers");
   MyWindowController *mwc = [[MyWindowController alloc] init];
   [self addWindowController:mwc];
   [mwc release];
-}
-
-- (void)windowControllerDidLoadNib:(NSWindowController *) aController
-{
-  NSLog(@"MyDocument.windowControllerDidLoadNib");
-}
-
-- (void)windowControllerWillLoadNib:(NSWindowController *) aController
-{
-  NSLog(@"MyDocument.windowControllerWillLoadNib");
 }
 
 // FIXME: Since we are read-only, we shouldn't need to do this (kintel 20031211)
@@ -163,19 +150,22 @@ buffer_realloc(void *bufptr, size_t size)
 {
   NSLog(@"MyDocument.copy");
   NSPasteboard *pb = [NSPasteboard generalPasteboard];
-  [pb declareTypes:[NSArray arrayWithObjects:NSStringPboardType, @"VRML1PboardType", nil] owner:self];
+  NSArray * types = [NSArray arrayWithObjects:NSStringPboardType,
+    @"VRML1PboardType", nil];
+  [pb declareTypes:types owner:self];
   [pb setString:[self fileName] forType:NSStringPboardType];
 
   SoOutput out;
   buffer = (char *)malloc(102400);
   buffer_size = 102400;
   out.setBuffer(buffer, buffer_size, buffer_realloc);
-  SbString hdr([_header cString]);
+  SbString hdr([header cString]);
   out.setHeaderString(hdr);
   SoWriteAction wra(&out);
   wra.apply([scenegraph root]);
 
-  [pb setData:[NSData dataWithBytesNoCopy:buffer length:buffer_size] forType:@"VRML1PboardType"];
+  [pb setData:[NSData dataWithBytesNoCopy:buffer length:buffer_size] 
+      forType:@"VRML1PboardType"];
 }
 
 // Refresh document from disk
