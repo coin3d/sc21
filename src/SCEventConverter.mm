@@ -198,6 +198,7 @@ static struct key1map KeyMap[] = {
 {
   delete _keydict;
   delete _printabledict;
+  [super dealloc];
 }
 
 

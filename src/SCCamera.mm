@@ -100,9 +100,11 @@
 }
 
 
-- (void)dealloc {
+- (void)dealloc
+{
   if (_camera) _camera->unref();
   if (_autoclipboxaction) delete _autoclipboxaction;
+  [super dealloc];
 }
 
 
