@@ -38,7 +38,6 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 
 @interface SCView (InternalAPI)
-- (void)_initMenu;
 - (NSSize)_size;
 - (float)_width;
 - (float)_height;
@@ -151,7 +150,6 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 - (void)commonInit
 {
-  [self _initMenu];
 }
 
 
@@ -329,15 +327,14 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     Instead, the view's default context menu will be shown. (This
     behavior is inherited from NSView.) If you want to handle
     ctrl-click yourself, you have to subclass SCView and override
-    #{- (NSMenu *)menuForEvent:(NSEvent *)event} to return nil and
-    pass on the event to the controller:
-    %{[controller handleEvent:event]}.
+    #{- (NSMenu *)menuForEvent:(NSEvent *)event} to return nil.
+    This will cause the event to be passed on to this function.
  "*/
 
 - (void)mouseDown:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
-    [[self nextResponder] mouseDown:event];
+    [super mouseDown:event];
   }
 }
 
@@ -350,7 +347,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 - (void)mouseUp:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
-    [[self nextResponder] mouseUp:event];
+    [super mouseUp:event];
   }
 }
 
@@ -368,7 +365,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 - (void)mouseDragged:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
-    [[self nextResponder] mouseDragged:event];
+    [super mouseDragged:event];
   }
 }
 
@@ -381,7 +378,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 - (void)rightMouseDown:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
-    [[self nextResponder] rightMouseDown:event];
+    [super rightMouseDown:event];
   }
 }
 
@@ -394,7 +391,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 - (void)rightMouseUp:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
-    [[self nextResponder] rightMouseUp:event];
+    [super rightMouseUp:event];
   }
 }
 
@@ -411,7 +408,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 - (void)rightMouseDragged:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
-    [[self nextResponder] rightMouseDragged:event];
+    [super rightMouseDragged:event];
   }
 }
 
@@ -424,7 +421,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 - (void)otherMouseDown:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
-    [[self nextResponder] otherMouseDown:event];
+    [super otherMouseDown:event];
   }
 }
 
@@ -437,7 +434,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 - (void)otherMouseUp:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
-    [[self nextResponder] otherMouseUp:event];
+    [super otherMouseUp:event];
   }
 }
 
@@ -455,7 +452,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 - (void)otherMouseDragged:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
-    [[self nextResponder] otherMouseDragged:event];
+    [super otherMouseDragged:event];
   }
 }
 
@@ -467,7 +464,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 - (void)scrollWheel:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
-    [[self nextResponder] scrollWheel:event];
+    [super scrollWheel:event];
   }
 }
 
@@ -480,7 +477,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 - (void)keyDown:(NSEvent *)event 
 {
   if (![controller handleEvent:event]) {
-    [[self nextResponder] keyDown:event];
+    [super keyDown:event];
   } 
 }
 
@@ -493,7 +490,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 - (void)keyUp:(NSEvent *)event 
 {
   if (![controller handleEvent:event]) {
-    [[self nextResponder] keyUp:event];
+    [super keyUp:event];
   } 
 }
 
@@ -636,15 +633,6 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 
 // ----------------------- InternalAPI -------------------------
-
-/* Initalizes and sets the contextual menu. */
-- (void)_initMenu
-{
-  NSMenu * menu;
-  menu = [[NSMenu alloc] initWithTitle:@"Menu"];
-  [self setMenu:menu];  // retained by the view
-  [menu release];
-}
 
 /* Returns the size of the SCView. */
 
