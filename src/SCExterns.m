@@ -23,5 +23,5 @@ NSString * SCRedrawNotification = @"SCRedrawNotification";
 // Internally used notifications
 // Note that the variable name is intentionally not starting with _ since
 // C++ reserves '_' usage in the global namespace. 
-NSString * SCInternalRootChangedNotification = @" _SC_RootChangedNotification";
+NSString * SCRootChangedNotification = @" _SC_RootChangedNotification";
 

@@ -223,7 +223,7 @@
   }
   
   [[NSNotificationCenter defaultCenter]
-    postNotificationName:SCInternalRootChangedNotification object:self];  
+    postNotificationName:SCRootChangedNotification object:self];  
 }
 
 - (void)setSceneManager:(SoSceneManager *)scenemanager

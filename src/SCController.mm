@@ -115,7 +115,7 @@ sensorqueuechanged_cb(void * data)
 }
 
 // Internal. Used for triggering delayqueue sensors when idle.
-NSString * _SCIdleNotification = @"_SCIdleNotification";
+NSString * SCIdleNotification = @"_SC_IdleNotification";
 
 @implementation SCController
 
@@ -432,7 +432,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   // We want to be informed whenever the scenegraph's root node changes.
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(_SC_sceneGraphChanged:)
-                                               name:SCInternalRootChangedNotification
+                                               name:SCRootChangedNotification
                                              object:scenegraph];
   [self _SC_sceneGraphChanged:nil];
 }
@@ -690,7 +690,7 @@ Returns the receiver's delegate.
 
   [[NSNotificationCenter defaultCenter] 
     addObserver:self
-    selector:@selector(_SC_idle:) name:_SCIdleNotification
+    selector:@selector(_SC_idle:) name:SCIdleNotification
     object:self];
 
   [self _SC_sensorQueueChanged];
@@ -752,7 +752,7 @@ Returns the receiver's delegate.
   if (sm->isDelaySensorPending()) {
     [[NSNotificationQueue defaultQueue]
       enqueueNotification:
-        [NSNotification notificationWithName:_SCIdleNotification object:self]
+        [NSNotification notificationWithName:SCIdleNotification object:self]
       postingStyle:NSPostWhenIdle 
       coalesceMask:NSNotificationCoalescingOnName
       forModes: [NSArray arrayWithObjects: 
