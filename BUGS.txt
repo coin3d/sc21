@@ -41,3 +41,13 @@ are actually duplicates from Coin/BUGS.txt that are relevant to Sc21.
     <kintel@sim.no> 20040919
 
 =====================================================================
+
+003 SoEvent::getPosition() only valid for mouse events
+
+    SoEvent::getPosition() should, according to the documentation
+    (and according to Lars), return the last valid mouse position
+    for any event, not only mouse events.
+
+    <kintel@sim.no> 20041006
+
+=====================================================================
