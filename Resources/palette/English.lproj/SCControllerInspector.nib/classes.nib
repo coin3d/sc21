@@ -1,0 +1,12 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = SCControllerInspector; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {autoClipValue = NSSlider; handleEventsInViewer = NSButton; }; 
+            SUPERCLASS = IBInspector; 
+        }
+    ); 
+    IBVersion = 1; 
+}
