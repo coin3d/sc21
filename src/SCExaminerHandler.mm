@@ -148,9 +148,11 @@
            eventtype == NSOtherMouseDown) {    
     
     // Check for emulations
-    int effectivebutton = [SELF->emulator emulatedButtonForButton:[event buttonNumber] 
-                                                         modifier:modifierflags];
-    
+    int effectivebutton = [event buttonNumber];
+    if (SELF->emulator) {
+      effectivebutton = [SELF->emulator emulatedButtonForButton:effectivebutton
+                             modifier:modifierflags];
+    }
     Class newmode = [self _SC_modeForButton:effectivebutton 
                                    modifier:modifierflags];
     if (newmode != Nil) mode = newmode;
