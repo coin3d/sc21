@@ -309,8 +309,9 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   //FIXME: Keep old background color if set? (kintel 20040406)
   _scenemanager = scenemanager;
   _scenemanager->setRenderCallback(redraw_cb, (void *)self);
-  _scenemanager->getGLRenderAction()->setCacheContext(
-    SoGLCacheContextElement::getUniqueCacheContext());
+  SoGLRenderAction * glra = _scenemanager->getGLRenderAction();
+  glra->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
+  glra->setTransparencyType(SoGLRenderAction::DELAYED_BLEND);
   _scenemanager->activate();
   if (_scenegraph) _scenemanager->setSceneGraph(_scenegraph);
 }
