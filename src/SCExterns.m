@@ -8,6 +8,5 @@ NSString * SCRedrawNotification = @"SCRedrawNotification";
 // -------- SCExaminerController ---------
 NSString * SCViewAllNotification = @"SCViewAllNotification";
 NSString * SCCameraTypeChangedNotification = @"SCCameraTypeChangedNotification";
-NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 

@@ -30,6 +30,7 @@
 #include <Inventor/SbLinear.h>
 
 @class SCController;
+@class SCSceneGraph;
 
 class SbRotation;
 class SoCamera;
@@ -56,7 +57,8 @@ typedef enum _SCCameraType {
 }
 
 /*" Initializing an SCCamera "*/
-- (id)initWithSoCamera:(SoCamera *)camera controller:(SCController *)controller;
+- (id)initWithSoCamera:(SoCamera *)camera inSceneGraph:(SCSceneGraph *)scenegraph;
+- (id)initWithSceneGraph:(SCSceneGraph *)scenegraph;
 
 /*" Switching between orthographic and perspective mode "*/
 - (SCCameraType)type;
@@ -70,10 +72,7 @@ typedef enum _SCCameraType {
 - (void)translate:(SbVec3f)v;
 
 /*" Accessors "*/ 
-- (void)setController:(SCController *)controller;
-- (SCController *)controller;
-- (void)setSoCamera:(SoCamera *)c deleteOldCamera:(BOOL)deletecamera;
+- (void)setSoCamera:(SoCamera *)camera;
+- (void)setSoCamera:(SoCamera *)camera deleteOldCamera:(BOOL)deletecamera;
 - (SoCamera *)soCamera;
-- (void)setControllerHasCreatedCamera:(BOOL)yn;
-- (BOOL)controllerHasCreatedCamera;
 @end

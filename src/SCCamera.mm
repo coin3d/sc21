@@ -27,9 +27,10 @@
  
 
 #import <Sc21/SCCamera.h>
-#import <Sc21/SCController.h>
+#import <Sc21/SCSceneGraph.h>
 #import <Sc21/SCExaminerController.h> // for notifications
 #import "SCUtil.h"
+#import "SCSceneGraphP.h"
 
 #import <OpenGL/gl.h> // for GLint
 
@@ -51,10 +52,9 @@
 
 @interface _SCCameraP : NSObject
 {
-  SCController * controller;
+  SCSceneGraph * scenegraph;
   SoCamera * camera;
   SoGetBoundingBoxAction * autoclipboxaction;
-  BOOL controllerhascreatedcamera;
 }
 @end
 
@@ -83,36 +83,40 @@
 
 // ---------------- Initialisation and cleanup -------------------------
 
-/*" Initializes a newly allocated SCCamera to use c as its 
-    representation in the scenegraph, and use controller for
-    Coin interaction.
+/*" Initializes a newly allocated SCCamera to use camera as its 
+    representation in the scenegraph scenegraph.
 
     This method is the designated initializer for the SCCamera
     class. Returns !{self}.
  "*/
 
-- (id)initWithSoCamera:(SoCamera *)camera controller:(SCController *)controller
+- (id)initWithSoCamera:(SoCamera *)camera inSceneGraph:(SCSceneGraph *)scenegraph
 {
   if (self = [super init]) {
     SELF = [[_SCCameraP alloc] init];
-    SELF->controllerhascreatedcamera = NO;
-    SELF->controller = controller;
+    SELF->scenegraph = scenegraph;
     SELF->camera = camera;
     if (SELF->camera) SELF->camera->ref();
   }
   return self;
 }
 
+- (id)initWithSceneGraph:(SCSceneGraph *)scenegraph
+{
+  return [self initWithSoCamera:NULL inSceneGraph:scenegraph]; 
+}
+
 
 /*" Initializes a newly allocated SCCamera. Note that you must set
-    the actual camera in the Coin scenegraph and the SCController
-    component for Coin handling explicitly using #setController:
+    the actual camera in the Coin scenegraph and the SCSceneGraph
+    representing the scenegraph explicitly using #setSceneGraph:
     and #setSoCamera: before being able to use the camera.
  "*/
  
 - (id)init
 {
-  return [self initWithSoCamera:NULL controller:nil];
+  // FIXME: Implement setSCSceneGraph, or remove this method at all?
+  return [self initWithSoCamera:NULL inSceneGraph:nil];
 }
 
 
@@ -236,9 +240,9 @@
 
 - (void)viewAll
 {
-  if (SELF->camera == NULL || SELF->controller == nil) return;
-  SELF->camera->viewAll((SoNode *)([[SELF->controller sceneGraph] root]),
-                  [SELF->controller sceneManager]->getViewportRegion());
+  if (SELF->camera == NULL || SELF->scenegraph == nil) return;
+  SELF->camera->viewAll((SoNode *)([SELF->scenegraph root]),
+                        [SELF->scenegraph sceneManager]->getViewportRegion());
 
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCViewAllNotification object:self];
@@ -249,7 +253,7 @@
     (the greater the ratio far/near, the less effective the depth buffer).
  "*/
  
-- (void)updateClippingPlanes:(SoGroup *)scenegraph
+- (void)updateClippingPlanes:(SoGroup *)sg
 {
   // FIXME: Need autoclipcb callback function? Investigate.
   // kyrah 20030509
@@ -267,8 +271,8 @@
   // action to the SG creates a valid bounding box cache, needed
   // for caching. kyrah 20030622
 
-  assert ([SELF->controller sceneManager]);
-  SoGLRenderAction * renderaction = [SELF->controller sceneManager]->getGLRenderAction();
+  assert ([SELF->scenegraph sceneManager]);
+  SoGLRenderAction * renderaction = [SELF->scenegraph sceneManager]->getGLRenderAction();
   
   if (SELF->autoclipboxaction == NULL)
     SELF->autoclipboxaction = new
@@ -276,7 +280,7 @@
   else
     SELF->autoclipboxaction->setViewportRegion(renderaction->getViewportRegion());
 
-  SELF->autoclipboxaction->apply(scenegraph);
+  SELF->autoclipboxaction->apply(sg);
   xbox =  SELF->autoclipboxaction->getXfBoundingBox();
   [self _SC_getCameraCoordinateSystem:cameramatrix inverse:inverse];
   xbox.transform(inverse);
@@ -307,26 +311,36 @@
 // ------------------ Accessor methods ----------------------------
 
 /*" Sets the actual camera in the Coin scene graph to cam. 
-    It is first checked if the scenegraph contains a camera created by
-    the controller, and if yes, this camera is deleted. 
+    It is first checked if the camera was created as part of the 
+    superscenegraph, and if yes, this camera is deleted. 
     
     Note that cam is expected to be part of the scenegraph already;
     it is not inserted into it.
  "*/
 
+- (void)setSoCamera:(SoCamera *)camera
+{
+  // By default, we want to delete the old camera. The only
+  // point in time I can think of where we don't want to do 
+  // this is the first time around, when there _is_ not old camera.
+  [self setSoCamera:camera deleteOldCamera:YES]; 
+}
+
+// FIXME: Remove this method totally, and figure out ourselves when
+// the old camera should be deleted. kyrah 20040717
 - (void)setSoCamera:(SoCamera *)camera deleteOldCamera:(BOOL)deletecamera
 {
   if (camera == NULL) return;
 
   // delete camera if we created it and if requested
-  if (SELF->controllerhascreatedcamera && deletecamera) { 
-    SoSceneManager * sm = [SELF->controller sceneManager];
+  if ([SELF->scenegraph hasAddedCamera] && deletecamera) { 
+    SoSceneManager * sm = [SELF->scenegraph sceneManager];
     SoGroup * superscenegraph = (SoGroup *)(sm?sm->getSceneGraph():NULL);
     SoGroup * camparent = 
       [self _SC_getParentOfNode:SELF->camera 
             inSceneGraph:superscenegraph];
     camparent->removeChild(SELF->camera);
-    SELF->controllerhascreatedcamera = NO;
+    [SELF->scenegraph _SC_setHasAddedCamera:NO];
   }
   if (SELF->camera) SELF->camera->unref();
   SELF->camera = camera;
@@ -341,42 +355,6 @@
 
 - (SoCamera *)soCamera { 
   return SELF->camera; 
-}
-
-
-/*" Set whether the camera was created by the controller component
-    (as opposed to being part of the user-supplied scene graph). 
-    When setting a new camera, this setting will determine if the
-    old camera should be deleted or not.   
- "*/
-    
-- (void)setControllerHasCreatedCamera:(BOOL)yn { 
-  SELF->controllerhascreatedcamera = yn; 
-}
-
-/*" Returns !{YES} if the camera was created by the controller
-    component, and !{NO} if the camera is part of the user-supplied
-    scene graph.
- "*/
- 
-- (BOOL)controllerHasCreatedCamera { 
-  return SELF->controllerhascreatedcamera; 
-}
-
-/*" Sets the SCCamera's SCController component to controller. "*/
-
-- (void)setController:(SCController *)controller
-{
-  // We intentionally do not retain controller here, to avoid
-  // circular references.
-  SELF->controller = controller;
-}
-
-/*" Returns the SCCamera's SCController component. "*/
-
-- (SCController *)controller
-{
-  return SELF->controller;
 }
 
 /*" Reorients the camera by rot. Note that this does not
@@ -426,7 +404,7 @@
 
   // FIXME: Check how SoQt handles this - maybe it should be possible to
   // change camera type if even the cam is part of user SG? kyrah 20030711
-  if (!SELF->controllerhascreatedcamera) {
+  if (![SELF->scenegraph hasAddedCamera]) {
     SC21_DEBUG(@"Camera is part of user scenegraph, cannot convert.");
     return NO;
   }
@@ -445,14 +423,14 @@
     [self _SC_cloneFromPerspectiveCamera:(SoOrthographicCamera *)newcam];
 
   // insert into SG
-  SoSceneManager * sm = [SELF->controller sceneManager];
+  SoSceneManager * sm = [SELF->scenegraph sceneManager];
   SoGroup * superscenegraph = (SoGroup *)(sm?sm->getSceneGraph():NULL);
   SoGroup * camparent = [self _SC_getParentOfNode:SELF->camera
                               inSceneGraph:superscenegraph];
   camparent->insertChild(newcam, camparent->findChild(SELF->camera));
 
   [self setSoCamera:newcam deleteOldCamera:YES];
-  [self setControllerHasCreatedCamera:YES];
+  [SELF->scenegraph _SC_setHasAddedCamera:YES];
   return YES;
 }
 
@@ -503,7 +481,7 @@
 
 - (void)_SC_getCameraCoordinateSystem: (SbMatrix &)m inverse:(SbMatrix &)inv
 {
-  SoSeparator * root = [[SELF->controller sceneGraph] root];
+  SoSeparator * root = [SELF->scenegraph root];
   SoSearchAction searchaction;
   SoGetMatrixAction matrixaction(SbViewportRegion(100,100));
 
@@ -538,7 +516,12 @@
   // VARIABLE_NEAR_PLANE strategy. As stated in the FIXME above,
   // we should have a delegate for this in general.
   glGetIntegerv(GL_DEPTH_BITS, depthbits);
+#if 0
+  // FIXME: Figure out how to get autoclip value. kyrah 20040718
   usebits = (int) (float(depthbits[0]) * (1.0f - [SELF->controller autoClipValue]));
+#else
+  usebits = (int) (float(depthbits[0]) * (1.0f - 0.6));
+#endif
   r = (float) pow(2.0, (double) usebits);
   nearlimit = far / r;
 

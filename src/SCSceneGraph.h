@@ -28,6 +28,7 @@
 #import <Cocoa/Cocoa.h>
 #import <Sc21/SCCamera.h>
 #import <Sc21/SCDefines.h>
+#import <Inventor/SoSceneManager.h>
 #import <Inventor/nodes/SoCamera.h>
 #import <Inventor/nodes/SoSeparator.h>
 #import <Inventor/nodes/SoDirectionalLight.h>
@@ -45,24 +46,28 @@
   SCCamera * camera;
   SoSeparator * scenegraph;	 
   SoSeparator * superscenegraph;
+  SoSceneManager * scenemanager;
   SoDirectionalLight * headlight;  
+  BOOL addedlight, addedcamera;
 }
 
   /*" Initialization "*/
 - (id)initWithContentsOfFile:(NSString *)filename;
 - (id)initWithContentsOfURL:(NSURL *)url;
 
+/*" Accessors for the scenegraph's scenemanager. "*/
+- (void) setSceneManager:(SoSceneManager *)scenemanager;
+- (SoSceneManager *)sceneManager;
+
   /*" Automatic headlight configuration "*/
 - (SoDirectionalLight *)headlight;
-- (BOOL)headlightIsOn;
-- (void)setHeadlightIsOn:(BOOL)yn;
+- (BOOL) hasAddedLight;
 
   /*" Camera handling. "*/
-- (void)setCamera:(SoCamera *)camera;
-- (SoCamera *)camera;
-- (SCCameraType)cameraType; // see SCCamera.h for SCCameraType enum
-- (void) viewAll;
+- (SCCamera *)camera;
+- (BOOL)hasAddedCamera;
 
+/*" Accessing the actual Coin scenegraph. "*/
 - (NSString *)name;
 - (BOOL)setName:(NSString *)name;
 - (SoSeparator *)superSceneGraph; 
@@ -71,19 +76,12 @@
 
 // FIXME: NSCoding support!
 // FIXME: implement copy/paste - initWithPasteboard &c.
-// FIXME: add +(id) scenegraphNamed:(NSString *) name which will look for named nodes in all
-// .iv/.wrl files in the app bundle
+// FIXME: add +(id) scenegraphNamed:(NSString *) name which will look for 
+// named nodes in all .iv/.wrl files in the app bundle
 // FIXME: add "lazy initialization methods (initByReferencing[File|URL])
 // FIXME: Provide incremental loading delegate method (as in NSImage)?
 
 @end
-
-// FIXME: When done with pimplification, move to private header file!
-@interface SCSceneGraph (InternalAPI)
-- (SoLight *)_SC_findLightInSceneGraph:(SoGroup *)root;
-- (SoCamera *)_SC_findCameraInSceneGraph:(SoGroup *)root;
-- (SoSeparator *)_SC_createSuperSceneGraph:(SoGroup *)scenegraph;
-@end  
 
 // ------------------ Notifications -----------------------
 
@@ -104,5 +102,3 @@ SC21_EXTERN NSString * SCNoCameraFoundInSceneNotification;
 "*/
 SC21_EXTERN NSString * SCNoLightFoundInSceneNotification;
 
-/*" Posted whenever the headlight has been turned on or off. "*/
-SC21_EXTERN NSString * SCHeadlightChangedNotification;

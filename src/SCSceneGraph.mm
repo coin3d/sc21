@@ -26,6 +26,7 @@
 * =============================================================== */
 
 #import "SCSceneGraph.h"
+#import "SCSceneGraphP.h"
 
 #import <Inventor/SoDB.h>
 #import <Inventor/SoInput.h>
@@ -47,7 +48,8 @@
 - (id)initWithContentsOfFile:(NSString *)filename
 {
   if (self = [super init]) {
-    camera = [[SCCamera alloc] init];
+    camera = [[SCCamera alloc] initWithSceneGraph:self];
+    addedcamera = NO;
     SoSeparator * s = nil;
     SoInput in;
     if (!in.openFile([filename cString])) {  
@@ -147,7 +149,7 @@
   scenegraph = superscenegraph = NULL;  
   
   headlight = NULL;
-  [self setHeadlightIsOn:NO];
+  addedlight = NO;
   root->ref();
   
   // FIXME: Give delegate chance to handle this.
@@ -158,19 +160,20 @@
   if (superscenegraph) { // Successful superscenegraph creation
     scenegraph = root;
     superscenegraph->ref();
-    // It's possible to create an SCScenegraph without having a valid
-    // SCController class, which means we also don't have an 
-    // SoSceneManager. In this case, we cannot call these methods.
-    if ([camera controller]) {
-      [camera updateClippingPlanes:scenegraph];
-      if ([camera controllerHasCreatedCamera]) {
-        [camera viewAll];
-      }
-    }
   } else {
     // NULL super scene graph => leave everything at NULL
     root->unrefNoDelete();
   }
+}
+
+- (void) setSceneManager:(SoSceneManager *)sm
+{
+  scenemanager = sm;
+}
+
+- (SoSceneManager *)sceneManager
+{
+  return scenemanager;
 }
 
 /*" Sets the SoCamera used for viewing the scene to cam.
@@ -181,62 +184,48 @@
     it is not inserted into it.
 "*/
 
-- (void)setCamera:(SoCamera *)cam
+- (SCCamera *)camera
 {
-  [camera setSoCamera:cam deleteOldCamera:YES];
+  return camera; 
 }
 
-/*" Returns the current SoCamera used for viewing. "*/
+// Note that I removed the methods for getting and setting the
+// SoCamera -- app programmers should get the current SCCamera 
+// and access the SoCamera this way.
 
-- (SoCamera *)camera
-{
-  return [camera soCamera];
-}
-
-/*" Returns !{SCCameraPerspective} if the camera is perspective
-    and !{SCCameraOrthographic} if the camera is orthographic.
+/*" Returns !{YES} if a camera was added in the superscenegraph,
+    and !{NO} if the camera is part of the user-supplied
+    scenegraph.
 "*/
-
-// FIXME: If SCCamera class remains public, remove this method.
-- (SCCameraType)cameraType
+- (BOOL) hasAddedCamera
 {
-  return [camera type];
+  return addedcamera;
 }
 
-/*" Repositions the camera so that we can se the whole scene. "*/
-- (void)viewAll
-{
-  [camera viewAll]; // SCViewAllNotification sent by _camera
-}
 
 
 // ----------------- Automatic headlight configuration -----------------
 
-/*" Returns !{YES} if the headlight is on, and !{NO} if it is off. "*/
-
-- (BOOL)headlightIsOn
-{
-  if (headlight == NULL) { return FALSE; }
-  return (headlight->on.getValue() == TRUE) ? YES : NO;
-}
+// Note that I intentionally removed the methods for turning the
+// headlight on and off. This can easily be done by the application
+// programmer by first getting the scenegraph's headlight and then
+// modifying its values directly. kyrah 20040717.
 
 
-/*" Turns the headlight on or off. "*/
-
-- (void)setHeadlightIsOn:(BOOL)yn
-{
-  if (headlight == NULL) { return; }
-  headlight-> on = yn ? TRUE : FALSE;
-  
-  [[NSNotificationCenter defaultCenter]
-    postNotificationName:SCHeadlightChangedNotification object:self];
-}
-
-/*" Returns the headlight of the current scene graph. "*/
+/*" If an additional light was added as part of the superscenegraph, this
+    method returns this headlight. Otherwise, NULL is returned. "*/
 
 - (SoDirectionalLight *)headlight
 {
-  return headlight;
+  return (addedlight) ? headlight : NULL;
+}
+
+/*" Returns !{YES} if a light was added in the superscenegraph,
+    and !{NO} otherwise.
+"*/
+- (BOOL) hasAddedLight
+{
+  return addedlight;
 }
 
 @end
@@ -287,29 +276,44 @@
   return scenecamera;
 }
 
+/* Set whether the camera was created by the system.
+   (as opposed to being part of the user-supplied scene graph). 
+   When setting a new camera, this setting will determine if the
+   old camera should be deleted or not.   
+
+   This method is intentionally not public, since it changes the
+   internal state of SCSceneGraph that should not be modifyable by
+   the application programmer. It is possible to _query_ this
+   attribute through the public hasAddedCamera method, though.
+*/
+- (void) _SC_setHasAddedCamera:(BOOL)yn
+{
+  addedcamera = yn;
+}
+
 - (SoSeparator *)_SC_createSuperSceneGraph:(SoGroup *)sg
 {
   SoSeparator *supersg = new SoSeparator;
   
   // Handle lighting
   if (![self _SC_findLightInSceneGraph:sg]) {
-    [self setHeadlightIsOn:YES];
+    headlight = new SoDirectionalLight;
+    supersg->addChild(headlight);
+    addedlight = YES;
   } else {
-    [self setHeadlightIsOn:NO];
+    addedlight = NO;
   }
-  headlight = new SoDirectionalLight;
-  supersg->addChild(headlight);
   
   // Handle camera
   SoCamera * scenecamera  = [self _SC_findCameraInSceneGraph:sg];
   if (scenecamera == NULL) {
     scenecamera = new SoPerspectiveCamera;
     [camera setSoCamera:scenecamera deleteOldCamera:NO];
-    [camera setControllerHasCreatedCamera:YES];
+    addedcamera = YES;
     supersg->addChild(scenecamera);
   } else {
     [camera setSoCamera:scenecamera deleteOldCamera:NO];
-    [camera setControllerHasCreatedCamera:NO];
+    addedcamera = NO;
   }
   
   supersg->addChild(sg);

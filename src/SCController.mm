@@ -390,8 +390,10 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   if (SELF->scenegraph) { [SELF->scenegraph release]; }
   [scenegraph retain];
   SELF->scenegraph = scenegraph;    
+  [SELF->scenegraph setSceneManager:SELF->scenemanager];
+  
   // FIXME: This is really ugly -> cleanup!
-  [SELF->scenegraph->camera setController:self];
+  //[SELF->scenegraph->camera setController:self];
   
   if (SELF->scenemanager) {
     SELF->scenemanager->setSceneGraph([SELF->scenegraph superSceneGraph]);
@@ -485,7 +487,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   "*/
 - (void)viewAll
 {
-  [SELF->scenegraph viewAll];
+  [[SELF->scenegraph camera] viewAll];
 }
 
 /*" Renders the scene. "*/
