@@ -399,7 +399,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 - (void) viewSizeChanged:(NSRect)rect
 {
-  // FIXME: Shouldn't we use notifications here? kyrah 20030614
+  if (!_scenemanager) return;
   int w = (GLint)(rect.size.width);
   int h = (GLint)(rect.size.height);
   _scenemanager->setViewportRegion(SbViewportRegion(w, h));
