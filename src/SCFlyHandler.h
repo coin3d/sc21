@@ -27,7 +27,7 @@
 
 #import <Sc21/SCEventHandler.h>
 
-@class _SCFlyHandlerP;
+@class SCFlyHandlerP;
 
 #define SCPitch        4
 #define SCRoll         6
@@ -36,7 +36,7 @@
 @interface SCFlyHandler : SCEventHandler
 {
  @protected
-  _SCFlyHandlerP * _sc_flyhandler;
+  SCFlyHandlerP * _sc_flyhandler;
 }
 
 - (void)setInversePitch:(BOOL)yesno;

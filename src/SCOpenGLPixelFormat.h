@@ -27,12 +27,12 @@
 
 #import <AppKit/NSOpenGL.h>
 
-@class _SCOpenGLPixelFormatP;
+@class SCOpenGLPixelFormatP;
 
 @interface SCOpenGLPixelFormat : NSObject <NSCoding, NSCopying>
 {
  @protected
-  _SCOpenGLPixelFormatP * _sc_openglpixelformat;
+  SCOpenGLPixelFormatP * _sc_openglpixelformat;
 }
 
 /*" NSOpenGLPixelFormat creation "*/

@@ -33,7 +33,7 @@
 
 #import "SCOpenGLViewP.h"
 
-@implementation _SCOpenGLViewP
+@implementation SCOpenGLViewP
 @end
 
 #define PRIVATE(p) ((p)->_sc_openglview)
@@ -344,7 +344,7 @@ Used by subclassers to initialize OpenGL state. This function is called
   "*/
 - (void)_SC_commonInit
 {
-  SELF = [[_SCOpenGLViewP alloc] init];
+  SELF = [[SCOpenGLViewP alloc] init];
   
   [[NSNotificationCenter defaultCenter] 
     addObserver:self 

@@ -27,7 +27,7 @@
 
 #import <Sc21/SCEventHandler.h>
 
-@class _SCExaminerHandlerP;
+@class SCExaminerHandlerP;
 
 #define SCRotate      1
 #define SCPan         2
@@ -36,7 +36,7 @@
 @interface SCExaminerHandler : SCEventHandler
 {
  @protected
-  _SCExaminerHandlerP * _sc_examinerhandler;
+  SCExaminerHandlerP * _sc_examinerhandler;
 }
 
 - (void)setSpinEnabled:(BOOL)enabled;

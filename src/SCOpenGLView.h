@@ -29,12 +29,12 @@
 
 @class NSOpenGLContext;
 @class SCOpenGLPixelFormat;
-@class _SCOpenGLViewP;
+@class SCOpenGLViewP;
 
 @interface SCOpenGLView : NSView
 {
  @protected
-   _SCOpenGLViewP * _sc_openglview;
+   SCOpenGLViewP * _sc_openglview;
 }
 
 /*" Initializing an SCOpenGLView. "*/

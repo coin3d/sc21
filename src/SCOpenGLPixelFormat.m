@@ -31,7 +31,7 @@
 #define PRIVATE(p) ((p)->_sc_openglpixelformat)
 #define SELF PRIVATE(self)
 
-@interface _SCOpenGLPixelFormatP : NSObject
+@interface SCOpenGLPixelFormatP : NSObject
 {
  @public
   NSMutableDictionary * intattributes;
@@ -40,7 +40,7 @@
 }
 @end
 
-@implementation _SCOpenGLPixelFormatP
+@implementation SCOpenGLPixelFormatP
 @end
 
 @interface SCOpenGLPixelFormat (InternalAPI)
@@ -253,7 +253,7 @@ If any attributes have been set, creates and returns a new
 
 - (void)_SC_commonInit
 {
-  SELF = [[_SCOpenGLPixelFormatP alloc] init];
+  SELF = [[SCOpenGLPixelFormatP alloc] init];
 }
 
 @end

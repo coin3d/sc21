@@ -7,7 +7,7 @@
 
 #import "SCEventHandlerP.h"
 
-@implementation _SCEventHandlerP
+@implementation SCEventHandlerP
 @end
 
 #define PRIVATE(p) ((p)->_sc_eventhandler)
@@ -162,7 +162,7 @@
 
 - (void)_SC_commonInit
 {
-  SELF = [[_SCEventHandlerP alloc] init];
+  SELF = [[SCEventHandlerP alloc] init];
   SELF->emulationdict = [[NSMutableDictionary alloc] init];
   SELF->buttondict = [[NSMutableDictionary alloc] init];
   SELF->modifierdict = [[NSMutableDictionary alloc] init];

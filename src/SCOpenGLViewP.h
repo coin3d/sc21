@@ -27,7 +27,7 @@
 
 #import <Sc21/SCOpenGLView.h>
  
-@interface _SCOpenGLViewP : NSObject
+@interface SCOpenGLViewP : NSObject
 {
  @public
   NSOpenGLContext * openGLContext;

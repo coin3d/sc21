@@ -30,7 +30,7 @@
 class SoGroup;
 class SoSceneManager;
 
-@interface _SCControllerP : NSObject
+@interface SCControllerP : NSObject
 {
   id<SCDrawable> drawable;
   SCEventConverter * eventconverter;

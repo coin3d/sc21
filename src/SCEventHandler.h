@@ -4,7 +4,7 @@
 
 @class SCMode;
 @class SCCamera;
-@class _SCEventHandlerP;
+@class SCEventHandlerP;
 
 typedef int SCOperation;
 #define SCNoOperation 0
@@ -12,7 +12,7 @@ typedef int SCOperation;
 @interface SCEventHandler : NSObject <NSCoding, SCEventHandling>
 {
  @protected
-  _SCEventHandlerP * _sc_eventhandler;
+  SCEventHandlerP * _sc_eventhandler;
 }
 
 - (void)enableOperation:(SCOperation)operation forButton:(int)buttonNumber withModifier:(unsigned int)modifierFlags;

@@ -32,12 +32,12 @@
 #import <Sc21/SCOpenGLPixelFormat.h>
 
 @class SCController;
-@class _SCViewP;
+@class SCViewP;
 
 @interface SCView : SCOpenGLView  <SCDrawable> /*" NSView : NSResponder : NSObject "*/
 {
  @protected
-  _SCViewP * _sc_view;
+  SCViewP * _sc_view;
  @private
   SCController * controller;
 }

@@ -5,7 +5,7 @@
 #import "SCUtil.h"
 #import <Sc21/SCEventHandlerP.h>
 
-@interface _SCFlyHandlerP : NSObject
+@interface SCFlyHandlerP : NSObject
 {
   NSTimeInterval _prevtime;
   SCFlyMode * flymode;
@@ -17,7 +17,7 @@
 }
 @end
 
-@implementation _SCFlyHandlerP
+@implementation SCFlyHandlerP
 @end
 
 @interface SCFlyHandler (InternalAPI)
@@ -34,7 +34,7 @@
 - (id)init
 {
   self = [super init];
-  SELF = [[_SCFlyHandlerP alloc] init];
+  SELF = [[SCFlyHandlerP alloc] init];
   SELF->flymode = [[SCFlyMode alloc] init];
   return self;
 }

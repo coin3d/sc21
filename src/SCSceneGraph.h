@@ -33,12 +33,12 @@
 #import <Inventor/nodes/SoGroup.h>
 #import <Inventor/nodes/SoDirectionalLight.h>
 
-@class _SCSceneGraphP;
+@class SCSceneGraphP;
 
 @interface SCSceneGraph : NSObject <NSCoding>
 {
  @protected
-  _SCSceneGraphP * _sc_scenegraph;
+  SCSceneGraphP * _sc_scenegraph;
   @private
   id delegate;
 }

@@ -33,13 +33,13 @@
 #import <Inventor/actions/SoGLRenderAction.h>
 #import <Inventor/misc/SoContextHandler.h>
 
-@interface _SCViewP : NSObject
+@interface SCViewP : NSObject
 {
   NSCursor * cursor;
 }
 @end
 
-@implementation _SCViewP
+@implementation SCViewP
 @end
 
 #define PRIVATE(p) ((p)->_sc_view)
@@ -457,7 +457,7 @@ Sets the controller to newcontroller. newcontroller is retained.
 - (void)_SC_commonInit
 {
   [super _SC_commonInit];
-  SELF = [[_SCViewP alloc] init];
+  SELF = [[SCViewP alloc] init];
 }
 
 /*"

@@ -28,7 +28,7 @@
 #import <Sc21/SCEventHandler.h>
 #import <Sc21/SCDrawable.h>
 
-@interface _SCEventHandlerP : NSObject
+@interface SCEventHandlerP : NSObject
 {
   NSMutableDictionary * emulationdict;
   NSMutableDictionary * buttondict;

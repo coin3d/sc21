@@ -44,7 +44,7 @@
 
 #define SELF (self->_sc_camera)
 
-@implementation _SCCameraP
+@implementation SCCameraP
 @end
 
 @implementation SCCamera
@@ -317,7 +317,7 @@ Translate camera relative to its own coordinate system.
 
 - (void)_SC_commonInit
 {
-  SELF = [[_SCCameraP alloc] init];
+  SELF = [[SCCameraP alloc] init];
 }
 
 /* Get the camera's object coordinate system. */

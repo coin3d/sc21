@@ -35,7 +35,7 @@
 class SoDirectionalLight;
 class SoSceneManager;
 @class SCEventConverter;
-@class _SCControllerP;
+@class SCControllerP;
 @class SCMode;
 @class SCMouseMode;
 @class SCKeyboardMode;
@@ -43,7 +43,7 @@ class SoSceneManager;
 @interface SCController : NSObject <NSCoding>
 {
  @protected
-  _SCControllerP * _sc_controller;
+  SCControllerP * _sc_controller;
   // FIXME: Are we sure we don't want the delegate to be protected? kyrah 20040716
  @private
   id delegate;

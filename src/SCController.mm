@@ -49,7 +49,7 @@
 
 #import "SCControllerP.h"
 
-@implementation _SCControllerP
+@implementation SCControllerP
 @end
 
 #define PRIVATE(p) ((p)->_sc_controller)
@@ -637,7 +637,7 @@ Returns the receiver's delegate.
 - (void)_SC_commonInit
 {
   [SCController initCoin];
-  SELF = [[_SCControllerP alloc] init];
+  SELF = [[SCControllerP alloc] init];
   scenegraph = nil;
   
   SELF->eventconverter = [[SCEventConverter alloc] init];

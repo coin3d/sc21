@@ -39,7 +39,7 @@
 
 #import "SCUtil.h"
 
-@implementation _SCSceneGraphP
+@implementation SCSceneGraphP
 @end
 
 #define PRIVATE(p) ((p)->_sc_scenegraph)
@@ -396,7 +396,7 @@ and !{NO} otherwise.
     
 - (void)_SC_commonInit
 {
-  SELF = [[_SCSceneGraphP alloc] init];
+  SELF = [[SCSceneGraphP alloc] init];
   SELF->camera = [[SCCamera alloc] init];
   SELF->addedcamera = NO;
   SELF->addedlight = NO;

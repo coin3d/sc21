@@ -35,7 +35,7 @@
 #import <Inventor/nodes/SoSeparator.h>
 
 @class SCSceneGraph;
-@class _SCCameraP;
+@class SCCameraP;
 
 /*" Possible camera types in the scene graph.
     !{SCCameraPerspective} describes an !{SoPerspectiveCamera},
@@ -53,7 +53,7 @@ typedef enum _SCCameraType {
 @interface SCCamera : NSObject
 {
  @protected
-  _SCCameraP * _sc_camera;
+  SCCameraP * _sc_camera;
 }
 
 /*" Initializing an SCCamera "*/

@@ -8,14 +8,14 @@
 
 #import <Sc21/SCEventHandlerP.h>
 
-@interface _SCExaminerHandlerP : NSObject
+@interface SCExaminerHandlerP : NSObject
 {
   BOOL spinenabled;
   BOOL scrollwheelzoomenabled;
 }
 @end
 
-@implementation _SCExaminerHandlerP
+@implementation SCExaminerHandlerP
 @end
 
 @interface SCExaminerHandler (InternalAPI)
@@ -165,7 +165,7 @@
 - (void)_SC_commonInit
 {
   [super _SC_commonInit];
-  SELF = [[_SCExaminerHandlerP alloc] init];
+  SELF = [[SCExaminerHandlerP alloc] init];
 }
 
 - (BOOL)_SC_performActionForEvent:(NSEvent *)event camera:(SCCamera *)camera

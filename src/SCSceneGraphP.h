@@ -27,7 +27,7 @@
 
 #import <Sc21/SCSceneGraph.h>
 
-@interface _SCSceneGraphP : NSObject
+@interface SCSceneGraphP : NSObject
 {
   SCCamera * camera;
   SoGroup * scenegraph;	 

@@ -32,7 +32,7 @@
 #import <Inventor/nodes/SoPerspectiveCamera.h>
 #import <Inventor/nodes/SoOrthographicCamera.h>
 
-@interface _SCCameraP : NSObject
+@interface SCCameraP : NSObject
 {
   SoCamera * camera;
   SoGetBoundingBoxAction * autoclipboxaction;

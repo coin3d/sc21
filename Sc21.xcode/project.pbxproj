@@ -407,6 +407,21 @@
 			settings = {
 			};
 		};
+		3DE326EA06BC6A4900C5518B = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCOpenGLViewP.h;
+			path = src/SCOpenGLViewP.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3DE326EB06BC6A4900C5518B = {
+			fileRef = 3DE326EA06BC6A4900C5518B;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 //3D0
 //3D1
 //3D2
@@ -596,6 +611,7 @@
 				E0EB29090613442800C54774,
 				E0EB290A0613442800C54774,
 				E0EB290B0613442800C54774,
+				3DE326EA06BC6A4900C5518B,
 				3D02FB1F06A874CB00B9760F,
 				3D02FB2006A874CB00B9760F,
 				3D669B2D06AA974F00CB9330,
@@ -1345,6 +1361,7 @@
 				E011760606B67E450042ADED,
 				E0D6A23206BA6FD900FF8E28,
 				E0D6A27106BA74ED00FF8E28,
+				3DE326EB06BC6A4900C5518B,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
