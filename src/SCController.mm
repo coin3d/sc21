@@ -45,6 +45,14 @@
 
 #import <OpenGL/gl.h>
 
+#import "SCControllerP.h"
+
+@implementation _SCControllerP
+@end
+
+#define PRIVATE(p) ((p)->sccontrollerpriv)
+#define SELF PRIVATE(self)
+
 /*" Provide interface for deaction of NSTimer instance.  The
     current implementation sets the timer's fireDate to
     "distantFuture" (cf. NSDate) but hopefully activation and
@@ -73,24 +81,13 @@
 }
 @end
 
-@interface SCController (InternalAPI)
-- (void)_timerQueueTimerFired:(NSTimer *)t;
-- (void)_sensorQueueChanged;
-- (SoLight *)_findLightInSceneGraph:(SoGroup *)root;
-- (SoCamera *)_findCameraInSceneGraph:(SoGroup *)root;
-- (NSPoint)_normalizePoint:(NSPoint)point;
-- (void)_setupRedrawInvocation;
-- (SoGroup *)_createSuperSceneGraph:(SoGroup *)scenegraph;
-@end  
-
-
 // -------------------- Callback function ------------------------
 
 static void
 redraw_cb(void * user, SoSceneManager *)
 {
   SCController * selfp = (SCController *)user; 
-  [selfp->_redrawinv invoke];
+  [PRIVATE(selfp)->redrawinv invoke];
 }
 
 static void
@@ -98,7 +95,7 @@ sensorqueuechanged_cb(void * data)
 {
   // NSLog(@"sensorqueuechanged_cb");
   SCController * ctrl = (SCController *)data;
-  [ctrl _sensorQueueChanged];
+  [ctrl _SC_sensorQueueChanged];
 }
 
 // internal
@@ -160,38 +157,11 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 - (id)init
 {
   if (self = [super init]) {
-    _autoclipvalue = 0.6;
-    _handleseventsinviewer = YES;
-    [self commonInit];
+    [self _SC_commonInit];
+    SELF->autoclipvalue = 0.6;
+    SELF->handleseventsinviewer = YES;
   }
   return self;
-}
-
-
-/*" Shared initialization code that is called both from #init:
-    and #initWithCoder: If you override this method, you must
-    call !{[super commonInit]} as the first call in your
-    implementation to make sure everything is set up properly.
-"*/
-//FIXME: We should be able to move most of the contents of this method
-// to -init and archive/unarchive the aggregated instance variables.
-// (kintel 20040406)
-- (void)commonInit
-{
-  [SCController initCoin];
-  _camera = [[SCCamera alloc] init];
-  [_camera setController:self];
-  _eventconverter = [[SCEventConverter alloc] init];
-  _redrawsel = @selector(display);
-
-  [self setSceneManager:new SoSceneManager];
-
-  [[NSNotificationCenter defaultCenter] 
-    addObserver:self
-    selector:@selector(_idle:) name:_SCIdleNotification
-    object:self];
-
-  [self _sensorQueueChanged];
 }
 
 /* Clean up after ourselves. */
@@ -199,23 +169,24 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [self stopTimers];
-  _redrawhandler = nil;
-  [self _setupRedrawInvocation];
-  [_eventconverter release];
-  [_camera release];
-  delete _scenemanager;
+  SELF->redrawhandler = nil;
+  [self _SC_setupRedrawInvocation];
+  [SELF->eventconverter release];
+  [SELF->camera release];
+  delete SELF->scenemanager;
+  [SELF release];
   [super dealloc];
 }
 
 - (void)setDelegate:(id)newdelegate
 {
   NSLog(@"SCController.setDelegate");
-  _delegate = newdelegate;
+  SELF->delegate = newdelegate;
 }
 
 - (id)delegate
 {
-  return _delegate;
+  return SELF->delegate;
 }
 
 // ------------------- rendering and scene management ---------------------
@@ -230,8 +201,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 */
 - (void)setRedrawHandler:(id)handler
 {
-  _redrawhandler = handler;
-  [self _setupRedrawInvocation];
+  SELF->redrawhandler = handler;
+  [self _SC_setupRedrawInvocation];
 }
 
 /*!
@@ -240,7 +211,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 */
 - (id)redrawHandler
 {
-  return _redrawhandler;
+  return SELF->redrawhandler;
 }
 
 /*!
@@ -255,8 +226,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 */
 - (void)setRedrawSelector:(SEL)sel
 {
-  _redrawsel = sel;
-  [self _setupRedrawInvocation];
+  SELF->redrawsel = sel;
+  [self _SC_setupRedrawInvocation];
 }
 
 /*!
@@ -268,7 +239,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 */
 - (SEL)redrawSelector
 {
-  return _redrawsel;
+  return SELF->redrawsel;
 }
 
 /*" FIXME: Write doc for delegate methods
@@ -293,41 +264,41 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 - (void)setSceneGraph:(SoGroup *)scenegraph
 {
   NSLog(@"SetSceneGraph called with %p", scenegraph);
-  if (scenegraph == _scenegraph) return;
-  if (_scenegraph) _scenegraph->unref();
-  if (_superscenegraph) _superscenegraph->unref();
-  _scenegraph = _superscenegraph = NULL;
+  if (scenegraph == SELF->scenegraph) return;
+  if (SELF->scenegraph) SELF->scenegraph->unref();
+  if (SELF->superscenegraph) SELF->superscenegraph->unref();
+  SELF->scenegraph = SELF->superscenegraph = NULL;
 
   if (scenegraph == NULL) {
-    _superscenegraph = _scenegraph = new SoSeparator;
+    SELF->superscenegraph = SELF->scenegraph = new SoSeparator;
     [self stopTimers];   // Don't waste cycles by animating an empty scene. 
-    _superscenegraph->ref();
-    _scenegraph->ref();
+    SELF->superscenegraph->ref();
+    SELF->scenegraph->ref();
   }
   else {
     scenegraph->ref();
-    if (_delegate && 
-        [_delegate respondsToSelector:@selector(willSetSceneGraph:)]) {
-      _superscenegraph = (SoGroup *)[_delegate willSetSceneGraph:scenegraph];
+    if (SELF->delegate && 
+        [SELF->delegate respondsToSelector:@selector(willSetSceneGraph:)]) {
+      SELF->superscenegraph = (SoGroup *)[SELF->delegate willSetSceneGraph:scenegraph];
     }
     else {
-      _superscenegraph = [self _createSuperSceneGraph:scenegraph];
+      SELF->superscenegraph = [self _SC_createSuperSceneGraph:scenegraph];
     }
-    if (_superscenegraph) {
-      _scenegraph = scenegraph;
-      _superscenegraph->ref();
+    if (SELF->superscenegraph) {
+      SELF->scenegraph = scenegraph;
+      SELF->superscenegraph->ref();
       
-      if (_scenemanager) {
-        _scenemanager->setSceneGraph(_superscenegraph);
-        [_camera updateClippingPlanes:_scenegraph];
+      if (SELF->scenemanager) {
+        SELF->scenemanager->setSceneGraph(SELF->superscenegraph);
+        [SELF->camera updateClippingPlanes:SELF->scenegraph];
       }
-      if (_delegate && 
-          [_delegate respondsToSelector:@selector(didSetSceneGraph:)]) {
-        [_delegate didSetSceneGraph:_superscenegraph];
+      if (SELF->delegate && 
+          [SELF->delegate respondsToSelector:@selector(didSetSceneGraph:)]) {
+        [SELF->delegate didSetSceneGraph:SELF->superscenegraph];
       }
-      if ([_camera controllerHasCreatedCamera]) {
-        [_camera viewAll];
-        _scenemanager->scheduleRedraw(); //FIXME: Do we need this? (kintel 20040604)
+      if ([SELF->camera controllerHasCreatedCamera]) {
+        [SELF->camera viewAll];
+        SELF->scenemanager->scheduleRedraw(); //FIXME: Do we need this? (kintel 20040604)
       }
       [self startTimers];
     }
@@ -345,7 +316,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (SoGroup *)sceneGraph 
 { 
-  return _scenegraph; 
+  return SELF->scenegraph; 
 }
 
 /*" Sets the current scene manager to scenemanager. The scene manager's
@@ -354,26 +325,26 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     has been set earlier, scenemanager's scenegraph will be set to it.
 
     Note that you should not normally need to call that method, since a
-    scene manager is created for you in #commonInit
+    scene manager is created for you while initializing.
  "*/
 
 - (void)setSceneManager:(SoSceneManager *)scenemanager
 {
   //FIXME: Keep old background color if set? (kintel 20040406)
-  _scenemanager = scenemanager;
-  _scenemanager->setRenderCallback(redraw_cb, (void *)self);
-  SoGLRenderAction * glra = _scenemanager->getGLRenderAction();
+  SELF->scenemanager = scenemanager;
+  SELF->scenemanager->setRenderCallback(redraw_cb, (void *)self);
+  SoGLRenderAction * glra = SELF->scenemanager->getGLRenderAction();
   glra->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
   glra->setTransparencyType(SoGLRenderAction::DELAYED_BLEND);
-  _scenemanager->activate();
-  if (_superscenegraph) _scenemanager->setSceneGraph(_superscenegraph);
+  SELF->scenemanager->activate();
+  if (SELF->superscenegraph) SELF->scenemanager->setSceneGraph(SELF->superscenegraph);
 }
 
 /*" Returns the current Coin scene manager instance. "*/
 
 - (SoSceneManager *)sceneManager 
 { 
-  return _scenemanager; 
+  return SELF->scenemanager; 
 }
 
 /*" Sets the autoclip value to value. The default value is 0.6.
@@ -388,14 +359,14 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (void)setAutoClipValue:(float)autoclipvalue
 {
-  _autoclipvalue = autoclipvalue;
+  SELF->autoclipvalue = autoclipvalue;
 }
 
 /*" Returns the current autoclipvalue. The default value is 0.6. "*/
 
 - (float)autoClipValue
 {
-  return _autoclipvalue;
+  return SELF->autoclipvalue;
 }
 
 
@@ -409,14 +380,14 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (void)setCamera:(SoCamera *)cam
 {
-  [_camera setSoCamera:cam deleteOldCamera:YES];
+  [SELF->camera setSoCamera:cam deleteOldCamera:YES];
 }
 
 /*" Returns the current SoCamera used for viewing. "*/
 
 - (SoCamera *)camera
 {
-  return [_camera soCamera];
+  return [SELF->camera soCamera];
 }
 
 /*" Returns !{SCCameraPerspective} if the camera is perspective
@@ -425,7 +396,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (SCCameraType)cameraType
 {
-  return [_camera type];
+  return [SELF->camera type];
 }
 
 /*" Renders the scene. "*/
@@ -436,7 +407,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   //(kintel 20040429)
   //FIXME: Do clearing here instead of in SoSceneManager to support
   // alpha values? (kintel 20040502)
-  _scenemanager->render();
+  SELF->scenemanager->render();
 }
 
 /*" Sets the background color of the scene to color. Raises an exception if
@@ -454,15 +425,15 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   float red, green, blue;
   [color getRed:&red green:&green blue:&blue alpha:NULL];
   
-  _scenemanager->setBackgroundColor(SbColor(red, green, blue));
-  _scenemanager->scheduleRedraw();  
+  SELF->scenemanager->setBackgroundColor(SbColor(red, green, blue));
+  SELF->scenemanager->scheduleRedraw();  
 }
 
 /*" Returns the scene's background color. "*/
 
 - (NSColor *)backgroundColor
 {
-  SbColor sbcolor = _scenemanager->getBackgroundColor();
+  SbColor sbcolor = SELF->scenemanager->getBackgroundColor();
   NSColor * color = [NSColor colorWithCalibratedRed:sbcolor[0]
                              green:sbcolor[1] 
                              blue:sbcolor[2] 
@@ -477,12 +448,12 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (void)viewSizeChanged:(NSRect)rect
 {
-  _viewrect = rect;
-  if (!_scenemanager) return;
+  SELF->viewrect = rect;
+  if (!SELF->scenemanager) return;
   int w = (GLint)(rect.size.width);
   int h = (GLint)(rect.size.height);
-  _scenemanager->setViewportRegion(SbViewportRegion(w, h));
-  _scenemanager->scheduleRedraw();  
+  SELF->scenemanager->setViewportRegion(SbViewportRegion(w, h));
+  SELF->scenemanager->scheduleRedraw();  
 }
 
 
@@ -525,9 +496,9 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
  
 - (BOOL)handleEventAsCoinEvent:(NSEvent *)event inView:(NSView *)view
 {
-  SoEvent * se = [_eventconverter createSoEvent:event inView:view];
+  SoEvent * se = [SELF->eventconverter createSoEvent:event inView:view];
   if (se) {
-    BOOL handled = _scenemanager->processEvent(se);
+    BOOL handled = SELF->scenemanager->processEvent(se);
     delete se;
     return handled;
   }
@@ -554,7 +525,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
  
 - (void)setHandlesEventsInViewer:(BOOL)yn
 {
-  _handleseventsinviewer = yn;
+  SELF->handleseventsinviewer = yn;
   [[NSNotificationCenter defaultCenter] 
     postNotificationName:SCModeChangedNotification object:self];
 }
@@ -567,7 +538,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (BOOL)handlesEventsInViewer
 {
-  return _handleseventsinviewer;
+  return SELF->handleseventsinviewer;
 }
 
 // -------------------- Timer management. ----------------------
@@ -579,28 +550,28 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (void)stopTimers
 {
-  if (_timerqueuetimer && [_timerqueuetimer isValid]) {
-    [_timerqueuetimer invalidate];
-    _timerqueuetimer = nil;
+  if (SELF->timerqueuetimer && [SELF->timerqueuetimer isValid]) {
+    [SELF->timerqueuetimer invalidate];
+    SELF->timerqueuetimer = nil;
   }
   SoDB::getSensorManager()->setChangedCallback(NULL, NULL);
 }
 
 - (void)startTimers
 {
-  if (_timerqueuetimer != nil) return;
+  if (SELF->timerqueuetimer != nil) return;
 
-  // The timer will be controller from _sensorQueueChanged,
+  // The timer will be controller from _SC_sensorQueueChanged,
   // so don't activate it yet.
-  _timerqueuetimer = [NSTimer scheduledTimerWithTimeInterval:1000
+  SELF->timerqueuetimer = [NSTimer scheduledTimerWithTimeInterval:1000
                               target:self
-                              selector:@selector(_timerQueueTimerFired:) 
+                              selector:@selector(_SC_timerQueueTimerFired:) 
                               userInfo:nil 
                               repeats:YES];
-  [_timerqueuetimer deactivate];
-  [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer 
+  [SELF->timerqueuetimer deactivate];
+  [[NSRunLoop currentRunLoop] addTimer:SELF->timerqueuetimer 
                               forMode:NSModalPanelRunLoopMode];
-  [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer 
+  [[NSRunLoop currentRunLoop] addTimer:SELF->timerqueuetimer 
                               forMode:NSEventTrackingRunLoopMode];
   
   SoDB::getSensorManager()->setChangedCallback(sensorqueuechanged_cb, self);
@@ -623,7 +594,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   SbBool ok = out.openFile(filename.getString());
   if (ok) {
     SoWriteAction wa(&out);
-    wa.apply(_scenegraph);
+    wa.apply(SELF->scenegraph);
     return YES;
   }
   // FIXME: Shouldn't we post a notification about the error?
@@ -641,9 +612,9 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   [super encodeWithCoder:coder];
   // FIXME: exception or smth. if !keyeed coding? (kintel 20040408)
   if ([coder allowsKeyedCoding]) {
-    [coder encodeBool:_handleseventsinviewer 
+    [coder encodeBool:SELF->handleseventsinviewer 
            forKey:@"SC_handleseventsinviewer"];
-    [coder encodeFloat:_autoclipvalue 
+    [coder encodeFloat:SELF->autoclipvalue 
            forKey:@"SC_autoclipvalue"];
   }
 }
@@ -654,27 +625,27 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 - (id)initWithCoder:(NSCoder *)coder
 {
   if (self = [super initWithCoder:coder]) {
-    // FIXME: exception or smth. if !keyeed coding? (kintel 20040408)
+    [self _SC_commonInit];
+    // FIXME: exception or smth. if !keyed coding? (kintel 20040408)
     if ([coder allowsKeyedCoding]) {
       // Manually checks for existance of keys to be able to read
       // archives from the public beta.
       // FIXME: We should disable this after a grace period (say Sc21 V1.0.1)
       // (kintel 20040408)
       if ([coder containsValueForKey:@"SC_handleseventsinviewer"]) {
-        _handleseventsinviewer = 
+        SELF->handleseventsinviewer = 
           [coder decodeBoolForKey:@"SC_handleseventsinviewer"];
       }
       else {
-        _handleseventsinviewer = YES;
+        SELF->handleseventsinviewer = YES;
       }
       if ([coder containsValueForKey:@"SC_autoclipvalue"]) {
-        _autoclipvalue = [coder decodeFloatForKey:@"SC_autoclipvalue"];
+        SELF->autoclipvalue = [coder decodeFloatForKey:@"SC_autoclipvalue"];
       }
       else {
-        _autoclipvalue = 0.6f;
+        SELF->autoclipvalue = 0.6f;
       }
     }
-    [self commonInit];
   }
   return self;
 }
@@ -685,8 +656,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (BOOL)headlightIsOn
 {
-  if (_headlight == NULL) return FALSE;
-  return (_headlight->on.getValue() == TRUE) ? YES : NO;
+  if (SELF->headlight == NULL) return FALSE;
+  return (SELF->headlight->on.getValue() == TRUE) ? YES : NO;
 }
 
 
@@ -694,8 +665,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (void)setHeadlightIsOn:(BOOL)yn
 {
-  if (_headlight == NULL) return;
-  _headlight-> on = yn ? TRUE : FALSE;
+  if (SELF->headlight == NULL) return;
+  SELF->headlight-> on = yn ? TRUE : FALSE;
   
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCHeadlightChangedNotification object:self];
@@ -705,37 +676,64 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (SoDirectionalLight *)headlight
 {
-  return _headlight;
+  return SELF->headlight;
 }
 
 @end
 
 @implementation SCController (InternalAPI)
 
+/*"
+  Shared initialization code that is called both from #init: and
+  #initWithCoder:.
+  
+  If you override this method, you must call [super _SC_commonInit]
+  as the first call in your implementation to make sure everything
+  is set up properly.
+  "*/
+- (void)_SC_commonInit
+{
+  [SCController initCoin];
+  SELF = [[_SCControllerP alloc] init];
+  SELF->camera = [[SCCamera alloc] init];
+  [SELF->camera setController:self];
+  SELF->eventconverter = [[SCEventConverter alloc] init];
+  SELF->redrawsel = @selector(display);
+
+  [self setSceneManager:new SoSceneManager];
+
+  [[NSNotificationCenter defaultCenter] 
+    addObserver:self
+    selector:@selector(_SC_idle:) name:_SCIdleNotification
+    object:self];
+
+  [self _SC_sensorQueueChanged];
+}
+
 /*!
   Timer callback function: process the timer sensor queue.
 */
-- (void)_timerQueueTimerFired:(NSTimer *)t
+- (void)_SC_timerQueueTimerFired:(NSTimer *)t
 {
   // NSLog(@"timerQueueTimerFired:");
   // The timer might fire after the view has
   // already been destroyed...
-  if (!_redrawinv) return; 
+  if (!SELF->redrawinv) return; 
   SoDB::getSensorManager()->processTimerQueue();
-  [self _sensorQueueChanged];
+  [self _SC_sensorQueueChanged];
 }
 
 /* process delay queue when application is idle. */
 
-- (void)_idle:(NSNotification *)notification
+- (void)_SC_idle:(NSNotification *)notification
 {
   // NSLog(@"_idle:");
   // We might get the notification after the view has
   // already been destroyed...
-  if (!_redrawinv) return; 
+  if (!SELF->redrawinv) return; 
   SoDB::getSensorManager()->processTimerQueue();
   SoDB::getSensorManager()->processDelayQueue(TRUE);
-  [self _sensorQueueChanged];
+  [self _SC_sensorQueueChanged];
 }
 
 /*!
@@ -746,11 +744,11 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   Will initiate idle processing if there are pending delay queue sensors.
 */
 // FIXME: Rename to something more appropriate... ;)
-- (void)_sensorQueueChanged
+- (void)_SC_sensorQueueChanged
 {
   // NSLog(@"_sensorQueueChanged");
   // Create timers at first invocation
-  if (!_timerqueuetimer) [self startTimers];
+  if (!SELF->timerqueuetimer) [self startTimers];
 
   SoSensorManager * sm = SoDB::getSensorManager();
 
@@ -758,10 +756,10 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   SbTime nexttimeout;
   if (sm->isTimerSensorPending(nexttimeout)) {
     SbTime interval = nexttimeout - SbTime::getTimeOfDay();
-    [_timerqueuetimer 
+    [SELF->timerqueuetimer 
       setFireDate:[NSDate dateWithTimeIntervalSinceNow:interval.getValue()]];
   } else {
-    [_timerqueuetimer deactivate];
+    [SELF->timerqueuetimer deactivate];
   }
   
   // If there are any pending SoDelayQueueSensors
@@ -783,7 +781,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     otherwise NULL.
  */
 
-- (SoLight *)_findLightInSceneGraph:(SoGroup *)root
+- (SoLight *)_SC_findLightInSceneGraph:(SoGroup *)root
 {
   if (root == NULL) return NULL;
 
@@ -807,7 +805,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     otherwise NULL.
 "*/
 
-- (SoCamera *)_findCameraInSceneGraph:(SoGroup *)root
+- (SoCamera *)_SC_findCameraInSceneGraph:(SoGroup *)root
 {
   SoCamera * scenecamera = NULL;
   SbBool oldsearch = SoBaseKit::isSearchingChildren();
@@ -824,23 +822,23 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   return scenecamera;
 }
 
-- (NSPoint)_normalizePoint:(NSPoint)point
+- (NSPoint)_SC_normalizePoint:(NSPoint)point
 {
   NSPoint normalized;
-  NSSize size = _viewrect.size;
+  NSSize size = SELF->viewrect.size;
   normalized.x = point.x / size.width;
   normalized.y = point.y / size.height;
   return normalized;
 }
 
-- (void)_setupRedrawInvocation
+- (void)_SC_setupRedrawInvocation
 {
-  [_redrawinv release];
-  _redrawinv = nil;
+  [SELF->redrawinv release];
+  SELF->redrawinv = nil;
   
-  if (_redrawhandler && _redrawsel) {
+  if (SELF->redrawhandler && SELF->redrawsel) {
     NSMethodSignature *sig = 
-      [_redrawhandler methodSignatureForSelector:_redrawsel];
+      [SELF->redrawhandler methodSignatureForSelector:SELF->redrawsel];
 
     if ([sig numberOfArguments] != 2 ||
         [sig numberOfArguments] == 3 &&
@@ -854,36 +852,36 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
       return;
     }
 
-    _redrawinv = [[NSInvocation invocationWithMethodSignature:sig] retain];
-    [_redrawinv setSelector:_redrawsel];
-    [_redrawinv setTarget:_redrawhandler];
-    if ([sig numberOfArguments] == 3) [_redrawinv setArgument:self atIndex:2];
+    SELF->redrawinv = [[NSInvocation invocationWithMethodSignature:sig] retain];
+    [SELF->redrawinv setSelector:SELF->redrawsel];
+    [SELF->redrawinv setTarget:SELF->redrawhandler];
+    if ([sig numberOfArguments] == 3) [SELF->redrawinv setArgument:self atIndex:2];
   }
  }
  
-- (SoGroup *)_createSuperSceneGraph:(SoGroup *)scenegraph
+- (SoGroup *)_SC_createSuperSceneGraph:(SoGroup *)scenegraph
 {
   SoGroup *superscenegraph = new SoSeparator;
 
   // Handle lighting
-  if (![self _findLightInSceneGraph:scenegraph]) {
+  if (![self _SC_findLightInSceneGraph:scenegraph]) {
     [self setHeadlightIsOn:YES];
   } else {
     [self setHeadlightIsOn:NO];
   }
-  _headlight = new SoDirectionalLight;
-  superscenegraph->addChild(_headlight);
+  SELF->headlight = new SoDirectionalLight;
+  superscenegraph->addChild(SELF->headlight);
 
   // Handle camera
-  SoCamera * scenecamera  = [self _findCameraInSceneGraph:scenegraph];
+  SoCamera * scenecamera  = [self _SC_findCameraInSceneGraph:scenegraph];
   if (scenecamera == NULL) {
     scenecamera = new SoPerspectiveCamera;
-    [_camera setSoCamera:scenecamera deleteOldCamera:NO];
-    [_camera setControllerHasCreatedCamera:YES];
+    [SELF->camera setSoCamera:scenecamera deleteOldCamera:NO];
+    [SELF->camera setControllerHasCreatedCamera:YES];
     superscenegraph->addChild(scenecamera);
   } else {
-    [_camera setSoCamera:scenecamera deleteOldCamera:NO];
-    [_camera setControllerHasCreatedCamera:NO];
+    [SELF->camera setSoCamera:scenecamera deleteOldCamera:NO];
+    [SELF->camera setControllerHasCreatedCamera:NO];
   }
   
   superscenegraph->addChild(scenegraph);

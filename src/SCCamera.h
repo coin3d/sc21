@@ -34,6 +34,7 @@ class SbRotation;
 class SoCamera;
 class SoGroup;
 class SoGetBoundingBoxAction;
+@class _SCCameraP;
 
 /*" Possible camera types in the scene graph.
     !{SCCameraPerspective} describes an !{SoPerspectiveCamera},
@@ -47,11 +48,10 @@ typedef enum _SCCameraType {
   SCCameraOrthographic  =  1
 } SCCameraType;
 
-@interface SCCamera : NSObject {
-  SCController * _controller;
-  SoCamera * _camera;
-  SoGetBoundingBoxAction * _autoclipboxaction;
-  BOOL _controllerhascreatedcamera;
+@interface SCCamera : NSObject
+{
+  @protected
+    _SCCameraP * sccamerapriv;
 }
 
 /*" Initializing an SCCamera "*/

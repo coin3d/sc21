@@ -24,7 +24,6 @@
  | Systems in Motion, Bygdoy Alle 5, 0257 Oslo, Norway.            |
  |                                                                 |
  * =============================================================== */
- 
 
 #import <Cocoa/Cocoa.h>
 #import <OpenGL/gl.h>
@@ -32,18 +31,17 @@
 #import <Sc21/SCOpenGLPixelFormat.h>
 
 @class SCController;
+@class _SCViewP;
 
 @interface SCView : SCOpenGLView /*" NSView : NSResponder : NSObject "*/
 {
-  IBOutlet SCController * controller; 
-  NSOpenGLView * _oldview;
-  NSCursor * _cursor;
+  @protected
+    _SCViewP * scviewpriv;
 }
 
 /*" Initializing an SCView "*/
 - (id)initWithFrame:(NSRect)rect pixelFormat:(SCOpenGLPixelFormat *)format;
 - (id)initWithFrame:(NSRect)rect;
-- (void)commonInit;
 
 /*" Accessing the SCController. "*/
 - (SCController *)controller;

@@ -25,30 +25,35 @@
  |                                                                 |
  * =============================================================== */
 
-#import <AppKit/NSView.h>
-
-@class NSOpenGLContext;
-@class SCOpenGLPixelFormat;
-@class _SCOpenGLViewP;
-
-@interface SCOpenGLView : NSView
+// No #imports here. Include this file _after_ SCController.h
+// to ensure everything is included.
+ 
+@interface _SCControllerP : NSObject
 {
- @protected
-   _SCOpenGLViewP * scopenglviewpriv;
+  id delegate;
+  id redrawhandler;
+  SEL redrawsel;
+  NSInvocation * redrawinv;
+  SCCamera * camera;
+  SCEventConverter * eventconverter;
+  NSTimer * timerqueuetimer;
+  class SoGroup * scenegraph;	      // the user scenegraph 
+  class SoGroup * superscenegraph;	  // the real scenegraph
+  class SoSceneManager * scenemanager;
+  BOOL handleseventsinviewer;
+  float autoclipvalue;
+  NSRect viewrect;
+  SoDirectionalLight * headlight;  
 }
-
-- (id)initWithFrame:(NSRect)rect;
-- (id)initWithFrame:(NSRect)frameRect pixelFormat:(SCOpenGLPixelFormat *)format;
-+ (SCOpenGLPixelFormat *)defaultPixelFormat;
-- (void)setPixelFormat:(SCOpenGLPixelFormat *)pixelFormat;
-- (SCOpenGLPixelFormat *)pixelFormat;
-
-- (void)prepareOpenGL;
-- (void)clearGLContext;
-- (NSOpenGLContext *)openGLContext;
-- (void)setOpenGLContext:(NSOpenGLContext *)context;
-
-- (void)reshape;
-- (void)update;
-
 @end
+
+@interface SCController (InternalAPI)
+- (void)_SC_commonInit;
+- (void)_SC_timerQueueTimerFired:(NSTimer *)t;
+- (void)_SC_sensorQueueChanged;
+- (SoLight *)_SC_findLightInSceneGraph:(SoGroup *)root;
+- (SoCamera *)_SC_findCameraInSceneGraph:(SoGroup *)root;
+- (NSPoint)_SC_normalizePoint:(NSPoint)point;
+- (void)_SC_setupRedrawInvocation;
+- (SoGroup *)_SC_createSuperSceneGraph:(SoGroup *)scenegraph;
+@end  

@@ -27,6 +27,24 @@
 
 #import <Sc21/SCOpenGLPixelFormat.h>
 
+#define PRIVATE(p) ((p)->scopenglpixelformatpriv)
+#define SELF PRIVATE(self)
+
+@interface _SCOpenGLPixelFormatP : NSObject
+{
+@public
+  NSMutableDictionary * attrdict;
+  NSOpenGLPixelFormat * nspixelformat;
+}
+@end
+
+@implementation _SCOpenGLPixelFormatP
+@end
+
+@interface SCOpenGLPixelFormat (InternalAPI)
+- (void)_SC_commonInit;
+@end
+
 @implementation SCOpenGLPixelFormat
 
 /*"
@@ -36,10 +54,21 @@
 /*!
   FIXME: write doc
 */
+- (id)init
+{
+  self = [super init];
+  [self _SC_commonInit];
+  return self;
+}
+
+/*!
+  FIXME: write doc
+*/
 - (void)dealloc
 {
-  [_attrdict release];
-  [_nspixelformat release];
+  [SELF->attrdict release];
+  [SELF->nspixelformat release];
+  [SELF release];
   [super dealloc];
 }
 
@@ -54,12 +83,14 @@
 "*/
 - (void)setAttribute:(NSOpenGLPixelFormatAttribute)attr
 {
-  if (!_attrdict) _attrdict = [[NSMutableDictionary alloc] init];
+  if (!SELF->attrdict) 
+    SELF->attrdict = [[NSMutableDictionary alloc] init];
   BOOL yes = YES;
-  [_attrdict setObject:[NSValue value:&yes withObjCType:@encode(BOOL)] 
-             forKey:[NSNumber numberWithInt:attr]];
-  [_nspixelformat release];
-  _nspixelformat = nil;
+  [SELF->attrdict 
+          setObject:[NSValue value:&yes withObjCType:@encode(BOOL)] 
+          forKey:[NSNumber numberWithInt:attr]];
+  [SELF->nspixelformat release];
+  SELF->nspixelformat = nil;
 }
 
 /*"
@@ -69,11 +100,13 @@
   "*/
 - (void)setAttribute:(NSOpenGLPixelFormatAttribute)attr toValue:(int)val
 {
-  if (!_attrdict) _attrdict = [[NSMutableDictionary alloc] init];
-  [_attrdict setObject:[NSValue value:&val withObjCType:@encode(int)]
-             forKey:[NSNumber numberWithInt:attr]];
-  [_nspixelformat release];
-  _nspixelformat = nil;
+  if (!SELF->attrdict) 
+    SELF->attrdict = [[NSMutableDictionary alloc] init];
+  [SELF->attrdict 
+          setObject:[NSValue value:&val withObjCType:@encode(int)]
+          forKey:[NSNumber numberWithInt:attr]];
+  [SELF->nspixelformat release];
+  SELF->nspixelformat = nil;
 }
 
 /*"
@@ -85,10 +118,11 @@
   "*/
 - (void)removeAttribute:(NSOpenGLPixelFormatAttribute)attr
 {
-  if (!_attrdict) _attrdict = [[NSMutableDictionary alloc] init];
-  [_attrdict removeObjectForKey:[NSNumber numberWithInt:attr]];
-  [_nspixelformat release];
-  _nspixelformat = nil;
+  if (!SELF->attrdict) 
+    SELF->attrdict = [[NSMutableDictionary alloc] init];
+  [SELF->attrdict removeObjectForKey:[NSNumber numberWithInt:attr]];
+  [SELF->nspixelformat release];
+  SELF->nspixelformat = nil;
 }
 
 /*!
@@ -106,7 +140,8 @@
 */
 - (BOOL)getValue:(int *)valptr forAttribute:(NSOpenGLPixelFormatAttribute)attr
 {
-  NSValue * value = [_attrdict objectForKey:[NSNumber numberWithInt:attr]];
+  NSValue * value = 
+    [SELF->attrdict objectForKey:[NSNumber numberWithInt:attr]];
   if (!value) return NO;
   if (!strcmp([value objCType], @encode(int))) [value getValue:valptr];
   else *valptr = 1;
@@ -114,7 +149,7 @@
 }
 
 /*!
-  If we have a _attrdict containing any values, create a new
+  If we have a attrdict containing any values, create a new
   NSOpenGLPixelFormat based on those values and return it,
   else return nil.
 
@@ -127,12 +162,14 @@
   NSLog(@"SCOpenGLPixelFormat.pixelFormat");
   // FIXME: Have a "valid" flag instead to avoid repeatedly
   // trying to create a pixelformat and fail? (kintel 20040401)
-  if (!_nspixelformat && _attrdict && [_attrdict count] > 0) {
+  if (!SELF->nspixelformat && 
+      SELF->attrdict && 
+      [SELF->attrdict count] > 0) {
     // Create an attribute array from dict
     NSOpenGLPixelFormatAttribute * attrs = 
-      malloc([_attrdict count] * 2 * 
+      malloc([SELF->attrdict count] * 2 * 
              sizeof(NSOpenGLPixelFormatAttribute*) + 1);
-    NSEnumerator * keys = [_attrdict keyEnumerator];
+    NSEnumerator * keys = [SELF->attrdict keyEnumerator];
     NSNumber * key;
     NSValue * val;
     int intval;
@@ -140,7 +177,7 @@
     while (key = (NSNumber *)[keys nextObject]) {
       attrs[i++] = [key intValue];
       NSLog(@"Attr: %d", attrs[i-1]);
-      val = [_attrdict objectForKey:key];
+      val = [SELF->attrdict objectForKey:key];
       NSLog(@"  objctype: %s", [val objCType]);
       if (!strcmp([val objCType], @encode(int))) {
         [val getValue:&intval];
@@ -152,13 +189,13 @@
     attrs[i++] = nil; // nil-terminate
     
     // Create new pixelformat object, copy dict
-    if (_nspixelformat = 
+    if (SELF->nspixelformat = 
         [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs]) {
       NSLog(@"  pixelFormat created");
     }
     free(attrs);
   }
-  return _nspixelformat;
+  return SELF->nspixelformat;
 }
 
 // NSCoding compliance
@@ -168,10 +205,10 @@
 {
   NSLog(@"SCOpenGLPixelFormat.encodeWithCoder");
   if (![coder allowsKeyedCoding]) {
-    [coder encodeObject:_attrdict];
+    [coder encodeObject:SELF->attrdict];
   } else {
     NSLog(@"  allowsKeyedCoding");
-    [coder encodeObject:_attrdict forKey:@"SC_attrdict"];
+    [coder encodeObject:SELF->attrdict forKey:@"SC_attrdict"];
   }
 }
 
@@ -179,11 +216,13 @@
 {
   NSLog(@"SCOpenGLPixelFormat.initWithCoder");
   if (self = [super init]) {
+    [self _SC_commonInit];
     if (![coder allowsKeyedCoding]) {
-      _attrdict = [[coder decodeObject] retain];
+      SELF->attrdict = [[coder decodeObject] retain];
     } else {
       NSLog(@"  allowsKeyedCoding");
-      _attrdict = [[coder decodeObjectForKey:@"SC_attrdict"] retain];
+      SELF->attrdict = 
+        [[coder decodeObjectForKey:@"SC_attrdict"] retain];
     }
   }
   return self;
@@ -194,10 +233,19 @@
 - (id)copyWithZone:(NSZone *)zone
 {
   SCOpenGLPixelFormat * copy = [[[self class] allocWithZone:zone] init];
-  copy->_nspixelformat = nil;
-  copy->_attrdict = [[NSMutableDictionary 
-                       dictionaryWithDictionary:self->_attrdict] retain];
+  PRIVATE(copy)->nspixelformat = nil;
+  PRIVATE(copy)->attrdict = 
+    [[NSMutableDictionary dictionaryWithDictionary:SELF->attrdict] retain];
   return copy;
+}
+
+@end
+
+@implementation SCOpenGLPixelFormat (InternalAPI)
+
+- (void)_SC_commonInit
+{
+  SELF = [[_SCOpenGLPixelFormatP alloc] init];
 }
 
 @end

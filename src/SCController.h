@@ -35,6 +35,7 @@ class SoLight;
 class SoDirectionalLight;
 class SoSceneManager;
 @class SCEventConverter;
+@class _SCControllerP;
 
 // FIXME: If we still want to inherit from NSResponder (e.g. to
 // use put the controller into the responder chain for situations
@@ -49,20 +50,8 @@ class SoSceneManager;
 // (kintel 20040502)
 @interface SCController : NSResponder
 {
-  id _delegate;
-  id _redrawhandler;
-  SEL _redrawsel;
-  NSInvocation * _redrawinv;
-  SCCamera * _camera;
-  SCEventConverter * _eventconverter;
-  NSTimer * _timerqueuetimer; 
-  SoGroup * _scenegraph;	      // the user scenegraph 
-  SoGroup * _superscenegraph;	  // the real scenegraph
-  SoSceneManager * _scenemanager;
-  BOOL _handleseventsinviewer;
-  float _autoclipvalue;
-  NSRect _viewrect;
-  SoDirectionalLight * _headlight;  
+  @protected
+    _SCControllerP * sccontrollerpriv;
 }
 
 /*" Static initialization "*/
@@ -70,7 +59,6 @@ class SoSceneManager;
 
 /*" Initializing an SCController "*/
 - (id)init;
-- (void)commonInit;
 
 - (void)setDelegate:(id)newdelegate;
 - (id)delegate;

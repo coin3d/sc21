@@ -25,15 +25,29 @@
  |                                                                 |
  * =============================================================== */
 
- #import <OpenGL/OpenGL.h>
- #import <OpenGL/gl.h>
- #import <Sc21/SCOpenGLView.h>
- #import <Sc21/SCOpenGLPixelFormat.h>
+#import <OpenGL/OpenGL.h>
+#import <OpenGL/gl.h>
+#import <Sc21/SCOpenGLView.h>
+#import <Sc21/SCOpenGLPixelFormat.h>
+
+#define PRIVATE(p) ((p)->scopenglviewpriv)
+#define SELF PRIVATE(self)
+
+@interface _SCOpenGLViewP : NSObject
+{
+ @public
+  NSOpenGLContext * openGLContext;
+  SCOpenGLPixelFormat * pixelformat;
+}
+@end
+
+@implementation _SCOpenGLViewP
+@end
 
  @interface SCOpenGLView(InternalAPI)
- - (void)_commonInit;
- - (void)_updateNeeded:(NSNotification *)notification;
- - (void)_reshapeNeeded:(NSNotification *)notification;
+ - (void)_SC_commonInit;
+ - (void)_SC_updateNeeded:(NSNotification *)notification;
+ - (void)_SC_reshapeNeeded:(NSNotification *)notification;
  @end
 
  @implementation SCOpenGLView
@@ -50,8 +64,8 @@
 
    self = [super initWithFrame:frameRect];
    if (self) {
-     _pixelformat = [format retain];
-     [self _commonInit];
+     [self _SC_commonInit];
+     SELF->pixelformat = [format retain];
    }
    return self;
  }
@@ -71,6 +85,7 @@
 
    [self clearGLContext];
    [self setPixelFormat:nil];
+   [SELF release];
    [super dealloc];
  }
 
@@ -140,8 +155,8 @@
   NSLog(@"SCOpenGLView.setPixelFormat");
 
   [pixelFormat retain];
-  [_pixelformat release];
-  _pixelformat = pixelFormat;
+  [SELF->pixelformat release];
+  SELF->pixelformat = pixelFormat;
 }
 
 /*"
@@ -151,7 +166,7 @@
 {
   NSLog(@"SCOpenGLView.pixelFormat");
 
-  return _pixelformat;
+  return SELF->pixelformat;
 }
 
 /*"
@@ -181,10 +196,10 @@
 {
   NSLog(@"SCOpenGLView.clearGLContext");
 
-  if (_openGLContext) {
-    if ([_openGLContext view] == self) [_openGLContext clearDrawable];
-    [_openGLContext autorelease];
-    _openGLContext = nil;
+  if (SELF->openGLContext) {
+    if ([SELF->openGLContext view] == self) [SELF->openGLContext clearDrawable];
+    [SELF->openGLContext autorelease];
+    SELF->openGLContext = nil;
   }
 }
 
@@ -197,7 +212,7 @@
 "*/
 - (NSOpenGLContext *)openGLContext
 {
-  if (!_openGLContext) {
+  if (!SELF->openGLContext) {
     NSLog(@"SCOpenGLView.openGLContext: Creating new context");
     
     SCOpenGLPixelFormat * format = [self pixelFormat];
@@ -205,7 +220,7 @@
       format = [SCOpenGLView defaultPixelFormat];
       [self setPixelFormat:format];
     }
-    _openGLContext = 
+    SELF->openGLContext = 
       [[NSOpenGLContext alloc] initWithFormat:[format pixelFormat]
                                shareContext:nil];
 
@@ -219,11 +234,11 @@
     //   under Jaguar and running under Panther? If not, we should
     //   probably not use prepareOpenGL at all, but a similar method
     //   that will work with both OS versions.
-    [_openGLContext setView:self];
-    [_openGLContext makeCurrentContext];
+    [SELF->openGLContext setView:self];
+    [SELF->openGLContext makeCurrentContext];
     [self prepareOpenGL];
   }
-  return _openGLContext;
+  return SELF->openGLContext;
 }
 
 
@@ -238,11 +253,11 @@
   NSLog(@"SCOpenGLView.setOpenGLContext");
 
   [context retain];
-  if (_openGLContext) {
-    if ([_openGLContext view] == self) [_openGLContext clearDrawable];
-    [_openGLContext release];
+  if (SELF->openGLContext) {
+    if ([SELF->openGLContext view] == self) [SELF->openGLContext clearDrawable];
+    [SELF->openGLContext release];
   }
-  _openGLContext = context;
+  SELF->openGLContext = context;
 }
 
 /*"
@@ -277,7 +292,7 @@
 "*/
 - (void)update
 {
-  if ([_openGLContext view] == self) [_openGLContext update];
+  if ([SELF->openGLContext view] == self) [SELF->openGLContext update];
 }
 
 // Overridden methods from parent
@@ -315,10 +330,10 @@
 
   [super encodeWithCoder:coder];
   if (![coder allowsKeyedCoding]) {
-    [coder encodeObject:_pixelformat];
+    [coder encodeObject:SELF->pixelformat];
   } else {
     NSLog(@"  allowsKeyedCoding");
-    [coder encodeObject:_pixelformat forKey:@"SC_pixelformat"];
+    [coder encodeObject:SELF->pixelformat forKey:@"SC_pixelformat"];
   }
 }
 
@@ -327,13 +342,13 @@
   NSLog(@"SCOpenGLView.initWithCoder:");
 
   if (self = [super initWithCoder:coder]) {
+    [self _SC_commonInit];
     if (![coder allowsKeyedCoding]) {
-      _pixelformat = [[coder decodeObject] retain];
+      SELF->pixelformat = [[coder decodeObject] retain];
     } else {
       NSLog(@"  allowsKeyedCoding");
-      _pixelformat = [[coder decodeObjectForKey:@"SC_pixelformat"] retain];
+      SELF->pixelformat = [[coder decodeObjectForKey:@"SC_pixelformat"] retain];
     }
-    [self _commonInit];
   }
   return self;
 }
@@ -344,31 +359,33 @@
 
 @implementation SCOpenGLView(InternalAPI)
 
-- (void)_commonInit
+- (void)_SC_commonInit
 {
+  SELF = [[_SCOpenGLViewP alloc] init];
+
   [[NSNotificationCenter defaultCenter] 
     addObserver:self 
-    selector:@selector(_updateNeeded:) 
+    selector:@selector(_SC_updateNeeded:) 
     name:NSViewGlobalFrameDidChangeNotification 
     object:self];
   
   [[NSNotificationCenter defaultCenter] 
     addObserver:self 
-    selector:@selector(_reshapeNeeded:) 
+    selector:@selector(_SC_reshapeNeeded:) 
     name:NSViewFrameDidChangeNotification 
     object:self];
   //  [self reshape]; //FIXME: Not sure if NSOpenGLView does this (kintel 20040505)
 }
 
-- (void)_updateNeeded:(NSNotification *)notification
+- (void)_SC_updateNeeded:(NSNotification *)notification
 {
-  NSLog(@"SCOpenGLView._updateNeeded");
+  NSLog(@"SCOpenGLView._SC_updateNeeded");
   [self update];
 }
 
-- (void)_reshapeNeeded:(NSNotification *)notification
+- (void)_SC_reshapeNeeded:(NSNotification *)notification
 {
-  NSLog(@"SCOpenGLView._reshapeNeeded:");
+  NSLog(@"SCOpenGLView._SC_reshapeNeeded:");
   [self reshape];
 }
 

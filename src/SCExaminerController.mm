@@ -45,11 +45,10 @@
 #import <Inventor/nodes/SoSeparator.h>
 #import <Inventor/projectors/SbSphereSheetProjector.h>
 
+#import "SCControllerP.h"
+#define PRIVATE(p) ((p)->sccontrollerpriv)
+
 @interface SCExaminerController (InternalAPI)
-- (void)_setInternalSceneGraph:(SoGroup *)root;
-- (SoLight *)_findLightInSceneGraph:(SoGroup *)root;    // impl in super
-- (SoCamera *)_findCameraInSceneGraph:(SoGroup *)root;  // impl in super
-- (NSPoint)_normalizePoint:(NSPoint)point;              // impl in super
 @end
 
 @implementation SCExaminerController
@@ -106,7 +105,6 @@
 
 - (void)commonInit
 {
-  [super commonInit];
   SbViewVolume volume;
   _mouselog = [[NSMutableArray alloc] init];
   _spinprojector = new SbSphereSheetProjector(SbSphere(SbVec3f(0,0,0),0.8f));
@@ -137,7 +135,7 @@
  
 - (void)render
 {
-  [_camera updateClippingPlanes:_scenegraph];
+  [PRIVATE(self)->camera updateClippingPlanes:[self sceneGraph]];
   [super render];
 }
 
@@ -149,7 +147,7 @@
 
 - (void)setCameraType:(SCCameraType)type
 {
-  [_camera convertToType:type];
+  [PRIVATE(self)->camera convertToType:type];
 }
 
 
@@ -157,7 +155,7 @@
 
 - (void)viewAll
 {
-  [_camera viewAll]; // SCViewAllNotification sent by _camera
+  [PRIVATE(self)->camera viewAll]; // SCViewAllNotification sent by _camera
 }
 
 // -------------------- Event handling -----------------------
@@ -320,14 +318,14 @@
 
   p = [[_mouselog objectAtIndex:0] pointValue];
   q = [[_mouselog objectAtIndex:1] pointValue];
-  qn = [self _normalizePoint:q];
-  pn = [self _normalizePoint:p];
+  qn = [self _SC_normalizePoint:q];
+  pn = [self _SC_normalizePoint:p];
 
   _spinprojector->project(SbVec2f(qn.x, qn.y));
   _spinprojector->projectAndGetRotation(SbVec2f(pn.x, pn.y), r);
   r.invert();
 
-  [_camera reorient:r];
+  [PRIVATE(self)->camera reorient:r];
 }
 
 
@@ -344,7 +342,7 @@
   NSPoint p, q, pn, qn;
   SbLine line;
   SbVec3f curplanepoint, prevplanepoint;
-  SoCamera * cam = [_camera soCamera];
+  SoCamera * cam = [PRIVATE(self)->camera soCamera];
   NSValue * v = [NSValue valueWithPoint:point];
 
   [_mouselog insertObject:v atIndex:0];
@@ -354,8 +352,8 @@
 
   p = [[_mouselog objectAtIndex:0] pointValue];
   q = [[_mouselog objectAtIndex:1] pointValue];
-  qn = [self _normalizePoint:q];
-  pn = [self _normalizePoint:p];
+  qn = [self _SC_normalizePoint:q];
+  pn = [self _SC_normalizePoint:p];
 
   // Find projection points for the last and current mouse coordinates.
   // Don't worry about about camera's viewportMapping since it wouldn't 
@@ -383,7 +381,7 @@
 
 - (void)zoomWithDelta:(float)delta
 {
-  [_camera zoom:delta];
+  [PRIVATE(self)->camera zoom:delta];
 }
 
 
@@ -406,9 +404,9 @@
   if ([_mouselog count] < 2) return;
   p = [[_mouselog objectAtIndex:0] pointValue];
   q = [[_mouselog objectAtIndex:1] pointValue];
-  qn = [self _normalizePoint:q];
-  pn = [self _normalizePoint:p];
-  [_camera zoom:(pn.y - qn.y)];
+  qn = [self _SC_normalizePoint:q];
+  pn = [self _SC_normalizePoint:p];
+  [PRIVATE(self)->camera zoom:(pn.y - qn.y)];
 }
 
 

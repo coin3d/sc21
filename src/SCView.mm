@@ -30,6 +30,24 @@
 #import <Sc21/SCExaminerController.h>
 #import <Sc21/SCCursors.h>
 
+@interface _SCViewP : NSObject
+{
+  SCController * controller; 
+  NSOpenGLView * oldview;
+  NSCursor * cursor;
+}
+@end
+
+@implementation _SCViewP
+@end
+
+#define PRIVATE(p) ((p)->scviewpriv)
+#define SELF PRIVATE(self)
+
+@interface SCView(InternalAPI)
+- (void)_SC_commonInit;
+@end
+
 @implementation SCView
 
 /*" An SCView displays a Coin scene graph. It also provides convenience 
@@ -62,8 +80,6 @@
   Initializes a newly allocated SCView with rect as its frame
   rectangle. Sets up an OpenGL context with the given pixel format.
   The format parameter is passed on to its superclass.
-
-  Calls #commonInit.
   "*/
 - (id)initWithFrame:(NSRect)rect pixelFormat:(SCOpenGLPixelFormat *)format
 {
@@ -72,7 +88,7 @@
     const long int vals[1] = {1};
     [[self openGLContext] setValues:vals forParameter:NSOpenGLCPSwapInterval];
     [[self openGLContext] makeCurrentContext];
-    [self commonInit];
+    [self _SC_commonInit];
   }
   return self;
   
@@ -87,24 +103,14 @@
 }
 
 
-/*" Shared initialization code that is called both from 
-  #initWithFrame:pixelFormat and #initWithCoder: If you override this method, 
-  you must call !{[super commonInit]} as the first call in your
-  implementation to make sure everything is set up properly.
-
-  FIXME: Not needed anymore? (kintel 20040502)
-"*/
-- (void)commonInit
-{
-}
-
 - (void)dealloc
 {
   NSLog(@"SCView.dealloc");
   // Prevent controller from continuing to draw into our view.
-  [controller setRedrawHandler:nil];
-  [controller stopTimers];
-  [controller release];
+  [SELF->controller setRedrawHandler:nil];
+  [SELF->controller stopTimers];
+  [SELF->controller release];
+  [SELF release];
   [super dealloc];
 }
 
@@ -114,7 +120,7 @@
 /*" Returns the currently used SCController. "*/
 - (SCController *)controller
 {
-  return controller;  
+  return SELF->controller;  
 }
 
 
@@ -125,10 +131,10 @@
 - (void)setController:(SCController *)newcontroller
 {
   [newcontroller retain];
-  [controller release];
-  controller = newcontroller;
+  [SELF->controller release];
+  SELF->controller = newcontroller;
   // Use [self display] as a redraw handler
-  [controller setRedrawHandler:self];
+  [SELF->controller setRedrawHandler:self];
   [self reshape]; // Initialize viewport
 }
 
@@ -146,7 +152,7 @@
   // Note: As NSView's implementation of this method, #drawRect: is
   // intended to be completely overridden by each subclass that
   // performs drawing, do _not_ invoke [super drawRect] here!
-  [controller render];
+  [SELF->controller render];
   [[self openGLContext] flushBuffer];
 }
 
@@ -158,7 +164,7 @@
 
 - (void)reshape
 {
-  [controller viewSizeChanged:[self visibleRect]];
+  [SELF->controller viewSizeChanged:[self visibleRect]];
   if ([[self openGLContext] view] == self) [[self openGLContext] update];
 }
 
@@ -180,7 +186,7 @@
 
 - (void)mouseDown:(NSEvent *)event
 {
-  if (![controller handleEvent:event inView:self]) {
+  if (![SELF->controller handleEvent:event inView:self]) {
     [super mouseDown:event];
   }
 }
@@ -193,7 +199,7 @@
 
 - (void)mouseUp:(NSEvent *)event
 {
-  if (![controller handleEvent:event inView:self]) {
+  if (![SELF->controller handleEvent:event inView:self]) {
     [super mouseUp:event];
   }
 }
@@ -211,7 +217,7 @@
 
 - (void)mouseDragged:(NSEvent *)event
 {
-  if (![controller handleEvent:event inView:self]) {
+  if (![SELF->controller handleEvent:event inView:self]) {
     [super mouseDragged:event];
   }
 }
@@ -229,7 +235,7 @@
 
 - (void)rightMouseDown:(NSEvent *)event
 {
-  if (![controller handleEvent:event inView:self]) {
+  if (![SELF->controller handleEvent:event inView:self]) {
     [super rightMouseDown:event];
   }
 }
@@ -242,7 +248,7 @@
 
 - (void)rightMouseUp:(NSEvent *)event
 {
-  if (![controller handleEvent:event inView:self]) {
+  if (![SELF->controller handleEvent:event inView:self]) {
     [super rightMouseUp:event];
   }
 }
@@ -259,7 +265,7 @@
 
 - (void)rightMouseDragged:(NSEvent *)event
 {
-  if (![controller handleEvent:event inView:self]) {
+  if (![SELF->controller handleEvent:event inView:self]) {
     [super rightMouseDragged:event];
   }
 }
@@ -272,7 +278,7 @@
 
 - (void)otherMouseDown:(NSEvent *)event
 {
-  if (![controller handleEvent:event inView:self]) {
+  if (![SELF->controller handleEvent:event inView:self]) {
     [super otherMouseDown:event];
   }
 }
@@ -285,7 +291,7 @@
 
 - (void)otherMouseUp:(NSEvent *)event
 {
-  if (![controller handleEvent:event inView:self]) {
+  if (![SELF->controller handleEvent:event inView:self]) {
     [super otherMouseUp:event];
   }
 }
@@ -303,7 +309,7 @@
 
 - (void)otherMouseDragged:(NSEvent *)event
 {
-  if (![controller handleEvent:event inView:self]) {
+  if (![SELF->controller handleEvent:event inView:self]) {
     [super otherMouseDragged:event];
   }
 }
@@ -315,7 +321,7 @@
 
 - (void)scrollWheel:(NSEvent *)event
 {
-  if (![controller handleEvent:event inView:self]) {
+  if (![SELF->controller handleEvent:event inView:self]) {
     [super scrollWheel:event];
   }
 }
@@ -328,7 +334,7 @@
 
 - (void)keyDown:(NSEvent *)event 
 {
-  if (![controller handleEvent:event inView:self]) {
+  if (![SELF->controller handleEvent:event inView:self]) {
     [super keyDown:event];
   } 
 }
@@ -341,7 +347,7 @@
 
 - (void)keyUp:(NSEvent *)event 
 {
-  if (![controller handleEvent:event inView:self]) {
+  if (![SELF->controller handleEvent:event inView:self]) {
     [super keyUp:event];
   } 
 }
@@ -359,13 +365,13 @@
 - (void)resetCursorRects
 {
   NSLog(@"SCView.resetCursorRects");
-  [self addCursorRect:[self visibleRect] cursor:_cursor];
+  [self addCursorRect:[self visibleRect] cursor:SELF->cursor];
 }
 
 - (void)setCursor:(NSCursor *)cursor
 {
-  _cursor = cursor;
-  [_cursor set];
+  SELF->cursor = cursor;
+  [SELF->cursor set];
 }
 
 
@@ -392,7 +398,7 @@
 - (id)awakeAfterUsingCoder:(NSCoder *)coder
 {
   NSLog(@"SCView.awakeAfterUsingCoder:");
-  if (_oldview) {
+  if (SELF->oldview) {
     NSLog(@"  upgrading old instance.");
     int colorbits, depthbits;
     [coder decodeValueOfObjCType:@encode(int) at:&colorbits];
@@ -401,24 +407,25 @@
     //FIXME: Copy these as well:
     // colorbits, depthbits, pixel format attributes
     // (kintel 20040404)
-    if (self = [self initWithFrame:[_oldview frame]]) {
-      _superview = [_oldview superview];
-      [self setMenu:[_oldview menu]];
-      [self setInterfaceStyle:[_oldview interfaceStyle]];
-      [self setHidden:[_oldview isHidden]];
-      [self setNextKeyView:[_oldview nextKeyView]];
-      [self setBounds:[_oldview bounds]];
-      if ([_oldview isRotatedFromBase]) {
-        [self setFrameRotation:[_oldview frameRotation]];
-        [self setBoundsRotation:[_oldview boundsRotation]];
+    if (self = [self initWithFrame:[SELF->oldview frame]]) {
+      //FIXME: Bad bad: Accessing private data in NSView. Fix! (kintel 20040604)
+      _superview = [SELF->oldview superview];
+      [self setMenu:[SELF->oldview menu]];
+      [self setInterfaceStyle:[SELF->oldview interfaceStyle]];
+      [self setHidden:[SELF->oldview isHidden]];
+      [self setNextKeyView:[SELF->oldview nextKeyView]];
+      [self setBounds:[SELF->oldview bounds]];
+      if ([SELF->oldview isRotatedFromBase]) {
+        [self setFrameRotation:[SELF->oldview frameRotation]];
+        [self setBoundsRotation:[SELF->oldview boundsRotation]];
       }
-      [self setPostsFrameChangedNotifications:[_oldview postsFrameChangedNotifications]];
-      [self setPostsBoundsChangedNotifications:[_oldview postsBoundsChangedNotifications]];
-      [self setAutoresizingMask:[_oldview autoresizingMask]];
-      [self setToolTip:[_oldview toolTip]];
-      [_oldview release];
-      _oldview = nil;
-      [self commonInit];
+      [self setPostsFrameChangedNotifications:[SELF->oldview postsFrameChangedNotifications]];
+      [self setPostsBoundsChangedNotifications:[SELF->oldview postsBoundsChangedNotifications]];
+      [self setAutoresizingMask:[SELF->oldview autoresizingMask]];
+      [self setToolTip:[SELF->oldview toolTip]];
+      [SELF->oldview release];
+      SELF->oldview = nil;
+      [self _SC_commonInit];
     }
   }
   return self;
@@ -426,9 +433,6 @@
 
 /*" Initializes a newly allocated SCView instance from the data
     in decoder. Returns !{self}.
-
-    Calls #commonInit, which contains common initialization
-    code needed both in #init and #initWithCoder.
  "*/
 
 - (id)initWithCoder:(NSCoder *)coder
@@ -438,14 +442,30 @@
   // FIXME: We should remove this after a grace period (say Sc21 V1.0.1)
   // (kintel 20040404)
   if ([coder versionForClassName:@"SCView"] == 0) {
-    _oldview = [[NSOpenGLView alloc] initWithCoder:coder];
+    SELF->oldview = [[NSOpenGLView alloc] initWithCoder:coder];
     return self;
   }
   else if (self = [super initWithCoder:coder]) {
-    [self commonInit];
+    [self _SC_commonInit];
   }
   return self;
 }
 
 @end
 
+@implementation SCView(InternalAPI)
+
+/*" 
+  Shared initialization code that is called both from 
+  #initWithFrame:pixelFormat and #initWithCoder:.
+  
+  If you override this method, you must call [super _SC_commonInit]
+  as the first call in your implementation to make sure everything
+  is set up properly.
+  "*/
+- (void)_SC_commonInit
+{
+  SELF = [[_SCViewP alloc] init];
+}
+
+@end

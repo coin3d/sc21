@@ -27,10 +27,12 @@
 
 #import <AppKit/NSOpenGL.h>
 
+@class _SCOpenGLPixelFormatP;
+
 @interface SCOpenGLPixelFormat : NSObject <NSCoding, NSCopying>
 {
-  NSMutableDictionary * _attrdict;
-  NSOpenGLPixelFormat * _nspixelformat;
+  @protected
+    _SCOpenGLPixelFormatP * scopenglpixelformatpriv;
 }
 
 - (void)setAttribute:(NSOpenGLPixelFormatAttribute)attr;
