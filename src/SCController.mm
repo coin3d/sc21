@@ -465,11 +465,9 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (void)render
 {
-  //FIXME: Make clearing of color and depth buffer configurable?
-  //(kintel 20040429)
   //FIXME: Do clearing here instead of in SoSceneManager to support
   // alpha values? (kintel 20040502)
-  SELF->scenemanager->render();
+  SELF->scenemanager->render(SELF->clearcolorbuffer, SELF->cleardepthbuffer);
 }
 
 /*" Sets the background color of the scene to color. Raises an exception if
@@ -502,6 +500,51 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
                              alpha:0.0f];
   return color;	
 }
+
+/*"
+  Controls whether the color buffer is automatically cleared
+  before rendering.
+  
+  The default value is YES.
+  "*/
+- (void)setClearColorBuffer:(BOOL)yesno
+{
+  SELF->clearcolorbuffer = yesno;
+}
+
+/*"
+  Returns YES if the color buffer is automatically cleared
+  before rendering.
+  
+  The default value is YES.
+  "*/
+- (BOOL)clearColorBuffer
+{
+  return SELF->clearcolorbuffer;
+}
+
+/*"
+  Controls whether the depth buffer is automatically cleared
+  before rendering.
+  
+  The default value is YES.
+  "*/
+- (void)setClearDepthBuffer:(BOOL)yesno
+{
+  SELF->cleardepthbuffer = yesno;
+}
+
+/*"
+  Returns YES if the depth buffer is automatically cleared
+  before rendering.
+  
+  The default value is YES.
+  "*/
+- (BOOL)clearDepthBuffer
+{
+  return SELF->cleardepthbuffer;
+}
+
 
 /*" This method is called when %view's size has been changed. 
     It makes the necessary adjustments for the new size in 
@@ -656,6 +699,10 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
            forKey:@"SC_handleseventsinviewer"];
     [coder encodeFloat:SELF->autoclipvalue 
            forKey:@"SC_autoclipvalue"];
+    [coder encodeBool:SELF->clearcolorbuffer 
+           forKey:@"SC_clearcolorbuffer"];
+    [coder encodeBool:SELF->cleardepthbuffer 
+           forKey:@"SC_cleardepthbuffer"];
   }
 }
 
@@ -672,9 +719,13 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   else if (self = [super init]) {
     [self _SC_commonInit];
     if ([coder allowsKeyedCoding]) {
+      // We don't need to check for existence since these four keys
+      // will always exist.
       SELF->handleseventsinviewer = 
         [coder decodeBoolForKey:@"SC_handleseventsinviewer"];
       SELF->autoclipvalue = [coder decodeFloatForKey:@"SC_autoclipvalue"];
+      SELF->clearcolorbuffer = [coder decodeBoolForKey:@"SC_clearcolorbuffer"];
+      SELF->cleardepthbuffer = [coder decodeBoolForKey:@"SC_cleardepthbuffer"];
     }
   }
   return self;
@@ -762,6 +813,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   [SELF->camera setController:self];
   SELF->eventconverter = [[SCEventConverter alloc] init];
   SELF->redrawsel = @selector(display);
+  SELF->clearcolorbuffer = YES;
+  SELF->cleardepthbuffer = YES;
 
   [self setSceneManager:new SoSceneManager];
 

@@ -46,6 +46,8 @@ class SoSceneManager;
   NSRect viewrect;
   SoDirectionalLight * headlight;  
   NSResponder * oldcontroller;
+  BOOL clearcolorbuffer;
+  BOOL cleardepthbuffer;
 }
 @end
 

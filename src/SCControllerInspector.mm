@@ -50,6 +50,8 @@
   [sccontroller 
     setHandlesEventsInViewer:([handleEventsInViewer state] == NSOnState)];
   [sccontroller setAutoClipValue:[autoClipValue floatValue]];
+  [sccontroller setClearColorBuffer:([clearcolorbuffer state] == NSOnState)];
+  [sccontroller setClearDepthBuffer:([cleardepthbuffer state] == NSOnState)];
 
   [super ok:sender];
 }
@@ -62,6 +64,10 @@
   [handleEventsInViewer 
     setState:[sccontroller handlesEventsInViewer]?NSOnState:NSOffState];
   [autoClipValue setFloatValue:[sccontroller autoClipValue]];
+  [clearcolorbuffer 
+    setState:[sccontroller clearColorBuffer]?NSOnState:NSOffState];
+  [cleardepthbuffer 
+    setState:[sccontroller clearDepthBuffer]?NSOnState:NSOffState];
 
   [super revert:sender];
 }

@@ -4,7 +4,12 @@
         {
             CLASS = SCControllerInspector; 
             LANGUAGE = ObjC; 
-            OUTLETS = {autoClipValue = NSSlider; handleEventsInViewer = NSButton; }; 
+            OUTLETS = {
+                autoClipValue = NSSlider; 
+                clearcolorbuffer = NSButton; 
+                cleardepthbuffer = NSButton; 
+                handleEventsInViewer = NSButton; 
+            }; 
             SUPERCLASS = IBInspector; 
         }
     ); 

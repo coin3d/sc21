@@ -67,6 +67,10 @@ class SoSceneManager;
 - (NSColor *)backgroundColor;
 - (void)setAutoClipValue:(float)autoclipvalue;
 - (float)autoClipValue;
+- (void)setClearColorBuffer:(BOOL)yesno;
+- (BOOL)clearColorBuffer;
+- (void)setClearDepthBuffer:(BOOL)yesno;
+- (BOOL)clearDepthBuffer;
 - (void)viewSizeChanged:(NSRect)size;
 
 /*" Camera handling. "*/

@@ -32,5 +32,7 @@
 {
   IBOutlet NSButton * handleEventsInViewer;
   IBOutlet NSSlider * autoClipValue;
+  IBOutlet NSButton * clearcolorbuffer;
+  IBOutlet NSButton * cleardepthbuffer;
 }
 @end
