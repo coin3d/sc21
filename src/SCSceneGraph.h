@@ -35,25 +35,26 @@
 
 @class _SCSceneGraphP;
 
-@interface SCSceneGraph : NSObject {
-  @protected
+@interface SCSceneGraph : NSObject <NSCoding>
+{
+ @protected
   _SCSceneGraphP * scscenegraphpriv;
-  IBOutlet id delegate;
+  id delegate;
 }
 
-  /*" Initialization "*/
+/*" Initialization "*/
 - (id)initWithContentsOfFile:(NSString *)filename;
 - (id)initWithContentsOfURL:(NSURL *)url;
 
 /*" Accessors for the scenegraph's scenemanager. "*/
-- (void) setSceneManager:(SoSceneManager *)scenemanager;
+- (void)setSceneManager:(SoSceneManager *)scenemanager;
 - (SoSceneManager *)sceneManager;
 
-  /*" Automatic headlight configuration "*/
+/*" Automatic headlight configuration "*/
 - (SoDirectionalLight *)headlight;
 - (BOOL)hasAddedLight;
 
-  /*" Camera handling. "*/
+/*" Camera handling. "*/
 - (SCCamera *)camera;
 - (BOOL)hasAddedCamera;
 
@@ -74,6 +75,12 @@
 // FIXME: add "lazy initialization methods (initByReferencing[File|URL])
 // FIXME: Provide incremental loading delegate method (as in NSImage)?
 
+@end
+
+@interface NSObject (SCSceneGraphDelegate)
+- (BOOL)shouldCreateDefaultSuperSceneGraph;
+- (SoSeparator *)createSuperSceneGraph:(SoSeparator *)scenegraph;
+- (void)didCreateSuperSceneGraph:(SoSeparator *)superscenegraph;
 @end
 
 // ------------------ Notifications -----------------------
