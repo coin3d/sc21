@@ -7,7 +7,10 @@ only work on Mac OS 10.3 "Panther" and above.
 The final release will also be available for Mac OS 10.2
 "Jaguar"
 
-Check out http://www.coin3d.org/mac for information on how to get
-started using Coin and Sc21.
+Check out the following resources for information on how to get
+started using Coin and Sc21:
+o Coin/Mac developer page: http://www.coin3d.org/mac
+o Sc21 API doc: http://doc.coin3d.org/Sc21
+o Sc21 examples: /Developer/Examples/Sc21/
 
 Enjoy!
