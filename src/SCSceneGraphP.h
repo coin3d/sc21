@@ -45,8 +45,8 @@
 - (SoLight *)_SC_findLight;
 - (SoCamera *)_SC_findCameraInSceneGraph:(SoGroup *)sg;
 - (void)_SC_setHasAddedCamera:(BOOL)yn;
-- (void)_SC_createSuperSceneGraph;
-- (SoGroup*)_SC_readFile:(NSString *)name;
+- (SoGroup *)_SC_createSuperSceneGraph:(SoGroup *)root;
+- (BOOL)_SC_readFromSoInput:(SoInput *)input;
 - (void)_SC_setCreatesSuperSceneGraph:(BOOL)yn;
 - (BOOL)_SC_createsSuperSceneGraph;
 @end  
