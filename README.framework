@@ -1,6 +1,0 @@
-This is the ProjectBuilder project for creating the
-SC21.framework. It also serves as "master directory" in which the
-actual SC21 source code files reside. Other projects (like the
-SC21 palette) only keep links to these files, not their own
-copies.
-
