@@ -112,7 +112,8 @@
     #{setColorBitsNoRecreate:} or #{setDepthBitsNoRecreate:}
     instead.
  "*/
-- (BOOL) recreateOpenGLContext;
+
+- (BOOL) recreateOpenGLContext
 {
   // FIXME: Shouldn't we inform Coin about the context change?
   // Test with textures and display lists! kyrah 20030616
@@ -300,12 +301,12 @@
     be (0.5, 0,25) in normalized coordinates.)
   "*/
   
-- (NSPoint) normalizePoint:(NSPoint)p
+- (NSPoint) normalizePoint:(NSPoint)point
 {
   NSPoint normalized;
   NSSize size = [self size];
-  normalized.x = p.x / size.width;
-  normalized.y = p.y / size.height;
+  normalized.x = point.x / size.width;
+  normalized.y = point.y / size.height;
   return normalized;
 }
 
@@ -456,7 +457,7 @@
     be forwarded through the responder chain as usual.
  "*/
 
-- (void) scrollWheel:(NSEvent *) event
+- (void) scrollWheel:(NSEvent *)event
 {
   if (![controller handleEvent:event]) {
     [[self nextResponder] scrollWheel:event];
@@ -469,7 +470,7 @@
     be forwarded through the responder chain as usual.
  "*/
 
-- (void) keyDown:(NSEvent *) event {
+- (void) keyDown:(NSEvent *)event {
   if (![controller handleEvent:event]) {
     [[self nextResponder] keyDown:event];
   } 
@@ -504,11 +505,11 @@
     an alert panel, or do some other custom logging.
   "*/
 
-- (void) displayInfo:(NSString *)msg
+- (void) displayInfo:(NSString *)message
 {  
   NSWindow * panel = 
     NSGetInformationalAlertPanel(@"Info",
-    msg, @"Dismiss", nil, nil );
+    message, @"Dismiss", nil, nil );
   [NSApp runModalForWindow:panel];
   [panel close];
   NSReleaseAlertPanel(panel);
@@ -520,10 +521,10 @@
     instead of getting an alert panel, or do some other custom logging.
  "*/
 
-- (void) displayError:(NSString *)msg
+- (void) displayError:(NSString *)message
 {
   NSWindow * alertpanel =  NSGetCriticalAlertPanel(@"Error",
-                                                   msg, @"OK", nil, nil );
+                                                   message, @"OK", nil, nil );
   [NSApp runModalForWindow:alertpanel];
   [alertpanel close];
   NSReleaseAlertPanel(alertpanel);
@@ -536,10 +537,10 @@
     instead of getting an alert panel, or do some other custom logging.
 "*/
 
-- (void) displayErrorAndExit:(NSString *)msg
+- (void) displayErrorAndExit:(NSString *)message
 {
   NSWindow * alertpanel =  NSGetCriticalAlertPanel(@"Fatal error",
-                                                   msg, @"OK", nil, nil );
+                                                   message, @"OK", nil, nil );
   [NSApp runModalForWindow:alertpanel];
   [alertpanel close];
   NSReleaseAlertPanel(alertpanel);
@@ -555,12 +556,12 @@
     Returns the menu item, in case you want to set more parameters.
  "*/
  
-- (NSMenuItem *) addMenuEntry:(NSString *) title target:(id) target action:(SEL) action
+- (NSMenuItem *) addMenuEntry:(NSString *)title target:(id)target action:(SEL)selector
 {
   NSMenuItem * item = [[NSMenuItem alloc] init];
   [item setTitle:title];
   [item setTarget:target];
-  [item setAction:action];
+  [item setAction:selector];
   [[self menu] addItem:item];
   [item release]; // retained by menu
   return item;
@@ -568,7 +569,7 @@
 
 /*" Returns the size of the SCView. "*/
 
-- (NSSize) size
+- (NSSize)size
 {
   NSSize s = [self bounds].size;
   return s;
@@ -602,7 +603,7 @@
 
 
 /*" Encodes the SCView using encoder coder "*/
-- (void) encodeWithCoder:(NSCoder *) coder
+- (void) encodeWithCoder:(NSCoder *)coder
 {
   [super encodeWithCoder:coder];
   [coder encodeValueOfObjCType:@encode(int) at:&_colorbits];
@@ -611,7 +612,7 @@
 
 /*" Initializes a newly allocated SCView instance from the data
     in decoder. Returns !{self} "*/
-- (id) initWithCoder:(NSCoder *) coder
+- (id) initWithCoder:(NSCoder *)coder
 {
   NSLog(@"SCView initWithCoder called.");
   if (self = [super initWithCoder:coder]) {

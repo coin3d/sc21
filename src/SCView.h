@@ -9,10 +9,9 @@
 
 @interface SCView : NSOpenGLView <NSCoding>
 {
-  IBOutlet SCController * controller; /*" handles the actual Coin interaction."*/
-  
-  int _colorbits; /*" specifies the color depth. "*/
-  int _depthbits;  /*" specifies the z buffer resolution. "*/
+  IBOutlet SCController * controller; 
+  int _colorbits; // color depth
+  int _depthbits; // z buffer resolution
 }
 
 /*" Initializing an SCView "*/
@@ -40,26 +39,26 @@
 - (void) mouseDragged:(NSEvent *)event;
 - (void) otherMouseDown:(NSEvent *)event;
 - (void) otherMouseDragged:(NSEvent *)event;
-- (void) scrollWheel:(NSEvent *) event;
-- (void) keyDown:(NSEvent *) event;
-- (BOOL)becomeFirstResponder;
-- (BOOL)acceptsFirstResponder;
+- (void) scrollWheel:(NSEvent *)event;
+- (void) keyDown:(NSEvent *)event;
+- (BOOL) becomeFirstResponder;
+- (BOOL) acceptsFirstResponder;
 
 /*" Information and error message display "*/
-- (void) displayInfo: (NSString *)msg;
-- (void) displayError: (NSString *)msg;
-- (void) displayErrorAndExit: (NSString *)msg;
+- (void) displayInfo:(NSString *)message;
+- (void) displayError:(NSString *)message;
+- (void) displayErrorAndExit:(NSString *)message;
 
 /*" Convenience methods and shortcuts "*/
-- (NSMenuItem *) addMenuEntry:(NSString *) title target:(id) target action:(SEL) selector;
+- (NSMenuItem *) addMenuEntry:(NSString *)title target:(id)target action:(SEL)selector;
 - (NSSize) size;
 - (float) width;
 - (float) height;
 - (float) aspectRatio;
-- (NSPoint) normalizePoint:(NSPoint)p;
+- (NSPoint) normalizePoint:(NSPoint)point;
 
 /*" NSCoding conformance "*/
-- (void) encodeWithCoder:(NSCoder *) coder;
-- (id) initWithCoder:(NSCoder *) coder;
+- (void) encodeWithCoder:(NSCoder *)coder;
+- (id) initWithCoder:(NSCoder *)coder;
 
 @end

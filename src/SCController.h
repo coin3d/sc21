@@ -6,21 +6,16 @@
 
 class SoCamera;
 class SoGroup;
-class SoEvent;
 class SoLight;
-class SoSeparator;
 class SoSceneManager;
-class SoGetBoundingBoxAction;
 
 @interface SCController : NSResponder
 {
   IBOutlet SCView * view;
-
   SCCamera * _camera;
   SCEventConverter * _eventconverter;
   NSTimer * _timerqueuetimer;
   NSTimer * _delayqueuetimer;
-  NSRect _viewframe;
   SoGroup * _scenegraph;	  // the whole scenegraph
   SoSceneManager * _scenemanager;
   BOOL _handleseventsinviewer;
@@ -38,30 +33,30 @@ class SoGetBoundingBoxAction;
 - (SCView *) view;
 
 /*" Coin rendering and related functionality "*/
-- (void) setSceneGraph:(SoGroup *)sg;
+- (void) render;
+- (void) setSceneGraph:(SoGroup *)scenegraph;
 - (SoGroup *) sceneGraph;
 - (SoSceneManager *) sceneManager;
-- (void) render;
-- (void) setBackgroundColor:(NSColor *) color;
+- (void) setBackgroundColor:(NSColor *)color;
 - (NSColor *) backgroundColor;
 - (void) viewSizeChanged:(NSRect)size;
-- (const SbViewportRegion &) viewportRegion;
-- (SoLight *) findLightInSceneGraph:(SoGroup *) root;
+- (const SbViewportRegion &)viewportRegion;
+- (SoLight *) findLightInSceneGraph:(SoGroup *)root;
 
 /*" Camera handling. "*/
-- (void) setCamera:(SoCamera *) camera;
+- (void) setCamera:(SoCamera *)camera;
 - (SoCamera *) camera;
-- (SCCameraType) cameraType;
-- (SoCamera *) findCameraInSceneGraph: (SoGroup *) root;
+- (SCCameraType) cameraType; // see SCCamera.h for SCCameraType enum
+- (SoCamera *) findCameraInSceneGraph:(SoGroup *)root;
 
 /*" Debugging aids. "*/
 - (NSString *) debugInfo;
 - (void) dumpSceneGraph;
 
 /*" Event handling "*/
-- (BOOL) handleEvent:(NSEvent *) event;
-- (BOOL) handleEventAsCoinEvent:(NSEvent *) event;
-- (BOOL) handleEventAsViewerEvent:(NSEvent *) event;
+- (BOOL) handleEvent:(NSEvent *)event;
+- (BOOL) handleEventAsCoinEvent:(NSEvent *)event;
+- (BOOL) handleEventAsViewerEvent:(NSEvent *)event;
 - (void) setHandlesEventsInViewer:(BOOL)yn;
 - (BOOL) handlesEventsInViewer;
 
@@ -73,11 +68,11 @@ class SoGetBoundingBoxAction;
 - (NSTimeInterval) delayQueueInterval;
 
 /*" NSCoding conformance "*/
-- (void) encodeWithCoder:(NSCoder *) coder;
-- (id) initWithCoder:(NSCoder *) coder;
+- (void) encodeWithCoder:(NSCoder *)coder;
+- (id) initWithCoder:(NSCoder *)coder;
 
   /*" Autoclipping "*/
-- (float) bestValueForNearPlane:(float)near farPlane:(float) far;
+- (float) bestValueForNearPlane:(float)near farPlane:(float)far;
 
 @end
 
@@ -88,5 +83,3 @@ extern NSString * SCModeChangedNotification;
 extern NSString * SCSceneGraphChangedNotification;
 extern NSString * SCNoCameraFoundInSceneNotification;
 extern NSString * SCNoLightFoundInSceneNotification;
-
-
