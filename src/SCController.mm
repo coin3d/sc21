@@ -159,6 +159,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 {
   // FIXME: release timers. Disabled since it causes a
   // freak crash in IB. kyrah 20030714
+  [view release];
   [_eventconverter release];
   [_camera release];
   delete _scenemanager;
