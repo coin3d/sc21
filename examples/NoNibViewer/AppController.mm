@@ -26,20 +26,30 @@
 * ============================================================== */
 
 #import "AppController.h"
+#import <SC21/SC21.h>
 #import <Inventor/SoDB.h>
 #import <Inventor/nodes/SoSeparator.h>
 
 @implementation AppController
 
-- (void)awakeFromNib
+- (void)applicationWillFinishLaunching:(NSNotification *)notif
 {
-  NSLog(@"AppController.awakeFromNib");
+  view = [[SCView alloc] initWithFrame:NSMakeRect(0.0f, 0.0f, 640.0f, 512.0f)];
+  window = [[NSWindow alloc] 
+             initWithContentRect:NSMakeRect(100.0f, 100.0f, 640.0f, 512.0f)
+             styleMask:NSTitledWindowMask|NSClosableWindowMask|NSMiniaturizableWindowMask|NSResizableWindowMask
+             backing:NSBackingStoreBuffered
+             defer:NO];
+
+  [window setContentView:view];
+  [view release];
+  [window makeKeyAndOrderFront:nil];
+  [window setInitialFirstResponder:view];
 }
 
 // Display a file open panel on start
 - (void)applicationDidFinishLaunching:(NSNotification *)notif
 {
-  NSLog(@"AppController.applicationDidFinishLaunching");
   NSOpenPanel * panel = [NSOpenPanel openPanel];
   [panel beginSheetForDirectory:nil
          file:nil

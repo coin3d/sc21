@@ -15,24 +15,6 @@
 			refType = 4;
 			sourceTree = "<group>";
 		};
-		089C165CFE840E0CC02AAC07 = {
-			children = (
-				089C165DFE840E0CC02AAC07,
-			);
-			isa = PBXVariantGroup;
-			name = InfoPlist.strings;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		089C165DFE840E0CC02AAC07 = {
-			fileEncoding = 10;
-			isa = PBXFileReference;
-			lastKnownFileType = text.plist.strings;
-			name = English;
-			path = English.lproj/InfoPlist.strings;
-			refType = 4;
-			sourceTree = "<group>";
-		};
 //080
 //081
 //082
@@ -121,7 +103,6 @@
 			children = (
 				080E96DDFE201D6D7F000001,
 				29B97315FDCFA39411CA2CEA,
-				29B97317FDCFA39411CA2CEA,
 				29B97323FDCFA39411CA2CEA,
 				19C28FACFE9D520D11CA2CBB,
 			);
@@ -139,36 +120,6 @@
 			isa = PBXGroup;
 			name = "Other Sources";
 			path = "";
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		29B97317FDCFA39411CA2CEA = {
-			children = (
-				8D1107310486CEB800E47090,
-				089C165CFE840E0CC02AAC07,
-				29B97318FDCFA39411CA2CEA,
-			);
-			isa = PBXGroup;
-			name = Resources;
-			path = "";
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		29B97318FDCFA39411CA2CEA = {
-			children = (
-				29B97319FDCFA39411CA2CEA,
-			);
-			isa = PBXVariantGroup;
-			name = MainMenu.nib;
-			path = "";
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		29B97319FDCFA39411CA2CEA = {
-			isa = PBXFileReference;
-			lastKnownFileType = wrapper.nib;
-			name = English;
-			path = English.lproj/MainMenu.nib;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -276,14 +227,9 @@
 			buildRules = (
 			);
 			buildSettings = {
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NoNibViewer_Prefix.pch;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
-				INFOPLIST_FILE = Info.plist;
-				OTHER_CFLAGS = "";
 				PRODUCT_NAME = NoNibViewer;
-				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
 				WRAPPER_EXTENSION = app;
 			};
 			dependencies = (
@@ -313,23 +259,9 @@
 		8D1107290486CEB800E47090 = {
 			buildActionMask = 2147483647;
 			files = (
-				8D11072A0486CEB800E47090,
-				8D11072B0486CEB800E47090,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8D11072A0486CEB800E47090 = {
-			fileRef = 29B97318FDCFA39411CA2CEA;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		8D11072B0486CEB800E47090 = {
-			fileRef = 089C165CFE840E0CC02AAC07;
-			isa = PBXBuildFile;
-			settings = {
-			};
 		};
 		8D11072C0486CEB800E47090 = {
 			buildActionMask = 2147483647;
@@ -355,14 +287,6 @@
 			isa = PBXBuildFile;
 			settings = {
 			};
-		};
-		8D1107310486CEB800E47090 = {
-			fileEncoding = 4;
-			isa = PBXFileReference;
-			lastKnownFileType = text.plist;
-			path = Info.plist;
-			refType = 4;
-			sourceTree = "<group>";
 		};
 		8D1107320486CEB800E47090 = {
 			explicitFileType = wrapper.application;
