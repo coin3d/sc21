@@ -27,7 +27,7 @@
  
 
 #import <Cocoa/Cocoa.h>
-#import "SCController.h"
+#import <SC21/SCController.h>
 
 class SbSphereSheetProjector;
 class SbRotation;

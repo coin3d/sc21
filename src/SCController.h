@@ -27,8 +27,8 @@
  
 
 #import <Cocoa/Cocoa.h>
-#import "SCEventConverter.h"
-#import "SCCamera.h"
+#import <SC21/SCEventConverter.h>
+#import <SC21/SCCamera.h>
 
 @class SCView;
 
