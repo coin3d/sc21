@@ -215,7 +215,7 @@ Translate camera relative to its own coordinate system.
     SELF->autoclipboxaction->setViewportRegion(viewport);
   }
   
-  SELF->autoclipboxaction->apply([sceneGraph root]);
+  SELF->autoclipboxaction->apply([sceneGraph superSceneGraph]);
   xbox =  SELF->autoclipboxaction->getXfBoundingBox();
   [self _SC_getCoordinateSystem:cameramatrix inverse:inverse 
     inSceneGraph:sceneGraph];
