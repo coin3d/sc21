@@ -34,7 +34,8 @@
 @interface _SCOpenGLPixelFormatP : NSObject
 {
  @public
-  NSMutableDictionary * attrdict;
+  NSMutableDictionary * intattributes;
+  NSMutableSet * boolattributes;
   NSOpenGLPixelFormat * nspixelformat;
 }
 @end
@@ -64,12 +65,15 @@
 {
   self = [super init];
   [self _SC_commonInit];
+  SELF->intattributes = [[NSMutableDictionary alloc] init];
+  SELF->boolattributes = [[NSMutableSet alloc] init];
   return self;
 }
 
 - (void)dealloc
 {
-  [SELF->attrdict release];
+  [SELF->intattributes release];
+  [SELF->boolattributes release];
   [SELF->nspixelformat release];
   [SELF release];
   [super dealloc];
@@ -86,11 +90,7 @@
 "*/
 - (void)setAttribute:(NSOpenGLPixelFormatAttribute)attr
 {
-  if (!SELF->attrdict) SELF->attrdict = [[NSMutableDictionary alloc] init];
-  BOOL yes = YES;
-  [SELF->attrdict 
-       setObject:[NSValue value:&yes withObjCType:@encode(BOOL)] 
-       forKey:[NSNumber numberWithInt:attr]];
+  [SELF->boolattributes addObject:[NSNumber numberWithInt:attr]];
   [SELF->nspixelformat release];
   SELF->nspixelformat = nil;
 }
@@ -102,9 +102,7 @@
   "*/
 - (void)setAttribute:(NSOpenGLPixelFormatAttribute)attr toValue:(int)val
 {
-  if (!SELF->attrdict) SELF->attrdict = [[NSMutableDictionary alloc] init];
-  [SELF->attrdict 
-       setObject:[NSValue value:&val withObjCType:@encode(int)]
+  [SELF->intattributes setObject:[NSNumber numberWithInt:val]
        forKey:[NSNumber numberWithInt:attr]];
   [SELF->nspixelformat release];
   SELF->nspixelformat = nil;
@@ -118,8 +116,8 @@
   "*/
 - (void)removeAttribute:(NSOpenGLPixelFormatAttribute)attr
 {
-  if (!SELF->attrdict) SELF->attrdict = [[NSMutableDictionary alloc] init];
-  [SELF->attrdict removeObjectForKey:[NSNumber numberWithInt:attr]];
+  [SELF->boolattributes removeObject:[NSNumber numberWithInt:attr]];
+  [SELF->intattributes removeObjectForKey:[NSNumber numberWithInt:attr]];
   [SELF->nspixelformat release];
   SELF->nspixelformat = nil;
 }
@@ -140,10 +138,15 @@
   "*/
 - (BOOL)getValue:(int *)valptr forAttribute:(NSOpenGLPixelFormatAttribute)attr
 {
-  NSValue * val = [SELF->attrdict objectForKey:[NSNumber numberWithInt:attr]];
-  if (!val) return NO;
-  if (!strcmp([val objCType], @encode(int))) [val getValue:valptr];
-  else *valptr = 1;
+  if ([SELF->boolattributes containsObject:[NSNumber numberWithInt:attr]]) {
+    *valptr = 1;
+  }
+  else {
+    NSNumber * num = 
+      [SELF->intattributes objectForKey:[NSNumber numberWithInt:attr]];
+    if (!num) return NO;
+    *valptr = [num intValue];
+  }
   return YES;
 }
 
@@ -157,27 +160,29 @@
   "*/
 - (NSOpenGLPixelFormat *)pixelFormat
 {
-  if (!SELF->nspixelformat && SELF->attrdict && [SELF->attrdict count] > 0) {
+  if (!SELF->nspixelformat && 
+      (SELF->intattributes && [SELF->intattributes count] > 0 ||
+       SELF->boolattributes && [SELF->boolattributes count] > 0)) {
     // Create an attribute array from dict
     NSOpenGLPixelFormatAttribute * attrs = 
-      malloc(2*[SELF->attrdict count]*sizeof(NSOpenGLPixelFormatAttribute*)+1);
-    NSEnumerator * keys = [SELF->attrdict keyEnumerator];
+      malloc(2*
+             [SELF->intattributes count]*sizeof(NSOpenGLPixelFormatAttribute*)+
+             [SELF->boolattributes count]*sizeof(NSOpenGLPixelFormatAttribute*)+
+             1);
+
+    NSEnumerator * keys = [SELF->intattributes keyEnumerator];
     NSNumber * key;
-    NSValue * val;
-    int intval;
     int i = 0;
     while (key = (NSNumber *)[keys nextObject]) {
       attrs[i++] = [key intValue];
-      SC21_DEBUG(@"Attr: %d", attrs[i-1]);
-      val = [SELF->attrdict objectForKey:key];
-      SC21_DEBUG(@"  objctype: %s", [val objCType]);
-      if (!strcmp([val objCType], @encode(int))) {
-        [val getValue:&intval];
-        attrs[i++] = intval;
-        SC21_DEBUG(@"  value: %d", attrs[i-1]);
-      }
-      else assert(!strcmp([val objCType], @encode(BOOL)));
+      attrs[i++] = [[SELF->intattributes objectForKey:key] intValue];
+      SC21_DEBUG(@"Attr: %d, value: %d", attrs[i-2], attrs[i-1]);
     }
+    keys = [SELF->boolattributes objectEnumerator];
+    while (key = (NSNumber *)[keys nextObject]) {
+      attrs[i++] = [key intValue];
+    }
+
     attrs[i++] = nil; // nil-terminate
     
     // Create new pixelformat object, copy dict
@@ -195,7 +200,8 @@
 - (void)encodeWithCoder:(NSCoder *)coder 
 {
   if ([coder allowsKeyedCoding]) {
-    [coder encodeObject:SELF->attrdict forKey:@"SC_attrdict"];
+    [coder encodeObject:SELF->intattributes forKey:@"SC_intattributes"];
+    [coder encodeObject:SELF->boolattributes forKey:@"SC_boolattributes"];
   }
 }
 
@@ -204,7 +210,17 @@
   if (self = [super init]) {
     [self _SC_commonInit];
     if ([coder allowsKeyedCoding]) {
-      SELF->attrdict = [[coder decodeObjectForKey:@"SC_attrdict"] retain];
+      SELF->intattributes = [[coder decodeObjectForKey:@"SC_intattributes"] retain];
+      SELF->boolattributes = [[coder decodeObjectForKey:@"SC_boolattributes"] retain];
+    }
+    //FIXME: This should not be necessary as these will always exist,
+    //but some old nibs might not have them yet. This can probablt be
+    //removed when everything is in sync. (kintel 20040729).
+    if (!SELF->intattributes) {
+      SELF->intattributes = [[NSMutableDictionary alloc] init];
+    }
+    if (!SELF->boolattributes) {
+      SELF->boolattributes = [[NSMutableSet alloc] init];
     }
   }
   return self;
@@ -216,8 +232,10 @@
 {
   SCOpenGLPixelFormat * copy = [[[self class] allocWithZone:zone] init];
   PRIVATE(copy)->nspixelformat = nil;
-  PRIVATE(copy)->attrdict = 
-    [[NSMutableDictionary dictionaryWithDictionary:SELF->attrdict] retain];
+  PRIVATE(copy)->intattributes = 
+    [[NSMutableDictionary dictionaryWithDictionary:SELF->intattributes] retain];
+  PRIVATE(copy)->boolattributes = 
+    [[NSMutableSet setWithSet:SELF->boolattributes] retain];
   return copy;
 }
 
