@@ -1,2 +1,1 @@
-watch.wrl is distributed with Rational Reducer by kind permission of 
-Rune Lyngby of Epix AS.
+watch.wrl is distributed with kind permission from Rune Lyngby of Epix AS.

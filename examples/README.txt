@@ -34,14 +34,13 @@ a Document-Based Application with Sc21. It includes features such as:
 
 ++ NoNibViewer
 
-This is a very simple example showing how to instantiate an
-SCController from Objective-C instead of in a nib file. Note that
-this way of developing applications is not recommended and this
-example is present here just as a proof of concept.
+This is a very simple example showing how to write an Sc21 application
+without using any nib files.
+Note that this way of developing applications is not recommended and
+this example is present here just as a proof of concept.
 
 --
 
-More information about Sc21 can be found at
-http://www.coin3d.org/mac/Sc21.
+More information about Sc21 can be found at http://www.coin3d.org/mac/Sc21/
 
 
