@@ -63,7 +63,6 @@
       NSString * imagePath;
       NSBundle *thisBundle = [NSBundle bundleForClass:[self class]];
       if (imagePath = [thisBundle pathForResource:@"InspectorError" ofType:@"tiff"]) {
-        NSLog(@"Image path: %@", imagePath);
         img = [[NSImage alloc] initWithContentsOfFile:imagePath];    
         if (!img) {
           NSLog(@"Couldn't load image %@", imagePath);
@@ -294,7 +293,7 @@
     // middle button: left + command  
     int i;
     for (i = 0; i < 3; i++) {
-      if (buttons[i] == 1) {
+      if (buttons[i] == 1 && modifiers[i] != 0) {
         buttons[idx] = 0;
         modifiers[idx] = modifiers[i] | emulationmodifier;
         [names addObject:[NSString 
@@ -317,7 +316,7 @@
     // see comment above
     int i;
     for (i = 0; i < 3; i++) {
-      if (buttons[i] == 2) {
+      if (buttons[i] == 2  && modifiers[i] != 0) {
         buttons[idx] = 0;
         modifiers[idx] = modifiers[i] | emulationmodifier;        
         [names addObject:[NSString 
@@ -330,10 +329,12 @@
         
   // actual conflict check
   int i, j;
-  for (i = 0; i < count; i++) {
-    for (j = 0; j < count; j++) {
+  for (i = 0; i < idx; i++) {
+    for (j = 0; j < idx; j++) {
       if (i == j) continue;
       if (buttons[i] == buttons[j] && modifiers[i] == modifiers[j]) {
+        //NSLog(@"conflict between (%d %u) and (%d %u)",
+        //      buttons[i], modifiers[i], buttons[j], modifiers[j]);
         return [NSString stringWithFormat:@"%@ and %@", 
           [names objectAtIndex:i], 
           [names objectAtIndex:j]];
