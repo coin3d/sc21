@@ -139,7 +139,7 @@
   [sg setRoot:[doc sceneGraph]];
   [controller setSceneGraph:sg];
   [sg release];
-  [[[controller sceneGraph] camera] viewAll];
+  [[controller sceneGraph]  viewAll];
 
   [typetext setStringValue:[doc fileType]];
   [sizetext setStringValue:[doc fileSize]];
