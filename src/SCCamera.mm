@@ -317,6 +317,8 @@
 
 - (void) setController:(SCController *)controller
 {
+  // We intentionally do not retain controller here, to avoid
+  // circular references.
   _controller = controller;
 }
 
