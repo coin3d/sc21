@@ -1,5 +1,5 @@
 This is a simple viewer demonstrating how you can use SC21.
-It shows you how to open an Inventor or WRML file from disk and
+It shows you how to open an Inventor or VRML file from disk and
 display it. It also demonstrates some ways to interact with 
 the SCController via context menu actions and user interface
 elements (like a checkbox). In addition, it contains an 
