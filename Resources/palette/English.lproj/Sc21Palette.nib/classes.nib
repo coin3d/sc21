@@ -8,23 +8,13 @@
             OUTLETS = {delegate = id; eventHandler = id; sceneGraph = SCSceneGraph; }; 
             SUPERCLASS = NSObject; 
         }, 
-        {CLASS = SCEmulator; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
-        {CLASS = SCEventHandler; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
-        {CLASS = SCExaminerController; LANGUAGE = ObjC; SUPERCLASS = SCController; }, 
         {CLASS = SCExaminerHandler; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
-        {CLASS = SCFlyHandler; LANGUAGE = ObjC; SUPERCLASS = SCEventHandler; }, 
         {CLASS = SCOpenGLView; LANGUAGE = ObjC; SUPERCLASS = NSView; }, 
         {
             CLASS = SCSceneGraph; 
             LANGUAGE = ObjC; 
             OUTLETS = {delegate = id; }; 
             SUPERCLASS = NSObject; 
-        }, 
-        {
-            CLASS = SCView; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {controller = SCController; }; 
-            SUPERCLASS = SCOpenGLView; 
         }, 
         {
             CLASS = Sc21Palette; 
