@@ -67,10 +67,12 @@ class SoSceneManager;
 - (id)init;
 - (void)commonInit;
 
-- (void)setRedrawHandler:(id)handler;
-- (void)setRedrawSelector:(SEL)selector;
-
 /*" Coin rendering and related functionality "*/
+
+- (void)setRedrawHandler:(id)handler;
+- (id)redrawHandler;
+- (void)setRedrawSelector:(SEL)selector;
+- (SEL)redrawSelector;
 - (void)render;
 - (void)setSceneGraph:(SoGroup *)scenegraph;
 - (SoGroup *)sceneGraph;

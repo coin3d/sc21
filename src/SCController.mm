@@ -133,12 +133,12 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 /*" Initializes Coin by calling !{SoDB::init()},
     !{SoInteraction::init()} and !{SoNodeKit::init()}.
 
-    Call this method if you want to use Coin
-    functionality before actually instantiating an SCController in your
-    application (e.g. if you want to read a 3D models using SoDB::readAll()
-    and load the nib file containing your SCView and SCController only
-    if the file was read successfully). SCController's initializer
-    automatically calls this function if needed. 
+    Call this method if you want to use Coin functionality before actually
+    instantiating an SCController in your application (e.g. if you want to
+    read a 3D models using SoDB::readAll() and load the nib file containing
+    your SCView and SCController only if the file was read successfully).
+
+    SCController's initializer automatically calls this function if needed. 
 "*/
 + (void)initCoin
 {       
@@ -149,6 +149,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     SoDB::init();
     SoInteraction::init();
     SoNodeKit::init();
+    //FIXME: After the sensor fixes in Coin, this is probably
+    //       not needed anymore (kintel 20040513)
     SoDB::setRealTimeInterval(SbTime(1/60.0));
     initialized = YES;
   }
@@ -215,6 +217,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   [super dealloc];
 }
 
+// ------------------- rendering and scene management ---------------------
+
 /*!
   Sets the object that should handle redraw messages generated
   by the scene graph.
@@ -227,6 +231,15 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 {
   _redrawhandler = handler;
   [self _setupRedrawInvocation];
+}
+
+/*!
+  Returns the redraw handler previously set by -setRedrawHandler
+  or nil if no redraw handler has been set.
+*/
+- (id)redrawHandler
+{
+  return _redrawhandler;
 }
 
 /*!
@@ -245,7 +258,17 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   [self _setupRedrawInvocation];
 }
 
-// ------------------- rendering and scene management ---------------------
+/*!
+  Returns the redraw selector previously set by -setRedrawSelector or
+  nil if no redraw selector has been set.
+
+  FIXME: Should we use nil for selectors or NULL, 0 or smth.?
+  (kintel 20040513)
+*/
+- (SEL)redrawSelector
+{
+  return _redrawsel;
+}
 
 /*" Sets the scene graph that shall be rendered. You do not need to 
     !{ref()} the node before passing it to this method. If sg is NULL,
