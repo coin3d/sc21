@@ -27,6 +27,7 @@
 //104
 		1058C7A0FEA54F0111CA2CBB = {
 			children = (
+				E03158C306FB2A5000644BFF,
 				E05D267806074D0300C6A248,
 				E0436F7B0621908200376DF6,
 				1058C7A1FEA54F0111CA2CBB,
@@ -313,6 +314,7 @@
 				8D11072F0486CEB800E47090,
 				E05D267906074D0300C6A248,
 				E0436F7C0621908200376DF6,
+				E03158C406FB2A5000644BFF,
 			);
 			isa = PBXFrameworksBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -349,6 +351,20 @@
 //E02
 //E03
 //E04
+		E03158C306FB2A5000644BFF = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = OpenGL.framework;
+			path = /System/Library/Frameworks/OpenGL.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		E03158C406FB2A5000644BFF = {
+			fileRef = E03158C306FB2A5000644BFF;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		E0436F7B0621908200376DF6 = {
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
