@@ -131,8 +131,8 @@
  
 - (void)render
 {
-  if (!PRIVATE(self)->scenegraph) return;
-  [[PRIVATE(self)->scenegraph camera] updateClippingPlanes:[[self sceneGraph] root]];
+  if (![self sceneGraph]) return;
+  [[[self sceneGraph] camera] updateClippingPlanes:[[self sceneGraph] root]];
   [super render];
 }
 
@@ -144,7 +144,7 @@
 
 - (void)setCameraType:(SCCameraType)type
 {
-  [[PRIVATE(self)->scenegraph camera] convertToType:type];
+  [[[self sceneGraph] camera] convertToType:type];
 }
 
 // -------------------- Event handling -----------------------
@@ -314,7 +314,7 @@
   _spinprojector->projectAndGetRotation(SbVec2f(pn.x, pn.y), r);
   r.invert();
 
-  [[PRIVATE(self)->scenegraph camera] reorient:r];
+  [[[self sceneGraph] camera] reorient:r];
 }
 
 
@@ -331,7 +331,7 @@
   NSPoint p, q, pn, qn;
   SbLine line;
   SbVec3f curplanepoint, prevplanepoint;
-  SoCamera * cam = [[PRIVATE(self)->scenegraph camera] soCamera];
+  SoCamera * cam = [[[self sceneGraph] camera] soCamera];
   NSValue * v = [NSValue valueWithPoint:point];
 
   [_mouselog insertObject:v atIndex:0];
@@ -370,7 +370,7 @@
 
 - (void)zoomWithDelta:(float)delta
 {
-  [[PRIVATE(self)->scenegraph camera] zoom:delta];
+  [[[self sceneGraph] camera] zoom:delta];
 }
 
 
@@ -395,7 +395,7 @@
   q = [[_mouselog objectAtIndex:1] pointValue];
   qn = [self _SC_normalizePoint:q];
   pn = [self _SC_normalizePoint:p];
-  [[PRIVATE(self)->scenegraph camera] zoom:(pn.y - qn.y)];
+  [[[self sceneGraph] camera] zoom:(pn.y - qn.y)];
 }
 
 

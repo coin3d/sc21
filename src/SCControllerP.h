@@ -26,7 +26,6 @@
  * =============================================================== */
 
 #import <Sc21/SCController.h>
-#import <Sc21/SCSceneGraph.h>
 
 class SoGroup;
 class SoSceneManager;
@@ -37,7 +36,6 @@ class SoSceneManager;
   SEL redrawsel;
   NSInvocation * redrawinv;
   SCEventConverter * eventconverter;
-  SCSceneGraph * scenegraph;
   NSTimer * timerqueuetimer;
   SoSceneManager * scenemanager;
   BOOL handleseventsinviewer;

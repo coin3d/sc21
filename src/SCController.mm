@@ -280,16 +280,16 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 /*" Sets the scene graph that shall be rendered. If nil is passed,
     this method returns immediately.
  "*/
-- (void)setSceneGraph:(SCSceneGraph *)scenegraph
+- (void)setSceneGraph:(SCSceneGraph *)sg
 {
-  if (scenegraph == SELF->scenegraph || scenegraph == nil) { return; }
+  if (sg == scenegraph || sg == nil) { return; }
 
-  if (SELF->scenegraph) { [SELF->scenegraph release]; }
-  SELF->scenegraph = [scenegraph retain];    
-  [SELF->scenegraph setSceneManager:SELF->scenemanager];
+  if (scenegraph) { [scenegraph release]; }
+  scenegraph = [sg retain];    
+  [scenegraph setSceneManager:SELF->scenemanager];
   
   if (SELF->scenemanager) {
-    SELF->scenemanager->setSceneGraph([SELF->scenegraph superSceneGraph]);
+    SELF->scenemanager->setSceneGraph([scenegraph superSceneGraph]);
   }
 
   SELF->scenemanager->scheduleRedraw(); 
@@ -308,7 +308,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (SCSceneGraph *)sceneGraph 
 { 
-  return SELF->scenegraph; 
+  return scenegraph; 
 }
 
 /*" Sets the current scene manager to scenemanager. The scene manager's
@@ -329,8 +329,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   glra->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
   glra->setTransparencyType(SoGLRenderAction::DELAYED_BLEND);
   SELF->scenemanager->activate();
-  if (SELF->scenegraph) {
-    SELF->scenemanager->setSceneGraph([SELF->scenegraph superSceneGraph]);
+  if (scenegraph) {
+    SELF->scenemanager->setSceneGraph([scenegraph superSceneGraph]);
   }
 }
 
@@ -355,14 +355,14 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (void)setAutoClipValue:(float)autoclipvalue
 {
-  [[SELF->scenegraph camera] setAutoClipValue:autoclipvalue];
+  [[scenegraph camera] setAutoClipValue:autoclipvalue];
 }
 
 /*" Returns the current autoclipvalue. The default value is 0.6. "*/
 
 - (float)autoClipValue
 {
-  return [[SELF->scenegraph camera] autoClipValue];
+  return [[scenegraph camera] autoClipValue];
 }
 
 
@@ -371,7 +371,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   "*/
 - (void)viewAll
 {
-  [[SELF->scenegraph camera] viewAll];
+  [[scenegraph camera] viewAll];
 }
 
 /*" Renders the scene. "*/
@@ -689,12 +689,12 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 {
   [SCController initCoin];
   SELF = [[_SCControllerP alloc] init];
-  SELF->scenegraph = nil;
+  scenegraph = nil;
   
 #if 0
   // FIXME: Next two lines should be moved to scenegraph!
-  SELF->scenegraph->camera = [[SCCamera alloc] init];
-  [SELF->scenegraph->camera setController:self];
+  scenegraph->camera = [[SCCamera alloc] init];
+  [scenegraph->camera setController:self];
 #endif
   SELF->eventconverter = [[SCEventConverter alloc] init];
   SELF->redrawsel = @selector(display);

@@ -42,6 +42,7 @@ class SoSceneManager;
   // FIXME: Are we sure we don't want the delegate to be protected? kyrah 20040716
  @private
   id delegate;
+  SCSceneGraph * scenegraph;
 }
 
 /*" Static initialization "*/
