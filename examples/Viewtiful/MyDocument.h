@@ -25,22 +25,21 @@
  |                                                                 |
  * =============================================================== */
 
-#import <Cocoa/Cocoa.h>
+#import <Sc21/Sc21.h>
 #import <Inventor/SbString.h>
 #import <Inventor/SoInput.h>
 
 @interface MyDocument : NSDocument
 {
-  class SoSeparator *_root;
+  SCSceneGraph * scenegraph;
   NSString *_filetype;
   NSString *_header;
   int _filesize;
 }
 
 - (BOOL)readFromFile:(NSString *)fileName ofType:(NSString *)docType;
-- (BOOL)performRead:(SoInput &)input;
-- (class SoSeparator *)sceneGraph;
-- (void)setSceneGraph:(class SoSeparator *)root;
+- (SCSceneGraph *)sceneGraph;
+- (void)setSceneGraph:(SCSceneGraph *)sg;
 - (NSString *)fileType;
 - (NSString *)fileSize;
 - (IBAction)refreshDocument:(id)sender;

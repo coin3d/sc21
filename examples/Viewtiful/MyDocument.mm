@@ -36,7 +36,9 @@
 
 - (id)init
 {
-  self = [super init];
+  if (self = [super init]) {
+    scenegraph = [[SCSceneGraph alloc] init];
+  }
   return self;
 }
 
@@ -44,6 +46,7 @@
 {
   NSLog(@"MyDocument.dealloc");
   [_header release];
+  [scenegraph release];
   [super dealloc];
 }
 
@@ -68,17 +71,14 @@
   return sizestr;
 }
 
-- (SoSeparator *)sceneGraph
+- (SCSceneGraph *)sceneGraph
 {
-  return _root;
+  return scenegraph;
 }
 
-- (void)setSceneGraph:(SoSeparator *)root
+- (void)setSceneGraph:(SCSceneGraph *)sg
 {
-  NSLog(@"MyDocument.setSceneGraph:%p", root);
-  if (root) root->ref();
-  if (_root) _root->unref();
-  _root = root;
+  scenegraph = sg;
 }
 
 // Overridden from NSDocument to read our files using SoInput
@@ -90,16 +90,12 @@
       [docType isEqualToString:@"VRML V1.0"] ||
       [docType isEqualToString:@"VRML V2.0"] ||
       [docType isEqualToString:@"Inventor"]) {
-    SoInput input;
-    if (input.openFile([fileName UTF8String])) { // Coin doesn't like unicode, so convert to utf8 and hope for the best
-      if (![self performRead:input]) {
-        NSLog(@"Unable to read file \"%@\"", fileName);
-        return NO;
-      }
-      else return YES;
-    }
-    else {
-      NSLog(@"Unable to open file \"%@\"", fileName);
+    if ([scenegraph readFromFile:fileName]) {
+      _filetype = docType;
+      NSDictionary *attr = [[NSFileManager defaultManager] 
+                             fileAttributesAtPath:fileName traverseLink:YES];
+      _filesize = [[attr objectForKey:NSFileSize] intValue];
+      return YES;
     }
   }
   else {
@@ -113,25 +109,12 @@
 - (BOOL)loadDataRepresentation:(NSData *)docData ofType:(NSString *)docType
 {
   NSLog(@"MyDocument.loadDataRepresentation:ofType:%@", docType);
-  SoInput input;
-  input.setBuffer((void *)[docData bytes], [docData length]);
-  return [self performRead:input];
-}
-
-// Generalized file reading method
-- (BOOL)performRead:(SoInput &)input
-{
-  SoSeparator *root = SoDB::readAll(&input);
-  if (root) {
-    if (input.isFileVRML1()) _filetype = @"VRML V1.0";
-    else if (input.isFileVRML2()) _filetype = @"VRML V2.0";
-    else _filetype = @"Inventor";
-    _filesize = input.getNumBytesRead();
-    _header = [[NSString stringWithCString:input.getHeader().getString()] retain];
-    [self setSceneGraph:root];
+  if ([scenegraph loadDataRepresentation:docData]) {
+    _filetype = docType;
+    _filesize = [docData length];
     return YES;
   }
-  return NO;  
+  return NO;
 }
 
 // Overridden to use our own WindowController
@@ -190,7 +173,7 @@ buffer_realloc(void *bufptr, size_t size)
   SbString hdr([_header cString]);
   out.setHeaderString(hdr);
   SoWriteAction wra(&out);
-  wra.apply(_root);
+  wra.apply([scenegraph root]);
 
   [pb setData:[NSData dataWithBytesNoCopy:buffer length:buffer_size] forType:@"VRML1PboardType"];
 }
