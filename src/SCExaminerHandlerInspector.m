@@ -65,7 +65,7 @@
       if (imagePath = [thisBundle pathForResource:@"InspectorError" ofType:@"tiff"]) {
         img = [[NSImage alloc] initWithContentsOfFile:imagePath];    
         if (!img) {
-          NSLog(@"Couldn't load image %@", imagePath);
+          SC21_DEBUG(@"Couldn't load image %@", imagePath);
         }
       }
     }
@@ -351,8 +351,8 @@
     for (j = 0; j < idx; j++) {
       if (i == j) continue;
       if (buttons[i] == buttons[j] && modifiers[i] == modifiers[j]) {
-        //NSLog(@"conflict between (%d %u) and (%d %u)",
-        //      buttons[i], modifiers[i], buttons[j], modifiers[j]);
+        SC21_DEBUG(@"conflict between (%d %u) and (%d %u)",
+                   buttons[i], modifiers[i], buttons[j], modifiers[j]);
         return [NSString stringWithFormat:@"%@ and %@", 
           [names objectAtIndex:i], 
           [names objectAtIndex:j]];
