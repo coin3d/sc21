@@ -3,22 +3,14 @@
         {
             ACTIONS = {
                 dumpSceneGraph = id; 
-                modeChanged = id; 
                 open = id; 
                 showDebugInfo = id; 
-                toggleCameraType = id; 
                 toggleHeadlight = id; 
-                toggleModes = id; 
                 viewAll = id; 
             }; 
             CLASS = AppController; 
             LANGUAGE = ObjC; 
-            OUTLETS = {
-                coincontroller = SCController; 
-                filenametext = NSTextField; 
-                mode = NSButton; 
-                view = SCView; 
-            }; 
+            OUTLETS = {coincontroller = SCController; filenametext = NSTextField; view = SCView; }; 
             SUPERCLASS = NSObject; 
         }, 
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
