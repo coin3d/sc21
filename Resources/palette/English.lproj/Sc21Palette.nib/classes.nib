@@ -13,12 +13,7 @@
             }; 
             SUPERCLASS = IBPalette; 
         }, 
-        {
-            CLASS = SCController; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {delegate = id; }; 
-            SUPERCLASS = NSResponder; 
-        }, 
+        {CLASS = SCController; LANGUAGE = ObjC; SUPERCLASS = NSResponder; }, 
         {CLASS = SCExaminerController; LANGUAGE = ObjC; SUPERCLASS = SCController; }, 
         {CLASS = SCOpenGLView; LANGUAGE = ObjC; SUPERCLASS = NSView; }, 
         {
