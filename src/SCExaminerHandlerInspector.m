@@ -35,11 +35,11 @@
 
 - (void)_SC_okWithButton:(int)button index:(int)idx;
 - (unsigned int)_SC_flagsForCommand:(NSButton *)cmd alt:(NSButton *)alt
-                              shift:(NSButton *)shift ctrl:(NSButton *)ctrl;
+                              shift:(NSButton *)shift;
 - (int)_SC_indexForModifier:(unsigned int)r;
 - (void)_SC_revertPopUpButton:(NSPopUpButton *)popup forButton:(int)button;
 - (void)_SC_setStateOfCommand:(NSButton *)cmd alt:(NSButton *)alt
-  shift:(NSButton *)shift ctrl:(NSButton *)ctrl forFlags:(unsigned int)flags;
+  shift:(NSButton *)shift forFlags:(unsigned int)flags;
 @end
 
 @implementation SCExaminerHandlerInspector
@@ -81,8 +81,8 @@
 - (void)ok:(id)sender
 {  
   // Note that mouse button emulation settings depends on the order of
-  // menu items being "no emulation", "command", "alt", "shift", "control",
-  // and modifier settings on the order "command", "alt", "shift", "control".
+  // menu items being "no emulation", "command", "alt", "shift",
+  // and modifier settings on the order "command", "alt", "shift".
 
   SCExaminerHandler * scexaminerhandler = [self object];
 
@@ -95,7 +95,7 @@
   if (r >= 0 && r<3) {
     [scexaminerhandler setRotateButton:r modifier: 
       [self _SC_flagsForCommand:rotate_command alt:rotate_alt 
-      shift:rotate_shift ctrl:rotate_control]];
+      shift:rotate_shift]];
   }
   [scexaminerhandler setSpinEnabled:([enableSpin state] == NSOnState)];
   
@@ -104,7 +104,7 @@
   if (p >= 0 && p<3) {
     [scexaminerhandler setPanButton:p modifier: 
       [self _SC_flagsForCommand:pan_command alt:pan_alt 
-      shift:pan_shift ctrl:pan_control]];
+      shift:pan_shift]];
   }
   
   // zoom mode
@@ -112,7 +112,7 @@
   if (z >= 0 && z<3) {
     [scexaminerhandler setZoomButton:z modifier: 
       [self _SC_flagsForCommand:zoom_command alt:zoom_alt 
-      shift:zoom_shift ctrl:zoom_control]];
+      shift:zoom_shift]];
   }
   [scexaminerhandler 
     setScrollWheelZoomEnabled:([enableWheel state] == NSOnState)];
@@ -130,22 +130,19 @@
   
   // rotate mode: button, modifier flags, spinning?
   [rotateButton selectItemAtIndex:[scexaminerhandler _SC_rotateButton]];
-  [self _SC_setStateOfCommand:rotate_command alt:rotate_alt
-    shift:rotate_shift ctrl:rotate_control 
+  [self _SC_setStateOfCommand:rotate_command alt:rotate_alt shift:rotate_shift 
     forFlags:[scexaminerhandler _SC_rotateModifier]];
   [enableSpin setState:([scexaminerhandler spinEnabled] ? 
      NSOnState : NSOffState)];
     
   // pan mode: button, modifier flags
   [panButton selectItemAtIndex:[scexaminerhandler _SC_panButton]];
-  [self _SC_setStateOfCommand:pan_command alt:pan_alt
-    shift:pan_shift ctrl:pan_control 
+  [self _SC_setStateOfCommand:pan_command alt:pan_alt shift:pan_shift 
     forFlags:[scexaminerhandler _SC_panModifier]];
   
   // zoom mode: button, modifier flags, use wheel?
   [zoomButton selectItemAtIndex:[scexaminerhandler _SC_zoomButton]];
-  [self _SC_setStateOfCommand:zoom_command alt:zoom_alt
-    shift:zoom_shift ctrl:zoom_control 
+  [self _SC_setStateOfCommand:zoom_command alt:zoom_alt shift:zoom_shift 
     forFlags:[scexaminerhandler _SC_zoomModifier]];
   [enableWheel setState:([scexaminerhandler scrollWheelZoomEnabled] ?
     NSOnState:NSOffState)];
@@ -180,8 +177,6 @@
         flags |= NSAlternateKeyMask; break;
       case 3: 
         flags |= NSShiftKeyMask; break;
-      case 4: 
-        flags |= NSControlKeyMask; break;
       default: break; // just to avoid compiler warning
     }
     [[[self object] _SC_emulator] emulateButton:button usingModifier:flags];
@@ -202,7 +197,7 @@
 }
 
 - (void)_SC_setStateOfCommand:(NSButton *)cmd alt:(NSButton *)alt
-    shift:(NSButton *)shift ctrl:(NSButton *)ctrl forFlags:(unsigned int) flags
+    shift:(NSButton *)shift forFlags:(unsigned int) flags
 {
   if ((flags & NSCommandKeyMask) == NSCommandKeyMask) 
     [cmd setState:NSOnState];
@@ -210,18 +205,15 @@
     [alt setState:NSOnState];
   if ((flags & NSShiftKeyMask) == NSShiftKeyMask)
     [shift setState:NSOnState];
-  if ((flags & NSControlKeyMask) == NSControlKeyMask)
-    [ctrl setState:NSOnState];
 }
 
 - (unsigned int)_SC_flagsForCommand:(NSButton *)cmd alt:(NSButton *)alt
-                              shift:(NSButton *)shift ctrl:(NSButton *)ctrl
+                              shift:(NSButton *)shift
 {
   unsigned int flags = 0;
   if ([cmd state] ==  NSOnState) flags |= NSCommandKeyMask;
   if ([alt state] ==  NSOnState) flags |= NSAlternateKeyMask;
   if ([shift state] ==  NSOnState) flags |= NSShiftKeyMask;
-  if ([ctrl state] ==  NSOnState) flags |= NSControlKeyMask;
   return flags;
 }
 
@@ -231,7 +223,6 @@
   if ((r & NSCommandKeyMask) == NSCommandKeyMask) idx = 1;
   else if ((r & NSAlternateKeyMask) == NSAlternateKeyMask) idx = 2;
   else if ((r & NSShiftKeyMask) == NSShiftKeyMask) idx = 3;
-  else if ((r & NSControlKeyMask) == NSControlKeyMask) idx = 4;
   return idx;
 }
 

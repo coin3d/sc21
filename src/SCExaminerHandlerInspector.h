@@ -38,17 +38,14 @@
   IBOutlet NSButton * rotate_command;
   IBOutlet NSButton * rotate_alt;
   IBOutlet NSButton * rotate_shift;
-  IBOutlet NSButton * rotate_control;
   
   IBOutlet NSButton * pan_command;
   IBOutlet NSButton * pan_alt;
-  IBOutlet NSButton * pan_shift;
-  IBOutlet NSButton * pan_control;  
+  IBOutlet NSButton * pan_shift; 
   
   IBOutlet NSButton * zoom_command;
   IBOutlet NSButton * zoom_alt;
   IBOutlet NSButton * zoom_shift;
-  IBOutlet NSButton * zoom_control;
     
   IBOutlet NSButton * enableSpin;
   IBOutlet NSButton * enableWheel;
