@@ -26,6 +26,7 @@
  * =============================================================== */
 
 #import <Sc21/SCOpenGLPixelFormat.h>
+#import "SCUtil.h"
 
 #define PRIVATE(p) ((p)->scopenglpixelformatpriv)
 #define SELF PRIVATE(self)
@@ -167,13 +168,13 @@
     int i = 0;
     while (key = (NSNumber *)[keys nextObject]) {
       attrs[i++] = [key intValue];
-      NSLog(@"Attr: %d", attrs[i-1]);
+      SC21_DEBUG(@"Attr: %d", attrs[i-1]);
       val = [SELF->attrdict objectForKey:key];
-      NSLog(@"  objctype: %s", [val objCType]);
+      SC21_DEBUG(@"  objctype: %s", [val objCType]);
       if (!strcmp([val objCType], @encode(int))) {
         [val getValue:&intval];
         attrs[i++] = intval;
-        NSLog(@"  value: %d", attrs[i-1]);
+        SC21_DEBUG(@"  value: %d", attrs[i-1]);
       }
       else assert(!strcmp([val objCType], @encode(BOOL)));
     }
@@ -182,7 +183,7 @@
     // Create new pixelformat object, copy dict
     if (SELF->nspixelformat = 
         [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs]) {
-      NSLog(@"  pixelFormat created");
+      SC21_DEBUG(@"  pixelFormat created");
     }
     free(attrs);
   }

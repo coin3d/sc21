@@ -28,6 +28,7 @@
 #import <Sc21/SCView.h>
 #import <Sc21/SCController.h>
 #import <Sc21/SCExaminerController.h>
+#import "SCUtil.h"
 #import "SCOpenGLViewP.h"
 
 @interface _SCViewP : NSObject
@@ -100,7 +101,7 @@
 
 - (void)dealloc
 {
-  NSLog(@"SCView.dealloc");
+  SC21_DEBUG(@"SCView.dealloc");
   // Prevent controller from continuing to draw into our view.
   [self->controller setRedrawHandler:nil];
   [self->controller stopTimers];
@@ -141,7 +142,7 @@
   "*/
 - (void)drawRect:(NSRect)rect
 {
-  // NSLog(@"SCView.drawRect");
+  // SC21_DEBUG(@"SCView.drawRect");
   // Note: As NSView's implementation of this method, #drawRect: is
   // intended to be completely overridden by each subclass that
   // performs drawing, do _not_ invoke [super drawRect] here!
@@ -344,7 +345,7 @@
 // of redesigning event handling (kintel 20040615).
 - (void)resetCursorRects
 {
-  NSLog(@"SCView.resetCursorRects");
+  SC21_DEBUG(@"SCView.resetCursorRects");
   [self addCursorRect:[self visibleRect] cursor:SELF->cursor];
 }
 
@@ -370,7 +371,7 @@
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {
-  NSLog(@"SCView.encodeWithCoder:");
+  SC21_DEBUG(@"SCView.encodeWithCoder:");
   [super encodeWithCoder:coder];
 }
 
@@ -389,13 +390,13 @@
 */
 - (id)awakeAfterUsingCoder:(NSCoder *)coder
 {
-  NSLog(@"SCView.awakeAfterUsingCoder:");
+  SC21_DEBUG(@"SCView.awakeAfterUsingCoder:");
   if (SELF->oldview) {
-    NSLog(@"  upgrading old instance.");
+    SC21_DEBUG(@"  upgrading old instance.");
     int colorbits, depthbits;
     [coder decodeValueOfObjCType:@encode(int) at:&colorbits];
     [coder decodeValueOfObjCType:@encode(int) at:&depthbits];
-    NSLog(@"  colorbits: %d, depthbits: %d", colorbits, depthbits);
+    SC21_DEBUG(@"  colorbits: %d, depthbits: %d", colorbits, depthbits);
     //FIXME: Copy these as well:
     // colorbits, depthbits, pixel format attributes
     // (kintel 20040404)
@@ -424,7 +425,7 @@
 
 - (id)initWithCoder:(NSCoder *)coder
 {
-  NSLog(@"SCView.initWithCoder:");
+  SC21_DEBUG(@"SCView.initWithCoder:");
   // This is support for reading archives from Sc21 public beta
   // FIXME: We should remove this after a grace period (say Sc21 V1.0.1)
   // (kintel 20040404)

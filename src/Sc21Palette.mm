@@ -25,9 +25,10 @@
  |                                                                 |
  * =============================================================== */
  
-#import "Sc21Palette.h"
 #import <Cocoa/Cocoa.h>
 #import <Inventor/SoDB.h>
+#import "Sc21Palette.h"
+#import "SCUtil.h"
 
 @implementation Sc21Palette
 
@@ -41,7 +42,7 @@
 
 - (void)finishInstantiate
 {
-  NSLog(@"Sc21Palette.finishInstantiate");
+  SC21_DEBUG(@"Sc21Palette.finishInstantiate");
   scopenglview = [[SCOpenGLView alloc] initWithFrame:[scopenglviewitem bounds]];
   scview = [[SCView alloc] initWithFrame:[scviewitem bounds]];
   sccontroller = [[SCController alloc] init];
@@ -146,7 +147,7 @@
 @implementation SCView (IBTest)
 - (void)drawRect:(NSRect)frame
 {
-  NSLog(@"Sc21Palette: SCView.drawRect:");
+  SC21_DEBUG(@"Sc21Palette: SCView.drawRect:");
   [[NSColor blackColor] set];
   NSRectFill(frame);
 

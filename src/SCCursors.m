@@ -27,6 +27,7 @@
 
 #import <Sc21/SCCursors.h>
 #import <Sc21/SCView.h>
+#import "SCUtil.h"
 
 @implementation NSCursor (SCCursors)
 
@@ -41,8 +42,8 @@
       NSImage * img = [[NSImage alloc] initWithContentsOfFile:imagePath];
       NSPoint hotspot = {8, 8};
       rotateCursor = [[NSCursor alloc] initWithImage:img hotSpot:hotspot];
-      if (rotateCursor) NSLog(@"  rotateCursor created.");
-      else NSLog(@"  creation of rotateCursor failed.");
+      if (rotateCursor) SC21_DEBUG(@"  rotateCursor created.");
+      else SC21_DEBUG(@"  creation of rotateCursor failed.");
     }
   }
   return rotateCursor;
@@ -59,8 +60,8 @@
       NSImage * img = [[NSImage alloc] initWithContentsOfFile:imagePath];
       NSPoint hotspot = {8, 8};
       zoomCursor = [[NSCursor alloc] initWithImage:img hotSpot:hotspot];
-      if (zoomCursor) NSLog(@"  zoomCursor created.");
-      else NSLog(@"  creation of zoomCursor failed.");
+      if (zoomCursor) SC21_DEBUG(@"  zoomCursor created.");
+      else SC21_DEBUG(@"  creation of zoomCursor failed.");
     }
   }
   return zoomCursor;
@@ -77,8 +78,8 @@
       NSImage * img = [[NSImage alloc] initWithContentsOfFile:imagePath];
       NSPoint hotspot = {8, 8};
       panCursor = [[NSCursor alloc] initWithImage:img hotSpot:hotspot];
-      if (panCursor) NSLog(@"  panCursor created.");
-      else NSLog(@"  creation of panCursor failed.");
+      if (panCursor) SC21_DEBUG(@"  panCursor created.");
+      else SC21_DEBUG(@"  creation of panCursor failed.");
     }
   }
   return panCursor;

@@ -27,6 +27,7 @@
  
 #import <Sc21/SCExaminerController.h>
 #import <Sc21/SCCursors.h>
+#import "SCUtil.h"
 
 #import <Inventor/SoSceneManager.h>
 #import <Inventor/SbMatrix.h>
@@ -116,7 +117,7 @@
 
 - (void)dealloc
 {
-  NSLog(@"SCExaminerController.dealloc");
+  SC21_DEBUG(@"SCExaminerController.dealloc");
   [_mouselog release];
   delete _spinprojector;
   delete _spinrotation;
@@ -415,7 +416,7 @@
 
 - (id)initWithCoder:(NSCoder *)coder
 {
-  NSLog(@"SCExaminerController.initWithCoder:");
+  SC21_DEBUG(@"SCExaminerController.initWithCoder:");
   if (self = [super initWithCoder:coder]) {
     // Note that _SC_commonInit will be called by our superclass'
     // initWithCoder method, so do not call it here.
@@ -429,7 +430,7 @@
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {
-  NSLog(@"SCExaminerController.encodeWithCoder:");
+  SC21_DEBUG(@"SCExaminerController.encodeWithCoder:");
   [super encodeWithCoder:coder];
   // FIXME: Encode members. kyrah 20030618
 }

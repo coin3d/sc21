@@ -26,6 +26,7 @@
  * =============================================================== */
 
 #import <Sc21/SCEventConverter.h>
+#import "SCUtil.h"
 
 struct key1map {
   unichar nsvalue;
@@ -267,7 +268,7 @@ static struct key1map KeyMap[] = {
     break;
     
   default:
-    NSLog(@"Warning: Unknown event: %d", type);
+    SC21_DEBUG(@"Warning: Unknown event: %d", type);
     break;
   }
 

@@ -29,6 +29,7 @@
 #import <OpenGL/gl.h>
 #import <Sc21/SCOpenGLView.h>
 #import <Sc21/SCOpenGLPixelFormat.h>
+#import "SCUtil.h"
 
 #import "SCOpenGLViewP.h"
 
@@ -60,7 +61,7 @@
   "*/
 - (id)initWithFrame:(NSRect)frameRect pixelFormat:(SCOpenGLPixelFormat *)format
 {
-  NSLog(@"SCOpenGLView.initWithFrame:pixelFormat");
+  SC21_DEBUG(@"SCOpenGLView.initWithFrame:pixelFormat");
   
   self = [super initWithFrame:frameRect];
   if (self) {
@@ -75,14 +76,14 @@
   "*/
 - (id)initWithFrame:(NSRect)frameRect
 {  
-  NSLog(@"SCOpenGLView.initWithFrame:");
+  SC21_DEBUG(@"SCOpenGLView.initWithFrame:");
   
   return [self initWithFrame:frameRect pixelFormat:nil];
 }
 
 - (void)dealloc
 {
-  NSLog(@"SCOpenGLView.dealloc");
+  SC21_DEBUG(@"SCOpenGLView.dealloc");
   
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   
@@ -98,7 +99,7 @@
   "*/
 + (SCOpenGLPixelFormat *)defaultPixelFormat
 {
-  NSLog(@"SCOpenGLView.defaultPixelFormat");
+  SC21_DEBUG(@"SCOpenGLView.defaultPixelFormat");
   
   // FIXME: Loop through an internal prioritized list of pixel format
   // requirements and select the first valid pixelformat found?
@@ -123,7 +124,7 @@
   "*/
 - (void)setPixelFormat:(SCOpenGLPixelFormat *)pixelFormat
 {
-  NSLog(@"SCOpenGLView.setPixelFormat");
+  SC21_DEBUG(@"SCOpenGLView.setPixelFormat");
   
   //   FIXME: Should we force a recreation of our OpenGL context?
   //   NSOpenGLView doesn't seem to do this, but it needs to be
@@ -139,7 +140,7 @@
   "*/
 - (SCOpenGLPixelFormat *)pixelFormat
 {
-  NSLog(@"SCOpenGLView.pixelFormat");
+  SC21_DEBUG(@"SCOpenGLView.pixelFormat");
   
   return SELF->pixelformat;
 }
@@ -155,7 +156,7 @@
   "*/
 - (void)prepareOpenGL
 {
-  NSLog(@"SCOpenGLView.prepareOpenGL");
+  SC21_DEBUG(@"SCOpenGLView.prepareOpenGL");
   glEnable(GL_DEPTH_TEST);
   glClearColor(0.0, 0.0, 0.0, 0.0);
   glClear(GL_COLOR_BUFFER_BIT);
@@ -168,7 +169,7 @@
   "*/
 - (void)clearGLContext
 {
-  NSLog(@"SCOpenGLView.clearGLContext");
+  SC21_DEBUG(@"SCOpenGLView.clearGLContext");
 
   if (SELF->openGLContext) {
     if ([SELF->openGLContext view] == self) 
@@ -188,7 +189,7 @@
 - (NSOpenGLContext *)openGLContext
 {
   if (!SELF->openGLContext) {
-    NSLog(@"SCOpenGLView.openGLContext: Creating new context");
+    SC21_DEBUG(@"SCOpenGLView.openGLContext: Creating new context");
     
     SCOpenGLPixelFormat * format = [self pixelFormat];
     if (!format) {
@@ -229,7 +230,7 @@
 "*/
 - (void)setOpenGLContext:(NSOpenGLContext *)context
 {
-  NSLog(@"SCOpenGLView.setOpenGLContext");
+  SC21_DEBUG(@"SCOpenGLView.setOpenGLContext");
 
   [context retain];
   if (SELF->openGLContext) {
@@ -285,7 +286,7 @@
 "*/
 - (void)lockFocus
 {
-  // NSLog(@"SCOpenGLView.lockFocus");
+  // SC21_DEBUG(@"SCOpenGLView.lockFocus");
 
   NSOpenGLContext * context = [self openGLContext];
   [super lockFocus];
@@ -300,7 +301,7 @@
 
 - (void)encodeWithCoder:(NSCoder *)coder 
 {
-  NSLog(@"SCOpenGLView.encodeWithCoder:");
+  SC21_DEBUG(@"SCOpenGLView.encodeWithCoder:");
 
   [super encodeWithCoder:coder];
   if ([coder allowsKeyedCoding]) {
@@ -310,7 +311,7 @@
 
 - (id)initWithCoder:(NSCoder *)coder 
 {
-  NSLog(@"SCOpenGLView.initWithCoder:");
+  SC21_DEBUG(@"SCOpenGLView.initWithCoder:");
 
   if (self = [super initWithCoder:coder]) {
     [self _SC_commonInit];
@@ -355,13 +356,13 @@
 
 - (void)_SC_updateNeeded:(NSNotification *)notification
 {
-  NSLog(@"SCOpenGLView._SC_updateNeeded");
+  SC21_DEBUG(@"SCOpenGLView._SC_updateNeeded");
   [self update];
 }
 
 - (void)_SC_reshapeNeeded:(NSNotification *)notification
 {
-  NSLog(@"SCOpenGLView._SC_reshapeNeeded:");
+  SC21_DEBUG(@"SCOpenGLView._SC_reshapeNeeded:");
   //   FIXME: Should we make sure that we have a valid context before calling
   //   reshape (e.g. in _SC_reshapeNeeded:) ? (kintel 20040615)
   [self reshape];

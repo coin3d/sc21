@@ -28,22 +28,23 @@
 
 #import "SCControllerInspector.h"
 #import <Sc21/SCController.h>
+#import "SCUtil.h"
 
 @implementation SCControllerInspector
 
 - (id)init
 {
-  NSLog(@"SCControllerInspector.init");
+  SC21_DEBUG(@"SCControllerInspector.init");
   self = [super init];
   BOOL ok = [NSBundle loadNibNamed:@"SCControllerInspector" owner:self];
-  if (ok == NO) NSLog(@"SCControllerInspector.init: Failed loading nib");
+  if (ok == NO) SC21_DEBUG(@"SCControllerInspector.init: Failed loading nib");
   //FIXME: Return nil on error? (kintel 20030324)
   return self;
 }
 
 - (void)ok:(id)sender
 {
-  NSLog(@"SCControllerInspector.ok:");
+  SC21_DEBUG(@"SCControllerInspector.ok:");
   SCController *sccontroller = [self object];
 
   [sccontroller 
@@ -55,7 +56,7 @@
 
 - (void)revert:(id)sender
 {
-  NSLog(@"SCControllerInspector.revert:");
+  SC21_DEBUG(@"SCControllerInspector.revert:");
   SCController *sccontroller = [self object];
 
   [handleEventsInViewer 

@@ -29,6 +29,7 @@
 #import <Sc21/SCCamera.h>
 #import <Sc21/SCController.h>
 #import <Sc21/SCExaminerController.h> // for notifications
+#import "SCUtil.h"
 
 #import <OpenGL/gl.h> // for GLint
 
@@ -174,7 +175,7 @@
       ok =[self _SC_convertToType:SoPerspectiveCamera::getClassTypeId()];
       break;
     default:
-      NSLog(@"Unknown camera type.");
+      SC21_DEBUG(@"Unknown camera type.");
       break;
   }
   if (ok) {
@@ -220,7 +221,7 @@
 
     // Floating point precision sanity check.
     if (dist > float(sqrt(FLT_MAX))) {
-      NSLog(@"Zoomed too far: Distance to origo = %f (%e)", dist, dist);
+      SC21_DEBUG(@"Zoomed too far: Distance to origo = %f (%e)", dist, dist);
       return;
     }
 
@@ -229,7 +230,7 @@
     
   } else {
   
-    NSLog(@"Unknown camera type in [SCCamera zoom]; no zooming done.");
+    SC21_DEBUG(@"Unknown camera type in [SCCamera zoom]; no zooming done.");
     
   }
 }
@@ -429,7 +430,7 @@
   // FIXME: Check how SoQt handles this - maybe it should be possible to
   // change camera type if even the cam is part of user SG? kyrah 20030711
   if (!SELF->controllerhascreatedcamera) {
-    NSLog(@"Camera is part of user scenegraph, cannot convert.");
+    SC21_DEBUG(@"Camera is part of user scenegraph, cannot convert.");
     return NO;
   }
   
@@ -558,7 +559,7 @@
 - (SoGroup *)_SC_getParentOfNode:(SoNode *)node inSceneGraph:(SoGroup *)root
 {
   if (!node) {
-    NSLog(@"_SC_getParentOfNode called with NULL argument");
+    SC21_DEBUG(@"_SC_getParentOfNode called with NULL argument");
     return NULL;
   }
   SbBool wassearchingchildren = SoBaseKit::isSearchingChildren();

@@ -27,6 +27,7 @@
  
 #import <Sc21/SCController.h>
 #import <Sc21/SCEventConverter.h>
+#import "SCUtil.h"
 
 #import <Inventor/SoDB.h>
 #import <Inventor/SoInteraction.h>
@@ -210,7 +211,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   "*/
 - (void)setDelegate:(id)newdelegate
 {
-  NSLog(@"SCController.setDelegate");
+  SC21_DEBUG(@"SCController.setDelegate");
   self->delegate = newdelegate;
 }
 
@@ -688,9 +689,9 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 */
 - (id)awakeAfterUsingCoder:(NSCoder *)coder
 {
-  NSLog(@"SCController.awakeAfterUsingCoder:");
+  SC21_DEBUG(@"SCController.awakeAfterUsingCoder:");
   if (SELF->oldcontroller) {
-    NSLog(@"  upgrading old instance.");
+    SC21_DEBUG(@"  upgrading old instance.");
 
     if (self = [self init]) {
       SELF->autoclipvalue = 0.6;
@@ -777,7 +778,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 */
 - (void)_SC_timerQueueTimerFired:(NSTimer *)t
 {
-  // NSLog(@"timerQueueTimerFired:");
+  // SC21_DEBUG(@"timerQueueTimerFired:");
   // The timer might fire after the view has
   // already been destroyed...
   if (!SELF->redrawinv) return; 
@@ -789,7 +790,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (void)_SC_idle:(NSNotification *)notification
 {
-  // NSLog(@"_idle:");
+  // SC21_DEBUG(@"_idle:");
   // We might get the notification after the view has
   // already been destroyed...
   if (!SELF->redrawinv) return; 
@@ -808,7 +809,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 // FIXME: Rename to something more appropriate... ;)
 - (void)_SC_sensorQueueChanged
 {
-  // NSLog(@"_sensorQueueChanged");
+  // SC21_DEBUG(@"_sensorQueueChanged");
   // Create timers at first invocation
   if (!SELF->timerqueuetimer) [self startTimers];
 

@@ -28,22 +28,23 @@
 #import "SCOpenGLViewInspector.h"
 #import <Sc21/SCOpenGLView.h>
 #import <Sc21/SCOpenGLPixelFormat.h>
+#import "SCUtil.h"
 
 @implementation SCOpenGLViewInspector
 
 - (id)init
 {
-  NSLog(@"SCOpenGLViewInspector.init");
+  SC21_DEBUG(@"SCOpenGLViewInspector.init");
   self = [super init];
   BOOL ok = [NSBundle loadNibNamed:@"SCOpenGLViewInspector" owner:self];
-  if (ok == NO) NSLog(@"SCOpenGLViewInspector.init: Failed loading nib");
+  if (ok == NO) SC21_DEBUG(@"SCOpenGLViewInspector.init: Failed loading nib");
   //FIXME: Return nil on error? (kintel 20030324)
   return self;
 }
 
 - (void)ok:(id)sender
 {
-  NSLog(@"SCOpenGLViewInspector.ok:");
+  SC21_DEBUG(@"SCOpenGLViewInspector.ok:");
   SCOpenGLView *scview = [self object];
   SCOpenGLPixelFormat *pixelformat = [scview pixelFormat];
   //FIXME: only set later if values != default?
@@ -179,7 +180,7 @@
 
 - (void)revert:(id)sender
 {
-  NSLog(@"SCOpenGLViewInspector.revert:");
+  SC21_DEBUG(@"SCOpenGLViewInspector.revert:");
   
   SCOpenGLView *scview = [self object];
   SCOpenGLPixelFormat *pixelformat = [scview pixelFormat];
