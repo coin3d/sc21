@@ -107,7 +107,6 @@
 - (void)commonInit
 {
   [super commonInit];
-  _headlight = NULL;
   SbViewVolume volume;
   _mouselog = [[NSMutableArray alloc] init];
   _spinprojector = new SbSphereSheetProjector(SbSphere(SbVec3f(0,0,0),0.8f));
@@ -138,31 +137,8 @@
  
 - (void)render
 {
-  [_camera updateClippingPlanes:_userscenegraph];
+  [_camera updateClippingPlanes:_scenegraph];
   [super render];
-}
-
-
- /* Sets the scene graph that shall be rendered. You do not need to
-     !{ref()} the node before passing it to this method.  If sg is
-     NULL, an empty scenegraph consisting of a single SoSeparator node will
-     be created and set.
-
-     A headlight is added before the scenegraph. If a light is present in the
-     scenegraph, this headlight will be turned off by default; you can enable
-     it by calling #setHeadlightIsOn:
-
-     A camera is added before the scenegraph, if it does not contain one.
- */
-
-- (void)setSceneGraph:(SoGroup*)root
-{
-  [super setSceneGraph:root];
-  
-  if ([_camera controllerHasCreatedCamera] && _scenemanager) {
-    [self viewAll];
-    _scenemanager->scheduleRedraw();  
-  }  
 }
 
 
@@ -182,35 +158,6 @@
 - (void)viewAll
 {
   [_camera viewAll]; // SCViewAllNotification sent by _camera
-}
-
-// ----------------- Automatic headlight configuration -----------------
-
-/*" Returns !{YES} if the headlight is on, and !{NO} if it is off. "*/
-
-- (BOOL)headlightIsOn
-{
-  if (_headlight == NULL) return FALSE;
-  return (_headlight->on.getValue() == TRUE) ? YES : NO;
-}
-
-
-/*" Turns the headlight on or off. "*/
-
-- (void)setHeadlightIsOn:(BOOL)yn
-{
-  if (_headlight == NULL) return;
-  _headlight-> on = yn ? TRUE : FALSE;
-  
-  [[NSNotificationCenter defaultCenter]
-    postNotificationName:SCHeadlightChangedNotification object:self];
-}
-
-/*" Returns the headlight of the current scene graph. "*/
-
-- (SoDirectionalLight *)headlight
-{
-  return _headlight;
 }
 
 // -------------------- Event handling -----------------------
@@ -502,47 +449,6 @@
   NSLog(@"SCExaminerController.encodeWithCoder:");
   [super encodeWithCoder:coder];
   // FIXME: Encode members. kyrah 20030618
-}
-
-
-// ------------------------- InternalAPI --------------------------------
-
-
-// Methods below are called by setSceneGraph
-
-- (void)_setInternalSceneGraph:(SoGroup *)scenegraph
-{
-  if (_scenegraph) _scenegraph->unref();
-  _userscenegraph = scenegraph;
-  _scenegraph = new SoSeparator;
-  _headlight = new SoDirectionalLight;
-  _scenegraph->ref();
-  _scenegraph->addChild(_headlight);
-  _scenegraph->addChild(_userscenegraph);
-}
-
-
-- (void)_handleLighting
-{
-  if (![self _findLightInSceneGraph:_userscenegraph]) {
-    [self setHeadlightIsOn:YES];
-  } else {
-    [self setHeadlightIsOn:NO];
-  }
-}
-
-- (void)_handleCamera
-{
-  SoCamera * scenecamera  = [self _findCameraInSceneGraph:_scenegraph];
-  if (scenecamera == NULL) {
-    scenecamera = new SoPerspectiveCamera;
-    [_camera setSoCamera:scenecamera deleteOldCamera:NO];
-    [_camera setControllerHasCreatedCamera:YES];
-    _scenegraph->insertChild(scenecamera, 1);
-  } else {
-    [_camera setSoCamera:scenecamera deleteOldCamera:NO];
-    [_camera setControllerHasCreatedCamera:NO];
-  }
 }
 
 @end

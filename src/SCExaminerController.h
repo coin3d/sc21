@@ -37,10 +37,8 @@ class SoDirectionalLight;
 {
   NSPoint _lastmousepos;
   NSMutableArray * _mouselog;
-  SoDirectionalLight * _headlight;  
   SbSphereSheetProjector * _spinprojector;
   SbRotation * _spinrotation;
-  SoGroup * _userscenegraph;  // _scenegraph includes camera/headlight
   BOOL _iswaitingforseek;  // currently unused
 }
 
@@ -52,11 +50,6 @@ class SoDirectionalLight;
 - (void)render;
 - (void)setCameraType:(SCCameraType)type;
 - (void)viewAll;
-
-/*" Automatic headlight configuration "*/
-- (SoDirectionalLight *)headlight;
-- (BOOL)headlightIsOn;
-- (void)setHeadlightIsOn:(BOOL)yn;
 
 /*" Interaction with the viewer. "*/
 - (void)startDraggingWithPoint:(NSPoint)point;
@@ -82,6 +75,4 @@ SC21_EXTERN NSString * SCViewAllNotification;
  "*/
 SC21_EXTERN NSString * SCCameraTypeChangedNotification;
 
-/*" Posted whenever the headlight has been turned on or off. "*/
-SC21_EXTERN NSString * SCHeadlightChangedNotification;
 
