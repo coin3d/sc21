@@ -94,14 +94,19 @@ SC21_EXTERN NSString * SCCouldNotOpenFileNotification;
 
 
 /*" 
-  Posted if reading from a file or memory buffer failed.
+  Posted if an error occured when reading a file or memory buffer.
 
   The actual error message reported by SoInput is stored in the
   notification's !{userInfo} dictionary (as value for the
   key %{description}).
+
+  Note that this does not necessarily mean that reading the
+  file/buffer failed. (For instance missing texture images are
+  reported without aborting loading the file.) If you want to know
+  whether reading failed, check the value returned by readFromFile:
 "*/
 
-SC21_EXTERN NSString * SCCouldNotReadSceneNotification;
+SC21_EXTERN NSString * SCReadErrorNotification;
 
 
 /*" 

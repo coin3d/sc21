@@ -48,7 +48,7 @@ void error_cb(const class SoError * error, void * data)
   NSString * errstr = 
     [NSString stringWithCString:error->getDebugString().getString()];
   [[NSNotificationCenter defaultCenter]
-   postNotificationName:SCCouldNotReadSceneNotification object:scenegraph
+   postNotificationName:SCReadErrorNotification object:scenegraph
    userInfo:[NSDictionary dictionaryWithObject:errstr forKey:@"description"]];
 }
 
@@ -99,10 +99,13 @@ void error_cb(const class SoError * error, void * data)
   identifies the data type in the file.
   
   If the file cannot be opened, an !{SCCouldNotOpenFileNotification}
-  is posted. If the file does not contain a valid scenegraph, an
-  !{SCCouldNotReadSceneNotification} is posted. In either of these
-  cases, the receiver is freed, and nil is returned.
+  is posted. If an error occurs while reading the file, an
+  !{SCReadErrorNotification} is posted. (Note that such an error does
+  not necessarily mean that loading the file fails.)
 
+  If no valid scenegraph can be read from the file (either because the
+  file cannot be opened or a fatal error occured when reading the
+  file), the receiver is freed, and !{nil} is returned.
 "*/
 
 - (id)initWithContentsOfFile:(NSString *)filename
@@ -120,9 +123,12 @@ void error_cb(const class SoError * error, void * data)
   Initializes the receiver, a newly allocated SCSceneGraph instance,
   with the contents of the URL url. 
 
-  If the URL does not contain a valid scenegraph, an
-  !{SCCouldNotReadSceneNotification} is posted, the receiver is freed,
-  and nil is returned.
+  If an error occurs while reading the URL, an
+  !{SCReadErrorNotification} is posted. (Note that such an error does
+  not necessarily mean that loading the file fails.)
+
+  If the URL does not contain a valid scenegraph, the receiver is
+  freed, and nil is returned.
 "*/
 - (id)initWithContentsOfURL:(NSURL *)URL
 {
@@ -134,6 +140,7 @@ void error_cb(const class SoError * error, void * data)
   }
   return self;
 }
+
 
 - (id)init
 {
@@ -160,8 +167,10 @@ void error_cb(const class SoError * error, void * data)
   Posts an !{SCCouldNotOpenFileNotification} if the file cannot be
   read.
 
-  Posts an !{SCCouldNotReadSceneNotification} if the file does not
-  contain a valid scenegraph.
+  Posts an !{SCReadErrorNotification} if an error occurs when reading
+  the file. (Note that such an error does not necessarily mean that
+  loading the file will fail. Check the value returned by this method
+  to find out whether reading was successful or not.)
 
   Returns !{YES} if reading the scenegraph was successful, and !{NO}
   otherwise.
@@ -185,12 +194,13 @@ void error_cb(const class SoError * error, void * data)
 /*"
   Read a new Coin scenegraph from URL.
 
-  Posts an !{SCCouldNotReadSceneNotification} if the URL does not
-  contain a valid scenegraph.
+  Posts an !{SCReadErrorNotification} if an error occurs when reading
+  the file. (Note that such an error does not necessarily mean that
+  loading the file will fail. Check the value returned by this method
+  to find out whether reading was successful or not.)
 
   Returns !{YES} if reading the scenegraph was successful, and !{NO}
   otherwise.
-
 "*/
 
 - (BOOL)readFromURL:(NSURL *)URL
@@ -205,8 +215,10 @@ void error_cb(const class SoError * error, void * data)
 /*" 
   Read scene from data using !{SoInput::setBuffer()}.
 
-  Posts an !{SCCouldNotReadSceneNotification} if the file does not
-  contain a valid scenegraph.
+  Posts an !{SCReadErrorNotification} if an error occurs when reading
+  data. (Note that such an error does not necessarily mean that
+  loading the buffer will fail. Check the value returned by this
+  method to find out whether reading was successful or not.)
 
   Returns !{YES} if reading the scenegraph was successful, and !{NO}
   otherwise. 

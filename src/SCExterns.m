@@ -30,8 +30,7 @@
 NSString * SCCouldNotOpenFileNotification = 
   @"SCCouldNotOpenFileNotification";
 
-NSString * SCCouldNotReadSceneNotification = 
-  @"SCCouldNotReadSceneNotification";
+NSString * SCReadErrorNotification = @"SCReadErrorNotification";
 
 NSString * SCNoCameraFoundInSceneNotification = 
   @"SCNoCameraFoundInSceneNotification";
