@@ -83,19 +83,18 @@
 
 // ---------- Switching between orthographic and perspective mode -------
 
-/*" Returns !YES if the current camera is a perspective camera. "*/
+/*" Returns !SCCameraPerspective if the camera is a perspective camera,
+    !SCCameraOrthographic if the camera is an orthographic camera, and
+    !SCUnknown otherwise.
+ "*/
 
-- (BOOL) isPerspective
+- (SCCameraType) type
 {
-  return _camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId());
-}
-
-
-/*" Returns !YES if the current camera is an orthographic camera. "*/
-
-- (BOOL) isOrthographic
-{
-  return _camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId());
+  if (_camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId()))
+    return SCCameraPerspective;
+  else if (_camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId()))
+    return SCCameraOrthographic;
+  else return SCCameraUnknown;
 }
 
 
@@ -182,12 +181,12 @@
   if (_camera == NULL) return;
   SoType t = _camera->getTypeId();
 
-  if ([self isOrthographic]) {
+  if ([self type] == SCCameraOrthographic) {
 
     SoOrthographicCamera * orthocam = (SoOrthographicCamera *)_camera;
     orthocam->height = orthocam->height.getValue() * factor;
     
-  } else if ([self isPerspective]) {
+  } else if ([self type] == SCCameraPerspective) {
     
     SbVec3f dir, newpos;
     float newfocaldist, dist;
@@ -423,11 +422,11 @@
     NSLog(@"Camera is part of user scenegraph, cannot convert.");
     return;
   }
-
+  
+  // Don't do anything if camera is already requested type.
   BOOL settoperspective = type.isDerivedFrom(SoPerspectiveCamera::getClassTypeId());
-
-  if (([self isPerspective] && settoperspective) ||
-      (![self isPerspective] && !settoperspective)) return;
+  if (([self type] == SCCameraPerspective && settoperspective) ||
+      ([self type] == SCCameraOrthographic && !settoperspective)) return;
 
   SoCamera * newcam = (SoCamera *) type.createInstance();
 

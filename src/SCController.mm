@@ -323,7 +323,7 @@ otherwise NULL.
 
 - (SCCameraType) cameraType
 {
-  return ([_camera isPerspective] ? SCCameraPerspective : SCCameraOrthographic);
+  return [_camera type];
 }
 
 /*" Renders the scene. "*/
@@ -643,7 +643,7 @@ small near clipping plane distances are disallowed.
   int usebits;
   GLint _depthbits[1];
 
-  if (![_camera isPerspective]) return near;
+  if ([_camera type] == SCCameraOrthographic) return near;
 
   // For simplicity, we are using what SoQt calls the
   // VARIABLE_NEAR_PLANE strategy. As stated in the FIXME above,

@@ -14,8 +14,9 @@ class SoPerspectiveCamera;
 class SoOrthographicCamera;
 
 typedef enum _SCCameraType {
-  SCCameraPerspective   = 0,
-  SCCameraOrthographic  = 1
+  SCCameraUnknown 	= -1,
+  SCCameraPerspective   =  0,
+  SCCameraOrthographic  =  1
 } SCCameraType;
 
 @interface SCCamera : NSObject {
@@ -29,8 +30,7 @@ typedef enum _SCCameraType {
 - (id) initWithSoCamera:(SoCamera *) camera controller:(SCController *) controller;
 
 /*" Switching between orrthographic and perspective mode "*/
-- (BOOL) isPerspective;
-- (BOOL) isOrthographic;
+- (SCCameraType) type;
 - (void) convertToType:(SCCameraType)type;
 - (void) cloneFromPerspectiveCamera:(SoOrthographicCamera *)orthocam;
 - (void) cloneFromOrthographicCamera:(SoPerspectiveCamera *)perspectivecam;
