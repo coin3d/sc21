@@ -16,6 +16,12 @@ This is a simple viewer similar to Sc21Viewer.
 In addition to Sc21Viewer, this example demonstrates how to
 use Coin and Sc21 in fullscreen.
 
+++ CustomEventHandling
+
+This is a simple viewer similar to Sc21Viewer.
+In addition to Sc21Viewer, this example demonstrates how to
+implement a custom Sc21 event handler.
+
 ++ Viewtiful
 
 Viewtiful is a little bit more involved example of how to create an
