@@ -368,6 +368,21 @@
 			settings = {
 			};
 		};
+		3DB055D206FA2B3C00812E32 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCCoinHandlerP.h;
+			path = src/SCCoinHandlerP.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3DB055D306FA2B3C00812E32 = {
+			fileRef = 3DB055D206FA2B3C00812E32;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		3DC6401D06BD29CB00301065 = {
 			fileEncoding = 4;
 			isa = PBXFileReference;
@@ -771,6 +786,7 @@
 				3D669D2506AAB21900CB9330,
 				E0BE123606C4136E00923172,
 				E0BE123706C4136E00923172,
+				3DB055D206FA2B3C00812E32,
 				E09CFA8D060249EF0000E227,
 				E09CFA8E060249EF0000E227,
 				3D6AF42706AE769B00225657,
@@ -1423,6 +1439,7 @@
 				3D883EAE06BFB0CA0048CDB7,
 				E0F867AE06C254700022BF2A,
 				E0BE123806C4136E00923172,
+				3DB055D306FA2B3C00812E32,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;

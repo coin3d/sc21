@@ -27,30 +27,21 @@
 
 #import <Sc21/SCCoinhandler.h>
 #import <Sc21/SCController.h>
+#import "SCCoinHandlerP.h"
 #import "SCEventConverter.h"
 #import "SCUtil.h"
 
 #import <Inventor/SoSceneManager.h>
 
-@interface SCCoinHandlerP : NSObject
-{
-  SCEventConverter * eventconverter;
-}
-@end
-
 @implementation SCCoinHandlerP
-@end
-
-@interface SCCoinHandler (InternalAPI)
-- (void)_SC_commonInit;
 @end
 
 #define SELF self->_sc_coinhandler
 
+
 @implementation SCCoinHandler
 
 /*" 
-
   An SCCoinHandler takes incoming NSEvents, converts them to SoEvents,
   and sends them to the Coin scenegraph. 
 
