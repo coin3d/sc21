@@ -108,7 +108,7 @@
 - (IBAction)dumpScenegraph:(id)sender
 {
   NSLog(@"MyWindowController.dumpScenegraph");
-  SCDumpSceneGraph([controller sceneManager]->getSceneGraph());
+  [SCDebug dumpSceneGraph:[controller sceneManager]->getSceneGraph()];
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)item
@@ -122,7 +122,7 @@
 
 - (IBAction)showDebugInfo:(id)sender
 {
-  NSString *info = SCOpenGLInfo();
+  NSString *info = [SCDebug openGLInfo];
   NSWindow *panel = NSGetInformationalAlertPanel(@"Debug info",
                                                  info, @"Dismiss", nil, nil );
   [NSApp runModalForWindow:panel];

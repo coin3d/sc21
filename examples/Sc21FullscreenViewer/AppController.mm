@@ -35,6 +35,12 @@
 #import <Inventor/elements/SoGLCacheContextElement.h>
 #import <OpenGL/OpenGL.h>
 
+// Redeclare "private" debugging method to avoid compiler warning. 
+@interface SCDebug (InternalAPI)
++ (NSString *)infoForSCOpenGLPixelFormat:(SCOpenGLPixelFormat *)scpformat 
+                     NSOpenGLPixelFormat:(NSOpenGLPixelFormat *)nspformat;
+@end
+
 @implementation AppController
 
 - (id)init
@@ -68,7 +74,7 @@
 
 - (IBAction)showDebugInfo:(id)sender
 {
-  NSString * info = SCOpenGLInfo();
+  NSString * info = [SCDebug openGLInfo];
   NSWindow * panel = NSGetInformationalAlertPanel(@"Debug info",
                                                   info, @"Dismiss", nil, nil);
   [NSApp runModalForWindow:panel];
@@ -122,7 +128,7 @@
 
 - (IBAction)dumpSceneGraph:(id)sender
 {
-  SCDumpSceneGraph([coincontroller sceneManager]->getSceneGraph());
+  [SCDebug dumpSceneGraph:[coincontroller sceneManager]->getSceneGraph()];
 }
 
 // Delegate method for NSOpenPanel used in open:
@@ -161,15 +167,18 @@
 
   SCOpenGLPixelFormat * oldformat = [view pixelFormat];
   NSOpenGLPixelFormat * oldnsformat = [oldformat pixelFormat];
-  NSLog(SCPixelFormatInfo(oldformat, oldnsformat));
-
+  NSLog([SCDebug infoForSCOpenGLPixelFormat:oldformat 
+                        NSOpenGLPixelFormat:oldnsformat]);
+  
   SCOpenGLPixelFormat * newformat = [[oldformat copy] autorelease];
   [newformat setAttribute:NSOpenGLPFAFullScreen];
   [newformat setAttribute:NSOpenGLPFAScreenMask
              toValue:CGDisplayIDToOpenGLDisplayMask(kCGDirectMainDisplay)];
   NSOpenGLPixelFormat *newnsformat = [newformat pixelFormat];
 
-  NSLog(SCPixelFormatInfo(newformat, newnsformat));
+  NSLog([SCDebug infoForSCOpenGLPixelFormat:newformat 
+                        NSOpenGLPixelFormat:newnsformat]);
+
   
   // Create an NSOpenGLContext with the FullScreen pixel format.  By specifying the non-FullScreen context as our "shareContext", we automatically inherit all of the textures, display lists, and other OpenGL objects it has defined.
   _fullScreenContext = [[NSOpenGLContext alloc] initWithFormat:newnsformat 

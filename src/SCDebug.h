@@ -25,14 +25,12 @@
  |                                                                 |
  * =============================================================== */
 
+#import <Cocoa/Cocoa.h>
+
 class SoNode;
 
-@class NSString;
-@class NSOpenGLPixelFormat;
-@class SCOpenGLPixelFormat;
-
-NSString * SCRendererDescription(int rendererID);
-NSString * SCPixelFormatInfo(SCOpenGLPixelFormat * scpformat, 
-                             NSOpenGLPixelFormat * nspformat);
-NSString * SCOpenGLInfo(void);
-BOOL SCDumpSceneGraph(SoNode * scenegraph);
+@interface SCDebug : NSObject
++ (NSString *)descriptionForRendererID:(int)rendererID;
++ (NSString *)openGLInfo;
++ (BOOL)dumpSceneGraph:(SoNode *)scenegraph;
+@end

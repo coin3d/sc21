@@ -63,7 +63,7 @@
 
 - (IBAction)showDebugInfo:(id)sender
 {
-  NSString * info = SCOpenGLInfo();
+  NSString * info = [SCDebug openGLInfo];
   NSWindow * panel = NSGetInformationalAlertPanel(@"Debug info",
                                                   info, @"Dismiss", nil, nil);
   [NSApp runModalForWindow:panel];
@@ -102,7 +102,7 @@
 
 - (IBAction)dumpSceneGraph:(id)sender
 {
-  SCDumpSceneGraph([coincontroller sceneManager]->getSceneGraph());
+  [SCDebug dumpSceneGraph:[coincontroller sceneManager]->getSceneGraph()];
 }
 
 // Displays a standard file open dialog. The sender argument is ignored. 
