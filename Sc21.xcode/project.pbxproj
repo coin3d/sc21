@@ -1,0 +1,907 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 39;
+	objects = {
+		E01100A40605E5B200F93EC1 = {
+			children = (
+				E09CFAAE06024B1F0000E227,
+			);
+			isa = PBXVariantGroup;
+			name = SC21Palette.nib;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E01100A50605E5B200F93EC1 = {
+			fileRef = E01100A40605E5B200F93EC1;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E01100A60605E5B800F93EC1 = {
+			children = (
+				E09CFAAB06024B130000E227,
+			);
+			isa = PBXVariantGroup;
+			name = SC21Inspector.nib;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E01100A70605E5B800F93EC1 = {
+			fileRef = E01100A60605E5B800F93EC1;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E01100AA0605E60300F93EC1 = {
+			containerPortal = E0765C56060222BB0099F78E;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E0765C5F060223120099F78E;
+			remoteInfo = "SC21 framework";
+		};
+		E01100AB0605E60300F93EC1 = {
+			isa = PBXTargetDependency;
+			target = E0765C5F060223120099F78E;
+			targetProxy = E01100AA0605E60300F93EC1;
+		};
+		E01100B40605E71200F93EC1 = {
+			children = (
+				E09CFA83060249D50000E227,
+				E09CFA84060249D50000E227,
+				E09CFA85060249D50000E227,
+				E09CFA86060249D50000E227,
+			);
+			isa = PBXGroup;
+			name = Palette;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E01100B50605E71900F93EC1 = {
+			children = (
+				E09CFA8B060249EF0000E227,
+				E09CFA8C060249EF0000E227,
+				E09CFA8D060249EF0000E227,
+				E09CFA8E060249EF0000E227,
+				E09CFA8F060249EF0000E227,
+				E09CFA90060249EF0000E227,
+				E09CFA91060249EF0000E227,
+				E09CFA92060249EF0000E227,
+				E09CFA93060249EF0000E227,
+				E09CFA94060249EF0000E227,
+			);
+			isa = PBXGroup;
+			name = Framework;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E01C24A90605E8740000C5C7 = {
+			fileRef = E0765C60060223120099F78E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E01C24C40605E9650000C5C7 = {
+			fileRef = E0765FBE060226AD0099F78E;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E01C24C50605E9CB0000C5C7 = {
+			fileRef = E09C038906024CFB0000E227;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E01C24CB0605FDCE0000C5C7 = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+			};
+			isa = PBXBuildStyle;
+			name = debug;
+		};
+		E0242B5B06033BFF004FE05C = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SC21_Prefix.pch;
+			path = src/SC21_Prefix.pch;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0547AB706073E170089FA12 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = Inventor.framework;
+			path = /Library/Frameworks/Inventor.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		E0547AB806073E170089FA12 = {
+			fileRef = E0547AB706073E170089FA12;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E0547AB906073E170089FA12 = {
+			fileRef = E0547AB706073E170089FA12;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E0765C52060222BB0099F78E = {
+			children = (
+				E09CFAB206024B510000E227,
+				E09CFA9F060249F60000E227,
+				E09CFD9506024B5B0000E227,
+				E0765C61060223120099F78E,
+				E0765C62060223120099F78E,
+				E09CFA57060245720000E227,
+				E0AC6A8806060F3300907ED7,
+			);
+			isa = PBXGroup;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0765C54060222BB0099F78E = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_MODEL_CPU = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PREBINDING = NO;
+				ZERO_LINK = YES;
+			};
+			isa = PBXBuildStyle;
+			name = Development;
+		};
+		E0765C55060222BB0099F78E = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_ENABLE_ASM_KEYWORD = YES;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+			};
+			isa = PBXBuildStyle;
+			name = release;
+		};
+		E0765C56060222BB0099F78E = {
+			buildSettings = {
+			};
+			buildStyles = (
+				E0765C54060222BB0099F78E,
+				E0765C55060222BB0099F78E,
+				E01C24CB0605FDCE0000C5C7,
+			);
+			hasScannedForEncodings = 1;
+			isa = PBXProject;
+			mainGroup = E0765C52060222BB0099F78E;
+			productRefGroup = E0765C61060223120099F78E;
+			projectDirPath = "";
+			targets = (
+				E0765C5F060223120099F78E,
+				E09CFA55060245710000E227,
+			);
+		};
+		E0765C5B060223120099F78E = {
+			buildActionMask = 2147483647;
+			files = (
+				E09CFA95060249EF0000E227,
+				E09CFA97060249EF0000E227,
+				E09CFA99060249EF0000E227,
+				E09CFA9B060249EF0000E227,
+				E09CFA9D060249EF0000E227,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0765C5C060223120099F78E = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXResourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0765C5D060223120099F78E = {
+			buildActionMask = 2147483647;
+			files = (
+				E09CFA96060249EF0000E227,
+				E09CFA98060249EF0000E227,
+				E09CFA9A060249EF0000E227,
+				E09CFA9C060249EF0000E227,
+				E09CFA9E060249EF0000E227,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0765C5E060223120099F78E = {
+			buildActionMask = 2147483647;
+			files = (
+				E0AC6A98060631AA00907ED7,
+				E01C24C40605E9650000C5C7,
+				E0547AB806073E170089FA12,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0765C5F060223120099F78E = {
+			buildPhases = (
+				E0765C5B060223120099F78E,
+				E0765C5C060223120099F78E,
+				E0765C5D060223120099F78E,
+				E0765C5E060223120099F78E,
+				E0AC6A8706060F1D00907ED7,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 3;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 3;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/SC21_Prefix.pch;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "misc/SC21-framework-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "-headerpad_max_install_names -seg1addr 0x2f000000";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = SC21;
+				SECTORDER_FLAGS = "";
+				VERSIONING_SYSTEM = "apple-generic";
+				WARNING_CFLAGS = "-Wmost";
+			};
+			dependencies = (
+			);
+			isa = PBXNativeTarget;
+			name = "SC21 framework";
+			productName = SC21;
+			productReference = E0765C60060223120099F78E;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>SC21</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>com.MySoftwareCompany.SC21</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.0.1</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>3</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.framework";
+		};
+		E0765C60060223120099F78E = {
+			explicitFileType = wrapper.framework;
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = SC21.framework;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E0765C61060223120099F78E = {
+			children = (
+				E0765C60060223120099F78E,
+				E09CFA56060245710000E227,
+			);
+			isa = PBXGroup;
+			name = Products;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0765C62060223120099F78E = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = "SC21-framework-Info.plist";
+			path = "misc/SC21-framework-Info.plist";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0765FBE060226AD0099F78E = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = OpenGL.framework;
+			path = /System/Library/Frameworks/OpenGL.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		E09C036A06024BEF0000E227 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.pict;
+			name = scview_icon.pict;
+			path = Resources/scview_icon.pict;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09C036B06024BEF0000E227 = {
+			fileRef = E09C036A06024BEF0000E227;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E09C037006024CD90000E227 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = InterfaceBuilder.framework;
+			path = /System/Library/Frameworks/InterfaceBuilder.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		E09C037106024CD90000E227 = {
+			fileRef = E09C037006024CD90000E227;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E09C038906024CFB0000E227 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = Cocoa.framework;
+			path = /System/Library/Frameworks/Cocoa.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		E09CFA51060245710000E227 = {
+			buildActionMask = 2147483647;
+			files = (
+				E09CFA87060249D50000E227,
+				E09CFA89060249D50000E227,
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E09CFA52060245710000E227 = {
+			buildActionMask = 2147483647;
+			files = (
+				E09CFAA406024AD40000E227,
+				E09CFAA506024AD40000E227,
+				E09CFAA606024AD40000E227,
+				E09CFAA706024AD40000E227,
+				E01100A70605E5B800F93EC1,
+				E01100A50605E5B200F93EC1,
+				E09C036B06024BEF0000E227,
+				E0AC6A8906060F3300907ED7,
+			);
+			isa = PBXResourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E09CFA53060245710000E227 = {
+			buildActionMask = 2147483647;
+			files = (
+				E09CFA88060249D50000E227,
+				E09CFA8A060249D50000E227,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E09CFA54060245710000E227 = {
+			buildActionMask = 2147483647;
+			files = (
+				E01C24C50605E9CB0000C5C7,
+				E01C24A90605E8740000C5C7,
+				E09C037106024CD90000E227,
+				E0547AB906073E170089FA12,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E09CFA55060245710000E227 = {
+			buildPhases = (
+				E09CFA51060245710000E227,
+				E09CFA52060245710000E227,
+				E09CFA53060245710000E227,
+				E09CFA54060245710000E227,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/SC21_Prefix.pch;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				INFOPLIST_FILE = "misc/SC21-palette-Info.plist";
+				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Palettes";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "-bundle";
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = SC21;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost";
+				WRAPPER_EXTENSION = palette;
+			};
+			dependencies = (
+				E01100AB0605E60300F93EC1,
+			);
+			isa = PBXNativeTarget;
+			name = "SC21 palette";
+			productName = SC21;
+			productReference = E09CFA56060245710000E227;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>SC21</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIconFile</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>com.MySoftwareCompany.SC21</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>3</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.bundle";
+		};
+		E09CFA56060245710000E227 = {
+			explicitFileType = wrapper.cfbundle;
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = SC21.palette;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E09CFA57060245720000E227 = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = "SC21-palette-Info.plist";
+			path = "misc/SC21-palette-Info.plist";
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFA83060249D50000E227 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SC21Inspector.h;
+			path = src/SC21Inspector.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFA84060249D50000E227 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = SC21Inspector.mm;
+			path = src/SC21Inspector.mm;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFA85060249D50000E227 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SC21Palette.h;
+			path = src/SC21Palette.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFA86060249D50000E227 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = SC21Palette.mm;
+			path = src/SC21Palette.mm;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFA87060249D50000E227 = {
+			fileRef = E09CFA83060249D50000E227;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E09CFA88060249D50000E227 = {
+			fileRef = E09CFA84060249D50000E227;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E09CFA89060249D50000E227 = {
+			fileRef = E09CFA85060249D50000E227;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E09CFA8A060249D50000E227 = {
+			fileRef = E09CFA86060249D50000E227;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E09CFA8B060249EF0000E227 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCCamera.h;
+			path = src/SCCamera.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFA8C060249EF0000E227 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = SCCamera.mm;
+			path = src/SCCamera.mm;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFA8D060249EF0000E227 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCController.h;
+			path = src/SCController.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFA8E060249EF0000E227 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = SCController.mm;
+			path = src/SCController.mm;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFA8F060249EF0000E227 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCEventConverter.h;
+			path = src/SCEventConverter.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFA90060249EF0000E227 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = SCEventConverter.mm;
+			path = src/SCEventConverter.mm;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFA91060249EF0000E227 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCExaminerController.h;
+			path = src/SCExaminerController.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFA92060249EF0000E227 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = SCExaminerController.mm;
+			path = src/SCExaminerController.mm;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFA93060249EF0000E227 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCView.h;
+			path = src/SCView.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFA94060249EF0000E227 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = SCView.mm;
+			path = src/SCView.mm;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFA95060249EF0000E227 = {
+			fileRef = E09CFA8B060249EF0000E227;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E09CFA96060249EF0000E227 = {
+			fileRef = E09CFA8C060249EF0000E227;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E09CFA97060249EF0000E227 = {
+			fileRef = E09CFA8D060249EF0000E227;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E09CFA98060249EF0000E227 = {
+			fileRef = E09CFA8E060249EF0000E227;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E09CFA99060249EF0000E227 = {
+			fileRef = E09CFA8F060249EF0000E227;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E09CFA9A060249EF0000E227 = {
+			fileRef = E09CFA90060249EF0000E227;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E09CFA9B060249EF0000E227 = {
+			fileRef = E09CFA91060249EF0000E227;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E09CFA9C060249EF0000E227 = {
+			fileRef = E09CFA92060249EF0000E227;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E09CFA9D060249EF0000E227 = {
+			fileRef = E09CFA93060249EF0000E227;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E09CFA9E060249EF0000E227 = {
+			fileRef = E09CFA94060249EF0000E227;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E09CFA9F060249F60000E227 = {
+			children = (
+				E0242B5B06033BFF004FE05C,
+				E01100B50605E71900F93EC1,
+				E01100B40605E71200F93EC1,
+			);
+			isa = PBXGroup;
+			name = src;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFAA006024AD40000E227 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.png;
+			name = coin.png;
+			path = Resources/coin.png;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFAA106024AD40000E227 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.pict;
+			name = ib_scc.pict;
+			path = Resources/ib_scc.pict;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFAA206024AD40000E227 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.pict;
+			name = ib_scec.pict;
+			path = Resources/ib_scec.pict;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFAA306024AD40000E227 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = palette.table;
+			path = Resources/palette.table;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFAA406024AD40000E227 = {
+			fileRef = E09CFAA006024AD40000E227;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E09CFAA506024AD40000E227 = {
+			fileRef = E09CFAA106024AD40000E227;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E09CFAA606024AD40000E227 = {
+			fileRef = E09CFAA206024AD40000E227;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E09CFAA706024AD40000E227 = {
+			fileRef = E09CFAA306024AD40000E227;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E09CFAAB06024B130000E227 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.nib;
+			name = English;
+			path = Resources/English.lproj/SC21Inspector.nib;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFAAE06024B1F0000E227 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.nib;
+			name = English;
+			path = Resources/English.lproj/SC21Palette.nib;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFAB206024B510000E227 = {
+			children = (
+				E01100A40605E5B200F93EC1,
+				E01100A60605E5B800F93EC1,
+				E09CFAA006024AD40000E227,
+				E09CFAA106024AD40000E227,
+				E09CFAA206024AD40000E227,
+				E09C036A06024BEF0000E227,
+				E09CFAA306024AD40000E227,
+			);
+			isa = PBXGroup;
+			name = Resources;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09CFD9506024B5B0000E227 = {
+			children = (
+				E0547AB706073E170089FA12,
+				E09C038906024CFB0000E227,
+				E09C037006024CD90000E227,
+				E0765FBE060226AD0099F78E,
+			);
+			isa = PBXGroup;
+			name = Frameworks;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0AC6A8706060F1D00907ED7 = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			isa = PBXShellScriptBuildPhase;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./test.sh\n";
+		};
+		E0AC6A8806060F3300907ED7 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = text.script.sh;
+			path = test.sh;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0AC6A8906060F3300907ED7 = {
+			fileRef = E0AC6A8806060F3300907ED7;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E0AC6A98060631AA00907ED7 = {
+			fileRef = E09C038906024CFB0000E227;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+	};
+	rootObject = E0765C56060222BB0099F78E;
+}
