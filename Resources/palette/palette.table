@@ -24,7 +24,8 @@
     <string>SCOpenGLView</string>
     <string>SCView</string>
     <string>SCController</string>
-    <string>SCExaminerController</string>
+    <string>SCSceneGraph</string>
+    <string>SCExaminerHandler</string>
   </array>
 
   <!-- a list of images names exported from palette to IB -->
