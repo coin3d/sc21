@@ -76,7 +76,7 @@ void selection_cb(void *userdata, SoPath *path)
 
 - (IBAction)toggleModes:(id)sender
 {
-  if ([coincontroller respondsToSelector:@selector(toggleModes:)]){
+  if ([[coincontroller eventHandler] respondsToSelector:@selector(toggleModes)]){
     [(MyEventHandler *)[coincontroller eventHandler] toggleModes];
   }
 }
