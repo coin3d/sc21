@@ -35,7 +35,7 @@
 - (id)init
 {
   NSLog(@"MyWindowController.init");
-  self = [self initWithWindowNibName:@"MyDocument"];
+  self = [super initWithWindowNibName:@"MyDocument"];
   return self;
 }
 
@@ -61,6 +61,7 @@
 - (void)windowDidLoad
 {
   NSLog(@"MyWindowController.windowDidLoad");
+  
 }
 
 - (IBAction)modeButtonClicked:(id)sender
