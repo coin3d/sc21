@@ -246,7 +246,9 @@ NSString * SCSceneGraphChangedNotification = @"SCSceneGraphChangedNotification";
 // ------------------- rendering and scene management ---------------------
 
 /*" Sets the scene graph that shall be rendered. You do not need to 
-    !{ref()} the node before passing it to this method.
+    !{ref()} the node before passing it to this method. If sg is NULL,
+    an empty scenegraph consisting of a single SoSeparator node will
+    be created and set. 
 
     Note that the scenegraph is not modified in any way, i.e. you must
     set up your own headlight and camera to be able to see anything. For
@@ -256,6 +258,8 @@ NSString * SCSceneGraphChangedNotification = @"SCSceneGraphChangedNotification";
     
 - (void) setSceneGraph:(SoGroup *)sg
 {
+  if (sg == NULL) sg = new SoSeparator;
+
   _scenegraph = sg;
   _scenemanager->setSceneGraph(_scenegraph);
 

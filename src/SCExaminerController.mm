@@ -183,13 +183,15 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 
  /*" Sets the scene graph that shall be rendered. You do not need to
-    !{ref()} the node before passing it to this method.
+     !{ref()} the node before passing it to this method.  If sg is
+     NULL, an empty scenegraph consisting of a single SoSeparator node will
+     be created and set.
 
-    A headlight is added before the scenegraph. If a light is present in the
-    scenegraph, this headlight will be turned off by default; you can enable
-    it by calling #setHeadlightIsOn:
+     A headlight is added before the scenegraph. If a light is present in the
+     scenegraph, this headlight will be turned off by default; you can enable
+     it by calling #setHeadlightIsOn:
 
-    A camera is added before the scenegraph, if it does not contain one.
+     A camera is added before the scenegraph, if it does not contain one.
  "*/
 
 - (void) setSceneGraph:(SoGroup *)sg
@@ -199,6 +201,9 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     NSLog(@"setSceneGraph called with the same root as already set");
     return;
   }
+
+  // Do not insert camera and headlight if scenegraph is NULL.
+  if (sg == NULL) [super setSceneGraph:NULL];
 
   _userscenegraph = sg;     // store user-supplied SG
   
