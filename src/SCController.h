@@ -44,7 +44,6 @@ class SoSceneManager;
   SCCamera * _camera;
   SCEventConverter * _eventconverter;
   NSTimer * _timerqueuetimer;
-  NSTimer * _delayqueuetimer;
   SoGroup * _scenegraph;	  // the whole scenegraph
   SoSceneManager * _scenemanager;
   BOOL _handleseventsinviewer;
@@ -92,9 +91,6 @@ class SoSceneManager;
 /*" Timer management. "*/
 - (void)startTimers;
 - (void)stopTimers;
-- (void)setDelayQueueInterval:(NSTimeInterval)interval;
-- (NSTimeInterval)delayQueueInterval;
-
 
 @end
 

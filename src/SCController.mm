@@ -36,18 +36,11 @@
 #import <Inventor/actions/SoSearchAction.h>
 #import <Inventor/actions/SoWriteAction.h>
 #import <Inventor/elements/SoGLCacheContextElement.h>
-#import <Inventor/manips/SoHandleBoxManip.h>
+#import <Inventor/nodekits/SoBaseKit.h>
 #import <Inventor/nodekits/SoNodeKit.h>
 #import <Inventor/nodes/SoCamera.h>
-#import <Inventor/nodes/SoCone.h>
-#import <Inventor/nodes/SoDrawStyle.h>
 #import <Inventor/nodes/SoLight.h>
-#import <Inventor/nodes/SoTranslation.h>
-#import <Inventor/nodes/SoSelection.h>
 #import <Inventor/nodes/SoSeparator.h>
-#import <Inventor/nodes/SoRotor.h>
-#import <Inventor/nodes/SoCylinder.h>
-#import <Inventor/nodes/SoSphere.h>
 
 #import <OpenGL/gl.h>
 
@@ -81,7 +74,6 @@
 
 @interface SCController (InternalAPI)
 - (void)_timerQueueTimerFired:(NSTimer *)t;
-- (void)_delayQueueTimerFired:(NSTimer *)t;
 - (void)_sensorQueueChanged;
 - (SoLight *)_findLightInSceneGraph:(SoGroup *)root;
 - (SoCamera *)_findCameraInSceneGraph:(SoGroup *)root;
@@ -105,6 +97,7 @@ redraw_cb(void * user, SoSceneManager *)
 static void
 sensorqueuechanged_cb(void * data)
 {
+  // NSLog(@"sensorqueuechanged_cb");
   SCController * ctrl = (SCController *)data;
   [ctrl _sensorQueueChanged];
 }
@@ -200,7 +193,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
   [self setSceneManager:new SoSceneManager];
 
-  [[NSNotificationCenter defaultCenter] addObserver:self
+  [[NSNotificationCenter defaultCenter] 
+    addObserver:self
     selector:@selector(_idle:) name:_SCIdleNotification
     object:self];
 
@@ -530,10 +524,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     [_timerqueuetimer invalidate];
     _timerqueuetimer = nil;
   }
-  if (_delayqueuetimer && [_delayqueuetimer isValid]) {
-    [_delayqueuetimer invalidate];
-    _delayqueuetimer = nil;
-  }
   SoDB::getSensorManager()->setChangedCallback(NULL, NULL);
 }
 
@@ -541,58 +531,20 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 {
   if (_timerqueuetimer != nil) return;
 
-  // Timer fire dates will be controlled in sensorQueueChanged:,
-  // so initialize with a high interval...
-  _timerqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:1 target:self
-                       selector:@selector(_timerQueueTimerFired:) userInfo:nil 
-                       repeats:YES] retain];
-  _delayqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:1 target:self
-                       selector:@selector(_delayQueueTimerFired:) userInfo:nil 
-                       repeats:YES] retain];
-  
+  // The timer will be controller from _sensorQueueChanged,
+  // so don't activate it yet.
+  _timerqueuetimer = [NSTimer scheduledTimerWithTimeInterval:1000
+                              target:self
+                              selector:@selector(_timerQueueTimerFired:) 
+                              userInfo:nil 
+                              repeats:YES];
+  [_timerqueuetimer deactivate];
   [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer 
                               forMode:NSModalPanelRunLoopMode];
-  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer 
-                              forMode:NSModalPanelRunLoopMode];
   [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer 
-                              forMode:NSEventTrackingRunLoopMode];
-  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer 
                               forMode:NSEventTrackingRunLoopMode];
   
   SoDB::getSensorManager()->setChangedCallback(sensorqueuechanged_cb, self);
-}
-
-/*" Sets the frequency how often we process the delay sensor queue,
-    in seconds. 
-
-    Note: Do not use the SoSensorManager::setDelaySensorTimeout()
-    method - the value set by that function is ignored. Use this
-    function here instead.
-"*/
-
-- (void)setDelayQueueInterval:(NSTimeInterval)interval
-{
-  if ([_delayqueuetimer timeInterval] == interval) return;
-  if ([_delayqueuetimer isValid]) [_delayqueuetimer invalidate];
-
-  _delayqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:interval 
-                               target:self
-  selector:@selector(_delayQueueTimerFired:) userInfo:nil repeats:YES] retain];
-
-  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer 
-                              forMode:NSModalPanelRunLoopMode];
-  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer 
-                              forMode:NSEventTrackingRunLoopMode];
-}
-
-
-/*" Returns the frequency how often we process the delay sensor 
-    queue.
-"*/
-
-- (NSTimeInterval)delayQueueInterval
-{
-  return [_delayqueuetimer timeInterval];
 }
 
 // ----------------- Debugging aids ----------------------------
@@ -671,28 +623,16 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 // ----------------------- InternalAPI -------------------------
 
-/* Timer callback function: process the timer sensor queue. */
-
+/*!
+  Timer callback function: process the timer sensor queue.
+*/
 - (void)_timerQueueTimerFired:(NSTimer *)t
 {
+  // NSLog(@"timerQueueTimerFired:");
   // The timer might fire after the view has
   // already been destroyed...
   if (!_redrawinv) return; 
-  //NSLog(@"timerQueueTimerFired");
   SoDB::getSensorManager()->processTimerQueue();
-  [self _sensorQueueChanged];
-}
-
-/* Timer callback function: process the delay queue when maximum time has been reached. */
-
-- (void)_delayQueueTimerFired:(NSTimer *)t
-{
-  // The timer might fire after the view has
-  // already been destroyed...
-  if (!_redrawinv) return; 
-  //NSLog(@"delayQueueTimerFired");
-  SoDB::getSensorManager()->processTimerQueue();
-  SoDB::getSensorManager()->processDelayQueue(FALSE);
   [self _sensorQueueChanged];
 }
 
@@ -700,45 +640,53 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (void)_idle:(NSNotification *)notification
 {
+  // NSLog(@"_idle:");
   // We might get the notification after the view has
   // already been destroyed...
   if (!_redrawinv) return; 
-  //NSLog(@"doing idle processing");
   SoDB::getSensorManager()->processTimerQueue();
   SoDB::getSensorManager()->processDelayQueue(TRUE);
   [self _sensorQueueChanged];
 }
 
+/*!
+  Will reschedule timer sensors to trigger at the time of the first pending
+  timer sensor in SoSensorManager (or deactivated if there are no pending 
+  sensors).
+
+  Will initiate idle processing if there are pending delay queue sensors.
+*/
 // FIXME: Rename to something more appropriate... ;)
 - (void)_sensorQueueChanged
 {
+  // NSLog(@"_sensorQueueChanged");
   // Create timers at first invocation
-  if (!_timerqueuetimer) {
-    [self startTimers];
-  }
+  if (!_timerqueuetimer) [self startTimers];
 
   SoSensorManager * sm = SoDB::getSensorManager();
-  SbTime t;  
-  if (sm->isTimerSensorPending(t)) {    
-    SbTime interval = t - SbTime::getTimeOfDay();
-    [_timerqueuetimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:interval.getValue()]];
+
+  // If there are any pending SoTimerQueueSensors
+  SbTime nexttimeout;
+  if (sm->isTimerSensorPending(nexttimeout)) {
+    SbTime interval = nexttimeout - SbTime::getTimeOfDay();
+    [_timerqueuetimer 
+      setFireDate:[NSDate dateWithTimeIntervalSinceNow:interval.getValue()]];
   } else {
     [_timerqueuetimer deactivate];
   }
   
+  // If there are any pending SoDelayQueueSensors
   if (sm->isDelaySensorPending()) {
-    [[NSNotificationQueue defaultQueue] enqueueNotification:[NSNotification 
-      notificationWithName:_SCIdleNotification object:self]
-      postingStyle:NSPostWhenIdle coalesceMask:NSNotificationCoalescingOnName
-      forModes:[NSArray arrayWithObjects: NSDefaultRunLoopMode, NSModalPanelRunLoopMode,
-      NSEventTrackingRunLoopMode, nil]];
-    if (![_delayqueuetimer isActive]) {
-      [_delayqueuetimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:0.08]];
-    }
-  } else {
-    if ([_delayqueuetimer isActive]) {
-      [_delayqueuetimer deactivate];
-    }
+    [[NSNotificationQueue defaultQueue] 
+      enqueueNotification:
+        [NSNotification notificationWithName:_SCIdleNotification object:self]
+      postingStyle:NSPostWhenIdle 
+      coalesceMask:NSNotificationCoalescingOnName
+      forModes: [NSArray arrayWithObjects: 
+                           NSDefaultRunLoopMode, 
+                           NSModalPanelRunLoopMode, 
+                           NSEventTrackingRunLoopMode, 
+                           nil]];
   }
 }
 
