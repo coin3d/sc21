@@ -30,6 +30,7 @@
 #import <Sc21/SCExaminerController.h>
 #import "SCUtil.h"
 #import "SCOpenGLViewP.h"
+#import <Inventor/misc/SoContextHandler.h>
 
 @interface _SCViewP : NSObject
 {
@@ -151,6 +152,18 @@
 {
   [self->controller viewSizeChanged:[self visibleRect]];
   if ([[self openGLContext] view] == self) [[self openGLContext] update];
+}
+
+- (void)clearGLContext
+{
+  [super clearGLContext];
+  SoSceneManager * scenemgr = [self->controller sceneManager];
+  if (scenemgr) {
+    SoGLRenderAction * glra = scenemgr->getGLRenderAction();
+    if (glra) {
+      SoContextHandler::destructingContext(glra->getCacheContext());
+    }
+  }
 }
 
 #pragma mark --- event handling ---
