@@ -81,4 +81,12 @@
   }
 }
 
+// Delegate implementation to quit application when window is being closed:
+// This is not a document-based implementation, so you cannot close the main
+// window and open a new one at will without doing more setup work.
+
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)nsapp
+{
+  return YES;
+}
 @end
