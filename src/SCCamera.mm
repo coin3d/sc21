@@ -37,7 +37,6 @@
 
 #import <Inventor/SoType.h>
 #import <Inventor/SoSceneManager.h>
-#import <Inventor/actions/SoGLRenderAction.h>
 #import <Inventor/actions/SoSearchAction.h>
 #import <Inventor/actions/SoGetMatrixAction.h>
 #import <Inventor/nodekits/SoBaseKit.h>
@@ -87,9 +86,10 @@
 
 #pragma mark --- positioning the camera ---
 
-/*" Reorients the camera by rot. Note that this does not
-replace the previous values but is accumulative: rot
-will be multiplied together with the previous orientation.
+/*" 
+  Reorients the camera by rot. Note that this does not replace the previous 
+  values but is accumulative: rot will be multiplied together with the 
+  previous orientation.
 "*/
 
 - (void)reorient:(SbRotation)rot
@@ -99,14 +99,15 @@ will be multiplied together with the previous orientation.
   
   // Find global coordinates of focal point.
   SELF->camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), dir);
-  focalpt = SELF->camera->position.getValue() + SELF->camera->focalDistance.getValue() * dir;
+  focalpt = SELF->camera->position.getValue() + 
+    SELF->camera->focalDistance.getValue() * dir;
   
   // Set new orientation value by accumulating the new rotation.
   SELF->camera->orientation = rot * SELF->camera->orientation.getValue();
   
   // Reposition camera so we are still pointing at the same old focal point.
   SELF->camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), dir);
-  SELF->camera->position = focalpt - SELF->camera->focalDistance.getValue() * dir;
+  SELF->camera->position = focalpt - SELF->camera->focalDistance.getValue()*dir;
 }
 
 /*"
@@ -203,17 +204,19 @@ Translate camera relative to its own coordinate system.
   // for caching. kyrah 20030622
 
   assert ([sceneGraph sceneManager]);
-  SoGLRenderAction * renderaction = [sceneGraph sceneManager]->getGLRenderAction();
   
-  if (SELF->autoclipboxaction == NULL)
-    SELF->autoclipboxaction = new
-      SoGetBoundingBoxAction(renderaction->getViewportRegion());
-  else
-    SELF->autoclipboxaction->setViewportRegion(renderaction->getViewportRegion());
-
+  SbViewportRegion viewport = [sceneGraph sceneManager]->getViewportRegion();
+  if (SELF->autoclipboxaction == NULL) {
+    SELF->autoclipboxaction = new 
+    SoGetBoundingBoxAction(viewport);
+  } else { 
+    SELF->autoclipboxaction->setViewportRegion(viewport);
+  }
+  
   SELF->autoclipboxaction->apply([sceneGraph root]);
   xbox =  SELF->autoclipboxaction->getXfBoundingBox();
-  [self _SC_getCoordinateSystem:cameramatrix inverse:inverse inSceneGraph:sceneGraph];
+  [self _SC_getCoordinateSystem:cameramatrix inverse:inverse 
+    inSceneGraph:sceneGraph];
   xbox.transform(inverse);
 
   m.setTranslate(-SELF->camera->position.getValue());
@@ -253,13 +256,15 @@ Translate camera relative to its own coordinate system.
 
 - (SCCameraType)type
 {
-  if (SELF->camera == NULL) { return SCCameraNone; }
+  SoCamera * cam = SELF->camera;
   
-  if (SELF->camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
+  if (cam == NULL) { return SCCameraNone; }
+  
+  if (cam->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
     return SCCameraPerspective;
   } 
   
-  if (SELF->camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
+  if (cam->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
     return SCCameraOrthographic;
   } 
   
@@ -315,7 +320,8 @@ Translate camera relative to its own coordinate system.
 
 /* Get the camera's object coordinate system. */
 
-- (void)_SC_getCoordinateSystem: (SbMatrix &)m inverse:(SbMatrix &)inv inSceneGraph:(SCSceneGraph *)sg
+- (void)_SC_getCoordinateSystem: (SbMatrix &)m inverse:(SbMatrix &)inv 
+  inSceneGraph:(SCSceneGraph *)sg
 {
   SoGroup * root = [sg root];
   SoSearchAction searchaction;
