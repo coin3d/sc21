@@ -572,7 +572,7 @@
 		E0DD304B06075027009D1EB4 = {
 			isa = PBXFileReference;
 			lastKnownFileType = image.icns;
-			path = coin.icns;
+			path = Sc21_app.icns;
 			refType = 4;
 			sourceTree = "<group>";
 		};

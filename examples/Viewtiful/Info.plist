@@ -42,7 +42,7 @@
 	<key>CFBundleExecutable</key>
 	<string>Viewtiful</string>
 	<key>CFBundleIconFile</key>
-	<string>coin.icns</string>
+	<string>Sc21_app.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.coin3d.Sc21.examples.Viewtiful</string>
 	<key>CFBundleInfoDictionaryVersion</key>
