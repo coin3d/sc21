@@ -235,6 +235,7 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
 				PREBINDING = NO;
 				UNSTRIPPED_PRODUCT = YES;
 			};
@@ -437,10 +438,9 @@
 			);
 			buildSettings = {
 				INFOPLIST_FILE = Resources/framework/Info.plist;
-				PRODUCT_NAME = dummy.txt;
+				PRODUCT_NAME = dummy.dir;
 			};
 			dependencies = (
-				E06867BF0634023400F702EA,
 			);
 			isa = PBXNativeTarget;
 			name = dummy;
@@ -454,7 +454,7 @@
 			files = (
 			);
 			inputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(PROJECTNAME).framework",
+				"$(SRCROOT)/dummy-in.txt",
 			);
 			isa = PBXShellScriptBuildPhase;
 			outputPaths = (
@@ -462,13 +462,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"dummy script:\"\nset -x\n./test.sh\nretval=$?\n#cat test.txt > $TARGET_BUILD_DIR/$PRODUCT_NAME\n#echo \"error: Test error msg2\" 1>&2\nexit $retval";
+			shellScript = "echo \"dummy script:\"\nset -x\n./test.sh\nretval=$?\nrm -r $TARGET_BUILD_DIR/$PRODUCT_NAME\nmkdir $TARGET_BUILD_DIR/$PRODUCT_NAME\ncat dummy-in.txt > $TARGET_BUILD_DIR/$PRODUCT_NAME/dummy.txt\necho \"Added output\" >> $TARGET_BUILD_DIR/$PRODUCT_NAME/dummy.txt\nexit $retval";
 		};
 		E056E715060A13650068145A = {
 			explicitFileType = "compiled.mach-o.executable";
 			includeInIndex = 0;
 			isa = PBXFileReference;
-			path = dummy.txt;
+			path = dummy.dir;
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -615,18 +615,6 @@
 			target = E0765C5F060223120099F78E;
 			targetProxy = E06867B50633FDCA00F702EA;
 		};
-		E06867BE0634023400F702EA = {
-			containerPortal = E0765C56060222BB0099F78E;
-			isa = PBXContainerItemProxy;
-			proxyType = 1;
-			remoteGlobalIDString = E0765C5F060223120099F78E;
-			remoteInfo = "Sc21 framework";
-		};
-		E06867BF0634023400F702EA = {
-			isa = PBXTargetDependency;
-			target = E0765C5F060223120099F78E;
-			targetProxy = E06867BE0634023400F702EA;
-		};
 		E070FB1E0608992200A60FCA = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
@@ -666,6 +654,7 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_CPU = G4;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
 				PREBINDING = NO;
 				UNSTRIPPED_PRODUCT = YES;
 				ZERO_LINK = YES;
@@ -697,6 +686,7 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
 			};
 			isa = PBXBuildStyle;
 			name = release;
@@ -1667,6 +1657,7 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
 			};
 			isa = PBXBuildStyle;
 			name = install;
@@ -1744,6 +1735,7 @@
 			);
 			isa = PBXShellScriptBuildPhase;
 			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(PRODUCT_NAME)",
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
