@@ -272,7 +272,7 @@
 
 /*" 
   Forwards event to %controller by sending it the #handleEvent:inView: 
-  message.  If the event is not handled by the controller, it will
+  message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual 
   "*/
 - (void)otherMouseDown:(NSEvent *)event
@@ -284,7 +284,7 @@
 
 /*" 
   Forwards event to %controller by sending it the #handleEvent:inView: 
-  message.  If the event is not handled by the controller, it will
+  message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual. 
   "*/
 - (void)otherMouseUp:(NSEvent *)event
@@ -313,7 +313,7 @@
 
 /*" 
   Forwards event to %controller by sending it the #handleEvent:inView: 
-  message.  If the event is not handled by the controller, it will
+  message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual.
   "*/
 - (void)scrollWheel:(NSEvent *)event
@@ -325,7 +325,7 @@
 
 /*" 
   Forwards event to %controller by sending it the #handleEvent:InView:
-  message.  If the event is not handled by the controller, it will
+  message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual.
   "*/
 - (void)keyDown:(NSEvent *)event 
@@ -339,7 +339,7 @@
 
 /*" 
   Forwards event to %controller by sending it the #handleEvent:inView:
-  message.  If the event is not handled by the controller, it will
+  message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual.
   "*/
 - (void)keyUp:(NSEvent *)event 
@@ -350,7 +350,7 @@
 }
 
 /*" Forwards event to %controller by sending it the #handleEvent:
-    message.  If the event is not handled by the controller, it will
+    message. If the event is not handled by the controller, it will
     be forwarded through the responder chain as usual.
  "*/
 
@@ -359,6 +359,20 @@
   if (![self->controller handleEvent:event inView:self]) {
     [super flagsChanged:event];
   } 
+}
+
+/*" Forwards event to %controller by sending it the #handleEvent:
+    message. If the event is not handled by the controller, it will
+    be forwarded through the responder chain as usual.
+
+    NB! NSWindow.setAcceptsMouseMovedEvents: must be called to enable
+    NSMouseMoved events.
+ "*/
+- (void)mouseMoved:(NSEvent *)event
+{
+  if (![self->controller handleEvent:event inView:self]) {
+    [super flagsChanged:event];
+  }
 }
 
 // --------------------------------------------------------------------

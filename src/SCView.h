@@ -67,6 +67,7 @@
 - (void)keyDown:(NSEvent *)event;
 - (void)keyUp:(NSEvent *)event;
 - (void)flagsChanged:(NSEvent *)event;
+- (void)mouseMoved:(NSEvent *)event;
 
 /*" Cursor handling "*/
 - (void)setCursor:(NSCursor *)cursor;
