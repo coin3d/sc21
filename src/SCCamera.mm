@@ -153,6 +153,12 @@
 
 - (void) convertToType:(SoType) type
 {
+  // FIXME: Maybe a better solution would be to have a switch
+  // node containing both a perspective and an orthographic
+  // camera whose fields are connected, and then just change
+  // whichChild, instead of inserting and removing cameras every
+  // time we change? kyrah 20030713
+  
   if (_camera == NULL) return;
 
   // FIXME: Check how SoQt handles this - maybe it should be possible to 
