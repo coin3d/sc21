@@ -31,24 +31,17 @@
 #import <Inventor/events/SoKeyboardEvent.h>
 #import <Inventor/SbDict.h>
 
-@class SCController;
-
-@interface SCEventConverter : NSObject {
-  SCController * _controller;
-  SbDict * _keydict, * _printabledict;
+@interface SCEventConverter : NSObject
+{
+  SbDict * _keydict;
+  SbDict * _printabledict;
 }
 
 /*" Initializing an SCEventConverter "*/
-- (id) initWithController:(SCController *)controller;
+- (id)init;
 
 /*" Event conversion "*/
-- (SoEvent *) createSoEvent:(NSEvent *)event;
-- (SoKeyboardEvent *) createSoKeyboardEventWithString:(NSString *)s;
-
-/*" Setting the controller component "*/
-- (void) setController:(SCController *)controller;
-- (SCController *) controller;
+- (SoEvent *)createSoEvent:(NSEvent *)event inView:view;
+- (SoKeyboardEvent *)createSoKeyboardEventWithString:(NSString *)s;
 
 @end
-
-

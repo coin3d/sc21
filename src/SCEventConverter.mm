@@ -24,11 +24,8 @@
  | Systems in Motion, Bygdoy Alle 5, 0257 Oslo, Norway.           |
  |                                                                |
  * ============================================================== */
- 
 
 #import <SC21/SCEventConverter.h>
-#import <SC21/SCController.h>
-#import <SC21/SCView.h>
 
 struct key1map {
   unichar nsvalue;
@@ -161,40 +158,25 @@ static struct key1map KeyMap[] = {
     class. Returns !{self}.
  "*/
 
-- (id) initWithController:(SCController *)controller
+- (id)init
 {
   if (self = [super init]) {
-    _controller = controller;
     _keydict = new SbDict;
     _printabledict = new SbDict;
-    int i=0;
+    int i = 0;
     while (KeyMap[i].nsvalue != 0) {
       _keydict->enter((unsigned long)KeyMap[i].nsvalue,
-                     (void *)KeyMap[i].sovalue);
+                      (void *)KeyMap[i].sovalue);
       _printabledict->enter((unsigned long)KeyMap[i].nsvalue,
-                           (void *)(int)KeyMap[i].printable);
+                            (void *)(int)KeyMap[i].printable);
       i++;
     }    
   }
   return self;
 }
 
-/*" Initializes a newly allocated SCEventConverter. Note that you 
-    must set the SCController component for Coin handling explicitly 
-    using #setController: before being able to use the camera.
-    
-    This method is the designated initializer for the SCEventConverter
-    class. Returns !{self}.
- "*/
-
-- (id) init
-{
-  return [self initWithController:nil];
-}
-
-
 /* Clean up after ourselves. */
-- (void) dealloc
+- (void)dealloc
 {
   delete _keydict;
   delete _printabledict;
@@ -210,9 +192,9 @@ static struct key1map KeyMap[] = {
      position, modifier keys, and time when the event occurred.
   "*/
   
-- (SoEvent *) createSoEvent:(NSEvent *)event
+- (SoEvent *)createSoEvent:(NSEvent *)event inView:(NSView *)view
 {
-  NSPoint q = [[_controller view] convertPoint:[event locationInWindow] fromView:nil];
+  NSPoint q = [view convertPoint:[event locationInWindow] fromView:nil];
   unsigned int flags = [event modifierFlags];
   NSEventType type = [event type];
   SoEvent * se = NULL;
@@ -290,7 +272,7 @@ static struct key1map KeyMap[] = {
   }
 
   if (se) {
-    se->setPosition(SbVec2s((int) q.x, (int) q.y));
+    se->setPosition(SbVec2s((int)q.x, (int)q.y));
     se->setShiftDown(flags & NSShiftKeyMask);
     se->setAltDown(flags & NSAlternateKeyMask);
     se->setCtrlDown(flags & NSControlKeyMask);
@@ -307,7 +289,7 @@ static struct key1map KeyMap[] = {
     first character of s is taken into account.
  "*/
  
-- (SoKeyboardEvent *) createSoKeyboardEventWithString:(NSString *)s
+- (SoKeyboardEvent *)createSoKeyboardEventWithString:(NSString *)s
 {
   unsigned long c = [s characterAtIndex:0];
   void * sokey, * printable;
@@ -320,26 +302,6 @@ static struct key1map KeyMap[] = {
     ke->setKey(SoKeyboardEvent::UNDEFINED);
   }
   return ke;
-}
-
-
-// ------------ Setting the controller component -------------------------
-
-
-/*" Sets the SCEventConverter's SCController component to controller. "*/
-
-- (void) setController:(SCController *)controller
-{
-  // We intentionally do not retain controller here, to avoid
-  // circular references.
-  _controller = controller;
-}
-
-/*" Returns the SCEventConverter's controller component. "*/
-
-- (SCController *) controller
-{
-  return _controller;
 }
 
 @end

@@ -38,9 +38,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 
 @interface SCView (InternalAPI)
-- (NSSize)_size;
-- (float)_width;
-- (float)_height;
+// - (NSEvent *)_createViewRelativeEvent:(NSEvent *)event
 @end
 
 #if 0
@@ -170,7 +168,6 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
   NSLog(@"SCView.dealloc");
   // Prevent controller from continuing to draw into our view.
   [controller stopTimers];
-  [controller setView:nil];
   [controller release];
   [super dealloc];
 }
@@ -272,6 +269,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 - (void)drawRect:(NSRect)rect
 {
+  NSLog(@"SCview.drawRect");
   // Note: As NSView's implementation of this method, #drawRect: is
   // intended to be completely overridden by each subclass that
   // performs drawing, do _not_ invoke [super drawRect] here!
@@ -296,23 +294,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 - (void)reshape
 {
   [controller viewSizeChanged:[self visibleRect]];
-  [[self openGLContext] update];
-}
-
-
-/*" Returns the point p normalized so that its values lie in
-    [0;1] relative to the size of the SCView. (Example: 
-    The point (100, 50) in a view of size (200,200) would 
-    be (0.5, 0,25) in normalized coordinates.)
-  "*/
-  
-- (NSPoint)normalizePoint:(NSPoint)point
-{
-  NSPoint normalized;
-  NSSize size = [self _size];
-  normalized.x = point.x / size.width;
-  normalized.y = point.y / size.height;
-  return normalized;
+  if ([[self openGLContext] view] == self) [[self openGLContext] update];
 }
 
 
@@ -333,7 +315,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 - (void)mouseDown:(NSEvent *)event
 {
-  if (![controller handleEvent:event]) {
+  if (![controller handleEvent:event inView:self]) {
     [super mouseDown:event];
   }
 }
@@ -346,7 +328,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 - (void)mouseUp:(NSEvent *)event
 {
-  if (![controller handleEvent:event]) {
+  if (![controller handleEvent:event inView:self]) {
     [super mouseUp:event];
   }
 }
@@ -364,7 +346,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 - (void)mouseDragged:(NSEvent *)event
 {
-  if (![controller handleEvent:event]) {
+  if (![controller handleEvent:event inView:self]) {
     [super mouseDragged:event];
   }
 }
@@ -377,7 +359,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 - (void)rightMouseDown:(NSEvent *)event
 {
-  if (![controller handleEvent:event]) {
+  if (![controller handleEvent:event inView:self]) {
     [super rightMouseDown:event];
   }
 }
@@ -390,7 +372,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 - (void)rightMouseUp:(NSEvent *)event
 {
-  if (![controller handleEvent:event]) {
+  if (![controller handleEvent:event inView:self]) {
     [super rightMouseUp:event];
   }
 }
@@ -407,7 +389,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 - (void)rightMouseDragged:(NSEvent *)event
 {
-  if (![controller handleEvent:event]) {
+  if (![controller handleEvent:event inView:self]) {
     [super rightMouseDragged:event];
   }
 }
@@ -420,7 +402,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 - (void)otherMouseDown:(NSEvent *)event
 {
-  if (![controller handleEvent:event]) {
+  if (![controller handleEvent:event inView:self]) {
     [super otherMouseDown:event];
   }
 }
@@ -433,7 +415,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 - (void)otherMouseUp:(NSEvent *)event
 {
-  if (![controller handleEvent:event]) {
+  if (![controller handleEvent:event inView:self]) {
     [super otherMouseUp:event];
   }
 }
@@ -451,7 +433,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 - (void)otherMouseDragged:(NSEvent *)event
 {
-  if (![controller handleEvent:event]) {
+  if (![controller handleEvent:event inView:self]) {
     [super otherMouseDragged:event];
   }
 }
@@ -463,7 +445,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 - (void)scrollWheel:(NSEvent *)event
 {
-  if (![controller handleEvent:event]) {
+  if (![controller handleEvent:event inView:self]) {
     [super scrollWheel:event];
   }
 }
@@ -476,7 +458,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 - (void)keyDown:(NSEvent *)event 
 {
-  if (![controller handleEvent:event]) {
+  if (![controller handleEvent:event inView:self]) {
     [super keyDown:event];
   } 
 }
@@ -489,7 +471,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 - (void)keyUp:(NSEvent *)event 
 {
-  if (![controller handleEvent:event]) {
+  if (![controller handleEvent:event inView:self]) {
     [super keyUp:event];
   } 
 }
@@ -501,16 +483,6 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 -(BOOL)acceptsFirstResponder
 {
   return YES;
-}
-
-// --------------- Convenience methods --------------------
-
-/*" Returns the aspect ratio of the SCView. "*/
-
-- (float)aspectRatio
-{
-  NSSize s = [self _size];
-  return s.width/s.height;
 }
 
 // -------- Cursor handling ----------
@@ -629,31 +601,6 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     [self commonInit];
   }
   return self;
-}
-
-
-// ----------------------- InternalAPI -------------------------
-
-/* Returns the size of the SCView. */
-
-- (NSSize)_size
-{
-  NSSize s = [self bounds].size;
-  return s;
-}
-
-/*" Returns the width of the SCView. "*/
-
-- (float)_width
-{
-  return [self bounds].size.width;
-}
-
-/*" Returns the height of the SCView. "*/
-
-- (float)_height
-{
-  return [self bounds].size.height;
 }
 
 @end

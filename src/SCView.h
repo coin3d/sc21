@@ -77,10 +77,6 @@
 /*" Cursor handling "*/
 - (void)setCursor:(NSCursor *)cursor;
 
-/*" Convenience methods and shortcuts "*/
-- (float)aspectRatio;
-- (NSPoint)normalizePoint:(NSPoint)point;
-
 @end
 
 /*" Posted if no valid pixel format could be created. Typically, this

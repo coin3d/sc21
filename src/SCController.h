@@ -31,7 +31,6 @@
 #import <SC21/SCCamera.h>
 
 @class SCView;
-
 class SoCamera;
 class SoGroup;
 class SoLight;
@@ -50,6 +49,7 @@ class SoSceneManager;
   SoSceneManager * _scenemanager;
   BOOL _handleseventsinviewer;
   float _autoclipvalue;
+  NSRect _viewrect;
 }
 
 /*" Static initialization "*/
@@ -84,9 +84,9 @@ class SoSceneManager;
 - (BOOL)dumpSceneGraph;
 
 /*" Event handling "*/
-- (BOOL)handleEvent:(NSEvent *)event;
-- (BOOL)handleEventAsCoinEvent:(NSEvent *)event;
-- (BOOL)handleEventAsViewerEvent:(NSEvent *)event;
+- (BOOL)handleEvent:(NSEvent *)event inView:(NSView *)view;
+- (BOOL)handleEventAsCoinEvent:(NSEvent *)event inView:(NSView *)view;
+- (BOOL)handleEventAsViewerEvent:(NSEvent *)event inView:(NSView *)view;
 - (void)setHandlesEventsInViewer:(BOOL)yn;
 - (BOOL)handlesEventsInViewer;
 
@@ -98,7 +98,6 @@ class SoSceneManager;
 
 
 @end
-
 
 // --------------------- Notifications ------------------------
 

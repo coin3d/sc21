@@ -89,6 +89,7 @@
 - (void)_setInternalSceneGraph:(SoGroup *)root;
 - (void)_handleLighting;
 - (void)_handleCamera;
+- (NSPoint)_normalizePoint:(NSPoint)point;
 @end  
 
 
@@ -97,8 +98,8 @@
 static void
 redraw_cb(void * user, SoSceneManager *)
 {
-  SCController * SELF = (SCController *)user;
-  [[SELF view] setNeedsDisplay:YES];
+  SCController * selfp = (SCController *)user;
+  [[selfp view] setNeedsDisplay:YES];
 }
 
 static void
@@ -189,7 +190,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   [SCController initCoin];
   _camera = [[SCCamera alloc] init];
   [_camera setController:self];
-  _eventconverter = [[SCEventConverter alloc] initWithController:self];
+  _eventconverter = [[SCEventConverter alloc] init];
 
   [self setSceneManager:new SoSceneManager];
 
@@ -226,9 +227,9 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 /*" Returns the SCView the SCController's view outlet is connected to. "*/
 
-- (SCView *)view 
-{ 
-  return view; 
+- (SCView *)view
+{
+  return view;
 }
 
 
@@ -383,7 +384,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   float blue = [color blueComponent];
 
   _scenemanager->setBackgroundColor(SbColor(red, green, blue));
-  [view setNeedsDisplay:YES];
+  _scenemanager->scheduleRedraw();  
 }
 
 /*" Returns the scene's background color. "*/
@@ -407,11 +408,11 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (void)viewSizeChanged:(NSRect)rect
 {
+  _viewrect = rect;
   if (!_scenemanager) return;
   int w = (GLint)(rect.size.width);
   int h = (GLint)(rect.size.height);
   _scenemanager->setViewportRegion(SbViewportRegion(w, h));
-  _scenemanager->scheduleRedraw();  
 }
 
 
@@ -437,12 +438,12 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     see -SCView.mouseDown:
 "*/
  
-- (BOOL)handleEvent:(NSEvent *)event
+- (BOOL)handleEvent:(NSEvent *)event inView:(NSView *)view
 {
   if ([self handlesEventsInViewer] == NO) {
-    return [self handleEventAsCoinEvent:event];
+    return [self handleEventAsCoinEvent:event inView:view];
   } else {
-    return [self handleEventAsViewerEvent:event];
+    return [self handleEventAsViewerEvent:event inView:view];
   }
 }
 
@@ -452,9 +453,9 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     Returns !{YES} if the event has been handled, !{NO} otherwise.
  "*/
  
-- (BOOL)handleEventAsCoinEvent:(NSEvent *)event
+- (BOOL)handleEventAsCoinEvent:(NSEvent *)event inView:(NSView *)view
 {
-  SoEvent * se = [_eventconverter createSoEvent:event];
+  SoEvent * se = [_eventconverter createSoEvent:event inView:view];
   if (se) {
     BOOL handled = _scenemanager->processEvent(se);
     delete se;
@@ -471,7 +472,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     The default implementation does nothing and returns !{NO}.
  "*/
  
-- (BOOL)handleEventAsViewerEvent:(NSEvent *)event
+- (BOOL)handleEventAsViewerEvent:(NSEvent *)event inView:(NSView *)view
 {
   return NO;
 }
@@ -792,6 +793,15 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     [_camera setSoCamera:scenecamera deleteOldCamera:NO];
     [_camera setControllerHasCreatedCamera:NO]; 
   }
+}
+
+- (NSPoint)_normalizePoint:(NSPoint)point
+{
+  NSPoint normalized;
+  NSSize size = _viewrect.size;
+  normalized.x = point.x / size.width;
+  normalized.y = point.y / size.height;
+  return normalized;
 }
 
 @end

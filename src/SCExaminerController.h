@@ -58,9 +58,6 @@ class SoDirectionalLight;
 - (BOOL)headlightIsOn;
 - (void)setHeadlightIsOn:(BOOL)yn;
 
-/*" Event handling "*/
-- (BOOL)handleEventAsViewerEvent:(NSEvent *)event;
-
 /*" Interaction with the viewer. "*/
 - (void)startDraggingWithPoint:(NSPoint)point;
 - (void)startPanningWithPoint:(NSPoint)point;

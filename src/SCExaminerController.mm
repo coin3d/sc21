@@ -25,9 +25,7 @@
  |                                                                |
  * ============================================================== */
  
-
 #import <SC21/SCExaminerController.h>
-#import <SC21/SCView.h>
 #import <SC21/SCCursors.h>
 
 #import <Inventor/SoSceneManager.h>
@@ -58,7 +56,8 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 @interface SCExaminerController (InternalAPI)
 - (void)_setInternalSceneGraph:(SoGroup *)root;
 - (SoLight *)_findLightInSceneGraph:(SoGroup *)root;    // impl in super
-- (SoCamera *)_findCameraInSceneGraph:(SoGroup *)root; // impl in super
+- (SoCamera *)_findCameraInSceneGraph:(SoGroup *)root;  // impl in super
+- (NSPoint)_normalizePoint:(NSPoint)point;              // impl in super
 @end
 
 @implementation SCExaminerController
@@ -81,10 +80,6 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     mouse button is interpreted the same way.
 
     For general information, see also the SCController documentation.
-    
-    Note that for displaying the rendered scene, you need an SCView.
-    Connect SCExaminerController's !{view} outlet to a valid SCView instance
-    to use SCExaminerController.
  "*/
  
 
@@ -174,7 +169,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   
   if ([_camera controllerHasCreatedCamera] && _scenemanager) {
     [self viewAll];
-    [view setNeedsDisplay:YES];
+    _scenemanager->scheduleRedraw();  
   }  
 }
 
@@ -254,18 +249,19 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 "*/
 
-- (BOOL)handleEventAsViewerEvent:(NSEvent *)event
+- (BOOL)handleEventAsViewerEvent:(NSEvent *)event inView:(NSView *)view
 {
   BOOL handled = NO;
   NSEventType type = [event type];
   unsigned int flags = [event modifierFlags];
-  NSPoint p;
+  NSPoint p = [view convertPoint:[event locationInWindow] fromView:nil];
 
   switch (type) {
     case NSLeftMouseUp:
     case NSRightMouseUp:
     case NSOtherMouseUp:
-      [view setCursor:[NSCursor rotateCursor]];
+      //FIXME: notification
+      //      [delegate setCursor:[NSCursor rotateCursor]];
       break;
 
     case NSLeftMouseDown:
@@ -274,7 +270,6 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
       // the app developer overrides menuForEvent: In that latter case,
       // they probably specifically do _not_ want to get the menu on
       // ctrl-click, so do not explicitly show the menu here!
-      p = [view convertPoint:[event locationInWindow] fromView:nil];
       if (flags & NSAlternateKeyMask) [self startPanningWithPoint:p];
       else if (flags & NSShiftKeyMask) [self startZoomingWithPoint:p];
       else [self startDraggingWithPoint:p];
@@ -282,7 +277,6 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
       break;
 
     case NSLeftMouseDragged:
-      p = [view convertPoint:[event locationInWindow] fromView:nil];
       if (flags & NSAlternateKeyMask) [self panWithPoint:p];
       else if (flags & NSShiftKeyMask) [self zoomWithPoint:p];
       else [self dragWithPoint:p];
@@ -295,13 +289,11 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 //       break;
 
     case NSOtherMouseDown:
-      p = [view convertPoint:[event locationInWindow] fromView:nil];
       [self startPanningWithPoint:p];
       handled = YES;
       break;
       
     case NSOtherMouseDragged:
-      p = [view convertPoint:[event locationInWindow] fromView:nil];
       [self panWithPoint:p];
       handled = YES;
       break;
@@ -347,7 +339,8 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   NSValue * v = [NSValue valueWithPoint:point];
   [_mouselog removeAllObjects];
   [_mouselog insertObject:v atIndex:0];
-  [view setCursor:[NSCursor panCursor]];
+  //FIXME: notification
+  //  [delegate setCursor:[NSCursor panCursor]];
 }
 
 
@@ -363,7 +356,8 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   // Clear log and project to the last position we stored.
   [_mouselog removeAllObjects];
   [_mouselog insertObject:v atIndex:0];
-  [view setCursor:[NSCursor zoomCursor]];
+  //FIXME: notification
+  //  [delegate setCursor:[NSCursor zoomCursor]];
 }
 
 
@@ -387,8 +381,8 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
   p = [[_mouselog objectAtIndex:0] pointValue];
   q = [[_mouselog objectAtIndex:1] pointValue];
-  qn = [view normalizePoint:q];
-  pn = [view normalizePoint:p];
+  qn = [self _normalizePoint:q];
+  pn = [self _normalizePoint:p];
 
   _spinprojector->project(SbVec2f(qn.x, qn.y));
   _spinprojector->projectAndGetRotation(SbVec2f(pn.x, pn.y), r);
@@ -421,11 +415,13 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
   p = [[_mouselog objectAtIndex:0] pointValue];
   q = [[_mouselog objectAtIndex:1] pointValue];
-  qn = [view normalizePoint:q];
-  pn = [view normalizePoint:p];
+  qn = [self _normalizePoint:q];
+  pn = [self _normalizePoint:p];
 
   // Find projection points for the last and current mouse coordinates.
-  SbViewVolume vv = cam->getViewVolume([view aspectRatio]);
+  // Don't worry about about camera's viewportMapping since it wouldn't 
+  // affect the panplane.
+  SbViewVolume vv = cam->getViewVolume(0.0f);
   SbPlane panplane = vv.getPlane(cam->focalDistance.getValue());
   vv.projectPointToLine(SbVec2f(pn.x, pn.y), line);
   panplane.intersect(line, curplanepoint);
@@ -471,8 +467,8 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   if ([_mouselog count] < 2) return;
   p = [[_mouselog objectAtIndex:0] pointValue];
   q = [[_mouselog objectAtIndex:1] pointValue];
-  qn = [view normalizePoint:q];
-  pn = [view normalizePoint:p];
+  qn = [self _normalizePoint:q];
+  pn = [self _normalizePoint:p];
   [_camera zoom:(pn.y - qn.y)];
 }
 
