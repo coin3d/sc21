@@ -31,6 +31,20 @@
 
 @implementation NSCursor (SCCursors)
 
+
+/*" 
+  Custom cursors used in Sc21. 
+
+  These cursors can be used in exactly the same way as other
+  NSCursors, so for instance to set a cursor indicating rotation, you
+  would use !{[[NSCursor arrowCursor] set];}
+"*/
+
+/*" 
+  Returns a cursor that looks like two arrows forming a circle, as is
+  commonly used to indicate rotation.
+"*/
+
 // FIXME: factory methods should autorelease the instance they return.
 // In our case here - who will ever release the cursor? kyrah 20040722.
 + (NSCursor *)rotateCursor
@@ -51,6 +65,12 @@
   return rotateCursor;
 }
 
+/*" 
+  Returns a cursor that looks like an arrow with two arrowheads, one
+  being slightly larger than the other, as is commonly used to
+  indicate zooming.
+"*/
+
 + (NSCursor *)zoomCursor
 {
   static NSCursor * zoomCursor = nil;
@@ -68,6 +88,11 @@
   }
   return zoomCursor;
 }
+
+/*"  
+  Returns a cursor that consists of four arrows forming a cross,
+  pointing outwards, as is commonly used to indicate movement.
+"*/
 
 + (NSCursor *)panCursor
 {

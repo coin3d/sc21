@@ -29,8 +29,9 @@
 
 @interface NSCursor (SCCursors)
 
+/*" Retrieving cursor instances "*/
++ (NSCursor *)panCursor;
 + (NSCursor *)rotateCursor;
 + (NSCursor *)zoomCursor;
-+ (NSCursor *)panCursor;
 
 @end
