@@ -36,22 +36,22 @@
    SCOpenGLViewP * _sc_openglview;
 }
 
-/*" Initializing an SCOpenGLView. "*/
-- (id)initWithFrame:(NSRect)rect;
+/*" Initializing an SCOpenGLView "*/
+- (id)initWithFrame:(NSRect)frameRect;
 - (id)initWithFrame:(NSRect)frameRect pixelFormat:(SCOpenGLPixelFormat *)format;
 - (void)prepareOpenGL;
 
-/*" Accessing the pixelformat. "*/
+/*" Accessing the pixelformat "*/
 + (SCOpenGLPixelFormat *)defaultPixelFormat;
 - (void)setPixelFormat:(SCOpenGLPixelFormat *)pixelFormat;
 - (SCOpenGLPixelFormat *)pixelFormat;
 
-/*" Handling the OpenGL context. "*/
+/*" Handling the OpenGL context "*/
 - (void)clearGLContext;
 - (NSOpenGLContext *)openGLContext;
 - (void)setOpenGLContext:(NSOpenGLContext *)context;
 
-/*" Drawing and updating. "*/
+/*" Drawing and updating "*/
 - (void)reshape;
 - (void)update;
 

@@ -45,14 +45,15 @@
   SCOpenGLView is a replacement for NSOpenGLView.
   
   The main purpose of this class is to be able to use an
-  SCOpenGLPixelFormat in order to be able to archive/unarchive
-  this class.
-  "*/
+  SCOpenGLPixelFormat in order to be able to archive/unarchive this
+  class. In all other respects, SCOpenGLView behaves like
+  NSOpenGLView.
+ "*/
 
 #pragma mark --- static methods ---
 
 /*"
-Returns a default #SCOpenGLPixelFormat.
+Returns a default SCOpenGLPixelFormat.
  "*/
 + (SCOpenGLPixelFormat *)defaultPixelFormat
 {
@@ -83,9 +84,9 @@ Returns a default #SCOpenGLPixelFormat.
   Designated initializer.
   
   Initializes a newly allocated NSOpenGLView with frameRect as its
-  frame rectangle and format as its pixel format.
+  frame rectangle and format as its pixelformat.
 
-  Passing nil as pixelFormat will result in the pixel format being
+  Passing nil as pixelFormat will result in the pixelformat being
   set to the result of +defaultPixelFormat when the OpenGL context
   is initialized.
   "*/
@@ -115,9 +116,9 @@ Returns a default #SCOpenGLPixelFormat.
 Used by subclassers to initialize OpenGL state. This function is called
  once after an OpenGL context is created and the drawable is attached.
  
- Under Panther, NSOpenGLContext will automatically send this message to
+ On Panther, NSOpenGLContext will automatically send this message to
  its view from its -makeCurrentContext method.
- Under Jaguar, this function is called explicitly from our
+ On Jaguar, this function is called explicitly from our
  -openGLContext method, emulating Panther's behavior.
  "*/
 - (void)prepareOpenGL
@@ -233,17 +234,19 @@ Used by subclassers to initialize OpenGL state. This function is called
 
 #pragma mark --- drawing and updating --- 
 
-/*"
+/*" 
   Called if the visible rectangle or bounds of the receiver change
   (for scrolling or resize). The default implementation does
   nothing. Override this method if you need to adjust the viewport and
-  display frustum.
+  display frustum. 
+"*/
 
-  FIXME: Using NSOpenGLView, reshape is called when a scrollview is
-  scrolled. This does not happen with SCOpenGLView. The reason seems to
-  be that for our view, NSView.translateOriginToPoint: is not called.
-  Test this with "OpenGL scroller"/"NSOpenGL scroller". (kintel 20040505)
-  "*/
+  // FIXME: Using NSOpenGLView, reshape is called when a scrollview is
+  // scrolled. This does not happen with SCOpenGLView. The reason
+  // seems to be that for our view, NSView.translateOriginToPoint: is
+  // not called.  Test this with "OpenGL scroller"/"NSOpenGL
+  // scroller". (kintel 20040505)
+
 - (void)reshape
 {
 }
@@ -253,8 +256,6 @@ Used by subclassers to initialize OpenGL state. This function is called
   moves, or if the view moves or is resized. This method simply calls
   NSOpenGLContext's update. Override this method if you need to add
   locks for multithreaded access to multiple contexts.
-
-  -update is called whenever the view changes size or location.
 "*/
 - (void)update
 {
@@ -288,11 +289,11 @@ Used by subclassers to initialize OpenGL state. This function is called
     [context setView:self];
   }
   [context makeCurrentContext];
-  // Run this only under <= 10.2 since >=10.3 automatically calls
+  // Run this only on <= 10.2 since >=10.3 automatically calls
   // prepareOpenGL from NSOpenGLContext.
   //   FIXME:
   //   Is it OK to assume that prepareOpenGL will work when compiling
-  //   under Jaguar and running under Panther? If not, we should
+  //   on Jaguar and running on Panther? If not, we should
   //   probably not use prepareOpenGL at all, but a similar method
   //   that will work with both OS versions. (kintel 20040615)
   if (!SELF->contextisprepared &&
@@ -333,15 +334,17 @@ Used by subclassers to initialize OpenGL state. This function is called
 
 @implementation SCOpenGLView(InternalAPI)
 
-/*" 
+/* 
   Shared initialization code that is called both from 
-  #initWithFrame:pixelFormat and #initWithCoder:.
+  !{initWithFrame:pixelFormat} and !{initWithCoder:}.
   
-  NB! If you override this method, you must:
-  o call [super _SC_commonInit] as the first call in your
-    implementation to make sure everything is set up properly.
-  o _not_ call this method from init or initWithCoder in the subclass
-  "*/
+  If you override this method, you must call !{[super
+  _SC_commonInit]} as the first call in your
+  implementation to make sure everything is set up properly.
+
+  Do not call this method from your superclass' init or 
+  initWithCoder.
+  */
 - (void)_SC_commonInit
 {
   SELF = [[SCOpenGLViewP alloc] init];
