@@ -2,6 +2,13 @@
 
 @implementation SCOpenGLPixelFormat
 
+/*"
+  FIXME: write doc
+  "*/
+
+/*!
+  FIXME: write doc
+*/
 - (void)dealloc
 {
   [_attrdict release];
@@ -9,7 +16,15 @@
   [super dealloc];
 }
 
-// Set boolean pixel format attribute
+/*"
+  Sets the boolean pixel format attribute.
+
+  As with #NSOpenGLPixelFormat, the existence of a boolean attribute
+  implies a YES value.
+  To set a boolean attribute to NO, use #removeAttribute:
+
+  FIXME:/sa setAttribute:toValue:
+"*/
 - (void)setAttribute:(NSOpenGLPixelFormatAttribute)attr
 {
   if (!_attrdict) _attrdict = [[NSMutableDictionary alloc] init];
@@ -20,7 +35,11 @@
   _nspixelformat = nil;
 }
 
-// Set pixel format attribute to the given value
+/*"
+  Sets pixel format attribute to the given value
+
+  FIXME:/sa setAttribute:, removeAttribute:
+  "*/
 - (void)setAttribute:(NSOpenGLPixelFormatAttribute)attr toValue:(int)val
 {
   if (!_attrdict) _attrdict = [[NSMutableDictionary alloc] init];
@@ -30,7 +49,13 @@
   _nspixelformat = nil;
 }
 
-// Remove pixel format attribute (i.e. use default value)
+/*"
+  Removes pixel format attribute.
+
+  Attributes that are not set will be set to their default value.
+  FIXME: How is this handled by NSOpenGLPixelFormat, especially in case 
+  of boolean attributes?
+  "*/
 - (void)removeAttribute:(NSOpenGLPixelFormatAttribute)attr
 {
   if (!_attrdict) _attrdict = [[NSMutableDictionary alloc] init];
@@ -40,10 +65,14 @@
 }
 
 /*!
-  Copies the value of the given attribute into the int pointed to by
-  valptr. If the attribute is a boolean value the value will be set to 1.
+  Copies the value of the given attribute into the integer pointed to by
+  #valptr. 
+
+  If the attribute is a boolean value the value will be set to 1.
+
   Returns YES if the attribute exists or NO otherwise.
   On return value of NO, the contents of the valptr is not written.
+
   NB! This method returns the value previously set with -setAttribute*.
   If you want the real attribute value of the corresponding 
   NSOpenGLPixelFormat, use its -getValues:forAttribute:forVirtualScreen:.
@@ -62,8 +91,9 @@
   NSOpenGLPixelFormat based on those values and return it,
   else return nil.
 
-  If a pixelformat has already been created with the current dictionary,
-  return this pixelformat.
+  The returned pixelformat is cached, and the same instance will be returned
+  if the attributes haven't changed since the last invocation of this
+  method.
 */
 - (NSOpenGLPixelFormat *)pixelFormat
 {
@@ -105,6 +135,7 @@
 }
 
 // NSCoding compliance
+//FIXME: Remove non-keyed archiving? Exception on non-keyed archiving? (kintel 20040412)
 
 - (void)encodeWithCoder:(NSCoder *)coder 
 {
