@@ -119,6 +119,42 @@
 }
 
 
+#pragma mark --- accessor methods ---
+
+/*" 
+Returns the currently used SCController.
+"*/
+- (SCController *)controller
+{
+  return self->controller;  
+}
+
+
+/*" 
+Sets the controller to newcontroller. newcontroller is retained.
+"*/
+- (void)setController:(SCController *)newcontroller
+{
+  if (newcontroller == self->controller) { return; }
+
+  if (self->controller) {
+    // Remove ourselves as observer for the existing controller
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                          name:SCCursorChangedNotification 
+                                          object:self->controller];
+    [self->controller release];
+    //FIXME: Remove old drawable? (kintel 20040804)
+  }
+
+  self->controller = [newcontroller retain];
+
+  [self->controller setDrawable:self];
+  [self reshape]; // Initialize viewport
+  [[NSNotificationCenter defaultCenter] 
+    addObserver:self selector:@selector(_SC_cursorChanged:) 
+    name:SCCursorChangedNotification object:self->controller];
+}
+
 #pragma mark --- drawing and resizing ---
 
 /*"
@@ -403,40 +439,6 @@
 - (NSRect)frame
 {
   return [super frame];
-}
-
-/*" 
-Returns the currently used SCController.
-"*/
-- (SCController *)controller
-{
-  return self->controller;  
-}
-
-
-/*" 
-Sets the controller to newcontroller. newcontroller is retained.
-"*/
-- (void)setController:(SCController *)newcontroller
-{
-  if (newcontroller == self->controller) { return; }
-
-  if (self->controller) {
-    // Remove ourselves as observer for the existing controller
-    [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                          name:SCCursorChangedNotification 
-                                          object:self->controller];
-    [self->controller release];
-    //FIXME: Remove old drawable? (kintel 20040804)
-  }
-
-  self->controller = [newcontroller retain];
-
-  [self->controller setDrawable:self];
-  [self reshape]; // Initialize viewport
-  [[NSNotificationCenter defaultCenter] 
-    addObserver:self selector:@selector(_SC_cursorChanged:) 
-    name:SCCursorChangedNotification object:self->controller];
 }
 
 #pragma mark --- NSCoding conformance ---

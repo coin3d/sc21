@@ -48,6 +48,4 @@
 
 - (void)display;
 - (NSRect)frame;
-- (SCController *)controller;
-- (void)setController:(SCController *)controller;
 @end

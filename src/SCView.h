@@ -46,6 +46,10 @@
 - (id)initWithFrame:(NSRect)rect pixelFormat:(SCOpenGLPixelFormat *)format;
 - (id)initWithFrame:(NSRect)rect;
 
+/*" Accessors methods. "*/
+- (SCController *)controller;
+- (void)setController:(SCController *)controller;
+
 /*" Drawing and resizing. "*/
 - (void)drawRect:(NSRect)rect;
 - (void)reshape;
@@ -65,10 +69,5 @@
 - (void)keyDown:(NSEvent *)event;
 - (void)keyUp:(NSEvent *)event;
 - (void)flagsChanged:(NSEvent *)event;
-
-/*" SCDrawable conformance. "*/
-
-- (SCController *)controller;
-- (void)setController:(SCController *)controller;
 
 @end

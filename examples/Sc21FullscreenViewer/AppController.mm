@@ -318,14 +318,4 @@
   }
 }
 
-- (SCController *)controller
-{
-  return coincontroller; 
-}
-- (void)setController:(SCController *)controller
-{
-  if (controller != coincontroller) [coincontroller release];
-  coincontroller = [controller retain];
-}
-
 @end
