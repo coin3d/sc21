@@ -145,6 +145,16 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
  
 // ----------------- initialization and cleanup ----------------------
 
++ (void)initialize
+{
+  // The version is set to 1 to be able to distinguish between objects
+  // created with the public beta (version=0) and newer objects.
+  // FIXME; It is expected that we'll stop supporting the public beta
+  // from Sc21 V1.0.1 and versioning is probably not needed later since
+  // we only support keyed archiving.
+  [SCController setVersion:1];
+}
+
 /*" Initializes a newly allocated SCController, and calls #initCoin
     By default, events will be interpreted as viewer events (see 
     #handleEvent: documentation for more information about
@@ -609,7 +619,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {
-  [super encodeWithCoder:coder];
   // FIXME: exception or smth. if !keyeed coding? (kintel 20040408)
   if ([coder allowsKeyedCoding]) {
     [coder encodeBool:SELF->handleseventsinviewer 
@@ -624,28 +633,52 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     
 - (id)initWithCoder:(NSCoder *)coder
 {
-  if (self = [super initWithCoder:coder]) {
+  if ([coder versionForClassName:@"SCController"] == 0) {
+    [self _SC_commonInit];
+    SELF->oldcontroller = [[NSResponder alloc] initWithCoder:coder];
+    return self;
+  }
+  else if (self = [super init]) {
     [self _SC_commonInit];
     // FIXME: exception or smth. if !keyed coding? (kintel 20040408)
     if ([coder allowsKeyedCoding]) {
-      // Manually checks for existance of keys to be able to read
-      // archives from the public beta.
-      // FIXME: We should disable this after a grace period (say Sc21 V1.0.1)
-      // (kintel 20040408)
-      if ([coder containsValueForKey:@"SC_handleseventsinviewer"]) {
-        SELF->handleseventsinviewer = 
-          [coder decodeBoolForKey:@"SC_handleseventsinviewer"];
-      }
-      else {
-        SELF->handleseventsinviewer = YES;
-      }
-      if ([coder containsValueForKey:@"SC_autoclipvalue"]) {
-        SELF->autoclipvalue = [coder decodeFloatForKey:@"SC_autoclipvalue"];
-      }
-      else {
-        SELF->autoclipvalue = 0.6f;
+      SELF->handleseventsinviewer = 
+        [coder decodeBoolForKey:@"SC_handleseventsinviewer"];
+      SELF->autoclipvalue = [coder decodeFloatForKey:@"SC_autoclipvalue"];
+    }
+  }
+  return self;
+}
+
+/*!
+  This method is here only to support reading nib files created with
+  Sc21 public beta.
+
+  FIXME: We should remove this after a grace period (say Sc21 V1.0.1)
+  (kintel 20040404)
+*/
+- (id)awakeAfterUsingCoder:(NSCoder *)coder
+{
+  NSLog(@"SCController.awakeAfterUsingCoder:");
+  if (SELF->oldcontroller) {
+    NSLog(@"  upgrading old instance.");
+
+    if (self = [self init]) {
+      SELF->autoclipvalue = 0.6;
+      SELF->handleseventsinviewer = YES;
+      if ([coder allowsKeyedCoding]) {
+        if ([coder containsValueForKey:@"SC_handleseventsinviewer"]) {
+          SELF->handleseventsinviewer = 
+            [coder decodeBoolForKey:@"SC_handleseventsinviewer"];
+        }
+        if ([coder containsValueForKey:@"SC_autoclipvalue"]) {
+          SELF->autoclipvalue = [coder decodeFloatForKey:@"SC_autoclipvalue"];
+        }
       }
     }
+
+    [SELF->oldcontroller release];
+    SELF->oldcontroller = nil;
   }
   return self;
 }

@@ -44,6 +44,7 @@
   float autoclipvalue;
   NSRect viewrect;
   SoDirectionalLight * headlight;  
+  NSResponder * oldcontroller;
 }
 @end
 
