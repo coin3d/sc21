@@ -27,7 +27,6 @@
  
 
 #import <SC21/SCController.h>
-#import <SC21/SCView.h>
 
 #import <Inventor/SoDB.h>
 #import <Inventor/SoInteraction.h>
@@ -90,6 +89,7 @@
 - (void)_handleLighting;
 - (void)_handleCamera;
 - (NSPoint)_normalizePoint:(NSPoint)point;
+- (void)_setupRedrawInvocation;
 @end  
 
 
@@ -98,8 +98,8 @@
 static void
 redraw_cb(void * user, SoSceneManager *)
 {
-  SCController * selfp = (SCController *)user;
-  [[selfp view] setNeedsDisplay:YES];
+  SCController * selfp = (SCController *)user; 
+  [selfp->_redrawinv invoke];
 }
 
 static void
@@ -115,6 +115,7 @@ NSString * SCModeChangedNotification = @"SCModeChangedNotification";
 NSString * SCSceneGraphChangedNotification = @"SCSceneGraphChangedNotification";
 NSString * SCNoCameraFoundInSceneNotification = @"SCNoCameraFoundInSceneNotification";
 NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotification";
+NSString * SCRedrawNotification = @"SCRedrawNotification";
 
 // internal
 NSString * _SCIdleNotification = @"_SCIdleNotification";
@@ -122,12 +123,16 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 @implementation SCController
 
 /*" An SCController is the main component for rendering Coin 
-    scenegraphs to an SCView. It handles all actual scene management, 
+    scenegraphs. It handles all actual scene management, 
     rendering, event translation etc.
-    
-    Note that for displaying the rendered scene, you need an SCView.
-    Connect SCController's !{view} outlet to a valid SCView instance
-    to use SCController.
+
+    Note that since Coin is a data driven API, redraws can be
+    requested by the scene graph itself. To handle these redraws,
+    the controller must be given an object and a selector that should
+    called upon such a redraw request. This is automatically handled
+    by SCView but if you want to use an SCController without having 
+    an SCView (e.g. when doing fullscreen rendering), you should 
+    setup this yourself using -setRedrawHandler and -setRedrawSelector.
  "*/
 
 
@@ -141,10 +146,10 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     if the file was read successfully). SCController's initializer
     automatically calls this function if needed. 
 "*/
-//FIXME: Do this in +initialize instead? (kintel 20040406)
-// No, the user should be able to do smth. before calling Coin's init.
 + (void)initCoin
 {       
+  // This is _not_ done in +initialize since we want to allow people
+  // to do smth. before initializing Coin.
   static BOOL initialized = NO;
   if (!initialized) {
     SoDB::init();
@@ -191,6 +196,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   _camera = [[SCCamera alloc] init];
   [_camera setController:self];
   _eventconverter = [[SCEventConverter alloc] init];
+  _redrawsel = @selector(display);
 
   [self setSceneManager:new SoSceneManager];
 
@@ -206,32 +212,43 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [self stopTimers];
-  [view setController:nil];
+  _redrawhandler = nil;
+  [self _setupRedrawInvocation];
   [_eventconverter release];
   [_camera release];
   delete _scenemanager;
   [super dealloc];
 }
 
+/*!
+  Sets the object that should handle redraw messages generated
+  by the scene graph.
 
-// ------------ getting the view associated with the controller -------
-
-/*" Set the view to newview. newview is retained by the controller. "*/
-
-- (void)setView:(SCView *)newview
+  This is automatically set by SCView.setController and should only
+  need to be set when not rendering into an SCView (e.g. when doing
+  fullscreen rendering).
+*/
+- (void)setRedrawHandler:(id)handler
 {
-  // We intentionally do not retain the view here, to avoid
-  // circular references.
-  view = newview;
+  _redrawhandler = handler;
+  [self _setupRedrawInvocation];
 }
 
-/*" Returns the SCView the SCController's view outlet is connected to. "*/
+/*!
+  Sets the selector to be performed on the object set by -setRedrawHandler.
 
-- (SCView *)view
+  This defaults to @selector(display), but can be changed to any selector
+  with and optional id argument. If an id argument exists, this controller
+  object will be sent.
+
+  If the given selector doesn't conform, an NSInvalidArgumentException
+  will be raised.
+*/
+- (void)setRedrawSelector:(SEL)sel
 {
-  return view;
+  _redrawsel = sel;
+  [self _setupRedrawInvocation];
 }
-
 
 // ------------------- rendering and scene management ---------------------
 
@@ -660,7 +677,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 {
   // The timer might fire after the view has
   // already been destroyed...
-  if (!view) return; 
+  if (!_redrawinv) return; 
   //NSLog(@"timerQueueTimerFired");
   SoDB::getSensorManager()->processTimerQueue();
   [self _sensorQueueChanged];
@@ -672,7 +689,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 {
   // The timer might fire after the view has
   // already been destroyed...
-  if (!view) return; 
+  if (!_redrawinv) return; 
   //NSLog(@"delayQueueTimerFired");
   SoDB::getSensorManager()->processTimerQueue();
   SoDB::getSensorManager()->processDelayQueue(FALSE);
@@ -685,7 +702,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 {
   // We might get the notification after the view has
   // already been destroyed...
-  if (!view) return; 
+  if (!_redrawinv) return; 
   //NSLog(@"doing idle processing");
   SoDB::getSensorManager()->processTimerQueue();
   SoDB::getSensorManager()->processDelayQueue(TRUE);
@@ -802,6 +819,34 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   normalized.x = point.x / size.width;
   normalized.y = point.y / size.height;
   return normalized;
+}
+
+- (void)_setupRedrawInvocation
+{
+  [_redrawinv release];
+  _redrawinv = nil;
+  
+  if (_redrawhandler && _redrawsel) {
+    NSMethodSignature *sig = 
+      [_redrawhandler methodSignatureForSelector:_redrawsel];
+
+    if ([sig numberOfArguments] != 2 ||
+        [sig numberOfArguments] == 3 &&
+        [sig getArgumentTypeAtIndex:2] != @encode(id)) {
+
+      NSException * argException = 
+        [NSException exceptionWithName:NSInvalidArgumentException
+                     reason:@"Wrong format or number of selector arguments"
+                     userInfo:nil];
+      [argException raise];
+      return;
+    }
+
+    _redrawinv = [[NSInvocation invocationWithMethodSignature:sig] retain];
+    [_redrawinv setSelector:_redrawsel];
+    [_redrawinv setTarget:_redrawhandler];
+    if ([sig numberOfArguments] == 3) [_redrawinv setArgument:self atIndex:2];
+  }
 }
 
 @end

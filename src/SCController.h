@@ -25,12 +25,10 @@
  |                                                                |
  * ============================================================== */
  
-
 #import <Cocoa/Cocoa.h>
 #import <SC21/SCEventConverter.h>
 #import <SC21/SCCamera.h>
 
-@class SCView;
 class SoCamera;
 class SoGroup;
 class SoLight;
@@ -40,7 +38,9 @@ class SoSceneManager;
 // If we change it, we might need to fix initWithCoder, incl. versioning
 @interface SCController : NSResponder
 {
-  IBOutlet SCView * view;
+  id _redrawhandler;
+  SEL _redrawsel;
+  NSInvocation * _redrawinv;
   SCCamera * _camera;
   SCEventConverter * _eventconverter;
   NSTimer * _timerqueuetimer;
@@ -59,9 +59,8 @@ class SoSceneManager;
 - (id)init;
 - (void)commonInit;
 
-/*" Getting the view associated with the controller "*/
-- (void)setView:(SCView *)newview;
-- (SCView *)view;
+- (void)setRedrawHandler:(id)handler;
+- (void)setRedrawSelector:(SEL)selector;
 
 /*" Coin rendering and related functionality "*/
 - (void)render;

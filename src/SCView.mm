@@ -25,48 +25,10 @@
  |                                                                |
  * ============================================================== */
  
-
 #import <SC21/SCView.h>
 #import <SC21/SCController.h>
 #import <SC21/SCExaminerController.h>
 #import <SC21/SCCursors.h>
-
-// ---------------------- Notifications ----------------------------
-
-NSString * SCCouldNotCreateValidPixelFormatNotification =
-  @"SCCouldNotCreateValidPixelFormatNotification";
-
-
-@interface SCView (InternalAPI)
-// - (NSEvent *)_createViewRelativeEvent:(NSEvent *)event
-@end
-
-#if 0
-// Emulation of "super super" behavior (see -initWithCoder:)
-// FIXME: This doesn't work, but keep until we know that the new code works
-// (kintel 20040404)
-@interface SCOpenGLView (SuperSuperEmulation)
-- (id)_compatInitWithCoder:(NSCoder *)coder;
-@end
-
-@implementation SCOpenGLView (SuperSuperEmulation)
-- (id)_compatInitWithCoder:(NSCoder *)coder
-{
-  return [super initWithCoder:coder];
-}
-@end
-
-@interface SCView (SuperSuperEmulation)
-- (id)_compatInitWithCoder:(NSCoder *)coder;
-@end
-
-@implementation SCView (SuperSuperEmulation)
-- (id)_compatInitWithCoder:(NSCoder *)coder
-{
-  return [super _compatInitWithCoder:coder];
-}
-@end
-#endif
 
 @implementation SCView
 
@@ -191,6 +153,8 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
   [newcontroller retain];
   [controller release];
   controller = newcontroller;
+  // Use [self display] as a redraw handler
+  [controller setRedrawHandler:self];
 }
 
 
