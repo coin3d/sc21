@@ -81,10 +81,6 @@ class SoSceneManager;
 - (BOOL)clearDepthBuffer;
 - (void)viewSizeChanged:(NSRect)size;
 
-
-/*" Camera handling. "*/
-- (void)viewAll;
-
 /*" Event handling "*/
 - (BOOL)handleEvent:(NSEvent *)event inView:(NSView *)view;
 - (BOOL)handleEventAsCoinEvent:(NSEvent *)event inView:(NSView *)view;

@@ -196,7 +196,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 - (void)dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  [self setSceneGraph:NULL];
+  [self setSceneGraph:nil];
   [self stopTimers];
   SELF->redrawhandler = nil;
   [self _SC_setupRedrawInvocation]; // will release related objects
@@ -369,15 +369,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 - (float)autoClipValue
 {
   return [[scenegraph camera] autoClipValue];
-}
-
-
-/*"
-  Repositions the camera so that we can se the whole scene.
-  "*/
-- (void)viewAll
-{
-  [[scenegraph camera] viewAll];
 }
 
 /*" Renders the scene. "*/
@@ -816,7 +807,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   
   // If there are any pending SoDelayQueueSensors
   if (sm->isDelaySensorPending()) {
-    [[NSNotificationQueue defaultQueue] 
+    [[NSNotificationQueue defaultQueue]
       enqueueNotification:
         [NSNotification notificationWithName:_SCIdleNotification object:self]
       postingStyle:NSPostWhenIdle 
