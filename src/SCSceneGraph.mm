@@ -321,8 +321,6 @@ method returns this headlight. Otherwise, NULL is returned. "*/
   if ([coder allowsKeyedCoding]) {
     [coder encodeBool:SELF->createsuperscenegraph 
                forKey:@"SC_createsuperscenegraph"];
-    [coder encodeBool:SELF->addedlight forKey:@"SC_addedlight"];
-    [coder encodeBool:SELF->addedcamera forKey:@"SC_addedcamera"];
   }
 }
 
@@ -334,8 +332,6 @@ method returns this headlight. Otherwise, NULL is returned. "*/
     if ([coder allowsKeyedCoding]) {
       SELF->createsuperscenegraph = 
       [coder decodeBoolForKey:@"SC_createsuperscenegraph"];
-      SELF->addedlight = [coder decodeBoolForKey:@"SC_addedlight"];
-      SELF->addedcamera = [coder decodeBoolForKey:@"SC_addedcamera"];
     }
   }
   return self;
