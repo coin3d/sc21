@@ -88,7 +88,6 @@
 {
   if (self = [super init]) {
     if ([coder allowsKeyedCoding]) {
-      NSLog(@"");
       emulationdict = [[coder decodeObjectForKey:@"SC_emulationdict"] retain];
     }
   }
