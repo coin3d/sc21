@@ -30,8 +30,9 @@
 
 @interface SCControllerInspector : IBInspector
 {
-  IBOutlet NSButton * handleEventsInViewer;
-  IBOutlet NSSlider * autoClipValue;
+  IBOutlet NSMatrix * handleEvents;
+  IBOutlet NSButtonCell * handleEventsInViewer;
+  IBOutlet NSButtonCell * handleEventsInSceneGraph;
   IBOutlet NSButton * clearcolorbuffer;
   IBOutlet NSButton * cleardepthbuffer;
 }
