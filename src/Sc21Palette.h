@@ -35,15 +35,14 @@
 @interface Sc21Palette : IBPalette
 {
   IBOutlet NSImageView * scviewitem;
+  IBOutlet NSTextField * scviewtextfielditem;
   IBOutlet NSImageView * sccontrolleritem;
   IBOutlet NSImageView * scexaminerhandleritem;
-  IBOutlet NSImageView * scflyhandleritem;
   IBOutlet NSImageView * scscenegraphitem;
 
   SCView * scview;
   SCController * sccontroller;
   SCExaminerHandler * scexaminerhandler;
-  SCFlyHandler * scflyhandler;
   SCSceneGraph * scscenegraph;
 }
 @end
@@ -64,11 +63,6 @@
 @end
 
 @interface SCExaminerHandler (Sc21PaletteInspector)
-- (NSString *)inspectorClassName;
-- (NSString *)classInspectorClassName;
-@end
-
-@interface SCFlyHandler (Sc21PaletteInspector)
 - (NSString *)inspectorClassName;
 - (NSString *)classInspectorClassName;
 @end

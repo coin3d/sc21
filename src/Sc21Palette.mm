@@ -37,7 +37,6 @@
   [scview release];
   [sccontroller release];
   [scexaminerhandler release];
-  [scflyhandler release];
   [scscenegraph release];
   [super dealloc];
 }
@@ -48,12 +47,15 @@
   scview = [[SCView alloc] initWithFrame:[scviewitem bounds]];
   sccontroller = [[SCController alloc] init];
   scexaminerhandler = [[SCExaminerHandler alloc] init];
-  scflyhandler = [[SCFlyHandler alloc] init];
   scscenegraph = [[SCSceneGraph alloc] init];
   
   [self associateObject:scview
         ofType:IBViewPboardType
         withView:scviewitem];
+
+  [self associateObject:scview
+        ofType:IBViewPboardType
+        withView:scviewtextfielditem];
   
   [self associateObject:sccontroller
         ofType:IBObjectPboardType
@@ -63,10 +65,6 @@
         ofType:IBObjectPboardType
         withView:scexaminerhandleritem];
 
-  [self associateObject:scflyhandler
-        ofType:IBObjectPboardType
-        withView:scflyhandleritem];
-  
   [self associateObject:scscenegraph
         ofType:IBObjectPboardType
         withView:scscenegraphitem];
@@ -115,19 +113,6 @@
 - (NSString *)inspectorClassName
 {
   return  @"SCExaminerHandlerInspector";
-}
-
-- (NSString *)classInspectorClassName
-{
-  return @"IBCustomClassInspector";
-}
-@end
-
-@implementation SCFlyHandler (Sc21PaletteInspector)
-
-- (NSString *)inspectorClassName
-{
-  return  @"SCFlyHandlerInspector";
 }
 
 - (NSString *)classInspectorClassName

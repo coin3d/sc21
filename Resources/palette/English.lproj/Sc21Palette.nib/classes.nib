@@ -32,9 +32,9 @@
             OUTLETS = {
                 sccontrolleritem = NSImageView; 
                 scexaminerhandleritem = NSImageView; 
-                scflyhandleritem = NSImageView; 
                 scscenegraphitem = NSImageView; 
                 scviewitem = NSImageView; 
+                scviewtextfielditem = NSTextField; 
             }; 
             SUPERCLASS = IBPalette; 
         }
