@@ -24,6 +24,8 @@
     [self setZoomButton:0 modifier:NSShiftKeyMask];
     [self setSpinEnabled:YES];
     [self setScrollWheelZoomEnabled:YES];
+    SELF->emulator = [[SCEmulator alloc] init];
+    [SELF->emulator emulateButton:2 usingModifier:NSAlternateKeyMask];
   }
   return self;
 }
@@ -204,6 +206,7 @@
     [coder encodeInt:SELF->zoommodifier forKey:@"SC_zoommodifier"];
     [coder encodeBool:SELF->spinenabled forKey:@"SC_spinenabled"];
     [coder encodeBool:SELF->scrollwheelzoomenabled forKey:@"SC_scrollwheelzoomenabled"];
+    [coder encodeObject:SELF->emulator forKey:@"SC_emulator"];
   }
 }
 
@@ -220,6 +223,7 @@
       SELF->zoommodifier = [coder decodeIntForKey:@"SC_zoommodifier"];
       SELF->spinenabled = [coder decodeBoolForKey:@"SC_spinenabled"];
       SELF->scrollwheelzoomenabled = [coder decodeBoolForKey:@"SC_scrollwheelzoomenabled"];
+      SELF->emulator = [coder decodeObjectForKey:@"SC_emulator"];
     }
   }
   return self;
@@ -232,9 +236,6 @@
 - (void)_SC_commonInit
 {
   SELF = [[SCExaminerHandlerP alloc] init];
-  // FIXME: Archive emulator. kyrah 20040801.
-  SELF->emulator = [[SCEmulator alloc] init];
-  [SELF->emulator emulateButton:2 usingModifier:NSAlternateKeyMask];
 }
 
 - (BOOL)_SC_performActionForEvent:(NSEvent *)event camera:(SCCamera *)camera
