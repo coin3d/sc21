@@ -29,20 +29,15 @@ typedef enum _SCCameraType {
 /*" Initializing an SCCamera "*/
 - (id) initWithSoCamera:(SoCamera *) camera controller:(SCController *) controller;
 
-/*" Switching between orrthographic and perspective mode "*/
+/*" Switching between orthographic and perspective mode "*/
 - (SCCameraType) type;
-- (void) convertToType:(SCCameraType)type;
-- (void) cloneFromPerspectiveCamera:(SoOrthographicCamera *)orthocam;
-- (void) cloneFromOrthographicCamera:(SoPerspectiveCamera *)perspectivecam;
+- (BOOL) convertToType:(SCCameraType)type;
 
 /*" Positioning the camera "*/
 - (void) zoom:(float) delta;
 - (void) reorient:(SbRotation)rot;
 - (void) viewAll;
 - (void) updateClippingPlanes:(SoGroup *)scenegraph;
-
-// internal
-- (void) getCameraCoordinateSystem:(SbMatrix &)matrix inverse:(SbMatrix &)inverse;
 
 /*" Accessors "*/ 
 - (void) setController:(SCController *)ctrl;

@@ -25,8 +25,11 @@
 #import <Inventor/nodes/SoOrthographicCamera.h>
 
 @interface SCCamera (InternalAPI)
-  - (void) _convertToType:(SoType) type;
-  - (SoGroup *) getParentOfNode:(SoNode *)node inSceneGraph:(SoGroup *)root;
+  - (BOOL) _convertToType:(SoType) type;
+  - (void) _getCameraCoordinateSystem:(SbMatrix &)matrix inverse:(SbMatrix &)inverse;
+  - (void) _cloneFromPerspectiveCamera:(SoOrthographicCamera *)orthocam;
+  - (void) _cloneFromOrthographicCamera:(SoPerspectiveCamera *)perspectivecam;
+  - (SoGroup *) _getParentOfNode:(SoNode *)node inSceneGraph:(SoGroup *)root;
 @end
 
 @implementation SCCamera
@@ -98,52 +101,19 @@
 }
 
 
-/*" Initializes orthocam to have the same settings as the current camera.
-    Note: The current camera must be a perspective camera.
- "*/
 
-- (void) cloneFromPerspectiveCamera:(SoOrthographicCamera *)orthocam
-{
-  assert(_camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId()));
-  SoPerspectiveCamera * pcam = (SoPerspectiveCamera *) _camera;
-
-  orthocam->aspectRatio.setValue(pcam->aspectRatio.getValue());
-  orthocam->focalDistance.setValue(pcam->focalDistance.getValue());
-  orthocam->orientation.setValue(pcam->orientation.getValue());
-  orthocam->position.setValue(pcam->position.getValue());
-  orthocam->viewportMapping.setValue(pcam->viewportMapping.getValue());
-  float focaldist = pcam->focalDistance.getValue();
-  orthocam->height = 2.0f * focaldist * (float)tan(pcam->heightAngle.getValue() / 2.0);
-}
-
-
-/*" Initializes perspectivecam to have the same settings as the current camera.
-    Note: The current camera must be an orthographic camera.
- "*/
- 
-- (void) cloneFromOrthographicCamera:(SoPerspectiveCamera *) perspectivecam
-{
-  assert(_camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId()));
-  SoOrthographicCamera * ocam = (SoOrthographicCamera *) _camera;
-
-  perspectivecam->aspectRatio.setValue(ocam->aspectRatio.getValue());
-  perspectivecam->focalDistance.setValue(ocam->focalDistance.getValue());
-  perspectivecam->orientation.setValue(ocam->orientation.getValue());
-  perspectivecam->position.setValue(ocam->position.getValue());
-  perspectivecam->viewportMapping.setValue(ocam->viewportMapping.getValue());
-  float focaldist = ocam->focalDistance.getValue();
-  if (focaldist != 0.0f) {
-    perspectivecam->heightAngle = 2.0f *
-    (float)atan(ocam->height.getValue() / 2.0 / focaldist);
-  }
-  else { // scene empty -> use default value of 45 degrees.
-    perspectivecam->heightAngle = (float)(M_PI / 4.0);
-  }
-}
 
 /*" Converts from perspective to orthographic camera and vice versa.
     Possible values for type are !SCCameraPerspective and
     !SCCameraOrthographic.
+
+    Returns YES if the camera was changed, and NO if there was
+    an error.
+
+    An !SCCameraTypeChangedNotification is posted if the camera
+    has been converted successfully. Note that even if you
+    have an orthographic camera and set it to an orthographic
+    camera, you will trigger this notification.
 
     A new camera of the intended type is created and initialized
     with the values of the current camera. It is then inserted in
@@ -151,20 +121,26 @@
     the #setSoCamera: method.
  "*/
 
-
-- (void) convertToType:(SCCameraType)type
+- (BOOL) convertToType:(SCCameraType)type
 {
+  BOOL ok = NO;
   switch (type) {
     case SCCameraOrthographic:
-      [self _convertToType:SoOrthographicCamera::getClassTypeId()];
+      ok = [self _convertToType:SoOrthographicCamera::getClassTypeId()];
       break;
     case SCCameraPerspective:
-      [self _convertToType:SoPerspectiveCamera::getClassTypeId()];
+      ok =[self _convertToType:SoPerspectiveCamera::getClassTypeId()];
       break;
     default:
       NSLog(@"Unknown camera type.");
       break;
   }
+  if (ok) {
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:SCCameraTypeChangedNotification object:self];
+    return YES;
+  }
+  return NO;
 }
 
 
@@ -256,7 +232,7 @@
 
   _autoclipboxaction->apply(scenegraph);
   xbox =  _autoclipboxaction->getXfBoundingBox();
-  [self getCameraCoordinateSystem:cameramatrix inverse:inverse];
+  [self _getCameraCoordinateSystem:cameramatrix inverse:inverse];
   xbox.transform(inverse);
 
   m.setTranslate(-_camera->position.getValue());
@@ -297,7 +273,7 @@
   if (camera == NULL) return;
 
   if (_controllerhascreatedcamera) { // delete camera if we created it
-    SoGroup * camparent = [self getParentOfNode:_camera
+    SoGroup * camparent = [self _getParentOfNode:_camera
       inSceneGraph:(SoGroup*)[_controller sceneGraph]];
     camparent->removeChild(_camera);
     _controllerhascreatedcamera = NO;
@@ -373,26 +349,6 @@
   _camera->position = focalpt - _camera->focalDistance.getValue() * dir;
 }
 
-/*" Get the camera's object coordinate system. "*/
-
-- (void) getCameraCoordinateSystem: (SbMatrix &)m inverse:(SbMatrix &)inv
-{
-  SoGroup * root = [_controller sceneGraph];
-  SoSearchAction searchaction;
-  SoGetMatrixAction matrixaction(SbViewportRegion(100,100));
-  
-  searchaction.setSearchingAll(TRUE);
-  searchaction.setInterest(SoSearchAction::FIRST);
-  searchaction.setNode(_camera);
-  searchaction.apply(root);
-  m = inv = SbMatrix::identity();
-  if (searchaction.getPath()) {
-    matrixaction.apply(searchaction.getPath());
-    m = matrixaction.getMatrix();
-    inv = matrixaction.getInverse();
-  }
-}
-
 
 // ----------------------- InternalAPI --------------------------
 
@@ -406,7 +362,7 @@
    the #setSoCamera: method.
 */
 
-- (void) _convertToType:(SoType)type
+- (BOOL) _convertToType:(SoType)type
 {
   // FIXME: Maybe a better solution would be to have a switch
   // node containing both a perspective and an orthographic
@@ -414,76 +370,117 @@
   // whichChild, instead of inserting and removing cameras every
   // time we change? kyrah 20030713
 
-  if (_camera == NULL) return;
+  if (_camera == NULL) return NO;
 
   // FIXME: Check how SoQt handles this - maybe it should be possible to
   // change camera type if even the cam is part of user SG? kyrah 20030711
   if (!_controllerhascreatedcamera) {
     NSLog(@"Camera is part of user scenegraph, cannot convert.");
-    return;
+    return NO;
   }
   
   // Don't do anything if camera is already requested type.
+  // Note that we still return YES, since NO would indicate an error
+  // in the conversion.
   BOOL settoperspective = type.isDerivedFrom(SoPerspectiveCamera::getClassTypeId());
   if (([self type] == SCCameraPerspective && settoperspective) ||
-      ([self type] == SCCameraOrthographic && !settoperspective)) return;
+      ([self type] == SCCameraOrthographic && !settoperspective)) return YES;
 
   SoCamera * newcam = (SoCamera *) type.createInstance();
-
   if (settoperspective)
-    [self cloneFromOrthographicCamera:(SoPerspectiveCamera *)newcam];
+    [self _cloneFromOrthographicCamera:(SoPerspectiveCamera *)newcam];
   else
-    [self cloneFromPerspectiveCamera:(SoOrthographicCamera *)newcam];
-
+    [self _cloneFromPerspectiveCamera:(SoOrthographicCamera *)newcam];
 
   // insert into SG
-  SoGroup * camparent = [self getParentOfNode:_camera
+  SoGroup * camparent = [self _getParentOfNode:_camera
                                  inSceneGraph:(SoGroup *)[_controller sceneGraph]];
   camparent->insertChild(newcam, camparent->findChild(_camera));
-
-#if 0
-  // Store the current home position, as it will be implicitly reset
-  // by setCamera().
-  SoOrthographicCamera * homeo = new SoOrthographicCamera;
-  SoPerspectiveCamera * homep = new SoPerspectiveCamera;
-  homeo->ref();
-  homep->ref();
-  homeo->copyContents(PRIVATE(this)->storedortho, FALSE);
-  homep->copyContents(PRIVATE(this)->storedperspective, FALSE);
-#endif
-
+  
   [self setSoCamera:newcam];
   [self setControllerHasCreatedCamera:YES];
-
-#if 0
-  // Restore home position.
-  PRIVATE(this)->storedortho->copyContents(homeo, FALSE);
-  PRIVATE(this)->storedperspective->copyContents(homep, FALSE);
-  homeo->unref();
-  homep->unref();
-#endif
-
-  [[NSNotificationCenter defaultCenter]
-    postNotificationName:SCCameraTypeChangedNotification object:self];
-
+  return YES;
 }
 
-- (SoGroup *) getParentOfNode:(SoNode *)node inSceneGraph:(SoGroup *)root
+/*" Initializes orthocam to have the same settings as the current camera.
+    Note: The current camera must be a perspective camera.
+"*/
+
+- (void) _cloneFromPerspectiveCamera:(SoOrthographicCamera *)orthocam
 {
+  assert(_camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId()));
+  SoPerspectiveCamera * pcam = (SoPerspectiveCamera *) _camera;
+
+  orthocam->aspectRatio.setValue(pcam->aspectRatio.getValue());
+  orthocam->focalDistance.setValue(pcam->focalDistance.getValue());
+  orthocam->orientation.setValue(pcam->orientation.getValue());
+  orthocam->position.setValue(pcam->position.getValue());
+  orthocam->viewportMapping.setValue(pcam->viewportMapping.getValue());
+  float focaldist = pcam->focalDistance.getValue();
+  orthocam->height = 2.0f * focaldist * (float)tan(pcam->heightAngle.getValue() / 2.0);
+}
+
+
+/*" Initializes perspectivecam to have the same settings as the current camera.
+    Note: The current camera must be an orthographic camera.
+"*/
+
+- (void) _cloneFromOrthographicCamera:(SoPerspectiveCamera *) perspectivecam
+{
+  assert(_camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId()));
+  SoOrthographicCamera * ocam = (SoOrthographicCamera *) _camera;
+
+  perspectivecam->aspectRatio.setValue(ocam->aspectRatio.getValue());
+  perspectivecam->focalDistance.setValue(ocam->focalDistance.getValue());
+  perspectivecam->orientation.setValue(ocam->orientation.getValue());
+  perspectivecam->position.setValue(ocam->position.getValue());
+  perspectivecam->viewportMapping.setValue(ocam->viewportMapping.getValue());
+  float focaldist = ocam->focalDistance.getValue();
+  if (focaldist != 0.0f) {
+    perspectivecam->heightAngle = 2.0f *
+    (float)atan(ocam->height.getValue() / 2.0 / focaldist);
+  }
+  else { // scene empty -> use default value of 45 degrees.
+    perspectivecam->heightAngle = (float)(M_PI / 4.0);
+  }
+}
+
+/* Get the camera's object coordinate system. */
+
+- (void) _getCameraCoordinateSystem: (SbMatrix &)m inverse:(SbMatrix &)inv
+{
+  SoGroup * root = [_controller sceneGraph];
+  SoSearchAction searchaction;
+  SoGetMatrixAction matrixaction(SbViewportRegion(100,100));
+
+  searchaction.setSearchingAll(TRUE);
+  searchaction.setInterest(SoSearchAction::FIRST);
+  searchaction.setNode(_camera);
+  searchaction.apply(root);
+  m = inv = SbMatrix::identity();
+  if (searchaction.getPath()) {
+    matrixaction.apply(searchaction.getPath());
+    m = matrixaction.getMatrix();
+    inv = matrixaction.getInverse();
+  }
+}
+
+/* Get the parent node of node */
+
+- (SoGroup *) _getParentOfNode:(SoNode *)node inSceneGraph:(SoGroup *)root
+{
+  if (!node) {
+    NSLog(@"_getParentOfNode called with NULL argument");
+    return NULL;
+  }
   SbBool wassearchingchildren = SoBaseKit::isSearchingChildren();
   SoBaseKit::setSearchingChildren(TRUE);
-  assert(node && root && "getParentOfNode called with NULL argument");
-
   SoSearchAction search;
   search.setSearchingAll(TRUE);
   search.setNode(node);
   search.apply(root);
-
-  // FIXME: Shouldn't I rather just return NULL here? kyrah 20030513
-  assert(search.getPath() && "node not found in scenegraph");
+  if (search.getPath() == NULL) return NULL;
   SoGroup * parent = (SoGroup*) ((SoFullPath *)search.getPath())->getNodeFromTail(1);
-  assert(parent && "couldn't find parent");
-
   SoBaseKit::setSearchingChildren(wassearchingchildren);
   return (SoGroup *)parent;
 }
