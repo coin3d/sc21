@@ -53,11 +53,7 @@
                                         selector:@selector(modeChanged:)
                                         name:SCModeChangedNotification
                                         object:nil];
-
-  // To avoid garbage when no scenegraph is loaded
-  //coincontroller setSceneGraph:new SoSeparator];
 }
-
 
 - (void)modeChanged:(id)sender
 {
@@ -89,9 +85,9 @@
 
 - (IBAction)toggleCameraType:(id)sender
 {
-  [coincontroller
-    setCameraType:([[coincontroller sceneGraph] cameraType] == SCCameraPerspective ? 
-                   SCCameraOrthographic : SCCameraPerspective)];
+  SCCamera * camera = [[coincontroller sceneGraph] camera];
+  [camera convertToType:([camera type] == SCCameraPerspective ? 
+  SCCameraOrthographic : SCCameraPerspective)];
 }
 
 
@@ -99,8 +95,13 @@
 
 - (IBAction)toggleHeadlight:(id)sender
 {
-  // FIXME: Fix this so it works again w/SCScenegraph abstraction. kyrah 20040716
-  //[coincontroller setHeadlightIsOn:([coincontroller headlightIsOn] ? NO : YES)];
+  SoLight * light = [[coincontroller sceneGraph] headlight];
+  if (light) {
+    NSLog(@"Toggling headlight");
+    light->on.setValue(!light->on.getValue());
+  } else {
+    NSLog(@"Tried to toggle headlight, but there is no headlight in scene.");
+  }
 }
 
 // Displays a standard file open dialog. The sender argument is ignored. 
@@ -154,4 +155,13 @@
   return YES;
 }
 
+// SCSceneGraph delegate implementation
+
+#if 0
+- (void)didCreateSuperSceneGraph:(SoSeparator *)superscenegraph
+{
+  // just checking that it works....
+  NSLog(@"Superscenegraph created.");
+}
+#endif
 @end
