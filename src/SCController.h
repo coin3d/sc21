@@ -80,7 +80,6 @@ class SoSceneManager;
 - (SCCameraType)cameraType; // see SCCamera.h for SCCameraType enum
 
 /*" Debugging aids. "*/
-- (NSString *)debugInfo;
 - (BOOL)dumpSceneGraph;
 
 /*" Event handling "*/
