@@ -36,8 +36,8 @@
   Custom cursors used in Sc21. 
 
   These cursors can be used in exactly the same way as other
-  NSCursors, so for instance to set a cursor indicating rotation, you
-  would use !{[[NSCursor arrowCursor] set];}
+  NSCursors. Refer to the NSCursors documentation for information on
+  cursor handling in Cocoa.
 "*/
 
 /*" 
