@@ -50,49 +50,54 @@
 
 @implementation SCSceneGraph
 
-/*" Initializes the receiver, a newly allocated SCSceneGraph instance, with the contents of the file
-    filename. The filename argument may be a full or relative pathname and should include an extension 
-    that identifies the data type in the file. 
-
-    After finishing the initialization, this method returns an initialized object. However, if a valid 
-    Open Inventor scenegraph cannot be read from the specified file, the receiver is freed, and nil is 
-    returned.
+/*" 
+  Initializes the receiver, a newly allocated SCSceneGraph instance,
+  with the contents of the file filename. The filename argument may be
+  a full or relative pathname and should include an extension that
+  identifies the data type in the file.
+  
+  After finishing the initialization, this method returns an
+  initialized object. However, if a valid Open Inventor scenegraph
+  cannot be read from the specified file, the receiver is freed, and
+  nil is returned.
 "*/
 - (id)initWithContentsOfFile:(NSString *)filename
 {
   if (self = [super init]) {
     [self _SC_commonInit];
-    SoSeparator * s = nil;
+    SoSeparator * fileroot = NULL;
     SoInput in;
-    if (!in.openFile([filename cString])) {  
+    if (!in.openFile([filename UTF8String])) {  
       [[NSNotificationCenter defaultCenter]
         postNotificationName:SCCouldNotOpenFileNotification object:self];
       [self release];
+      self = nil;
     } else {
-      s = SoDB::readAll(&in);
-      // Note that this is not strictly necessary, but I consider it bad practice to leave 
-      // the closing of my resources to the destructor... *shrug*, kyrah
-      in.closeFile();      
-      if (s == nil) { 
+      fileroot = SoDB::readAll(&in);
+      // Note that this is not strictly necessary, but I consider it bad 
+      // practice to leave the closing of my resources to the destructor...
+      // *shrug*, kyrah
+      in.closeFile();
+      if (fileroot == NULL) {
         [[NSNotificationCenter defaultCenter]
           postNotificationName:SCCouldNotReadFileNotification object:self];
         [self release];
-        return nil;
+        self = nil;
       } else {
-        [self setRoot:s];
+        [self setRoot:fileroot];
       }
     }
   }
   return self;
 }
 
-/*" Initializes the receiver, a newly allocated SCSceneGraph instance, with 
-    the contents of the URL url. After finishing the initialization, this method 
-    returns an initialized object. However, if a valid Open Inventor scenegraph 
-    cannot be read from the specified file, the receiver is freed, and nil is 
-    returned.
+/*"
+  Initializes the receiver, a newly allocated SCSceneGraph instance,
+  with the contents of the URL url. After finishing the
+  initialization, this method returns an initialized object. However,
+  if a valid Open Inventor scenegraph cannot be read from the
+  specified file, the receiver is freed, and nil is returned.
 "*/
-
 - (id)initWithContentsOfURL:(NSURL *)url
 {
   if (self = [super init]) {
@@ -124,24 +129,26 @@
 
 - (void) dealloc
 {
-  [SELF->camera release]; 
+  [SELF->camera release];
   if (SELF->superscenegraph) { SELF->superscenegraph->unref(); }
   else if (SELF->scenegraph) { SELF->scenegraph->unref(); }
   [SELF release];
 }
 
-/*" Returns the name assigned to the scenegraph, or nil if no name has been assigned. This name 
-    corresponds to the node name of the Open Inventor scenegraph's root node. 
- "*/
-
+/*"
+  Returns the name assigned to the scenegraph, or nil if no name has
+  been assigned. This name corresponds to the node name of the Open
+  Inventor scenegraph's root node.
+  "*/
 - (NSString *)name
 {
   // FIXME: Implement.
   return @"foo";
 }
 
-/*" Registers the receiver under the name specified by name. "*/
-
+/*"
+  Registers the receiver under the name specified by name.
+  "*/
 - (BOOL)setName:(NSString *)name
 {
   // FIXME: Does name have to be unique? (If we want to make it correspond to the saved filename
@@ -151,45 +158,43 @@
   return YES;
 }
 
-/*" Returns the root node in the receiver's Open Inventor scenegraph, or nil if there is no 
-    valid scenegraph. 
- "*/
-
+/*"
+  Returns the root node in the receiver's Open Inventor scenegraph, or
+  NULL if there is no valid scenegraph.
+  "*/
 - (SoSeparator *)root
 {
   return SELF->scenegraph;
 }
 
-/*" Returns the root node in the receiver's _actually rendered_ Open 
-    Inventor scenegraph, or nil if there is no valid scenegraph.
+/*"
+  Returns the root node in the receiver's _actually rendered_ Open
+  Inventor scenegraph, or NULL if there is no valid scenegraph.
 
-    The superscenegraph is a scenegraph created by the system if there is no 
-    camera and/or no light in a scene. The controller default implementation will 
-    in that case add a light/camera and the root node supplied by the user.
+  The superscenegraph is a scenegraph created by the system if there
+  is no camera and/or no light in a scene. The controller default
+  implementation will in that case add a light/camera and the root
+  node supplied by the user.
 "*/
-
 - (SoSeparator *)superSceneGraph
 {
   return SELF->superscenegraph;
 }
 
-/*" Sets the receiver's Coin scenegraph to root. 
+/*"
+  Sets the receiver's Coin scenegraph to root. 
 
-    By default, the internal implementation will check whether root
-    contains at least one light source and one camera. If no light
-    is found, a headlight (i.e. a light following the active camera)
-    will be added. If a camera is found, it will be used as active
-    camera; otherwise, a perspective camera will be added before the 
-    scenegraph.
+  By default, the internal implementation will check whether root
+  contains at least one light source and one camera. If no light is
+  found, a headlight (i.e. a light following the active camera) will
+  be added. If a camera is found, it will be used as active camera;
+  otherwise, a perspective camera will be added before the scenegraph.
 
-    It is possible to supply a delegate to 
- After a scene graph is set, the delegate method -didSetSceneGraph:
- is called with the super scene graph as parameter.
+  After a scene graph is set, the delegate method -didSetSceneGraph:
+  is called with the super scene graph as parameter.
  
- 
-Both the passed and the actual scene graph will be !{ref()}'ed.
- "*/
-
+  Both the passed and the actual scene graph will be !{ref()}'ed.
+"*/
 - (void)setRoot:(SoSeparator *)root
 {
   if (root == NULL) { return; }
@@ -235,7 +240,7 @@ Both the passed and the actual scene graph will be !{ref()}'ed.
   } 
 }
 
-- (void) setSceneManager:(SoSceneManager *)scenemanager
+- (void)setSceneManager:(SoSceneManager *)scenemanager
 {
   SELF->scenemanager = scenemanager;
 }
@@ -245,14 +250,14 @@ Both the passed and the actual scene graph will be !{ref()}'ed.
   return SELF->scenemanager;
 }
 
-/*" Sets the SoCamera used for viewing the scene to cam.
-    It is first checked if the scenegraph contains a camera created by
-    the controller, and if yes, this camera is deleted.
+/*"
+  Sets the SoCamera used for viewing the scene to cam. It is first
+  checked if the scenegraph contains a camera created by the
+  controller, and if yes, this camera is deleted.
 
-    Note that cam is expected to be part of the scenegraph already;
-    it is not inserted into it.
+  Note that cam is expected to be part of the scenegraph already; it
+  is not inserted into it.
 "*/
-
 - (SCCamera *)camera
 {
   return SELF->camera; 
@@ -290,7 +295,7 @@ Both the passed and the actual scene graph will be !{ref()}'ed.
 /*" Returns !{YES} if a light was added in the superscenegraph,
     and !{NO} otherwise.
 "*/
-- (BOOL) hasAddedLight
+- (BOOL)hasAddedLight
 {
   return SELF->addedlight;
 }
