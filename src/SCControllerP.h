@@ -50,6 +50,7 @@
 @interface SCController (InternalAPI)
 - (void)_SC_commonInit;
 - (void)_SC_timerQueueTimerFired:(NSTimer *)t;
+- (void)_SC_idle:(NSNotification *)notification;
 - (void)_SC_sensorQueueChanged;
 - (SoLight *)_SC_findLightInSceneGraph:(SoGroup *)root;
 - (SoCamera *)_SC_findCameraInSceneGraph:(SoGroup *)root;
