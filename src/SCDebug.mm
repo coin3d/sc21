@@ -40,6 +40,7 @@
 
 @implementation SCDebug
 
+/*" Returns a human-readable string for the renderer name "*/
 + (NSString *)descriptionForRendererID:(int)rendererID
 {
   NSString *renderer = nil;
@@ -83,6 +84,10 @@
   }
   return renderer;
 }
+
+/*" Returns a string describing the OpenGL capabilities of the current 
+    OpenGL context. 
+ "*/
 
 + (NSString *)openGLInfo
 {
