@@ -209,6 +209,7 @@ Used by subclassers to initialize OpenGL state. This function is called
     SELF->openGLContext = 
       [[NSOpenGLContext alloc] initWithFormat:[format pixelFormat]
                                shareContext:nil];
+    SELF->contextisprepared = NO;
   }
   return SELF->openGLContext;
 }
@@ -227,6 +228,7 @@ Used by subclassers to initialize OpenGL state. This function is called
   [context retain];
   [self clearGLContext];
   SELF->openGLContext = context;
+  SELF->contextisprepared = NO;
 }
 
 #pragma mark --- drawing and updating --- 
@@ -279,7 +281,6 @@ Used by subclassers to initialize OpenGL state. This function is called
 {
   // SC21_DEBUG(@"SCOpenGLView.lockFocus");
 
-  NSOpenGLContext * oldcontext = SELF->openGLContext;
   NSOpenGLContext * context = [self openGLContext];
   [super lockFocus];
   
@@ -294,9 +295,10 @@ Used by subclassers to initialize OpenGL state. This function is called
   //   under Jaguar and running under Panther? If not, we should
   //   probably not use prepareOpenGL at all, but a similar method
   //   that will work with both OS versions. (kintel 20040615)
-  if (oldcontext != context &&
+  if (!SELF->contextisprepared &&
       floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_2) {
     [self prepareOpenGL];
+    SELF->contextisprepared = YES;
   }
 }
 

@@ -32,6 +32,7 @@
  @public
   NSOpenGLContext * openGLContext;
   SCOpenGLPixelFormat * pixelformat;
+  BOOL contextisprepared;
 }
 @end
 
