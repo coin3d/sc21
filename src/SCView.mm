@@ -46,26 +46,25 @@
 
 // ----------------- initialization and cleanup ----------------------
 
-// A note on Interface Builder archive initialization order
-// (from the NSNibAwaking protocol documentation):
-//
-//   1. initWithCoder:
-//   2. initialization with properties specified in IB (using
-//      setVariable:)
-//   3. awakeFromNib:
-//
-// When an object receives an awakeFromNib message, it's guaranteed
-// to have all its outlet instance variables set -- so don't try to
-// messages to other objects in the archive in init: 
-
 + (void)initialize
 {
+  // The version is set to 1 to be able to distinguish between objects
+  // created with the public beta (version=0) and newer objects.
+  // FIXME; It is expected that we'll stop supporting the public beta
+  // from SC21 V1.0.1 and versioning is probably not needed later since
+  // we only support keyed archiving.
   [SCView setVersion:1];
 }
 
 /*"
   Designated initializer.
- "*/
+
+  Initializes a newly allocated SCView with rect as its frame
+  rectangle. Sets up an OpenGL context with the given pixel format.
+  The format parameter is passed on to its superclass.
+
+  Calls #commonInit.
+  "*/
 - (id)initWithFrame:(NSRect)rect pixelFormat:(SCOpenGLPixelFormat *)format
 {
   if (self = [super initWithFrame:rect pixelFormat:format]) {
@@ -79,51 +78,25 @@
   
 }
 
-/*" Initializes a newly allocated SCView with rect as its frame
-    rectangle. Sets up an OpenGL context with default values
-    32 bit color and 32 bit depth buffer. Override the
-    #{createPixelFormat:} method if you need to set custom
-    NSOpenGLPixelFormat settings.
-
-    If no valid pixel format could be created, an
-    %SCCouldNotCreateValidPixelFormatNotification is posted,
-    the object is deallocated, and !{nil} is returned.
-
-    Calls #commonInit, which contains common initialization
-    code needed both in #initWithFrame: and #initWithCoder.
- "*/
-
+/*"
+  Initializer. Equivalent to calling [self initWithFrame:rect format:nil].
+  "*/
 - (id)initWithFrame:(NSRect)rect
 {
-  NSLog(@"SCView.initWithFrame:");
-
-  SCOpenGLPixelFormat * pixelFormat = [self createPixelFormat:rect];
-  return [self initWithFrame:rect pixelFormat:pixelFormat];
+  return [self initWithFrame:rect pixelFormat:nil];
 }
 
 
-/*" Shared initialization code that is called both from #init:
-    and #initWithCoder: If you override this method, you must
-    call !{[super commonInit]} as the first call in your
-    implementation to make sure everything is set up properly.
-"*/
+/*" Shared initialization code that is called both from 
+  #initWithFrame:pixelFormat and #initWithCoder: If you override this method, 
+  you must call !{[super commonInit]} as the first call in your
+  implementation to make sure everything is set up properly.
 
+  FIXME: Not needed anymore? (kintel 20040502)
+"*/
 - (void)commonInit
 {
 }
-
-
-/*" Recreates the OpenGL context if the settings have been changed
-    from within Interface builder. Called after the object has been 
-    loaded from an Interface Builder archive or nib file. 
- "*/
-
-- (void)awakeFromNib
-{
-  NSLog(@"SCView.awakeFromNib");
-  [self recreateOpenGLContext];
-}
-
 
 - (void)dealloc
 {
@@ -159,77 +132,11 @@
 }
 
 
-// ------------------------- OpenGL setup ---------------------------
-
-/*" Recreate OpenGL context with the current settings. Returns
-    !{TRUE} if the reinitialization was successful, and !{FALSE}
-    if any error occured.
-
-    This method is invoked whenever the color or depth buffer
-    settings are changed through the #{setColorBits:} or
-    #{setDepthBits:} methods. To change these settings without
-    immediately recreating the context, call
-    #{setColorBitsNoRecreate:} or #{setDepthBitsNoRecreate:}
-    instead.
- "*/
-//FIXME: This method should be removed from SCView. context issues should
-//be handled by SCOpenGLView.
-- (BOOL)recreateOpenGLContext
-{
-  // FIXME: Shouldn't we inform Coin about the context change?
-  // Test with textures and display lists! kyrah 20030616
-    
-  BOOL success = FALSE;
-  SCOpenGLPixelFormat * pixelFormat;
-  NSOpenGLContext * newContext;
-  success = NO;
-
-  [[self openGLContext] clearDrawable];
-  
-  pixelFormat = [self createPixelFormat:[self frame]];
-  if (pixelFormat) {
-    newContext = [[[NSOpenGLContext alloc] initWithFormat:[pixelFormat pixelFormat] shareContext:nil] autorelease];
-    if (newContext) {
-      const long int vals[1] = {1};
-      [super setFrame:[self frame]];
-      [super setOpenGLContext:newContext];
-      // flush buffer only during the vertical retrace of the monitor
-      [newContext setValues:vals forParameter:NSOpenGLCPSwapInterval];
-      [newContext makeCurrentContext];
-      success = TRUE;
-    }
-  }
-  [self setNeedsDisplay:YES];
-  return success;
-}
-
-/*" Returns a double buffered, accelerated pixel format. The 
-    colordepth and depth are the current values as set by
-    #setColorBits: and #setDepthBits: (or #setColorBitsNoRecreate: 
-    and #setDepthBitsNoRecreate:) respectively. Override this
-    method if you need specific settings.
- "*/
- 
-- (SCOpenGLPixelFormat *)createPixelFormat:(NSRect)frame
-{
-  SCOpenGLPixelFormat *pixelFormat = [[SCOpenGLPixelFormat alloc] init];
-  [pixelFormat setAttribute:NSOpenGLPFADoubleBuffer];
-  [pixelFormat setAttribute:NSOpenGLPFAAccelerated];
-  [pixelFormat setAttribute:NSOpenGLPFAAccumSize toValue:32];
-  [pixelFormat setAttribute:NSOpenGLPFAColorSize toValue:32];
-  [pixelFormat setAttribute:NSOpenGLPFAAlphaSize toValue:8];
-  [pixelFormat setAttribute:NSOpenGLPFADepthSize toValue:32];
-  [pixelFormat autorelease];
-  return pixelFormat;
-}
-
-
 // ------------------ viewing and drawing --------------------------------
 
 /*" Renders the current scene graph into frame rectangle rect by
     setting the OpenGL state (enable lighting and z buffering)
     and then calling SCController's #render: method.
-
 "*/
 
 - (void)drawRect:(NSRect)rect
@@ -257,7 +164,7 @@
 
 // ----------- Mouse and keyboard event handling --------------------------
 
-/*" Forwards event to %controller by sending it the #handleEvent:
+/*" Forwards event to %controller by sending it the #handleEvent:inView:
     message.  If the event is not handled by the controller, it will
     be forwarded through the responder chain as usual.
 
@@ -278,7 +185,7 @@
 }
 
 
-/*" Forwards event to %controller by sending it the #handleEvent:
+/*" Forwards event to %controller by sending it the #handleEvent:inView:
     message.  If the event is not handled by the controller, it will
     be forwarded through the responder chain as usual. 
  "*/
@@ -291,7 +198,7 @@
 }
 
 
-/*" Forwards event to %controller by sending it the #handleEvent: 
+/*" Forwards event to %controller by sending it the #handleEvent:inView: 
     message. If the event is not handled by the controller, it will
     be forwarded through the responder chain as usual.
 
@@ -309,9 +216,14 @@
 }
 
 
-/*" Forwards event to %controller by sending it the #handleEvent: 
+/*" Forwards event to %controller by sending it the #handleEvent:inView: 
     message. If the event is not handled by the controller, it will
     be forwarded through the responder chain as usual.
+
+    FIXME: Unhandled right-clicks will usually result in NSView displaying
+    a context menu. In this case, the corresponding rightMouseUp: will
+    never reach us but be sent to the context menu. This might confuse
+    any state machines implemented in the controller (kintel 20040502).
  "*/
 
 - (void)rightMouseDown:(NSEvent *)event
@@ -322,7 +234,7 @@
 }
 
 
-/*" Forwards event to %controller by sending it the #handleEvent: 
+/*" Forwards event to %controller by sending it the #handleEvent:inView: 
     message. If the event is not handled by the controller, it will
     be forwarded through the responder chain as usual.
  "*/
@@ -334,7 +246,7 @@
   }
 }
 
-/*" Forwards event to %controller by sending it the #handleEvent: 
+/*" Forwards event to %controller by sending it the #handleEvent:inView: 
     message. If the event is not handled by the controller, it will
     be forwarded through the responder chain as usual.
 
@@ -352,7 +264,7 @@
 }
 
 
-/*" Forwards event to %controller by sending it the #handleEvent: 
+/*" Forwards event to %controller by sending it the #handleEvent:inView: 
     message.  If the event is not handled by the controller, it will
     be forwarded through the responder chain as usual 
  "*/
@@ -365,7 +277,7 @@
 }
 
 
-/*" Forwards event to %controller by sending it the #handleEvent: 
+/*" Forwards event to %controller by sending it the #handleEvent:inView: 
     message.  If the event is not handled by the controller, it will
     be forwarded through the responder chain as usual. 
  "*/
@@ -378,7 +290,7 @@
 }
 
 
-/*" Forwards event to %controller by sending it the #handleEvent: 
+/*" Forwards event to %controller by sending it the #handleEvent:inView: 
     message. If the event is not handled by the controller, it will
     be forwarded through the responder chain as usual.
 
@@ -395,7 +307,7 @@
   }
 }
 
-/*" Forwards event to %controller by sending it the #handleEvent: 
+/*" Forwards event to %controller by sending it the #handleEvent:inView: 
     message.  If the event is not handled by the controller, it will
     be forwarded through the responder chain as usual.
  "*/
@@ -408,7 +320,7 @@
 }
 
 
-/*" Forwards event to %controller by sending it the #handleEvent:
+/*" Forwards event to %controller by sending it the #handleEvent:InView:
     message.  If the event is not handled by the controller, it will
     be forwarded through the responder chain as usual.
  "*/
@@ -421,7 +333,7 @@
 }
 
 
-/*" Forwards event to %controller by sending it the #handleEvent:
+/*" Forwards event to %controller by sending it the #handleEvent:inView:
     message.  If the event is not handled by the controller, it will
     be forwarded through the responder chain as usual.
  "*/
@@ -457,8 +369,6 @@
 
 
 // ----------------------- NSCoding -------------------------
-// FIXME: Rewrite to use keyed archiving (kintel 20030324)
-// FIXME: Also support old 10.1 style archiving? (kintel 20030324)
 
 /*" Encodes the SCView using encoder coder "*/
 
@@ -529,30 +439,6 @@
   if ([coder versionForClassName:@"SCView"] == 0) {
     _oldview = [[NSOpenGLView alloc] initWithCoder:coder];
     return self;
-#if 0 
-    // Old try that didn't work. Keep here until we know that the
-    // new code works.
-    NSOpenGLView * oldview = 
-      [[[NSOpenGLView alloc] initWithCoder:coder] autorelease];
-
-    if (oldview) {
-      // Enable initialization of an NSView from a coder also containing
-      // an NSOpenGLView without having to initialize the NSOpenGLView
-      NSData * data = [NSArchiver archivedDataWithRootObject:oldview];
-      NSCoder * oldcoder = 
-        [[[NSUnarchiver alloc] initForReadingWithData:data] autorelease];
-      if (self = [self _compatInitWithCoder:oldcoder]) {
-        int colorbits, depthbits;
-        [coder decodeValueOfObjCType:@encode(int) at:&colorbits];
-        [coder decodeValueOfObjCType:@encode(int) at:&depthbits];
-        NSLog(@"  colorbits: %d, depthbits: %d", colorbits, depthbits);
-        //FIXME: Convert to new scheme:
-        // colorbits, depthbits, pixel format attributes, hidden
-        // (kintel 20040404)
-        [self initWithFrame:[self frame]];
-      }
-    }
-#endif
   }
   else if (self = [super initWithCoder:coder]) {
     [self commonInit];

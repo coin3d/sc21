@@ -44,7 +44,6 @@
 - (id)initWithFrame:(NSRect)rect pixelFormat:(SCOpenGLPixelFormat *)format;
 - (id)initWithFrame:(NSRect)rect;
 - (void)commonInit;
-- (void)awakeFromNib;
 
 /*" Accessing the SCController. "*/
 - (SCController *)controller;
@@ -53,10 +52,6 @@
 /*" Drawing, viewing, and view-dependant calculations "*/
 - (void)drawRect:(NSRect)rect;
 - (void)reshape;
-
-/*" OpenGL setup "*/
-- (BOOL)recreateOpenGLContext;
-- (SCOpenGLPixelFormat *)createPixelFormat:(NSRect)frame;
 
 /*" Event handling "*/
 - (void)mouseDown:(NSEvent *)event;
@@ -78,13 +73,3 @@
 - (void)setCursor:(NSCursor *)cursor;
 
 @end
-
-/*" Posted if no valid pixel format could be created. Typically, this
-    would happen in #initWithFrame:, in which case !{nil} is returned
-    by the initializer. You can use this notification as some kind of
-    informal error reporting, and try to recreate a view with a
-    different pixel format when this happens.
- "*/
-
-extern NSString * SCCouldNotCreateValidPixelFormatNotification;
-
