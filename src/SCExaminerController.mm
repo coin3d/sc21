@@ -207,7 +207,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 {
   if (_headlight == NULL) return;
   _headlight-> on = yn ? TRUE : FALSE;
-
+  
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCHeadlightChangedNotification object:self];
 }
@@ -518,11 +518,9 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 - (void) _handleLighting
 {
-  if (![self findLightInSceneGraph:_scenegraph]) {
-    NSLog(@"No light found, Turning headlight on.");
+  if (![self findLightInSceneGraph:_userscenegraph]) {
     [self setHeadlightIsOn:YES];
   } else {
-    NSLog(@"Turning headlight on.");
     [self setHeadlightIsOn:NO];
   }
 }
