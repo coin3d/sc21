@@ -34,7 +34,8 @@
   SoSeparator * superscenegraph;
   SoSceneManager * scenemanager;
   SoDirectionalLight * headlight;  
-  BOOL addedlight, addedcamera;
+  BOOL addedlight;
+  BOOL addedcamera;
 }
 @end
 
