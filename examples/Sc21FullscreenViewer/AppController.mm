@@ -253,6 +253,9 @@
           stayInFullScreenMode = NO;
           handled = YES;
         }
+        else if (c == 'q' && ([event modifierFlags] & NSCommandKeyMask)) {
+          [NSApp terminate:self];
+        }
         break;
       default:
         break;
@@ -270,10 +273,8 @@
     // to give jerky movement though. kintel 20040728
 
 #if 0 // force constant rerendering
-    //     [self display];
-
+    [self display];
 #else  // Trigger delivery of idle notifications
-    
     NSNotification * notification = 
       [NSNotification notificationWithName:@"_SCIdleNotification" object:nil];
     [[NSNotificationQueue defaultQueue] 
