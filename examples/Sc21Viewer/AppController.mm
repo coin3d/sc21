@@ -28,6 +28,8 @@
 #import "AppController.h"
 #import <Sc21/Sc21.h>
 #import <Sc21/SCDebug.h>
+#import <Sc21/SCExaminerHandler.h>
+#import <Sc21/SCFlyHandler.h>
 #import <Inventor/SoInput.h>
 #import <Inventor/nodes/SoSeparator.h>
 #import <Inventor/SoSceneManager.h>
@@ -53,6 +55,9 @@
                                         selector:@selector(modeChanged:)
                                         name:SCModeChangedNotification
                                         object:nil];
+
+  [self->coincontroller setEventHandler:[[[SCExaminerHandler alloc] init] autorelease]];
+//   [self->coincontroller setEventHandler:[[[SCFlyHandler alloc] init] autorelease]];
 }
 
 - (void)modeChanged:(id)sender
