@@ -49,9 +49,14 @@
 
 @implementation SCCoinHandler
 
-/*" SCCoinHandler takes incoming NSEvents, converts them to SoEvents,
-    and sends them to the Coin scenegraph. SCCoinHandler does not
-    implement !{update:}
+/*" 
+
+  An SCCoinHandler takes incoming NSEvents, converts them to SoEvents,
+  and sends them to the Coin scenegraph. 
+
+  SCCoinHandler does not override the !{update:} method (i.e. it
+  inherits SCEventHandler's default implementation, which does
+  nothing.)
 "*/
 
 - (id)init
@@ -70,9 +75,6 @@
 }
 
 /*" 
-
-  Overriden from SCEventHandler. 
-
   Converts the NSEvent event to an SoEvent and sends it to the Coin
   scenegraph by calling the SoSceneManager's !{processEvent()} method.
 

@@ -45,9 +45,6 @@
   id delegate;
 }
 
-/*" Initializing an SCCamera "*/
-- (id)init;
-
 /*" Positioning the camera "*/
 - (void)reorient:(SbRotation)rot;
 - (void)translate:(SbVec3f)v;
@@ -63,12 +60,11 @@
 - (void)setSoCamera:(SoCamera *)newcamera;
 - (SoCamera *)soCamera;
 
-  /*" Delegate handling. "*/
+  /*" Delegate handling "*/
 - (void)setDelegate:(id)newdelegate;
 - (id)delegate;
 @end
 
-//   SbVec2f myfunc(void * data, const SbVec2f & nearfar);
 @interface NSObject (SCCameraDelegate)
 - (void)adjustNearClippingPlane:(float *)near 
   farClippingPlane:(float *)far;

@@ -50,23 +50,23 @@
 @implementation SCCamera
 
 /*" 
-  An SCCamera encapsulates an !{SoCamera}. The purpose of this
+  An SCCamera encapsulates an SoCamera. The purpose of this
   abstraction is to provide convenience methods for moving and
   reorienting the camera and for adjusting the clipping planes to
   optimize z buffer usage.
+
+  In a typical Sc21 application, you will never need to create an
+  SCCamera yourself, since SCSceneGraph automatically initializes
+  one. Use SCSceneGraph's !{camera:} method to access that SCCamera.
+
 "*/
 
 #pragma mark --- initialization and cleanup ---
 
 /*" 
-  Initializes a newly allocated SCCamera.
+  Initializes a newly allocated SCCamera. This method is the
+  designated initializer for the SCCamera class. Returns !{self}.
 
-  This method is the designated initializer for the SCCamera
-  class. Returns !{self}.
-
-  You will probably never need to use this method, since
-  !{SCSceneGraph} automatically creates and initializes an SCCamera,
-  which never changes.
 "*/
 
 - (id)init
@@ -90,9 +90,9 @@
 #pragma mark --- positioning the camera ---
 
 /*" 
-  Reorients the camera by rot. Note that this does not replace the previous 
-  values but is accumulative: rot will be multiplied together with the 
-  previous orientation.
+  Reorients the receiver's SoCamera camera by rot. Note that this does
+  not replace the previous values but is accumulative: rot will be
+  multiplied together with the previous orientation.
 "*/
 
 - (void)reorient:(SbRotation)rot
@@ -114,10 +114,9 @@
 }
 
 /*"
-  Translate camera relative to its own coordinate system.
- 
-  In its own coordinate system, the camera is pointing in negative Z
-  direction with the Y axis being up.
+  Translates the receiver's SoCamera relative to its own coordinate
+  system.(In its own coordinate system, the camera is pointing in
+  negative Z direction with the Y axis being up.)
 "*/
 
 - (void)translate:(SbVec3f)v
@@ -132,7 +131,7 @@
 }
 
 /*" 
-  Zoom in if delta is > 0, else zoom out. 
+  Zooms in if delta is > 0, else zoom out. 
 "*/
 
 - (void)zoom:(float)delta
@@ -176,7 +175,7 @@
 }
 
 /*" 
-  Position the camera so that we can see the whole scene. 
+  Positions the receiver's SoCamera so the whole scene is visible. 
 "*/
 
 - (void)viewAll:(SCSceneGraph *)sceneGraph
@@ -190,7 +189,7 @@
 
 
 /*" 
-  Position the near and far clipping planes just in front of and
+  Positions the near and far clipping planes just in front of and
   behind the scene's bounding box to optimize depth buffer usage.
 
   If present, the delegate method
@@ -297,7 +296,7 @@
 }
 
 /*" 
-  Returns !{YES} if the SCCamera automatically updates the clipping
+  Returns !{YES} if the receiver automatically updates the clipping
   planes to optimzie z-buffer usage, and !{NO} otherwise. 
   The default is !{YES}
 "*/
@@ -308,7 +307,7 @@
 }
 
 /*" 
-  Set whether the SCCamera should automatically updates the clipping
+  Sets whether the receiver should automatically update the clipping
   planes to optimzie z-buffer usage. The default is !{YES}.
 "*/
 
@@ -321,8 +320,7 @@
 
 
 /*" 
-  Sets the actual Coin camera  to newcamera. 
-  Note that newcamera is expected to be part of the scenegraph.
+  Sets the receiver's SoCamera to newcamera. 
 "*/
 
 - (void)setSoCamera:(SoCamera *)newcamera 
@@ -334,7 +332,7 @@
 }
 
 
-/*" Returns the actual Coin camera. "*/
+/*" Returns the receiver's SoCamera. "*/
 
 - (SoCamera *)soCamera
 {
