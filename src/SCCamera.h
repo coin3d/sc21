@@ -40,7 +40,6 @@
 /*" Possible camera types in the scene graph.
     !{SCCameraPerspective} describes an !{SoPerspectiveCamera},
     and !{SCCameraOrthographic} means an !{SoOrthographicCamera}.
-    All other camera types are currently !{SCCameraUnknown}.
  "*/
 
 typedef enum _SCCameraType {
@@ -54,6 +53,8 @@ typedef enum _SCCameraType {
 {
  @protected
   SCCameraP * _sc_camera;
+ @private
+  id delegate;
 }
 
 /*" Initializing an SCCamera "*/
@@ -64,14 +65,26 @@ typedef enum _SCCameraType {
 - (void)translate:(SbVec3f)v;
 - (void)zoom:(float)delta;
 - (void)viewAll:(SCSceneGraph *)scenegraph;
+
+/*" Adjusting the clipping planes "*/
 - (void)updateClippingPlanes:(SCSceneGraph *)scenegraph;
+- (BOOL)updatesClippingPlanes;
+- (void)setUpdatesClippingPlanes:(BOOL)yn;
 
 /*" Accessors "*/ 
 - (SCCameraType)type;
 - (void)setSoCamera:(SoCamera *)camera;
 - (SoCamera *)soCamera;
-- (void)setAutoClipValue:(float)autoclipvalue;
-- (float)autoClipValue;
+
+  /*" Delegate handling. "*/
+- (void)setDelegate:(id)newdelegate;
+- (id)delegate;
+@end
+
+//   SbVec2f myfunc(void * data, const SbVec2f & nearfar);
+@interface NSObject (SCCameraDelegate)
+- (void)adjustNearClippingPlane:(float *)near 
+  farClippingPlane:(float *)far;
 @end
 
 /*" Posted whenever the camera has been repositioned so that
@@ -79,8 +92,6 @@ typedef enum _SCCameraType {
 "*/
 SC21_EXTERN NSString * SCViewAllNotification;
 
-/*" Posted whenever the camera type has been changed, i.e.
-    when the camera has been from orthographic to perspective
-    or vice versa.
+/*" Posted whenever the camera type has been changed.
 "*/
 SC21_EXTERN NSString * SCCameraTypeChangedNotification;

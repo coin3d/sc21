@@ -36,7 +36,7 @@
 {
   SoCamera * camera;
   SoGetBoundingBoxAction * autoclipboxaction;
-  float autoclipvalue;
+  BOOL updatesclippingplanes;
 }
 @end
 

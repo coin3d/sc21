@@ -69,7 +69,6 @@
 {
   if (self = [super init]) {
     [self _SC_commonInit];
-    SELF->autoclipvalue = 0.6;
   }
   return self;
 }
@@ -183,65 +182,130 @@ Translate camera relative to its own coordinate system.
 }
 
 
-/*" Updates the near and far clipping plane to optimize depth buffer usage
-    (the greater the ratio far/near, the less effective the depth buffer).
- "*/
+/*" 
+
+  Position the near and far clipping planes just in front of and
+  behind the scene's bounding box to optimize depth buffer usage.
+
+  If present, the delegate method
+  !{adjustNearClippingPlane:farClippingPlane:} will be called with the
+  internally calculated near and far clipping plane values to allow
+  for final fine-tuning. (See the NSObject(SCCameraDelegate)
+  documentation for more information.)
+
+  You can set !{updatesClippingPlanes} to !{NO} to disable automatic
+  clipping plane adjustment. In this case, the delegate method
+  !{adjustNearClippingPlane:farClippingPlane:} (if present) will be
+  called with the current (unmodified) near and far clipping plane
+  values, allowing you to do your own custom modifications.
+"*/
  
 - (void)updateClippingPlanes:(SCSceneGraph *)sceneGraph
 {
-  // FIXME: Need autoclipcb callback function? Investigate.
-  // kyrah 20030509
-  // Update 20030621: Use notification instead!
-  
-  SbMatrix cameramatrix, inverse, m;
-  SbXfBox3f xbox;
-  SbBox3f box;
-  const float SLACK = 0.001f;
-
   if (SELF->camera == NULL) return;
-
-  // Important note: Applying an SoGetBoundingBoxAction here
-  // is also important for caching, since applying a getBoundingBox
-  // action to the SG creates a valid bounding box cache, needed
-  // for caching. kyrah 20030622
-
   assert ([sceneGraph _SC_sceneManager]);
-  
-  SbViewportRegion viewport = [sceneGraph _SC_sceneManager]->getViewportRegion();
+
+  // Temporarily turn off notification when changing near and far
+  // clipping planes, to avoid latency.
+  const SbBool wasnotifyenabled = SELF->camera->isNotifyEnabled();
+  SELF->camera->enableNotify(FALSE);
+
+  // Important note: Applying an SoGetBoundingBoxAction here is also
+  // important for culling, since applying a getBoundingBox action to
+  // the SG creates a valid bounding box cache. Thus we do this even
+  // if the actual updating of clipping planes is disabled. 
+  SbViewportRegion viewport = 
+    [sceneGraph _SC_sceneManager]->getViewportRegion();
   if (SELF->autoclipboxaction == NULL) {
-    SELF->autoclipboxaction = new 
-    SoGetBoundingBoxAction(viewport);
-  } else { 
+    SELF->autoclipboxaction = new SoGetBoundingBoxAction(viewport);
+  } else {
     SELF->autoclipboxaction->setViewportRegion(viewport);
   }
-  
   SELF->autoclipboxaction->apply([sceneGraph _SC_superSceneGraph]);
-  xbox =  SELF->autoclipboxaction->getXfBoundingBox();
-  [self _SC_getCoordinateSystem:cameramatrix inverse:inverse 
-    inSceneGraph:sceneGraph];
-  xbox.transform(inverse);
 
-  m.setTranslate(-SELF->camera->position.getValue());
-  xbox.transform(m);
-  m = SELF->camera->orientation.getValue().inverse();
-  xbox.transform(m);
-  box = xbox.project();
+  if (SELF->updatesclippingplanes) {
 
-  // Flip the box. (The bounding box was calculated in camera space,
-  // with the camera pointing in (0,0,-1) direction from origo).
-  float nearval = -box.getMax()[2];
-  float farval = -box.getMin()[2];
+    SbXfBox3f xbox =  SELF->autoclipboxaction->getXfBoundingBox();
 
-  if (farval <= 0.0f) return; 	// scene completely behind us
+    SbMatrix cameramatrix, inverse;
+    [self _SC_getCoordinateSystem:cameramatrix inverse:inverse 
+      inSceneGraph:sceneGraph];
+    xbox.transform(inverse);
+  
+    SbMatrix m;
+    m.setTranslate(-SELF->camera->position.getValue());
+    xbox.transform(m);
+    m = SELF->camera->orientation.getValue().inverse();
+    xbox.transform(m);
+    SbBox3f box = xbox.project();
+    
+    // Flip the box. (The bounding box was calculated in camera space,
+    // with the camera pointing in (0,0,-1) direction from origo).
+    float nearval = -box.getMax()[2];
+    float farval = -box.getMin()[2];
+    
+    if (farval <= 0.0f) return; 	// scene completely behind us
+    
+    nearval = [self _SC_bestValueForNearPlane:nearval farPlane:farval];
+    
+    // Add some slack around bounding box in case the scene fits exactly
+    // inside it, to avoid artifacts like the near clipping plane cutting
+    // into the model's corners when it is rotated.
+    const float SLACK = 0.001f;
+    nearval *= (1.0f - SLACK);
+    farval *= (1.0f + SLACK);
+    
+    // let the delegate method adjust the values calculated internally
+    if (self->delegate) {
+      if ([self->delegate respondsToSelector:
+           @selector(adjustNearClippingPlane:farClippingPlane:)]) {
+        
+        [self->delegate adjustNearClippingPlane:&nearval 
+         farClippingPlane:&farval];
+      }
+    }
+    
+    SELF->camera->nearDistance = nearval;
+    SELF->camera->farDistance = farval;
 
-  // Disallow negative and very small near clipping plane distance
-  nearval = [self _SC_bestValueForNearPlane:nearval farPlane:farval];
+  } else {
+    // Do not do any internal calculations, but let the user-supplied
+    // delegate method do the adjustment.
+    if (self->delegate && [self->delegate respondsToSelector:
+        @selector(adjustNearClippingPlane:farClippingPlane:)]) {     
 
-  // Add some slack around bounding box in case the scene fits exactly
-  // inside it, to avoid artifacts like the near clipping plane cutting
-  // into the model's corners when it is rotated.
-  SELF->camera->nearDistance = nearval * (1.0f - SLACK);
-  SELF->camera->farDistance = farval * (1.0f + SLACK);
+        float nearval = SELF->camera->nearDistance.getValue();
+        float farval = SELF->camera->farDistance.getValue();
+        [self->delegate adjustNearClippingPlane:&nearval 
+                        farClippingPlane:&farval];
+        SELF->camera->nearDistance = nearval;
+        SELF->camera->farDistance = farval;
+    }
+  }
+
+  // Restore camera's notification settings.
+  SELF->camera->enableNotify(wasnotifyenabled);
+}
+
+/*" 
+  Returns !{YES} if the SCCamera automatically updates the clipping
+  planes to optimzie z-buffer usage, and !{NO} otherwise. 
+  The default is !{YES}
+"*/
+
+- (BOOL)updatesClippingPlanes
+{
+  return SELF->updatesclippingplanes;
+}
+
+/*" 
+  Set whether the SCCamera should automatically updates the clipping
+  planes to optimzie z-buffer usage. The default is !{YES}.
+"*/
+
+- (void)setUpdatesClippingPlanes:(BOOL)yn
+{
+  SELF->updatesclippingplanes = yn;
 }
 
 #pragma mark --- accessor methods ---
@@ -296,21 +360,22 @@ Translate camera relative to its own coordinate system.
   return SELF->camera; 
 }
 
-// FIXME: Do we really need this? I mean, it's a very internal
-// implementation detail... I doubt that anybody can make sense 
-// from this... kyrah 20040717
+#pragma mark --- delegate handling ---
 
-- (void)setAutoClipValue:(float)autoclipvalue
+/*" Makes newdelegate the receiver's delegate. "*/
+
+- (void)setDelegate:(id)newdelegate
 {
-  SELF->autoclipvalue = autoclipvalue;
+  self->delegate = newdelegate;
 }
 
-/*" Returns the current autoclipvalue. The default value is 0.6. "*/
+/*" Returns the receiver's delegate. "*/
 
-- (float)autoClipValue
+- (id)delegate
 {
-  return SELF->autoclipvalue;
+  return self->delegate;
 }
+
 @end
 
 @implementation SCCamera (InternalAPI)
@@ -318,6 +383,7 @@ Translate camera relative to its own coordinate system.
 - (void)_SC_commonInit
 {
   SELF = [[SCCameraP alloc] init];
+  SELF->updatesclippingplanes = YES;
 }
 
 /* Get the camera's object coordinate system. */
@@ -341,25 +407,25 @@ Translate camera relative to its own coordinate system.
   }
 }
 
-/* Determines the best value for the near clipping plane. Negative and very
-   small near clipping plane distances are disallowed.
- */
+/* 
+  Determines the best value for the near clipping plane. Negative and
+  very small near clipping plane distances are disallowed.
+*/
 
 - (float)_SC_bestValueForNearPlane:(float)near farPlane:(float)far
 {
-  // FIXME: Use delegate for doing plane calculation, instead of
-  // using strategy. kyrah 20030621.
   float nearlimit, r;
   int usebits;
   GLint depthbits[1];
-
+  const float autoclipvalue = 0.6f;
+ 
   if ([self type] == SCCameraOrthographic) return near;
 
   // For simplicity, we are using what SoQt calls the
-  // VARIABLE_NEAR_PLANE strategy. As stated in the FIXME above,
-  // we should have a delegate for this in general.
+  // VARIABLE_NEAR_PLANE strategy.
+
   glGetIntegerv(GL_DEPTH_BITS, depthbits);
-  usebits = (int) (float(depthbits[0]) * (1.0f - SELF->autoclipvalue));
+  usebits = (int) (float(depthbits[0]) * (1.0f - autoclipvalue));
   r = (float) pow(2.0, (double) usebits);
   nearlimit = far / r;
 
@@ -371,4 +437,38 @@ Translate camera relative to its own coordinate system.
   else return near;
 }
 
+@end
+
+// Dummy implementations to force AutoDoc to generate documentation for 
+// delegate methods.
+
+@implementation NSObject (SCCameraDelegate)
+
+/*" 
+  The SCCamera delegate allows you to fine-tune the values for the
+  near and far clipping planes, as automatically calculated by
+  SCController/SCCamera to optimize depth buffer usage.
+"*/
+
+
+/*" 
+  Implementing this delegate method allows you to adjust the values
+  for the distance of the near and far clipping plane from the camera
+  as calculated by !{updateClippingPlanes:}. This lets you control the
+  tradeoff between z-buffer resolution and clipping of geometry at the
+  near or far plane specifically for your application. The adjusted
+  values will be used unmodified.
+
+  Note that the internal calculations should work well with most
+  scenes. You should only have to make adjustments for very special
+  cases, such as scenes with a large world space, but where one would
+  still like to be able to get up extremely close on details in some
+  parts of the scene.
+"*/
+
+
+- (void)adjustNearClippingPlane:(float *)near 
+                 farClippingPlane:(float *)far
+{
+}
 @end
