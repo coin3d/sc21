@@ -103,14 +103,6 @@ sensorqueuechanged_cb(void * data)
   [ctrl _sensorQueueChanged];
 }
 
-// ---------------------- Notifications ----------------------------
-
-NSString * SCModeChangedNotification = @"SCModeChangedNotification";
-NSString * SCSceneGraphChangedNotification = @"SCSceneGraphChangedNotification";
-NSString * SCNoCameraFoundInSceneNotification = @"SCNoCameraFoundInSceneNotification";
-NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotification";
-NSString * SCRedrawNotification = @"SCRedrawNotification";
-
 // internal
 NSString * _SCIdleNotification = @"_SCIdleNotification";
 

@@ -45,14 +45,6 @@
 #import <Inventor/nodes/SoSeparator.h>
 #import <Inventor/projectors/SbSphereSheetProjector.h>
 
-
-// ---------------------- Notifications ----------------------------
-
-NSString * SCViewAllNotification = @"SCViewAllNotification";
-NSString * SCCameraTypeChangedNotification = @"SCCameraTypeChangedNotification";
-NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
-
-
 @interface SCExaminerController (InternalAPI)
 - (void)_setInternalSceneGraph:(SoGroup *)root;
 - (SoLight *)_findLightInSceneGraph:(SoGroup *)root;    // impl in super

@@ -26,6 +26,7 @@
  * ============================================================== */
  
 #import <Cocoa/Cocoa.h>
+#import <SC21/SCDefines.h>
 #import <SC21/SCCamera.h>
 
 class SoCamera;
@@ -110,10 +111,10 @@ class SoSceneManager;
 /*" Posted whenever the viewer mode (pass events to the scenegraph
     vs. interpret events as viewer manipulation) changes.
  "*/
-extern NSString * SCModeChangedNotification;
+SC21_EXTERN NSString * SCModeChangedNotification;
 
 /*" Posted when the scenegraph is changed through #setSceneGraph: "*/
-extern NSString * SCSceneGraphChangedNotification;
+SC21_EXTERN NSString * SCSceneGraphChangedNotification;
 
 /*" Posted if #setSceneGraph: is called with a scenegraph that
     does not contain a camera. Register for this notification if
@@ -122,7 +123,7 @@ extern NSString * SCSceneGraphChangedNotification;
     not post this notification; instead, it simply adds a camera
     in front of the scenegraph.
  "*/
-extern NSString * SCNoCameraFoundInSceneNotification;
+SC21_EXTERN NSString * SCNoCameraFoundInSceneNotification;
 
 /*" Posted if #setSceneGraph: is called with a scenegraph that
     does not contain a light. Register for this notification if
@@ -130,4 +131,4 @@ extern NSString * SCNoCameraFoundInSceneNotification;
     be able to see much in the scene (since only ambient light
     will be used.)
 "*/
-extern NSString * SCNoLightFoundInSceneNotification;
+SC21_EXTERN NSString * SCNoLightFoundInSceneNotification;
