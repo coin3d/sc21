@@ -54,7 +54,7 @@
 - (void) displayErrorAndExit: (NSString *)msg;
 
 /*" Convenience methods and shortcuts "*/
-- (void) addMenuEntry:(NSString *) title target:(id) target action:(SEL) selector;
+- (NSMenuItem *) addMenuEntry:(NSString *) title target:(id) target action:(SEL) selector;
 - (NSSize) size;
 - (float) width;
 - (float) height;

@@ -348,8 +348,6 @@
 
 - (void) reshape
 {
-  // FIXME: use notification to inform controller?
-  // Investigate! kyrah 20030614
   [controller viewSizeChanged:[self visibleRect]];
   [[self openGLContext] update];
 }
@@ -521,9 +519,11 @@
 
 /*" Adds a new menu entry "title" to the view's context menu. When the
     entry is selected, the action message is sent to target.
+
+    Returns the menu item, in case you want to set more parameters.
  "*/
  
-- (void) addMenuEntry:(NSString *) title target:(id) target action:(SEL) action
+- (NSMenuItem *) addMenuEntry:(NSString *) title target:(id) target action:(SEL) action
 {
   NSMenuItem * item = [[NSMenuItem alloc] init];
   [item setTitle:title];
@@ -531,6 +531,7 @@
   [item setAction:action];
   [[self menu] addItem:item];
   [item release]; // retained by menu
+  return item;
 }
 
 /*" Returns the size of the SCView. "*/
@@ -597,7 +598,7 @@
 {
   NSMenu * menu;
   menu = [[NSMenu alloc] initWithTitle:@"Menu"];
-  [self setMenu:menu];
+  [self setMenu:menu];  // retained by the view
   [menu release];
 }
 
