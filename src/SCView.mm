@@ -184,7 +184,7 @@
 - (void)mouseMoved:(NSEvent *)event
 {
   if (![self->controller handleEvent:event]) {
-    [super flagsChanged:event];
+    [super mouseMoved:event];
   }
 }
 
