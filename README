@@ -1,0 +1,28 @@
+SC21 is a framework to integrate the Coin library with the Mac OS X user     
+interface. Its functionality is to display scenes rendered by Coin on Mac    
+OS X, and to integrate a Coin render area in a Cocoa application. It is      
+possible to interact with objects in the scene graph via mouse and           
+keyboard. There is also a "viewer interaction" mode which allows the user    
+to move the camera around the scene, pan to the left or right, or zoom in.   
+                                                                             
+SC21 follows the MVC paradigm commonly used in Cocoa applications, and       
+provides two basic components for the application programmer to use: an      
+SCView (a view that you can use to display a scene rendered in Coin) and     
+an SCController (which handles actual Coin rendering etc.).                  
+                                                                             
+An SC21 custom palette for IB is provided for ease-of-use from within IB.    
+The design of the public API follows the Cocoa conventions as far as         
+possible. Extending the class hierarchy is possible with minimal effort.   
+
+SC21 is not an So@Gui@ library. It provides some of the functionality
+of these, but it is not modeled after the same structure and does not
+have the same API.
+
+Please see http://www.coin3d.org/mac/SC21 for more information about
+SC21, detailed instructions on how to install the framework, a
+tutorial, etc.
+
+Enjoy!
+
+--
+Karin Kosina <kyrah@sim.no>
