@@ -64,7 +64,6 @@ class SoDirectionalLight;
 - (void)viewAll;
 
 /*" Accessing the actual Coin scenegraph. "*/
-- (SoGroup *)superSceneGraph; 
 - (SoGroup *)root;
 - (void)setRoot:(SoGroup *)root;
 

@@ -368,7 +368,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
     glra->setTransparencyType(SoGLRenderAction::DELAYED_BLEND);
     SELF->scenemanager->activate();
     if (sceneGraph) {
-      SELF->scenemanager->setSceneGraph([sceneGraph superSceneGraph]);
+      SELF->scenemanager->setSceneGraph([sceneGraph _SC_superSceneGraph]);
       [sceneGraph setSceneManager:SELF->scenemanager];
     }
   }
@@ -607,7 +607,7 @@ Returns YES if the depth buffer is automatically cleared
   
   [sceneGraph setSceneManager:SELF->scenemanager];
   if (SELF->scenemanager) {
-    SELF->scenemanager->setSceneGraph([sceneGraph superSceneGraph]);
+    SELF->scenemanager->setSceneGraph([sceneGraph _SC_superSceneGraph]);
   }
     
   [[NSNotificationCenter defaultCenter]

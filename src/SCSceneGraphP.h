@@ -53,6 +53,7 @@ class SoInput;
 - (BOOL)_SC_readFromSoInput:(SoInput *)input;
 - (void)_SC_setCreatesSuperSceneGraph:(BOOL)yn;
 - (BOOL)_SC_createsSuperSceneGraph;
+- (SoGroup *)_SC_superSceneGraph; 
 @end  
 
 SC21_EXTERN NSString * SCRootChangedNotification;
