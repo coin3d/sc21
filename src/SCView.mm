@@ -27,7 +27,6 @@
  
 #import <Sc21/SCView.h>
 #import <Sc21/SCController.h>
-//#import <Sc21/SCEventHandler.h>
 
 #import "SCViewP.h"
 #import "SCUtil.h"
@@ -36,6 +35,14 @@
 #import <Inventor/actions/SoGLRenderAction.h>
 #import <Inventor/misc/SoContextHandler.h>
 
+/* 
+  Private method used by Apple to determine whether we are running
+  within IB. This allows us to draw a different representation of the
+  widget in "design GUI" mode. Declared here to kill compiler warning.
+*/
+@interface NSObject (PrivateAPI)
++(BOOL)isInInterfaceBuilder;
+@end
 
 @implementation SCViewP
 @end
