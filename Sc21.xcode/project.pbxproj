@@ -278,6 +278,21 @@
 			settings = {
 			};
 		};
+		3D80BE9F06FA387700D8BFD2 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCViewP.h;
+			path = src/SCViewP.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3D80BEA006FA387700D8BFD2 = {
+			fileRef = 3D80BE9F06FA387700D8BFD2;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		3D883EAC06BFB0CA0048CDB7 = {
 			fileEncoding = 4;
 			isa = PBXFileReference;
@@ -379,6 +394,36 @@
 		};
 		3DB055D306FA2B3C00812E32 = {
 			fileRef = 3DB055D206FA2B3C00812E32;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		3DB0563606FA2FC200812E32 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCTimer.h;
+			path = src/SCTimer.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3DB0563706FA2FC200812E32 = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.objc;
+			name = SCTimer.m;
+			path = src/SCTimer.m;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3DB0563806FA2FC200812E32 = {
+			fileRef = 3DB0563606FA2FC200812E32;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		3DB0563906FA2FC200812E32 = {
+			fileRef = 3DB0563706FA2FC200812E32;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -816,6 +861,7 @@
 				E0662937065383D600FB6420,
 				E09CFA93060249EF0000E227,
 				E09CFA94060249EF0000E227,
+				3D80BE9F06FA387700D8BFD2,
 			);
 			isa = PBXGroup;
 			name = Framework;
@@ -1226,6 +1272,8 @@
 				E0662932065383D600FB6420,
 				3D883EAC06BFB0CA0048CDB7,
 				3D883EAD06BFB0CA0048CDB7,
+				3DB0563606FA2FC200812E32,
+				3DB0563706FA2FC200812E32,
 				E080C71406B132550088958C,
 				E080C71506B132550088958C,
 			);
@@ -1441,6 +1489,8 @@
 				E0F867AE06C254700022BF2A,
 				E0BE123806C4136E00923172,
 				3DB055D306FA2B3C00812E32,
+				3DB0563806FA2FC200812E32,
+				3D80BEA006FA387700D8BFD2,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1468,6 +1518,7 @@
 				3DC6408706BD305800301065,
 				3D883EAF06BFB0CA0048CDB7,
 				E0BE123906C4136E00923172,
+				3DB0563906FA2FC200812E32,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
