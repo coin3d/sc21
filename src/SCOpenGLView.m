@@ -115,7 +115,7 @@
 {
   NSLog(@"SCOpenGLView.setPixelFormat");
 
-  [_pixelformat release];
+  [_pixelformat autorelease];
   _pixelformat = [pixelFormat retain];
 }
 
@@ -150,7 +150,7 @@
 
   if (_openGLContext) {
     if ([_openGLContext view] == self) [_openGLContext clearDrawable];
-    [_openGLContext release];
+    [_openGLContext autorelease];
     _openGLContext = nil;
   }
 }

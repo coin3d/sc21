@@ -120,12 +120,13 @@
 - (id)initWithCoder:(NSCoder *)coder 
 {
   NSLog(@"SCOpenGLPixelFormat.initWithCoder");
-  self = [super init];
-  if (![coder allowsKeyedCoding]) {
-    _attrdict = [[coder decodeObject] retain];
-  } else {
-    NSLog(@"  allowsKeyedCoding");
-    _attrdict = [[coder decodeObjectForKey:@"SC_attrdict"] retain];
+  if (self = [super init]) {
+    if (![coder allowsKeyedCoding]) {
+      _attrdict = [[coder decodeObject] retain];
+    } else {
+      NSLog(@"  allowsKeyedCoding");
+      _attrdict = [[coder decodeObjectForKey:@"SC_attrdict"] retain];
+    }
   }
   return self;
 }

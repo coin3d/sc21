@@ -68,6 +68,8 @@
 static void
 redraw_cb(void * user, SoSceneManager * manager) {
   SCView * view = (SCView *) user;
+//FIXME: We should be able to remove this (kintel 20040326)
+//Why is it here?
   [view drawRect:[view frame]]; // do actual drawing
   [view setNeedsDisplay:YES];   // needed to get redraw when view is not active
 }
@@ -727,7 +729,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   sa.apply(root);
   SoBaseKit::setSearchingChildren(oldsearch);
   if (sa.getPath() != NULL) {
-    SoFullPath * fullpath = (SoFullPath *) sa.getPath();
+    SoFullPath * fullpath = (SoFullPath *)sa.getPath();
     light = (SoLight *)fullpath->getTail();
   }
   return light;
@@ -749,7 +751,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   sa.apply(root);
   SoBaseKit::setSearchingChildren(oldsearch);
   if (sa.getPath() != NULL) {
-    SoFullPath * fullpath = (SoFullPath *) sa.getPath();
+    SoFullPath * fullpath = (SoFullPath *)sa.getPath();
     scenecamera = (SoCamera *)fullpath->getTail();
   }
   return scenecamera;

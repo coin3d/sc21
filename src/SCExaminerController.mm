@@ -57,7 +57,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 @interface SCExaminerController (InternalAPI)
 - (void) _setInternalSceneGraph:(SoGroup *)root;
 - (SoLight *) _findLightInSceneGraph:(SoGroup *)root;    // impl in super
-- (SoCamera *) _findCameraInSceneGraph:(SoGroup *) root; // impl in super
+- (SoCamera *) _findCameraInSceneGraph:(SoGroup *)root; // impl in super
 @end
 
 @implementation SCExaminerController
@@ -535,7 +535,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 {
   SoCamera * scenecamera  = [self _findCameraInSceneGraph:_scenegraph];
   if (scenecamera == NULL) {
-    SoCamera * scenecamera = new SoPerspectiveCamera;
+    scenecamera = new SoPerspectiveCamera;
     [_camera setSoCamera:scenecamera deleteOldCamera:NO];
     [_camera setControllerHasCreatedCamera:YES];
     _scenegraph->insertChild(scenecamera, 1);
