@@ -35,6 +35,7 @@
 
 - (void)finishInstantiate
 {
+  NSLog(@"SC21Palette.finishInstantiate");
   scview = [[SCView alloc] initWithFrame:[viewbutton bounds]];
   [self associateObject:scview
                  ofType:IBViewPboardType
@@ -44,10 +45,19 @@
                  ofType:IBObjectPboardType
                withView:controllerbutton];
 
-  [self associateObject:[[SCExaminerController alloc] init] 	ofType:IBObjectPboardType
+  [self associateObject:[[SCExaminerController alloc] init] 	
+	         ofType:IBObjectPboardType
                withView:examinerbutton];
 
   [scview reshape];
+}
+@end
+
+@implementation SCOpenGLView (SC21PaletteInspector)
+
+- (NSString *)inspectorClassName
+{
+    return @"SC21Inspector";
 }
 @end
 
@@ -57,8 +67,6 @@
 {
     return @"SC21Inspector";
 }
-
-
 @end
 
 
@@ -83,6 +91,7 @@
 @implementation SCView (IBTest)
 - (void) drawRect:(NSRect) frame
 {
+  NSLog(@"SC21Palette: SCView.drawRect:");
   [[NSColor blackColor] set];
   NSRectFill(frame);
 
@@ -115,4 +124,3 @@
   }
 }
 @end
-

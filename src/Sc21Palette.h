@@ -31,11 +31,17 @@
 
 @interface SC21Palette : IBPalette
 {
+  IBOutlet NSButton *openglviewbutton;
   IBOutlet NSButton *viewbutton;
   IBOutlet NSButton *controllerbutton;
   IBOutlet NSButton *examinerbutton;
+  SCOpenGLView *scopenglview;
   SCView *scview;
 }
+@end
+
+@interface SCOpenGLView (SC21PaletteInspector)
+- (NSString *)inspectorClassName;
 @end
 
 @interface SCView (SC21PaletteInspector)
