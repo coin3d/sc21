@@ -521,14 +521,14 @@ method returns this headlight. Otherwise, NULL is returned. "*/
   graph. The method is expected to return a new node that contains
   scenegraph as one of its children, or scenegraph itself.
 
-  Important note: If you want to implement your own superscenegraph
-  creation method, #{DO NOT} implement
-  !{shouldCreateDefaultSuperSceneGraph} to return !{NO}. If the
-  delegate implements !{shouldCreateDefaultSuperSceneGraph},
-  !{createSuperScenegraph:} will be ignored!
+  Important note: If the delegate implements
+  !{shouldCreateDefaultSuperSceneGraph}, !{createSuperScenegraph:}
+  will be ignored.
 
-  The right thing to do is to not have a
-  !{shouldCreateDefaultSuperSceneGraph} implementation at all.
+  (So if you want to implement your own superscenegraph creation
+  method, #{DO NOT} implement !{shouldCreateDefaultSuperSceneGraph} to
+  return !{NO}.  The right thing to do is to not have a
+  !{shouldCreateDefaultSuperSceneGraph} implementation at all.)
 "*/
 
 - (SoGroup *)createSuperSceneGraph:(SoGroup *)scenegraph
