@@ -25,8 +25,7 @@
  |                                                                 |
  * =============================================================== */
  
-
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 #import <Inventor/events/SoEvents.h>
 #import <Inventor/events/SoKeyboardEvent.h>
 #import <Inventor/SbDict.h>
@@ -41,7 +40,7 @@
 - (id)init;
 
 /*" Event conversion "*/
-- (SoEvent *)createSoEvent:(NSEvent *)event inView:view;
+- (SoEvent *)createSoEvent:(NSEvent *)event inView:(NSView *)view;
 - (SoKeyboardEvent *)createSoKeyboardEventWithString:(NSString *)s;
 
 @end

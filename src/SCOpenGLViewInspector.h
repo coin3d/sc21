@@ -25,16 +25,15 @@
  |                                                                 |
  * =============================================================== */
  
-
 #import <InterfaceBuilder/InterfaceBuilder.h>
 
 @interface SCOpenGLViewInspector : IBInspector
 {
-  IBOutlet NSMatrix *renderer;
-  IBOutlet NSPopUpButton *coloralpha;
-  IBOutlet NSPopUpButton *depth;
-  IBOutlet NSPopUpButton *stencil;
-  IBOutlet NSPopUpButton *accum;
-  IBOutlet NSButton *hidden;
+  IBOutlet NSMatrix * renderer;
+  IBOutlet NSPopUpButton * coloralpha;
+  IBOutlet NSPopUpButton * depth;
+  IBOutlet NSPopUpButton * stencil;
+  IBOutlet NSPopUpButton * accum;
+  IBOutlet NSButton * hidden;
 }
 @end
