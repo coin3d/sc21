@@ -2,15 +2,16 @@
     IBClasses = (
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {
+            ACTIONS = {viewAll = id; }; 
+            CLASS = MyCoinController; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = SCController; 
+        }, 
+        {
             ACTIONS = {addViewpoint = id; dumpScenegraph = id; }; 
             CLASS = MyDocument; 
             LANGUAGE = ObjC; 
             SUPERCLASS = NSDocument; 
-        }, 
-        {
-            CLASS = MyExaminerController; 
-            LANGUAGE = ObjC; 
-            SUPERCLASS = SCExaminerController; 
         }, 
         {
             ACTIONS = {
@@ -23,7 +24,7 @@
             CLASS = MyWindowController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
-                controller = SCExaminerController; 
+                controller = SCController; 
                 modebutton = NSButton; 
                 sizetext = NSTextField; 
                 typetext = NSTextField; 
