@@ -5,6 +5,49 @@
 	};
 	objectVersion = 39;
 	objects = {
+		3D02FB1F06A874CB00B9760F = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCSceneGraph.h;
+			path = src/SCSceneGraph.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3D02FB2006A874CB00B9760F = {
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = SCSceneGraph.mm;
+			path = src/SCSceneGraph.mm;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3D02FBA006A87FE500B9760F = {
+			fileRef = 3D02FB1F06A874CB00B9760F;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		3D02FBA106A8804200B9760F = {
+			fileRef = 3D02FB2006A874CB00B9760F;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+//3D0
+//3D1
+//3D2
+//3D3
+//3D4
+//E00
+//E01
+//E02
+//E03
+//E04
 		E000676A062598DD00F49FCD = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
@@ -147,6 +190,9 @@
 		};
 		E01100B50605E71900F93EC1 = {
 			children = (
+				E057B59A06219ADC0012C546,
+				3D02FB1F06A874CB00B9760F,
+				3D02FB2006A874CB00B9760F,
 				E0DC21F00690632C00C1FF85,
 				E07485500675CC1F0052D77F,
 				E0114C980670C15F002D7A19,
@@ -156,7 +202,6 @@
 				E04A08460637E7E0002F2C04,
 				E057B6260621B6E10012C546,
 				E057B6270621B6E10012C546,
-				E057B59A06219ADC0012C546,
 				E0EB29080613442800C54774,
 				E0EB29090613442800C54774,
 				E0EB290A0613442800C54774,
@@ -232,8 +277,6 @@
 			};
 		};
 		E01C24CB0605FDCE0000C5C7 = {
-			buildRules = (
-			);
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				DEPLOYMENT_LOCATION = YES;
@@ -683,8 +726,6 @@
 			sourceTree = "<group>";
 		};
 		E0765C54060222BB0099F78E = {
-			buildRules = (
-			);
 			buildSettings = {
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_CPU = G4;
@@ -700,14 +741,13 @@
 			name = Development;
 		};
 		E0765C55060222BB0099F78E = {
-			buildRules = (
-			);
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
 				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
@@ -757,20 +797,21 @@
 		E0765C5B060223120099F78E = {
 			buildActionMask = 2147483647;
 			files = (
+				E057B59B06219ADC0012C546,
 				E09CFA95060249EF0000E227,
 				E09CFA97060249EF0000E227,
-				E09CFA99060249EF0000E227,
-				E09CFA9B060249EF0000E227,
-				E09CFA9D060249EF0000E227,
-				E0EB290C0613442800C54774,
-				E0EB290E0613442800C54774,
-				E057B59B06219ADC0012C546,
+				E0114C990670C15F002D7A19,
 				E057B6280621B6E10012C546,
 				E04A08470637E7E0002F2C04,
 				E0EC5B300653F88100DA8092,
-				E0114C990670C15F002D7A19,
+				E09CFA99060249EF0000E227,
+				E09CFA9B060249EF0000E227,
+				E0EB290C0613442800C54774,
+				E0EB290E0613442800C54774,
 				E07485510675CC1F0052D77F,
+				3D02FBA006A87FE500B9760F,
 				E0DC21F10690632C00C1FF85,
+				E09CFA9D060249EF0000E227,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -780,14 +821,15 @@
 			files = (
 				E09CFA96060249EF0000E227,
 				E09CFA98060249EF0000E227,
-				E09CFA9A060249EF0000E227,
-				E09CFA9C060249EF0000E227,
-				E09CFA9E060249EF0000E227,
-				E0EB290D0613442800C54774,
-				E0EB290F0613442800C54774,
 				E057B6290621B6E10012C546,
 				E04A08480637E7E0002F2C04,
+				E09CFA9A060249EF0000E227,
 				E0EC5B310653F88100DA8092,
+				E09CFA9C060249EF0000E227,
+				E0EB290D0613442800C54774,
+				E0EB290F0613442800C54774,
+				3D02FBA106A8804200B9760F,
+				E09CFA9E060249EF0000E227,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -886,7 +928,7 @@
 		};
 		E0765C62060223120099F78E = {
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			name = Info.plist;
 			path = Resources/framework/Info.plist;
 			refType = 4;
@@ -1163,7 +1205,7 @@
 		};
 		E09CFA57060245720000E227 = {
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			name = Info.plist;
 			path = Resources/palette/Info.plist;
 			refType = 4;
@@ -1431,7 +1473,7 @@
 		E09CFAA306024AD40000E227 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			name = palette.table;
 			path = Resources/palette/palette.table;
 			refType = 4;
@@ -1553,7 +1595,7 @@
 		E0D1CDEF06343F3100269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			path = Description.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -1561,7 +1603,7 @@
 		E0D1CDF006343F3100269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			path = Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -1606,7 +1648,7 @@
 		E0D1CE0206343F4E00269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			path = Description.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -1614,7 +1656,7 @@
 		E0D1CE0306343F4E00269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			path = Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -1659,7 +1701,7 @@
 		E0D1CE0806343F5B00269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			path = Description.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -1667,14 +1709,12 @@
 		E0D1CE0906343F5B00269948 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.plist.xml;
+			lastKnownFileType = text.xml;
 			path = Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E0D32D3F0608BD8900FDEF66 = {
-			buildRules = (
-			);
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				DEPLOYMENT_LOCATION = YES;
