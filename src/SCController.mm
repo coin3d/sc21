@@ -27,64 +27,27 @@
  
 #import <Sc21/SCController.h>
 #import <Sc21/SCEventHandler.h>
+
+#import "SCControllerP.h"
+#import "SCSceneGraphP.h"
+#import "SCTimer.h"
 #import "SCUtil.h"
+
+#import <OpenGL/gl.h>
 
 #import <Inventor/SbTime.h>
 #import <Inventor/SoDB.h>
 #import <Inventor/SoInteraction.h>
-#import <Inventor/SoSceneManager.h>
-#import <Inventor/SbViewportRegion.h>
 #import <Inventor/actions/SoGLRenderAction.h>
-#import <Inventor/actions/SoSearchAction.h>
-#import <Inventor/actions/SoWriteAction.h>
 #import <Inventor/elements/SoGLCacheContextElement.h>
-#import <Inventor/nodekits/SoBaseKit.h>
 #import <Inventor/nodekits/SoNodeKit.h>
-#import <Inventor/nodes/SoPerspectiveCamera.h>
-#import <Inventor/nodes/SoDirectionalLight.h>
-#import <Inventor/nodes/SoSeparator.h>
 
-#import <OpenGL/gl.h>
-
-#import "SCControllerP.h"
-#import "SCSceneGraphP.h"
 
 @implementation SCControllerP
 @end
 
 #define PRIVATE(p) ((p)->_sc_controller)
 #define SELF PRIVATE(self)
-
-/*" 
-  Provide interface for deaction of NSTimer instance.
-  
-  Note: We deactivate the timer by setting its fireDate to
-  "distantFuture" (cf. NSDate). IMNSHO, it is quite stupid that it is
-  not possible to activate and deactive NSTimers, but my radar
-  enhancement request was declined *shrug*. kyrah 20040910. 
-"*/
-@interface NSTimer (Sc21Extensions)
-- (void)_SC_deactivate;
-- (BOOL)_SC_isActive;
-@end
-
-@implementation NSTimer (Sc21Extensions)
-
-- (void)_SC_deactivate
-{
-  [self setFireDate:[NSDate distantFuture]];
-}
-
-- (BOOL)_SC_isActive
-{
-  // A timer is "active" if its fire date is less than 100000 seconds from now.
-  // Note that we cannot compare for "== distantFuture" here, since
-  // distantFuture is "current time + a high number" (i.e. the actual 
-  // date changes with time)
-  
-  return ([self fireDate] < [NSDate dateWithTimeIntervalSinceNow:100000]);
-}
-@end
 
 // -------------------- Callback functions ------------------------
 
