@@ -102,6 +102,7 @@
 {
   NSLog(@"SCView.dealloc");
   // Prevent controller from continuing to draw into our view.
+  [controller setRedrawHandler:nil];
   [controller stopTimers];
   [controller release];
   [super dealloc];
