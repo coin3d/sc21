@@ -29,7 +29,6 @@
 #import <Sc21/Sc21.h>
 #import <Sc21/SCDebug.h>
 #import <Inventor/SoInput.h>
-#import <Inventor/actions/SoBoxHighlightRenderAction.h>
 #import <Inventor/nodes/SoGroup.h>
 #import <Inventor/nodes/SoSelection.h>
 #import <Inventor/nodes/SoDirectionalLight.h>
@@ -40,20 +39,29 @@
 void selection_cb(void *userdata, SoPath *path)
 {
   NSLog(@"Selected object!");
+  ((SoGroup *)userdata)->touch();
 }
 
 @implementation AppController
 
 - (id)init
 {
-  self = [super init];
+  if (self = [super init]) {
+    ra = new SoBoxHighlightRenderAction();
+  }
   return self;
 }
 
 - (void)awakeFromNib
 {
   [filenametext setStringValue:@"None"];
-  [coincontroller sceneManager]->setGLRenderAction(new SoBoxHighlightRenderAction);
+  ra->setCacheContext([coincontroller sceneManager]->getGLRenderAction()->getCacheContext());
+  [coincontroller sceneManager]->setGLRenderAction(ra);
+}
+
+- (void) dealloc
+{
+  delete ra; 
 }
 
 // Toggles whether events should be interpreted as viewer events, i.e.
@@ -121,7 +129,7 @@ void selection_cb(void *userdata, SoPath *path)
   root->addChild(new SoDirectionalLight);
   root->addChild(new SoPerspectiveCamera);
   SoSelection * selection = new SoSelection;
-  selection->addSelectionCallback(selection_cb, NULL);
+  selection->addSelectionCallback(selection_cb, scenegraph);
   selection->addChild(scenegraph);
   root->addChild(selection);
   return root;

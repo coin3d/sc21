@@ -28,12 +28,14 @@
 
 #import <Cocoa/Cocoa.h>
 #import <Sc21/Sc21.h>
+#import <Inventor/actions/SoBoxHighlightRenderAction.h>
 
 @interface AppController : NSObject
 {
   IBOutlet SCController * coincontroller;
   IBOutlet NSButton * mode;
   IBOutlet NSTextField * filenametext;
+  SoBoxHighlightRenderAction * ra;
 }
 - (IBAction)open:(id)sender;
 - (IBAction)toggleModes:(id)sender;
