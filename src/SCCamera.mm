@@ -14,6 +14,7 @@
 #import <Inventor/SbMatrix.h>
 #import <Inventor/SoType.h>
 #import <Inventor/SoSceneManager.h>
+#import <Inventor/actions/SoGLRenderAction.h>
 #import <Inventor/actions/SoSearchAction.h>
 #import <Inventor/actions/SoGetMatrixAction.h>
 #import <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -223,12 +224,15 @@
   // is also important for caching, since applying a getBoundingBox
   // action to the SG creates a valid bounding box cache, needed
   // for caching. kyrah 20030622
+
+  assert ([_controller sceneManager]);
+  SoGLRenderAction * renderaction = [_controller sceneManager]->getGLRenderAction();
   
   if (_autoclipboxaction == NULL)
     _autoclipboxaction = new
-      SoGetBoundingBoxAction([_controller viewportRegion]);
+      SoGetBoundingBoxAction(renderaction->getViewportRegion());
   else
-    _autoclipboxaction->setViewportRegion([_controller viewportRegion]);
+    _autoclipboxaction->setViewportRegion(renderaction->getViewportRegion());
 
   _autoclipboxaction->apply(scenegraph);
   xbox =  _autoclipboxaction->getXfBoundingBox();

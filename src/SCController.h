@@ -44,7 +44,6 @@ class SoSceneManager;
 - (void) setBackgroundColor:(NSColor *)color;
 - (NSColor *) backgroundColor;
 - (void) viewSizeChanged:(NSRect)size;
-- (const SbViewportRegion &)viewportRegion;
 - (SoLight *) findLightInSceneGraph:(SoGroup *)root;
 
 /*" Camera handling. "*/

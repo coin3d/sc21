@@ -230,9 +230,11 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   [self _setInternalSceneGraph:scenegraph];
   [self _handleLighting];
   [self _handleCamera];
-  [_camera updateClippingPlanes:_scenegraph];
-  
-  if (_scenemanager) _scenemanager->setSceneGraph(_scenegraph);
+
+  if (_scenemanager) {
+    _scenemanager->setSceneGraph(_scenegraph);
+    [_camera updateClippingPlanes:_scenegraph];
+  }
 
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCSceneGraphChangedNotification object:self];
@@ -250,17 +252,6 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 - (SoSceneManager *) sceneManager 
 { 
   return _scenemanager; 
-}
-
-
-/*" Returns the viewport region used by Coin's GL render action. "*/
-
-- (const SbViewportRegion &) viewportRegion
-{
-  assert (_scenemanager);
-  
-  SoGLRenderAction * a = _scenemanager->getGLRenderAction();
-  return a->getViewportRegion();  
 }
 
 
