@@ -42,9 +42,6 @@
 }
 @end
 
-@implementation SCExaminerHandlerP
-@end
-
 @interface SCExaminerHandler (InternalAPI)
 - (void)_SC_commonInit;
 - (BOOL)_SC_performActionForEvent:(NSEvent *)event camera:(SCCamera *)camera;

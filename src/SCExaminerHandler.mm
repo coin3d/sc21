@@ -9,6 +9,9 @@
 
 #import <Sc21/SCExaminerHandlerP.h>
 
+@implementation SCExaminerHandlerP
+@end
+
 #define SELF self->_sc_examinerhandler
 
 @implementation SCExaminerHandler
