@@ -87,7 +87,7 @@ Returns a default SCOpenGLPixelFormat.
   frame rectangle and format as its pixelformat.
 
   Passing nil as pixelFormat will result in the pixelformat being
-  set to the result of +defaultPixelFormat when the OpenGL context
+  set to the result of !{+defaultPixelFormat} when the OpenGL context
   is initialized.
   "*/
 - (id)initWithFrame:(NSRect)frameRect pixelFormat:(SCOpenGLPixelFormat *)format
@@ -117,9 +117,9 @@ Used by subclassers to initialize OpenGL state. This function is called
  once after an OpenGL context is created and the drawable is attached.
  
  On Panther, NSOpenGLContext will automatically send this message to
- its view from its -makeCurrentContext method.
+ its view from its !{-makeCurrentContext} method.
  On Jaguar, this function is called explicitly from our
- -openGLContext method, emulating Panther's behavior.
+ !{-openGLContext} method, emulating Panther's behavior.
  "*/
 - (void)prepareOpenGL
 {
@@ -145,8 +145,8 @@ Used by subclassers to initialize OpenGL state. This function is called
 #pragma mark --- pixelformat-related ---
 
 /*"
-  Sets the receiver's pixel format.
-  "*/
+  Sets the receiver's pixel format to pixelFormat
+"*/
 - (void)setPixelFormat:(SCOpenGLPixelFormat *)pixelFormat
 {
   SC21_DEBUG(@"SCOpenGLView.setPixelFormat");
@@ -193,10 +193,10 @@ Used by subclassers to initialize OpenGL state. This function is called
 /*"
   Returns the NSOpenGLContext associated with the receiver. If the
   receiver has no associated context, a new NSOpenGLContext is created
-  and returned. The new NSOpenGLContext is initialized with the
-  receiver's -pixelFormat. If this function returns nil,
-  a new pixelformat is created using +defaultPixelFormat.
-  "*/
+  and returned. This new context is initialized with the pixelformat
+  returned by sending !{pixelFormat} to the receiver, or (if this
+  returns nil) a new pixelformat created by !{+defaultPixelFormat}.
+"*/
 - (NSOpenGLContext *)openGLContext
 {
   if (!SELF->openGLContext) {
@@ -219,9 +219,10 @@ Used by subclassers to initialize OpenGL state. This function is called
 /*"
   Sets the NSOpenGLContext used by the receiver to allow sharing the
   same context on a per view basis. Replaces the existing context if
-  one was already created. You must call setView: on the context to
+  one was already created. You must send !{setView:} to the context to
   sync the context with the view.
 "*/
+
 - (void)setOpenGLContext:(NSOpenGLContext *)context
 {
   SC21_DEBUG(@"SCOpenGLView.setOpenGLContext");
@@ -254,7 +255,7 @@ Used by subclassers to initialize OpenGL state. This function is called
 /*"
   Called if the view's context needs to be updated because the window
   moves, or if the view moves or is resized. This method simply calls
-  NSOpenGLContext's update. Override this method if you need to add
+  NSOpenGLContext's !{update}. Override this method if you need to add
   locks for multithreaded access to multiple contexts.
 "*/
 - (void)update

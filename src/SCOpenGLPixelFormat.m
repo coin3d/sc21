@@ -185,7 +185,7 @@ If any attributes have been set, creates and returns a new
   If the attribute is a boolean value the valptr value will be set to 1
   if the attribute exists.
 
-  NB! This method returns the value previously set with
+  Note that this method returns the value previously set with
   -setAttribute*.  If you want the real attribute value of the
   corresponding NSOpenGLPixelFormat, use its
   !{-getValues:forAttribute:forVirtualScreen:} method. 
