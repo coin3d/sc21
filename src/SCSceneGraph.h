@@ -39,7 +39,7 @@
 {
  @protected
   SCSceneGraphP * _sc_scenegraph;
-  @private
+ @private
   id delegate;
 }
 
@@ -48,9 +48,10 @@
 - (id)initWithContentsOfFile:(NSString *)filename;
 - (id)initWithContentsOfURL:(NSURL *)URL;
 
-/*" File system access. "*/
+/*" File I/O "*/
 - (BOOL)readFromFile:(NSString *)filename;
 - (BOOL)readFromURL:(NSURL *)URL;
+- (BOOL)loadDataRepresentation:(NSData *)data;
 - (BOOL)writeToFile:(NSString *)filename;
 
 /*" Accessors for the scenegraph's scenemanager. "*/
