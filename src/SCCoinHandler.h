@@ -34,6 +34,7 @@
  @protected
   SCCoinHandlerP * _sc_coinhandler;
 }
-
+/*" Event handling "*/
+- (BOOL)controller:(SCController *)controller handleEvent:(NSEvent *)event;
 @end
 

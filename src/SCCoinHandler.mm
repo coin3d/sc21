@@ -49,6 +49,11 @@
 
 @implementation SCCoinHandler
 
+/*" SCCoinHandler takes incoming NSEvents, converts them to SoEvents,
+    and sends them to the Coin scenegraph. SCCoinHandler does nothing 
+    on !{update:}
+"*/
+
 - (id)init
 {
   if (self = [super init]) {
@@ -63,6 +68,16 @@
   [SELF release];
   [super dealloc];
 }
+
+/*" 
+
+  Overriden from SCEventHandler. 
+
+  Converts the NSEvent event to an SoEvent and sends it to the Coin
+  scenegraph by calling the SoSceneManager's !{processEvent()} method.
+
+  Returns !{YES} if event has been handled, !{NO} otherwise.
+"*/
 
 - (BOOL)controller:(SCController *)controller handleEvent:(NSEvent *)event
 {
