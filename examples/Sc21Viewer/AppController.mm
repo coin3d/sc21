@@ -49,7 +49,7 @@
   // if a file cannot be read.
   [[NSNotificationCenter defaultCenter] 
     addObserver:self selector:@selector(reportError:) 
-    name:SCCouldNotReadSceneNotification object:[coincontroller sceneGraph]];
+    name:SCReadErrorNotification object:[coincontroller sceneGraph]];
 }
 
 // Display information about OpenGL version and pixelformat settings.
