@@ -31,7 +31,7 @@ class SoGetBoundingBoxAction;
   } _autoclipstrategy;
 }
 
-/*" Static methods "*/
+/*" Static initialization "*/
 + (void) initCoin;
 
 /*" Initializing an SCController "*/
@@ -59,8 +59,7 @@ class SoGetBoundingBoxAction;
 - (SoCamera *) findCameraInSceneGraph: (SoGroup *) root;
 
 /*" Debugging aids. "*/
-- (NSString *) coinVersion;
-- (void) debugInfo;
+- (NSString *) debugInfo;
 - (void) dumpSceneGraph;
 
 /*" Event handling "*/

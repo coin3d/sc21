@@ -547,25 +547,13 @@ otherwise NULL.
 
 // ----------------- Debugging aids ----------------------------
 
-/*" Returns a human-readable string describing the version of
-    Coin we are using. Note: This information is determined at run-time,
-    not at link-time.
- "*/
-
-- (NSString *) coinVersion
-{
-  const char * versionstring = SoDB::getVersion();
-  return [NSString stringWithCString:versionstring];
-}
-
-/*" Collects debugging information about the OpenGL implementation
+/*" Returns debugging information about the OpenGL implementation
     (vendor, renderer, version, available extensions, limitations),
     the Coin version we are using, and the current OpenGL settings
-    (color depth, z buffer, accumulation buffer). Displays this
-    information by calling %view's #displayInfo: method.
+    (color depth, z buffer, accumulation buffer).
  "*/
 
-- (void) debugInfo;
+- (NSString *) debugInfo;
 {
   GLint depth;
   GLint colors[4];
@@ -574,6 +562,9 @@ otherwise NULL.
   GLint maxtexsize, maxlights, maxplanes;
 
   GLboolean doublebuffered;
+
+  const char * coinversion = SoDB::getVersion();
+  
   const GLubyte * vendor = glGetString(GL_VENDOR);
   const GLubyte * renderer = glGetString(GL_RENDERER);
   const GLubyte * version = glGetString(GL_VERSION);
@@ -595,7 +586,7 @@ otherwise NULL.
   glGetBooleanv(GL_DOUBLEBUFFER, &doublebuffered);
 
   NSMutableString * info = [NSMutableString stringWithCapacity:100];
-  [info appendFormat:@"Coin version: %@\n", [self coinVersion]];
+  [info appendFormat:@"Coin version: %s\n", coinversion];
   [info appendFormat:@"Vendor: %s\n", (const char *)vendor];
   [info appendFormat:@"Renderer: %s\n", (const char *)renderer];
   [info appendFormat:@"Version: %s\n", (const char *)version];
@@ -612,7 +603,7 @@ otherwise NULL.
   [info appendFormat:@"Maximum number of clipping planes: %d\n", maxplanes];
   [info appendFormat:@"OpenGL extensions: %s\n", (const char *)extensions];
 
-  [view displayInfo:info];
+  return info;
 }
 
 
