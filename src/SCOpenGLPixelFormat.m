@@ -139,7 +139,7 @@ If any attributes have been set, creates and returns a new
   implies a YES value.
   To set a boolean attribute to NO, use #removeAttribute:
 
-  FIXME:/sa setAttribute:toValue:
+  See also !{setAttribute:toValue:}
 "*/
 - (void)setAttribute:(NSOpenGLPixelFormatAttribute)attr
 {
@@ -151,7 +151,7 @@ If any attributes have been set, creates and returns a new
 /*"
   Sets integer pixel format attribute.
 
-  FIXME:/sa setAttribute:, removeAttribute:
+  See also !{setAttribute:}
   "*/
 - (void)setAttribute:(NSOpenGLPixelFormatAttribute)attr toValue:(int)val
 {
@@ -177,7 +177,7 @@ If any attributes have been set, creates and returns a new
 
 /*"
   Copies the value of the given attribute into the integer pointed to by
-  #valptr. 
+  valptr. 
 
   Returns YES if the attribute exists or NO otherwise.
   On return value of NO, the contents of the valptr is not written.
@@ -185,10 +185,11 @@ If any attributes have been set, creates and returns a new
   If the attribute is a boolean value the valptr value will be set to 1
   if the attribute exists.
 
-  NB! This method returns the value previously set with -setAttribute*.
-  If you want the real attribute value of the corresponding 
-  NSOpenGLPixelFormat, use its -getValues:forAttribute:forVirtualScreen:.
-  "*/
+  NB! This method returns the value previously set with
+  -setAttribute*.  If you want the real attribute value of the
+  corresponding NSOpenGLPixelFormat, use its
+  !{-getValues:forAttribute:forVirtualScreen:} method. 
+ "*/
 - (BOOL)getValue:(int *)valptr forAttribute:(NSOpenGLPixelFormatAttribute)attr
 {
   if ([SELF->boolattributes containsObject:[NSNumber numberWithInt:attr]]) {
