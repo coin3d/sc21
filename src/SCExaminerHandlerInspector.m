@@ -47,15 +47,37 @@
 - (id)init
 {
   SC21_DEBUG(@"SCExaminerHandlerInspector.init");
-  self = [super init];
-  BOOL ok = [NSBundle loadNibNamed:@"SCExaminerHandlerInspector" owner:self];
-  if (ok == NO) {
-    SC21_DEBUG(@"SCExaminerHandlerInspector.init: Failed loading nib");
-    return nil;
+  if (self = [super init]) {
+    img = nil;
+    
+    BOOL ok = [NSBundle loadNibNamed:@"SCExaminerHandlerInspector" owner:self];
+    if (ok == NO) {
+      SC21_DEBUG(@"SCExaminerHandlerInspector.init: Failed loading nib");
+      return nil;
+    }
+    
+    // Jaguar doesn't support hiding views, so we have to fake hiding by 
+    // manually switching between showing either our graphics or nil
+    supportsSetHidden = [[NSView class] instancesRespondToSelector:@selector(setHidden:)];
+    if (!supportsSetHidden) {
+      NSString * imagePath;
+      NSBundle *thisBundle = [NSBundle bundleForClass:[self class]];
+      if (imagePath = [thisBundle pathForResource:@"InspectorError" ofType:@"tiff"]) {
+        NSLog(@"Image path: %@", imagePath);
+        img = [[NSImage alloc] initWithContentsOfFile:imagePath];    
+        if (!img) {
+          NSLog(@"Couldn't load image %@", imagePath);
+        }
+      }
+    }
   }
   return self;
 }
 
+- (void) dealloc
+{
+  [img release]; 
+}
 
 - (void)ok:(id)sender
 {  
@@ -130,10 +152,17 @@
     NSOnState:NSOffState)];
 
   NSString * conflict = [scexaminerhandler _SC_conflictDescription];
-  
-  [conflictWarning setHidden:!conflict]; 
   [conflictWarning setToolTip:conflict];
-
+  
+  if (supportsSetHidden) {
+    [conflictWarning setHidden:!conflict];
+  }
+  else {
+    [conflictImage setImage:(conflict) ? img : nil];
+    [conflictText setStringValue:
+            (conflict) ? @"Warning: Conflicting bindings." : @""];
+  }
+  
   [super revert:sender];
 }
 

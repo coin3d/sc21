@@ -57,6 +57,10 @@
   IBOutlet NSPopUpButton * rightButtonEmulation;
   
   IBOutlet NSBox * conflictWarning;
+  IBOutlet NSTextField * conflictText;
+  IBOutlet NSImageView * conflictImage;
+  NSImage * img;
+  BOOL supportsSetHidden;
 }
 @end
 
