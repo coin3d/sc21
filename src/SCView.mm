@@ -104,6 +104,22 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
   [SCView setVersion:1];
 }
 
+/*"
+  Designated initializer.
+ "*/
+- (id)initWithFrame:(NSRect)rect pixelFormat:(SCOpenGLPixelFormat *)format
+{
+  if (self = [super initWithFrame:rect pixelFormat:format]) {
+    // flush buffer only during the vertical retrace of the monitor
+    const long int vals[1] = {1};
+    [[self openGLContext] setValues:vals forParameter:NSOpenGLCPSwapInterval];
+    [[self openGLContext] makeCurrentContext];
+    [self commonInit];
+  }
+  return self;
+  
+}
+
 /*" Initializes a newly allocated SCView with rect as its frame
     rectangle. Sets up an OpenGL context with default values
     32 bit color and 32 bit depth buffer. Override the
@@ -116,9 +132,6 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
     Calls #commonInit, which contains common initialization
     code needed both in #initWithFrame: and #initWithCoder.
-
-    This method is the designated initializer for the SCView
-    class. Returns !{self}.
  "*/
 
 - (id)initWithFrame:(NSRect)rect
@@ -126,14 +139,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
   NSLog(@"SCView.initWithFrame:");
 
   SCOpenGLPixelFormat * pixelFormat = [self createPixelFormat:rect];
-  if (self = [super initWithFrame:rect pixelFormat:pixelFormat]) {
-    // flush buffer only during the vertical retrace of the monitor
-    const long int vals[1] = {1};
-    [[self openGLContext] setValues:vals forParameter:NSOpenGLCPSwapInterval];
-    [[self openGLContext] makeCurrentContext];
-    [self commonInit];
-  }
-  return self;
+  return [self initWithFrame:rect pixelFormat:pixelFormat];
 }
 
 
@@ -163,6 +169,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 - (void)dealloc
 {
+  NSLog(@"SCView.dealloc");
   // Prevent controller from continuing to draw into our view.
   [controller stopTimers];
   [controller setView:nil];
@@ -205,7 +212,8 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     #{setColorBitsNoRecreate:} or #{setDepthBitsNoRecreate:}
     instead.
  "*/
-
+//FIXME: This method should be removed from SCView. context issues should
+//be handled by SCOpenGLView.
 - (BOOL)recreateOpenGLContext
 {
   // FIXME: Shouldn't we inform Coin about the context change?
@@ -469,7 +477,8 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     be forwarded through the responder chain as usual.
  "*/
 
-- (void)keyDown:(NSEvent *)event {
+- (void)keyDown:(NSEvent *)event 
+{
   if (![controller handleEvent:event]) {
     [[self nextResponder] keyDown:event];
   } 
@@ -481,25 +490,12 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     be forwarded through the responder chain as usual.
  "*/
 
-- (void)keyUp:(NSEvent *)event {
+- (void)keyUp:(NSEvent *)event 
+{
   if (![controller handleEvent:event]) {
     [[self nextResponder] keyUp:event];
   } 
 }
-
-
-/*" Returns !{YES} to confirm becoming first responder.
-    Needed to receive keyboard events
- "*/
-
-// FIXME: The doc says this is the default.  Check if this
-// is true, and remove method if not needed. kyrah 20030714
-
-- (BOOL)becomeFirstResponder
-{
-  return YES;
-}
-
 
 /*" Returns !{YES} to accept becoming first responder.
     Needed to receive keyboard events

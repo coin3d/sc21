@@ -41,6 +41,7 @@
 }
 
 /*" Initializing an SCView "*/
+- (id)initWithFrame:(NSRect)rect pixelFormat:(SCOpenGLPixelFormat *)format;
 - (id)initWithFrame:(NSRect)rect;
 - (void)commonInit;
 - (void)awakeFromNib;
@@ -70,7 +71,7 @@
 - (void)scrollWheel:(NSEvent *)event;
 - (void)keyDown:(NSEvent *)event;
 - (void)keyUp:(NSEvent *)event;
-- (BOOL)becomeFirstResponder;
+//- (BOOL)becomeFirstResponder;
 - (BOOL)acceptsFirstResponder;
 
 /*" Cursor handling "*/
