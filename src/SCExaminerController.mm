@@ -120,17 +120,6 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   _iswaitingforseek = NO;  
 }
 
-/*" Called after the object has been loaded from an Interface Builder
-    archive or nib file.
-
-    Note that since important setup happens in this method, you have to
-    call #{[super awakeFromNib]} when you override awakeFromNib.
- "*/
-
-- (void) awakeFromNib
-{
-  [super awakeFromNib];
-}
 
 /*" Clean up after ourselves. "*/
 

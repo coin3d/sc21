@@ -29,6 +29,7 @@ class SoSceneManager;
 - (id) init;
 - (id) initWithCoder:(NSCoder *)coder;
 - (void) commonInit;
+- (void) activate;
 - (void) awakeFromNib;
 - (void) encodeWithCoder:(NSCoder *)coder;
 

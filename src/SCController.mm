@@ -117,18 +117,17 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   _autoclipvalue = 0.6;
   _handleseventsinviewer = YES;
   _eventconverter = [[SCEventConverter alloc] initWithController:self];
-  
 }
 
+/*" Sets up and activates the Coin scenemanager and sets up the timers
+    for animation.
 
-/*" Sets up and activates a Coin scene manager. Sets up and schedules
-    a timer for animation.
-
-    Called after the object has been loaded from an Interface Builder
-    archive or nib file.
+    Note: You %must call this method, or else things will not work.
+    A good place to do this is in your #awakeFromNib or
+    #applicationDidFinishLaunching method.
 "*/
 
-- (void) awakeFromNib
+- (void) activate
 {
   _scenemanager = new SoSceneManager;
   _scenemanager->setRenderCallback(redraw_cb, (void*) view);
@@ -136,7 +135,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   _scenemanager->getGLRenderAction()->setCacheContext(
     SoGLCacheContextElement::getUniqueCacheContext());
   _scenemanager->activate();
-     
+
   if (_scenegraph == NULL) {
     SoSeparator * root = new SoSeparator;
     [self setSceneGraph:root];
@@ -149,7 +148,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   // NSTimer does not allow you to start/stop the timer - you have
   // to invalidate it and create a new one.
   // Also, there is not really a concept of "application is idle"
-  // in cocoa, so the delay queue is currently only processed once 
+  // in cocoa, so the delay queue is currently only processed once
   // every millisecond. (Might be able to use NSNotificationQueue
   // with style NSPostWhenIdle, I'll have to verify that.)
   // kyrah 20030713
@@ -159,11 +158,12 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     selector:@selector(_processTimerQueue:) userInfo:nil repeats:YES] retain];
   _delayqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:0.001 target:self
     selector:@selector(_processDelayQueue:) userInfo:nil repeats:YES] retain];
-  
+
   [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSModalPanelRunLoopMode];
   [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSModalPanelRunLoopMode];
   [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSEventTrackingRunLoopMode];
   [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSEventTrackingRunLoopMode];
+  
 }
 
 /* Clean up after ourselves. */
