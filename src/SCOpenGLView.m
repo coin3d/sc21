@@ -131,13 +131,18 @@
   Used by subclassers to initialize OpenGL state. This function is called
   once after an OpenGL context is created and the drawable is attached.
   
-  This function is called from within NSOpenGLContext.
-
-  //FIXME: This probably only works under Panther (kintel 20040429)
+  FIXME: This is just the current suggestion. Update when finished:
+  Under Panther, NSOpenGLContext will automatically send this message to
+  its view from its makeCurrentContext method.
+  Under Jaguar, this function is called explicitly from our
+  -openGLContext method, emulating Panther's behavior.
 "*/
 - (void)prepareOpenGL
 {
   NSLog(@"SCOpenGLView.prepareOpenGL");
+  glEnable(GL_DEPTH_TEST);
+  glClearColor(0.0, 0.0, 0.0, 0.0);
+  glClear(GL_COLOR_BUFFER_BIT);
 }
 
 /*"
@@ -176,6 +181,20 @@
     _openGLContext = 
       [[NSOpenGLContext alloc] initWithFormat:[format pixelFormat]
                                shareContext:nil];
+
+    //FIXME: Decide how to handle OpenGL initialization under Jaguar.
+    // Take this into account:
+    // o The code below should _only_ be run under Jaguar since Panther
+    //   will run prepareOpenGL directly.
+    // o We can check run-time what OS/AppKit version we have
+    //   (NSAppKitVersionNumber).
+    // o Is it OK to assume that prepareOpenGL will work when compiling
+    //   under Jaguar and running under Panther? If not, we should
+    //   probably not use prepareOpenGL at all, but a similar method
+    //   that will work with both OS versions.
+    [_openGLContext setView:self];
+    [_openGLContext makeCurrentContext];
+    [self prepareOpenGL];
   }
   return _openGLContext;
 }
@@ -252,15 +271,6 @@
   
   if ([context view] != self) [context setView:self];
   [context makeCurrentContext];
-  //FIXME: On Panther, we can do this in prepareOpenGL, on Jaguar
-  //we must do this here or in drawRect. (kintel 20040429)
-  static BOOL isInitialized = NO;
-  if (!isInitialized) {
-    glEnable(GL_DEPTH_TEST);
-    glClearColor(0.0, 0.0, 0.0, 0.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-    isInitialized = YES;
-  }
 }
 
 // ----------------- NSCoding compliance --------------------
