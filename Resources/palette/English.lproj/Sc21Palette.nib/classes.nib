@@ -1,6 +1,7 @@
 {
     IBClasses = (
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = NSCursor; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {CLASS = NSObject; LANGUAGE = ObjC; }, 
         {
             CLASS = SCCamera; 
@@ -15,7 +16,6 @@
             OUTLETS = {eventHandler = SCEventHandler; sceneGraph = SCSceneGraph; }; 
             SUPERCLASS = NSObject; 
         }, 
-        {CLASS = SCDebug; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {
             CLASS = SCEventHandler; 
             LANGUAGE = ObjC; 
