@@ -29,6 +29,7 @@
 #import <Sc21/Sc21.h>
 #import <Sc21/SCDebug.h>
 #import <Inventor/SoInput.h>
+#import <Inventor/actions/SoBoxHighlightRenderAction.h>
 #import <Inventor/nodes/SoGroup.h>
 #import <Inventor/nodes/SoSelection.h>
 #import <Inventor/nodes/SoDirectionalLight.h>
@@ -52,6 +53,7 @@ void selection_cb(void *userdata, SoPath *path)
 - (void)awakeFromNib
 {
   [filenametext setStringValue:@"None"];
+  [coincontroller sceneManager]->setGLRenderAction(new SoBoxHighlightRenderAction);
 }
 
 // Toggles whether events should be interpreted as viewer events, i.e.
