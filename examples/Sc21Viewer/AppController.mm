@@ -49,7 +49,7 @@
   [mode setAction:@selector(toggleModes:)];
 
   // Add context meny entries
-  [[coincontroller view] setMenu:[[[NSMenu alloc] initWithTitle:@"Context menu"] autorelease]];
+  [view setMenu:[[[NSMenu alloc] initWithTitle:@"Context menu"] autorelease]];
 
   [self  addMenuEntry:@"toggle mode" target:self action:@selector(toggleModes:)];
   [self  addMenuEntry:@"toggle headlight" target:self action:@selector(toggleHeadlight)];
@@ -119,7 +119,7 @@
   [panel beginSheetForDirectory:nil
          file:nil
          types:[NSArray arrayWithObjects:@"wrl", @"iv", nil]
-         modalForWindow:[[coincontroller view] window]
+         modalForWindow:[view window]
          modalDelegate:self
          didEndSelector:@selector(openPanelDidEnd:returnCode:contextInfo:)
          contextInfo:nil];
@@ -156,7 +156,7 @@
   [item setTitle:title];
   [item setTarget:target];
   [item setAction:selector];
-  [[[coincontroller view]  menu] addItem:item];
+  [[view menu] addItem:item];
   return item;
 }
 

@@ -27,11 +27,12 @@
  
 
 #import <Cocoa/Cocoa.h>
-#import <SC21/SCExaminerController.h>
+#import <SC21/SC21.h>
 
 @interface AppController : NSObject
 {
   IBOutlet SCExaminerController * coincontroller;
+  IBOutlet SCView * view;
   IBOutlet NSButton * mode;
   IBOutlet NSTextField * filenametext;
 }
