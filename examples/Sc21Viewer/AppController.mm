@@ -44,6 +44,11 @@
 - (void)awakeFromNib
 {
   [filenametext setStringValue:@"None"];
+  NSLog(@"Version nr: %lf",  Sc21VersionNumber);
+  
+  [[NSNotificationCenter defaultCenter] 
+    addObserver:self selector:@selector(reportError:) 
+    name:SCCouldNotReadSceneNotification object:[coincontroller sceneGraph]];
 }
 
 - (IBAction)showDebugInfo:(id)sender
@@ -124,4 +129,13 @@
   NSLog(@"Superscenegraph created.");
 }
 #endif
+
+// Display an alert if the file cannot be read.
+- (void)reportError:(NSNotification *)notification;
+{
+  NSString * errorstr = [[notification userInfo] valueForKey:@"description"];
+  NSRunAlertPanel(@"Error", errorstr, @"OK", nil, nil);
+  NSLog(@"An error occured: %@", errorstr);
+}
+
 @end
