@@ -491,7 +491,6 @@
   [NSApp runModalForWindow:alertpanel];
   [alertpanel close];
   NSReleaseAlertPanel(alertpanel);
-  [NSApp terminate:self];
 }
 
 /*" Displays the error description msg by calling #displayError:, and exits 
