@@ -108,10 +108,6 @@ sensorqueuechanged_cb(void * data)
   [ctrl _sensorQueueChanged];
 }
 
-// Obj-C does not support class variables, so: static...
-static BOOL _coinInitialized = NO;
-
-
 // ---------------------- Notifications ----------------------------
 
 NSString * SCModeChangedNotification = @"SCModeChangedNotification";
@@ -145,15 +141,19 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     automatically calls this function if needed. 
 "*/
 //FIXME: Do this in +initialize instead? (kintel 20040406)
+// No, the user should be able to do smth. before calling Coin's init.
 + (void)initCoin
-{
-  SoDB::init();
-  SoInteraction::init();
-  SoNodeKit::init();
-  _coinInitialized = YES;
+{       
+  static BOOL initialized = NO;
+  if (!initialized) {
+    SoDB::init();
+    SoInteraction::init();
+    SoNodeKit::init();
+    SoDB::setRealTimeInterval(SbTime(1/60.0));
+    initialized = YES;
+  }
 }
  
-
 // ----------------- initialization and cleanup ----------------------
 
 /*" Initializes a newly allocated SCController, and calls #initCoin
@@ -168,6 +168,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 - (id)init
 {
   if (self = [super init]) {
+    _autoclipvalue = 0.6;
+    _handleseventsinviewer = YES;
     [self commonInit];
   }
   return self;
@@ -184,11 +186,9 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 // (kintel 20040406)
 - (void)commonInit
 {
-  if (!_coinInitialized) [SCController initCoin];
+  [SCController initCoin];
   _camera = [[SCCamera alloc] init];
   [_camera setController:self];
-  _autoclipvalue = 0.6;
-  _handleseventsinviewer = YES;
   _eventconverter = [[SCEventConverter alloc] initWithController:self];
 
   [self setSceneManager:new SoSceneManager];
@@ -196,8 +196,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   [[NSNotificationCenter defaultCenter] addObserver:self
     selector:@selector(_idle:) name:_SCIdleNotification
     object:self];
-
-  SoDB::setRealTimeInterval(SbTime(1/60.0));
 
   [self _sensorQueueChanged];
 }
@@ -441,14 +439,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     Note that this is a different approach from the one taken in
     NSView and its subclasses, which handle events directly.
 
-    Note that if you press the left mouse button while holding
-    down the ctrl key, you will not receive a mouseDown event.
-    Instead, the view's default context menu will be shown. (This
-    behavior in SCView is inherited from NSView.) If you want to handle
-    ctrl-click yourself, you have to subclass SCView and override
-    #{- (NSMenu *)menuForEvent:(NSEvent *)event} to return nil and
-    pass on the event to the controller "manually" - 
-    !{[controller handleEvent:event]} - so that it can be handled here.
+    For overriding the default behavior of ctrl-clicks (context menu),
+    see -SCView.mouseDown:
 "*/
  
 - (BOOL)handleEvent:(NSEvent *)event
@@ -482,18 +474,11 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
     Returns !{YES} if the event has been handled, !{NO} otherwise.
 
-    The default implementation pops up a context menu when the right mouse
-    button has been pressed, and does nothing otherwise. Use
-    SCExaminerController to get built-in functionality for examining
-    the scene (camera control through the mouse etc.).
+    The default implementation does nothing and returns !{NO}.
  "*/
  
 - (BOOL)handleEventAsViewerEvent:(NSEvent *)event
 {
-  if ([event type] == NSRightMouseDown) {
-    [NSMenu popUpContextMenu:[view menu] withEvent:event forView:view];
-    return YES;
-  }
   return NO;
 }
 
@@ -692,7 +677,13 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 - (void)encodeWithCoder:(NSCoder *)coder
 {
   [super encodeWithCoder:coder];
-  // FIXME: Encode members. kyrah 20030618
+  // FIXME: exception or smth. if !keyeed coding? (kintel 20040408)
+  if ([coder allowsKeyedCoding]) {
+    [coder encodeBool:_handleseventsinviewer 
+           forKey:@"SC_handleseventsinviewer"];
+    [coder encodeFloat:_autoclipvalue 
+           forKey:@"SC_autoclipvalue"];
+  }
 }
 
 /*" Initializes a newly allocated SCController instance from the data
@@ -701,6 +692,26 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 - (id)initWithCoder:(NSCoder *)coder
 {
   if (self = [super initWithCoder:coder]) {
+    // FIXME: exception or smth. if !keyeed coding? (kintel 20040408)
+    if ([coder allowsKeyedCoding]) {
+      // Manually checks for existance of keys to be able to read
+      // archives from the public beta.
+      // FIXME: We should disable this after a grace period (say SC21 V1.0.1)
+      // (kintel 20040408)
+      if ([coder containsValueForKey:@"SC_handleseventsinviewer"]) {
+        _handleseventsinviewer = 
+          [coder decodeBoolForKey:@"SC_handleseventsinviewer"];
+      }
+      else {
+        _handleseventsinviewer = YES;
+      }
+      if ([coder containsValueForKey:@"SC_autoclipvalue"]) {
+        _autoclipvalue = [coder decodeFloatForKey:@"SC_autoclipvalue"];
+      }
+      else {
+        _autoclipvalue = 0.6f;
+      }
+    }
     [self commonInit];
   }
   return self;
