@@ -55,8 +55,6 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 
 @interface SCExaminerController (InternalAPI)
-- (void) _spin;
-- (void) _pan;
 - (void) _setInternalSceneGraph:(SoGroup *)root;
 - (SoLight *) _findLightInSceneGraph:(SoGroup *)root;    // impl in super
 - (SoCamera *) _findCameraInSceneGraph:(SoGroup *) root; // impl in super
@@ -420,8 +418,24 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 - (void) dragWithPoint:(NSValue *) v
 {
+  NSPoint p, q, qn, pn;
+  SbRotation r;
+  
   [_mouselog insertObject:v atIndex:0];
-  [self _spin];
+
+  if ([_mouselog count] < 2) return;
+  assert (_spinprojector);
+
+  p = [[_mouselog objectAtIndex:0] pointValue];
+  q = [[_mouselog objectAtIndex:1] pointValue];
+  qn = [view normalizePoint:q];
+  pn = [view normalizePoint:p];
+
+  _spinprojector->project(SbVec2f(qn.x, qn.y));
+  _spinprojector->projectAndGetRotation(SbVec2f(pn.x, pn.y), r);
+  r.invert();
+
+  [_camera reorient:r];
 }
 
 
@@ -439,8 +453,32 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 - (void) panWithPoint:(NSValue *) v
 {
+  NSPoint p, q, pn, qn;
+  SbLine line;
+  SbVec3f curplanepoint, prevplanepoint;
+  SoCamera * cam = [_camera soCamera];
+
   [_mouselog insertObject:v atIndex:0];
-  [self _pan];
+  
+  if ([_mouselog count] < 2) return;
+  if (cam == NULL) return;
+
+  p = [[_mouselog objectAtIndex:0] pointValue];
+  q = [[_mouselog objectAtIndex:1] pointValue];
+  qn = [view normalizePoint:q];
+  pn = [view normalizePoint:p];
+
+  // Find projection points for the last and current mouse coordinates.
+  SbViewVolume vv = cam->getViewVolume([view aspectRatio]);
+  SbPlane panplane = vv.getPlane(cam->focalDistance.getValue());
+  vv.projectPointToLine(SbVec2f(pn.x, pn.y), line);
+  panplane.intersect(line, curplanepoint);
+  vv.projectPointToLine(SbVec2f(qn.x, qn.y), line);
+  panplane.intersect(line, prevplanepoint);
+
+  // Reposition camera according to the vector difference between the
+  // projected points.
+  cam->position = cam->position.getValue() - (curplanepoint - prevplanepoint);    
 }
 
 /*" Performs zoom operation. Zooming is done based on the delta value
@@ -515,54 +553,6 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 // ------------------------- InternalAPI --------------------------------
 
-- (void) _pan
-{
-  NSPoint p, q, pn, qn;
-  SbLine line;
-  SbVec3f curplanepoint, prevplanepoint;
-  SoCamera * cam = [_camera soCamera];
-
-  if ([_mouselog count] < 2) return;
-  if (cam == NULL) return;
-
-  p = [[_mouselog objectAtIndex:0] pointValue];
-  q = [[_mouselog objectAtIndex:1] pointValue];
-  qn = [view normalizePoint:q];
-  pn = [view normalizePoint:p];
-
-  // Find projection points for the last and current mouse coordinates.
-  SbViewVolume vv = cam->getViewVolume([view aspectRatio]);
-  SbPlane panplane = vv.getPlane(cam->focalDistance.getValue());
-  vv.projectPointToLine(SbVec2f(pn.x, pn.y), line);
-  panplane.intersect(line, curplanepoint);
-  vv.projectPointToLine(SbVec2f(qn.x, qn.y), line);
-  panplane.intersect(line, prevplanepoint);
-
-  // Reposition camera according to the vector difference between the
-  // projected points.
-  cam->position = cam->position.getValue() - (curplanepoint - prevplanepoint);
-
-}
-
-- (void) _spin
-{
-  NSPoint p, q, qn, pn;
-  SbRotation r;
-
-  if ([_mouselog count] < 2) return;
-  assert (_spinprojector);
-
-  p = [[_mouselog objectAtIndex:0] pointValue];
-  q = [[_mouselog objectAtIndex:1] pointValue];
-  qn = [view normalizePoint:q];
-  pn = [view normalizePoint:p];
-
-  _spinprojector->project(SbVec2f(qn.x, qn.y));
-  _spinprojector->projectAndGetRotation(SbVec2f(pn.x, pn.y), r);
-  r.invert();
-
-  [_camera reorient:r];
-}
 
 // Methods below are called by setSceneGraph
 
