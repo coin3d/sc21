@@ -29,8 +29,6 @@
 #import <Sc21/SCDefines.h>
 #import <Sc21/SCCamera.h>
 
-class SoCamera;
-class SoGroup;
 class SoLight;
 class SoDirectionalLight;
 class SoSceneManager;
@@ -39,10 +37,10 @@ class SoSceneManager;
 
 @interface SCController : NSObject <NSCoding>
 {
-  @private
-    id delegate;
-  @protected
-    _SCControllerP * sccontrollerpriv;
+ @protected
+  _SCControllerP * sccontrollerpriv;
+ @private
+  id delegate;
 }
 
 /*" Static initialization "*/

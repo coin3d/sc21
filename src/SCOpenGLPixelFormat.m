@@ -32,7 +32,7 @@
 
 @interface _SCOpenGLPixelFormatP : NSObject
 {
-@public
+ @public
   NSMutableDictionary * attrdict;
   NSOpenGLPixelFormat * nspixelformat;
 }

@@ -103,6 +103,10 @@
   // FIXME: Loop through an internal prioritized list of pixel format
   // requirements and select the first valid pixelformat found?
   // (kintel 20040615)
+  // Suggestion:
+  // o First try to get the same pf as NSOpenGLView.defaultPixelFormat
+  // o If failed, fall back to some lower pf
+  // -> we need to acquire a real NSOpenGLPixelFormat here.
 
   SCOpenGLPixelFormat * pixelFormat = [[SCOpenGLPixelFormat alloc] init];
   [pixelFormat setAttribute:NSOpenGLPFADoubleBuffer];
@@ -199,6 +203,8 @@
     //This is probably because this method is called before the view
     //is on-screen (from SCView.reshape) (kintel 20040616).
     [SELF->openGLContext setView:self];
+    //FIXME: Does setView: make the context current, making this redundant?
+    //       (same behavior for Jaguar and Panther?)
     [SELF->openGLContext makeCurrentContext];
     // Run this only under <= 10.2 since >=10.3 automatically calls
     // prepareOpenGL from NSOpenGLContext.
@@ -207,8 +213,9 @@
     //   under Jaguar and running under Panther? If not, we should
     //   probably not use prepareOpenGL at all, but a similar method
     //   that will work with both OS versions. (kintel 20040615)
-    if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_2)
+    if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_2) {
       [self prepareOpenGL];
+    }
   }
   return SELF->openGLContext;
 }
@@ -257,7 +264,9 @@
 "*/
 - (void)update
 {
-  if ([SELF->openGLContext view] == self) [SELF->openGLContext update];
+  if ([SELF->openGLContext view] == self) {
+    [SELF->openGLContext update];
+  }
 }
 
 // Overridden methods from parent

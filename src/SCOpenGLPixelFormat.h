@@ -31,8 +31,8 @@
 
 @interface SCOpenGLPixelFormat : NSObject <NSCoding, NSCopying>
 {
-  @protected
-    _SCOpenGLPixelFormatP * scopenglpixelformatpriv;
+ @protected
+  _SCOpenGLPixelFormatP * scopenglpixelformatpriv;
 }
 
 - (void)setAttribute:(NSOpenGLPixelFormatAttribute)attr;

@@ -46,8 +46,7 @@
 #import <Inventor/nodes/SoPerspectiveCamera.h>
 #import <Inventor/nodes/SoOrthographicCamera.h>
 
-#define PRIVATE(p) ((p)->sccamerapriv)
-#define SELF PRIVATE(self)
+#define SELF (self->sccamerapriv)
 
 @interface _SCCameraP : NSObject
 {

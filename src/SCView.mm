@@ -32,7 +32,7 @@
 
 @interface _SCViewP : NSObject
 {
-  NSOpenGLView * oldview;
+  NSOpenGLView * oldview; /* FIXME: We should remove this after a grace period (say Sc21 V1.0.1) */
   NSCursor * cursor;
 }
 @end
@@ -432,9 +432,9 @@
     [self _SC_commonInit];
     SELF->oldview = [[NSOpenGLView alloc] initWithCoder:coder];
     return self;
-  }
-  else self = [super initWithCoder:coder]; // Will call _SC_commonInit
-
+  } else {
+    self = [super initWithCoder:coder]; // Will call _SC_commonInit
+  }  
   return self;
 }
 

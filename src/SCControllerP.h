@@ -25,9 +25,11 @@
  |                                                                 |
  * =============================================================== */
 
-// No #imports here. Include this file _after_ SCController.h
-// to ensure everything is included.
- 
+#import <Sc21/SCController.h>
+
+class SoGroup;
+class SoSceneManager;
+
 @interface _SCControllerP : NSObject
 {
   id redrawhandler;
@@ -36,9 +38,9 @@
   SCCamera * camera;
   SCEventConverter * eventconverter;
   NSTimer * timerqueuetimer;
-  class SoGroup * scenegraph;	      // the user scenegraph 
-  class SoGroup * superscenegraph;	  // the real scenegraph
-  class SoSceneManager * scenemanager;
+  SoGroup * scenegraph;	      // the user scenegraph 
+  SoGroup * superscenegraph;	// the real scenegraph
+  SoSceneManager * scenemanager;
   BOOL handleseventsinviewer;
   float autoclipvalue;
   NSRect viewrect;

@@ -25,8 +25,7 @@
  |                                                                 |
  * =============================================================== */
 
-// No #imports here. Include this file _after_ SCOpenGLView.h
-// to ensure everything is included.
+#import <Sc21/SCOpenGLView.h>
  
 @interface _SCOpenGLViewP : NSObject
 {

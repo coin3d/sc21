@@ -92,8 +92,8 @@
 static void
 redraw_cb(void * user, SoSceneManager *)
 {
-  SCController * selfp = (SCController *)user; 
-  [PRIVATE(selfp)->redrawinv invoke];
+  SCController * controller = (SCController *)user; 
+  [PRIVATE(controller)->redrawinv invoke];
 }
 
 // This function is the SoSensorManager change callback.
@@ -105,8 +105,8 @@ redraw_cb(void * user, SoSceneManager *)
 static void
 sensorqueuechanged_cb(void * data)
 {
-  SCController * selfp = (SCController *)data;
-  [selfp _SC_sensorQueueChanged];
+  SCController * controller = (SCController *)data;
+  [controller _SC_sensorQueueChanged];
 }
 
 // Internal. Used for triggering delayqueue sensors when idle.
