@@ -45,6 +45,7 @@
   IBOutlet NSTextField * filenametext;
   SoBoxHighlightRenderAction * ra;
 }
+- (IBAction)dumpSceneGraph:(id)sender;
 - (IBAction)open:(id)sender;
 - (IBAction)toggleModes:(id)sender;
 - (IBAction)menuToggleModes:(id)sender;

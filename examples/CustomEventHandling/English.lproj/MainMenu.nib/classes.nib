@@ -1,7 +1,13 @@
 {
     IBClasses = (
         {
-            ACTIONS = {menuToggleModes = id; open = id; toggleModes = id; viewAll = id; }; 
+            ACTIONS = {
+                dumpSceneGraph = id; 
+                menuToggleModes = id; 
+                open = id; 
+                toggleModes = id; 
+                viewAll = id; 
+            }; 
             CLASS = AppController; 
             LANGUAGE = ObjC; 
             OUTLETS = {coincontroller = SCController; filenametext = NSTextField; mode = NSButton; }; 

@@ -296,9 +296,10 @@ void error_cb(const class SoError * error, void * data)
  
   Both the passed and the actual scene graph will be !{ref()}'ed.
 "*/
-- (void)setRoot:(SoGroup *)root
+- (BOOL)setRoot:(SoGroup *)root
 {
   SC21_DEBUG(@"SCSceneGraph.setRoot: %p", root);
+
   // Clean up existing scenegraph
   if (SELF->scenegraph) { SELF->scenegraph->unref(); }
   if (SELF->superscenegraph) { SELF->superscenegraph->unref(); }
@@ -306,39 +307,66 @@ void error_cb(const class SoError * error, void * data)
   SELF->headlight = NULL;
   SELF->addedlight = NO;
   
-  if ((SELF->scenegraph = root) == NULL) { return; }
+  if ((SELF->scenegraph = root) == NULL) { 
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:SCRootChangedNotification object:self];  
+    return YES; 
+  }
+
   SELF->scenegraph->ref();    
   
   // SELF->createsuperscenegraph is controlled through the IB inspector.
-  BOOL createsuperscenegraph = SELF->createsuperscenegraph;
-  
-  // Give delegate the chance to stop superscenegraph creation:
-  // It can implement shouldCreateDefaultSuperSceneGraph to return
-  // if we should create the default superscenegraph; or it can 
-  // supply createSuperSceneGraph: to return its own superscenegraph.
+  BOOL createdefaultsupersg = SELF->createsuperscenegraph;
+  BOOL createdelegatesupersg = NO;
+    
   if (self->delegate) {
+    // Give delegate the chance to turn off default superscenegraph
+    // creation: shouldCreateDefaultSuperSceneGraph returns whether we
+    // should create the default superscenegraph or not. 
     if ([self->delegate 
-       respondsToSelector:@selector(createSuperSceneGraph:)]) {
-      createsuperscenegraph = NO;
-    } else if ([self->delegate 
-        respondsToSelector:@selector(shouldCreateDefaultSuperSceneGraph)]) {
-      createsuperscenegraph = [delegate shouldCreateDefaultSuperSceneGraph];
+         respondsToSelector:@selector(shouldCreateDefaultSuperSceneGraph)]) {
+      createdefaultsupersg = [delegate shouldCreateDefaultSuperSceneGraph];
     }
+
+    // Let delegate do its own superscenegraph setup work.
+    if ([self->delegate 
+         respondsToSelector:@selector(createSuperSceneGraph:)]) {
+      createdelegatesupersg = YES;
+    }    
   }
 
-  if (createsuperscenegraph) {
+  if (createdefaultsupersg) {
     SELF->superscenegraph = [self _SC_createSuperSceneGraph:SELF->scenegraph];
-  } else { 
-    if (self->delegate &&
-      [self->delegate respondsToSelector:@selector(createSuperSceneGraph:)]) {
-      SELF->superscenegraph = [delegate createSuperSceneGraph:SELF->scenegraph];
-    } else {
-      SELF->superscenegraph = NULL;
+  } 
+
+  if (createdelegatesupersg) {
+
+    // Let delegate create its own superscenegraph structure, either 
+    // based on the "blank" user-supplied scenegraph or the internally
+    // generated superscenegraph.
+    SELF->superscenegraph = [delegate createSuperSceneGraph:
+      (createdefaultsupersg ? SELF->superscenegraph : SELF->scenegraph)];
+
+    // If the delegate returns NULL, we regard that as a sign that
+    // something is very wrong... so we just abort and set the
+    // scenegraph to NULL.
+    if (SELF->superscenegraph == NULL) {
+      SELF->scenegraph = NULL;
+      [[NSNotificationCenter defaultCenter]
+       postNotificationName:SCRootChangedNotification object:self];  
+      return NO;
     }
+  } 
+
+  if (SELF->superscenegraph) {
+    SELF->superscenegraph->ref();
+  } else {
+    // Note that this branch can only be reached if the delegate does
+    // not implement createSuperSceneGraph: and the internal
+    // superscenegraph creation is turned off.
+    SELF->superscenegraph = SELF->scenegraph;
   }
-  if (SELF->superscenegraph) SELF->superscenegraph->ref();
-  else SELF->superscenegraph = SELF->scenegraph;
-  
+
   // Set active camera to use in viewer. Note that we have to do this
   // after the delegate had the chance to create its own
   // superscenegraph to make sure the right camera is picked up.
@@ -358,16 +386,11 @@ void error_cb(const class SoError * error, void * data)
     [[NSNotificationCenter defaultCenter]
         postNotificationName:SCNoLightFoundInSceneNotification object:self];
   } 
-
-  // Give delegate the chance to do postprocessing, regardless of 
-  // whether the superscenegraph was created by us or by the delegate.
-  if (SELF->superscenegraph && self->delegate &&
-    [self->delegate respondsToSelector:@selector(didCreateSuperSceneGraph:)]) {
-    [self->delegate didCreateSuperSceneGraph:SELF->superscenegraph];
-  }
   
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCRootChangedNotification object:self];  
+
+  return YES;
 }
 
 #pragma mark --- delegate handling ---
@@ -607,18 +630,6 @@ void error_cb(const class SoError * error, void * data)
 {
   
 }
-/*" 
-  Implement this method to do postprocessing after creation of
-  superscenegraph.
 
-  This method will be called both if superscenegraph was created using
-  the internal default implementation, or the
-  !{createSuperSceneGraph:} delegate method.
-
-"*/
-- (void)didCreateSuperSceneGraph:(SoGroup *)superscenegraph
-{
-  
-}
 @end
 #endif // FOR_AUTODOC_ONLY  

@@ -62,7 +62,7 @@
 
 /*" Accessing the actual Coin scenegraph "*/
 - (SoGroup *)root;
-- (void)setRoot:(SoGroup *)root;
+- (BOOL)setRoot:(SoGroup *)root;
 
   /*" Delegate handling "*/
 - (void)setDelegate:(id)newdelegate;
@@ -77,9 +77,6 @@
 
 /*" Supplying your own code for superscenegraph creation "*/
 - (SoGroup *)createSuperSceneGraph:(SoGroup *)scenegraph;
-
-/*" Postprocessing "*/
-- (void)didCreateSuperSceneGraph:(SoGroup *)superscenegraph;
 
 @end
 

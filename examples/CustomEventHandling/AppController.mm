@@ -124,6 +124,13 @@ void selection_cb(void *userdata, SoPath *path)
   }
 }
 
+// dump scenegraph
+
+- (IBAction)dumpSceneGraph:(id)sender
+{
+  [SCDebug dumpSceneGraph:[coincontroller sceneManager]->getSceneGraph()];
+}
+
 // Delegate implementation to quit application when window is being closed.
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)nsapp
@@ -137,8 +144,6 @@ void selection_cb(void *userdata, SoPath *path)
 - (SoGroup *)createSuperSceneGraph:(SoGroup *)scenegraph
 {
   SoSeparator * root = new SoSeparator;
-  root->addChild(new SoDirectionalLight);
-  root->addChild(new SoPerspectiveCamera);
   SoSelection * selection = new SoSelection;
   selection->addSelectionCallback(selection_cb, NULL);
   selection->addChild(scenegraph);
