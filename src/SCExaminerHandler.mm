@@ -238,7 +238,8 @@
     SCMode * currentmode = [self _SC_currentMode];
     if (currentmode) {
       if (![currentmode isActive]) {
-        [self _SC_activateMode:currentmode camera:[[controller sceneGraph] camera] event:event point:&pn];
+        [self _SC_activateMode:currentmode camera:
+          [[controller sceneGraph] camera] event:event point:&pn];
       } else {
         [[SCMouseLog defaultMouseLog] appendPoint:&pn 
                                       timestamp:[event timestamp]];
@@ -288,7 +289,8 @@
     if (mode) {
       SCMode * newmode = [[[mode alloc] init] autorelease];
       [self _SC_setCurrentMode:newmode];
-      [self _SC_activateMode:newmode camera:[[controller sceneGraph] camera] event:event point:&pn];
+      [self _SC_activateMode:newmode camera:[[controller sceneGraph] camera] 
+                       event:event point:&pn];
     }
     else [self _SC_setCurrentMode:nil];
     handled = YES;
@@ -307,7 +309,8 @@
 - (void)update:(SCController *)controller
 {
   NSTimeInterval currtime = [NSDate timeIntervalSinceReferenceDate];
-  [SELF->currentmode modifyCamera:[[controller sceneGraph] camera] withTimeInterval:currtime];
+  [SELF->currentmode modifyCamera:[[controller sceneGraph] camera] 
+                 withTimeInterval:currtime];
 }
 
 #pragma mark --- NSCoding conformance ---
@@ -318,15 +321,18 @@
     [coder encodeInt:SELF->panbutton forKey:@"SC_panbutton"];
     [coder encodeInt:SELF->rotatebutton forKey:@"SC_rotatebutton"];
     [coder encodeInt:SELF->zoombutton forKey:@"SC_zoombutton"];
-    // FIXME: Is encodeInt: the right method to use for unsigned int? kyrah 20040801.
+    // FIXME: Is encodeInt: the right method to use for unsigned int? 
+    // kyrah 20040801.
     [coder encodeInt:SELF->panmodifier forKey:@"SC_panmodifier"];
     [coder encodeInt:SELF->rotatemodifier forKey:@"SC_rotatemodifier"];
     [coder encodeInt:SELF->zoommodifier forKey:@"SC_zoommodifier"];
     [coder encodeBool:SELF->panbuttonenabled forKey:@"SC_panbuttonenabled"];
-    [coder encodeBool:SELF->rotatebuttonenabled forKey:@"SC_rotatebuttonenabled"];
+    [coder encodeBool:SELF->rotatebuttonenabled 
+               forKey:@"SC_rotatebuttonenabled"];
     [coder encodeBool:SELF->zoombuttonenabled forKey:@"SC_zoombuttonenabled"];
     [coder encodeBool:SELF->spinenabled forKey:@"SC_spinenabled"];
-    [coder encodeBool:SELF->scrollwheelzoomenabled forKey:@"SC_scrollwheelzoomenabled"];
+    [coder encodeBool:SELF->scrollwheelzoomenabled 
+               forKey:@"SC_scrollwheelzoomenabled"];
     [coder encodeObject:SELF->emulator forKey:@"SC_emulator"];
   }
 }
@@ -343,11 +349,15 @@
       SELF->rotatemodifier = [coder decodeIntForKey:@"SC_rotatemodifier"];
       SELF->zoommodifier = [coder decodeIntForKey:@"SC_zoommodifier"];
       SELF->panbuttonenabled = [coder decodeBoolForKey:@"SC_panbuttonenabled"];
-      SELF->rotatebuttonenabled = [coder decodeBoolForKey:@"SC_rotatebuttonenabled"];
-      SELF->zoombuttonenabled = [coder decodeBoolForKey:@"SC_zoombuttonenabled"];
+      SELF->rotatebuttonenabled = 
+        [coder decodeBoolForKey:@"SC_rotatebuttonenabled"];
+      SELF->zoombuttonenabled = 
+        [coder decodeBoolForKey:@"SC_zoombuttonenabled"];
       SELF->spinenabled = [coder decodeBoolForKey:@"SC_spinenabled"];
-      SELF->scrollwheelzoomenabled = [coder decodeBoolForKey:@"SC_scrollwheelzoomenabled"];
+      SELF->scrollwheelzoomenabled = 
+        [coder decodeBoolForKey:@"SC_scrollwheelzoomenabled"];
       SELF->emulator = [[coder decodeObjectForKey:@"SC_emulator"] retain];
+      NSLog(@"emulator: %@", SELF->emulator);
     }
   }
   return self;
@@ -434,6 +444,7 @@
 - (BOOL)_SC_usesEvent:(NSEvent *)event
 {
   int nr = [event buttonNumber];
+  int eventtype = [event type];
   
   // It is not guaranteed that modifierflags == 0 when no modifier keys are
   // pressed, so it is not possible to compare 
@@ -447,14 +458,25 @@
   
   // Known modifiermasks as of AppKit version C (AppKit library
   // compatibility version 45.0.0, current version 743.0.0)
-  unsigned int effectiveflags = [event modifierFlags] & 
+  unsigned int flags = [event modifierFlags] & 
     (NSAlphaShiftKeyMask | NSShiftKeyMask | NSControlKeyMask | 
      NSAlternateKeyMask | NSCommandKeyMask | NSNumericPadKeyMask | 
      NSHelpKeyMask | NSFunctionKeyMask);
-
-   if ((nr == SELF->panbutton && (effectiveflags == SELF->panmodifier)) || 
-       (nr == SELF->rotatebutton && (effectiveflags == SELF->rotatemodifier)) ||
-       (nr == SELF->zoombutton && (effectiveflags == SELF->zoommodifier))) {
+  
+  // Check for emulation
+  if (SELF->emulator) {
+      nr = [SELF->emulator emulatedButtonForButton:nr modifier:flags];
+      // Remove modifier for emulation from the modifiers we look at.
+      // (e.g. if shift + click emulates rightclick, and we get
+      // shift + alt + click, we want to process this as
+      // alt + rightclick (not shift + alt + rightclick)!)
+      flags ^= [SELF->emulator modifierToEmulateButton:nr];
+  }
+  
+  // Actual check whether the event matches a known combination
+   if ((nr == SELF->panbutton && (flags == SELF->panmodifier)) || 
+       (nr == SELF->rotatebutton && (flags == SELF->rotatemodifier)) ||
+       (nr == SELF->zoombutton && (flags == SELF->zoommodifier))) {
     return YES;
   } else {
     return NO;
