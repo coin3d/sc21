@@ -26,10 +26,8 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 - (void) _spin;
 - (void) _pan;
 - (void) _setInternalSceneGraph:(SoGroup *)root;
-- (void) _lightNotFound;
-- (void) _lightFound;
-- (void) _cameraNotFound;
-- (void) _positionCamera;
+- (SoLight *) _findLightInSceneGraph:(SoGroup *)root;    // impl in super
+- (SoCamera *) _findCameraInSceneGraph:(SoGroup *) root; // impl in super
 @end
 
 @implementation SCExaminerController
@@ -518,7 +516,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 - (void) _handleLighting
 {
-  if (![self findLightInSceneGraph:_userscenegraph]) {
+  if (![self _findLightInSceneGraph:_userscenegraph]) {
     [self setHeadlightIsOn:YES];
   } else {
     [self setHeadlightIsOn:NO];
@@ -527,7 +525,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 - (void) _handleCamera
 {
-  SoCamera * scenecamera  = [self findCameraInSceneGraph:_scenegraph];
+  SoCamera * scenecamera  = [self _findCameraInSceneGraph:_scenegraph];
   if (scenecamera == NULL) {
     SoCamera * scenecamera = new SoPerspectiveCamera;
     [_camera setSoCamera:scenecamera deleteOldCamera:NO];

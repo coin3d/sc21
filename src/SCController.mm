@@ -29,6 +29,8 @@
 @interface SCController (InternalAPI)
 - (void) _processTimerQueue:(NSTimer *) t;
 - (void) _processDelayQueue:(NSTimer *) t;
+- (SoLight *) _findLightInSceneGraph:(SoGroup *)root;
+- (SoCamera *) _findCameraInSceneGraph:(SoGroup *) root;
 - (void) _setInternalSceneGraph:(SoGroup *)root;
 - (void) _handleLighting;
 - (void) _handleCamera;
@@ -247,57 +249,30 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   return _scenegraph; 
 }
 
+/*" Sets the current scene manager to scenemanager. The scene manager's
+    render callback will be set to %redraw_cb (SCController's default
+    redraw callback), and it will be activated. Also, if a scenegraph
+    has been set earlier, scenemanager's scenegraph will be set to it.
+
+    Note that you should not normally need to call that method, since a
+    scene manager is created for you in #activate. 
+ "*/
+
+- (void) setSceneManager:(SoSceneManager *) scenemanager
+{
+  _scenemanager = scenemanager;
+  _scenemanager->setRenderCallback(redraw_cb, (void*) view);
+  _scenemanager->getGLRenderAction()->setCacheContext(
+    SoGLCacheContextElement::getUniqueCacheContext());
+  _scenemanager->activate();
+  if (_scenegraph) _scenemanager->setSceneGraph(_scenegraph);
+}
+
 /*" Returns the current Coin scene manager instance. "*/
 
 - (SoSceneManager *) sceneManager 
 { 
   return _scenemanager; 
-}
-
-
-/*" Find camera in root. Returns a pointer to the camera, if found,
-    otherwise NULL.
- "*/
-
-- (SoCamera *) findCameraInSceneGraph:(SoGroup *) root
-{
-  SoCamera * scenecamera = NULL;
-  SbBool oldsearch = SoBaseKit::isSearchingChildren();
-  SoBaseKit::setSearchingChildren(TRUE);
-  SoSearchAction sa;
-  sa.reset();
-  sa.setType(SoCamera::getClassTypeId());
-  sa.apply(root);
-  SoBaseKit::setSearchingChildren(oldsearch);
-  if (sa.getPath() != NULL) {
-    SoFullPath * fullpath = (SoFullPath *) sa.getPath();
-    scenecamera = (SoCamera *)fullpath->getTail();
-  }
-  return scenecamera;
-}
-
-
-/*" Find light in root. Returns a pointer to the light, if found,
-otherwise NULL.
-"*/
-
-- (SoLight *) findLightInSceneGraph:(SoGroup *) root
-{
-  if (root == NULL) return NULL;
-
-  SoLight * light = NULL;
-  SbBool oldsearch = SoBaseKit::isSearchingChildren();
-  SoBaseKit::setSearchingChildren(TRUE);
-  SoSearchAction sa;
-  sa.reset();
-  sa.setType(SoLight::getClassTypeId());
-  sa.apply(root);
-  SoBaseKit::setSearchingChildren(oldsearch);
-  if (sa.getPath() != NULL) {
-    SoFullPath * fullpath = (SoFullPath *) sa.getPath();
-    light = (SoLight *)fullpath->getTail();
-  }
-  return light;
 }
 
 /*" Sets the autoclip value to value."*/
@@ -685,8 +660,6 @@ otherwise NULL.
 }
 
 
-// Methods below are called by setScenegraph
-
 - (void) _setInternalSceneGraph:(SoGroup *)root
 {
   _scenegraph = root;
@@ -694,15 +667,61 @@ otherwise NULL.
 
 - (void) _handleLighting
 {
-  if (![self findLightInSceneGraph:_scenegraph]) {
+  if (![self _findLightInSceneGraph:_scenegraph]) {
     [[NSNotificationCenter defaultCenter]
       postNotificationName:SCNoLightFoundInSceneNotification object:self];
   }
 }
 
+
+/* Find light in root. Returns a pointer to the light, if found,
+    otherwise NULL.
+ */
+
+- (SoLight *) _findLightInSceneGraph:(SoGroup *) root
+{
+  if (root == NULL) return NULL;
+
+  SoLight * light = NULL;
+  SbBool oldsearch = SoBaseKit::isSearchingChildren();
+  SoBaseKit::setSearchingChildren(TRUE);
+  SoSearchAction sa;
+  sa.reset();
+  sa.setType(SoLight::getClassTypeId());
+  sa.apply(root);
+  SoBaseKit::setSearchingChildren(oldsearch);
+  if (sa.getPath() != NULL) {
+    SoFullPath * fullpath = (SoFullPath *) sa.getPath();
+    light = (SoLight *)fullpath->getTail();
+  }
+  return light;
+}
+
+
+/*" Find camera in root. Returns a pointer to the camera, if found,
+    otherwise NULL.
+"*/
+
+- (SoCamera *) _findCameraInSceneGraph:(SoGroup *) root
+{
+  SoCamera * scenecamera = NULL;
+  SbBool oldsearch = SoBaseKit::isSearchingChildren();
+  SoBaseKit::setSearchingChildren(TRUE);
+  SoSearchAction sa;
+  sa.reset();
+  sa.setType(SoCamera::getClassTypeId());
+  sa.apply(root);
+  SoBaseKit::setSearchingChildren(oldsearch);
+  if (sa.getPath() != NULL) {
+    SoFullPath * fullpath = (SoFullPath *) sa.getPath();
+    scenecamera = (SoCamera *)fullpath->getTail();
+  }
+  return scenecamera;
+}
+
 - (void) _handleCamera
 {  
-  SoCamera * scenecamera  = [self findCameraInSceneGraph:_scenegraph];
+  SoCamera * scenecamera  = [self _findCameraInSceneGraph:_scenegraph];
   if (scenecamera == NULL) {
     [[NSNotificationCenter defaultCenter]
       postNotificationName:SCNoCameraFoundInSceneNotification object:self];

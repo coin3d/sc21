@@ -40,11 +40,11 @@ class SoSceneManager;
 - (void) render;
 - (void) setSceneGraph:(SoGroup *)scenegraph;
 - (SoGroup *) sceneGraph;
+- (void) setSceneManager:(SoSceneManager *) scenemanager;
 - (SoSceneManager *) sceneManager;
 - (void) setBackgroundColor:(NSColor *)color;
 - (NSColor *) backgroundColor;
 - (void) viewSizeChanged:(NSRect)size;
-- (SoLight *) findLightInSceneGraph:(SoGroup *)root;
 - (void) setAutoClipValue:(float)value;
 - (float) autoClipValue;
 
@@ -52,7 +52,6 @@ class SoSceneManager;
 - (void) setCamera:(SoCamera *)camera;
 - (SoCamera *) camera;
 - (SCCameraType) cameraType; // see SCCamera.h for SCCameraType enum
-- (SoCamera *) findCameraInSceneGraph:(SoGroup *)root;
 
 /*" Debugging aids. "*/
 - (NSString *) debugInfo;
