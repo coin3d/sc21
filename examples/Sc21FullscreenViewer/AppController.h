@@ -36,9 +36,7 @@
   NSOpenGLContext *_fullScreenContext;
   CGDirectDisplayID _displayid;
 }
-- (void)modeChanged:(id)sender;
 - (IBAction)open:(id)sender;
-- (IBAction)toggleModes:(id)sender;
 - (IBAction)toggleHeadlight:(id)sender;
 - (IBAction)viewAll:(id)sender;
 - (IBAction)showDebugInfo:(id)sender;

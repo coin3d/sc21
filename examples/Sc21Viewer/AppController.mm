@@ -42,23 +42,7 @@
 
 - (void)awakeFromNib
 {
-  // Display current status.
-  [self modeChanged:nil];
   [filenametext setStringValue:@"None"];
-
-//   // Register for notification: we want to know when to mode
-//   // is changed, so that we can update the UI. (The mode might be changed
-//   // both from the menu or via the checkbox.)
-//   [[NSNotificationCenter defaultCenter] addObserver:self
-//                                         selector:@selector(modeChanged:)
-//                                         name:SCModeChangedNotification
-//                                         object:nil];
-}
-
-- (void)modeChanged:(id)sender
-{
-//   if ([coincontroller handlesEventsInViewer]) [mode setState:NSOffState];
-//   else [mode setState:NSOnState];
 }
 
 - (IBAction)showDebugInfo:(id)sender
@@ -70,17 +54,6 @@
   [panel close];
   NSReleaseAlertPanel(panel);
 }
-
-// Toggles whether events should be interpreted as viewer events, i.e.
-// if they should be regarded as input for controlling the viewer or
-// sent to the scene graph directly.
-
-- (IBAction)toggleModes:(id)sender
-{
-//   [coincontroller 
-//     setHandlesEventsInViewer:([coincontroller handlesEventsInViewer]?NO:YES)];
-}
-
 
 // Switches the headlight on and off.
 
