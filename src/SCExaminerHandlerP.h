@@ -27,12 +27,6 @@
  
 #import <Sc21/SCExaminerHandler.h> 
 
-typedef int SCOperation;
-#define SCNoOperation 0
-#define SCRotate      1
-#define SCPan         2
-#define SCZoom        3
-
  @interface SCExaminerHandlerP : NSObject
 {
   int panbutton, rotatebutton, zoombutton;
@@ -40,7 +34,6 @@ typedef int SCOperation;
   BOOL spinenabled;
   BOOL scrollwheelzoomenabled;
   SCEmulator * emulator;
-  SCOperation currentoperation;
   SCMode * currentmode;
   id<SCDrawable> currentdrawable;
   SCCamera * currentcamera;  
@@ -52,15 +45,10 @@ typedef int SCOperation;
 
 @interface SCExaminerHandler (InternalAPI)
 - (void)_SC_commonInit;
-- (Class)_SC_modeForOperation:(SCOperation)operation;
 - (BOOL)_SC_performActionForEvent:(NSEvent *)event camera:(SCCamera *)camera;
 - (void)_SC_setCurrentMode:(SCMode *)mode;
 - (SCMode *)_SC_currentMode;
-- (void)_SC_setCurrentOperation:(SCOperation)operation;
-- (SCOperation)_SC_currentOperation;
-
 - (void)_SC_activateMode:(SCMode *)mode event:(NSEvent *)event point:(NSPoint *)pn;
-- (SCOperation)_SC_operationForButton:(int)buttonNumber andModifier:(unsigned int)modifierFlags;
-
+- (Class)_SC_modeForButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
 
 @end

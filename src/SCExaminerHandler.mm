@@ -95,6 +95,7 @@
 }
 
 #pragma mark --- mouse button emulation ---
+
 - (SCEmulator *)emulator
 {
   return SELF->emulator;
@@ -105,7 +106,6 @@
   if (emulator != SELF->emulator) [SELF->emulator release];
   SELF->emulator = [emulator retain];
 }
-
 
 #pragma mark --- SCEventHandler conformance ---
 
@@ -136,33 +136,32 @@
     }
     return handled;
   }
-
+  
   unsigned int modifierflags = [event modifierFlags];
-  // Check if this event will trigger an operation change
-  SCOperation operation = [self _SC_currentOperation];
+  
+  Class mode = [[self _SC_currentMode] class];
   if (eventtype == NSLeftMouseUp ||
       eventtype == NSRightMouseUp ||
       eventtype == NSOtherMouseUp) {
-    operation = SCNoOperation;
-  }
+    mode = Nil;
+  } 
+
   else if (eventtype == NSLeftMouseDown ||
            eventtype == NSRightMouseDown ||
            eventtype == NSOtherMouseDown) {
     // Check for emulations
     int effectivebutton = [SELF->emulator emulatedButtonForButton:[event buttonNumber] 
-    modifier:modifierflags];
+                                                         modifier:modifierflags];
     
-    SCOperation newoperation = [self _SC_operationForButton:effectivebutton 
-                                            andModifier:modifierflags];
-    if (newoperation != SCNoOperation) operation = newoperation;
+    Class newmode = [self _SC_modeForButton:effectivebutton 
+                                   modifier:modifierflags];
+    if (newmode != Nil) mode = newmode;
   }
 
-  if (operation != [self _SC_currentOperation]) {
-    [self _SC_setCurrentOperation:operation];
+  if (mode != [[self _SC_currentMode] class]) {
     [[self _SC_currentMode] deactivate];
-    Class modeclass = [self _SC_modeForOperation:operation];
-    if (modeclass) {
-      SCMode * newmode = [[[modeclass alloc] init] autorelease];
+    if (mode) {
+      SCMode * newmode = [[[mode alloc] init] autorelease];
       [self _SC_setCurrentMode:newmode];
       [self _SC_activateMode:newmode event:event point:&pn];
     }
@@ -233,24 +232,6 @@
   return NO;
 }
 
-- (Class)_SC_modeForOperation:(SCOperation)operation
-{
-  switch (operation) {
-  case SCRotate: 
-    return [SCRotateMode class];
-    break;
-  case SCPan: 
-    return [SCPanMode class];
-    break;
-  case SCZoom:
-    return [SCZoomMode class];
-    break;
-  case SCNoOperation: 
-  default:
-    return Nil;
-    break;
-  }
-}
 
 - (void)_SC_setCurrentMode:(SCMode *)mode
 {
@@ -264,16 +245,6 @@
   return SELF->currentmode;
 }
 
-- (SCOperation)_SC_currentOperation
-{
-  return SELF->currentoperation;
-}
-
-- (void)_SC_setCurrentOperation:(SCOperation)operation
-{
-  SELF->currentoperation = operation;
-}
-
 - (void)_SC_activateMode:(SCMode *)newmode event:(NSEvent *)event
                    point:(NSPoint *)pn
 {
@@ -284,48 +255,33 @@
     postNotificationName:SCCursorChangedNotification object:self];  
 }
 
-
-- (SCOperation)_SC_operationForButton:(int)buttonNumber andModifier:(unsigned int)modifierFlags
+- (Class)_SC_modeForButton:(int)buttonNumber modifier:(unsigned int)modifierFlags
 {
-  NSLog(@"_SC_operationForButton:%d andModifier:%u", buttonNumber, modifierFlags);
-  
   unsigned int matchedflags = 0;
-  int matchedoperation = SCNoOperation;
+  Class matchedmode = Nil;
   
   if (SELF->rotatebutton == buttonNumber && 
       (SELF->rotatemodifier & modifierFlags) == SELF->rotatemodifier &&
       SELF->rotatemodifier >= matchedflags) {
-    
     matchedflags = SELF->rotatemodifier;
-    matchedoperation = SCRotate;
-    NSLog(@"After rotate check: matchedflags: %u, matchedoperation: %d", 
-          matchedflags, matchedoperation);
+    matchedmode = [SCRotateMode class];    
   }
-    
+  
   if (SELF->zoombutton  == buttonNumber && 
       (SELF->zoommodifier & modifierFlags) == SELF->zoommodifier &&
       SELF->zoommodifier >= matchedflags) {
-    
     matchedflags = SELF->zoommodifier;
-    matchedoperation = SCZoom;
-    NSLog(@"After zoom check: matchedflags: %u, matchedoperation: %d", 
-          matchedflags, matchedoperation);
-    
+    matchedmode = [SCZoomMode class];  
   }
   
   if (SELF->panbutton  == buttonNumber && 
       (SELF->panmodifier & modifierFlags) == SELF->panmodifier &&
       SELF->panmodifier >= matchedflags)  {
-    
     matchedflags = SELF->panmodifier;
-    matchedoperation = SCPan;
-    NSLog(@"After pan check: matchedflags: %u, matchedoperation: %d", 
-          matchedflags, matchedoperation);
-    
+    matchedmode = [SCPanMode class];
   }
   
-  return matchedoperation;
-  
+  return matchedmode;
 }
 
 @end
