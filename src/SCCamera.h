@@ -68,7 +68,7 @@ typedef enum _SCCameraType {
 - (void)translate:(SbVec3f)v;
 - (void)zoom:(float)delta;
 - (void)viewAll;
-- (void)updateClippingPlanes:(SoSeparator *)scenegraph;
+- (void)updateClippingPlanes:(SoGroup *)scenegraph;
 
 /*" Accessors "*/ 
 - (void)setSoCamera:(SoCamera *)camera;

@@ -30,8 +30,8 @@
 @interface _SCSceneGraphP : NSObject
 {
   SCCamera * camera;
-  SoSeparator * scenegraph;	 
-  SoSeparator * superscenegraph;
+  SoGroup * scenegraph;	 
+  SoGroup * superscenegraph;
   SoSceneManager * scenemanager;
   SoDirectionalLight * headlight;  
   BOOL addedlight;
@@ -46,7 +46,7 @@
 - (SoCamera *)_SC_findCameraInSceneGraph:(SoGroup *)sg;
 - (void)_SC_setHasAddedCamera:(BOOL)yn;
 - (void)_SC_createSuperSceneGraph;
-- (SoSeparator*)_SC_readFile:(NSString *)name;
+- (SoGroup*)_SC_readFile:(NSString *)name;
 - (void)_SC_setCreatesSuperSceneGraph:(BOOL)yn;
 - (BOOL)_SC_createsSuperSceneGraph;
 @end  

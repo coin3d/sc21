@@ -30,7 +30,7 @@
 #import <Sc21/SCDefines.h>
 #import <Inventor/SoSceneManager.h>
 #import <Inventor/nodes/SoCamera.h>
-#import <Inventor/nodes/SoSeparator.h>
+#import <Inventor/nodes/SoGroup.h>
 #import <Inventor/nodes/SoDirectionalLight.h>
 
 @class _SCSceneGraphP;
@@ -64,9 +64,9 @@
 - (BOOL)hasAddedCamera;
 
 /*" Accessing the actual Coin scenegraph. "*/
-- (SoSeparator *)superSceneGraph; 
-- (SoSeparator *)root;
-- (void)setRoot:(SoSeparator *)root;
+- (SoGroup *)superSceneGraph; 
+- (SoGroup *)root;
+- (void)setRoot:(SoGroup *)root;
 
   /*" Delegate handling. "*/
 - (void)setDelegate:(id)delegate;
@@ -82,8 +82,8 @@
 
 @interface NSObject (SCSceneGraphDelegate)
 - (BOOL)shouldCreateDefaultSuperSceneGraph;
-- (SoSeparator *)createSuperSceneGraph:(SoSeparator *)scenegraph;
-- (void)didCreateSuperSceneGraph:(SoSeparator *)superscenegraph;
+- (SoGroup *)createSuperSceneGraph:(SoGroup *)scenegraph;
+- (void)didCreateSuperSceneGraph:(SoGroup *)superscenegraph;
 @end
 
 // ------------------ Notifications -----------------------

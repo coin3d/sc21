@@ -277,7 +277,7 @@ Translate camera relative to its own coordinate system.
     (the greater the ratio far/near, the less effective the depth buffer).
  "*/
  
-- (void)updateClippingPlanes:(SoSeparator *)sg
+- (void)updateClippingPlanes:(SoGroup *)sg
 {
   // FIXME: Need autoclipcb callback function? Investigate.
   // kyrah 20030509
@@ -503,7 +503,7 @@ Translate camera relative to its own coordinate system.
 
 - (void)_SC_getCameraCoordinateSystem: (SbMatrix &)m inverse:(SbMatrix &)inv
 {
-  SoSeparator * root = [SELF->scenegraph root];
+  SoGroup * root = [SELF->scenegraph root];
   SoSearchAction searchaction;
   SoGetMatrixAction matrixaction(SbViewportRegion(100,100));
 
@@ -557,7 +557,7 @@ Translate camera relative to its own coordinate system.
     SC21_DEBUG(@"_SC_getParentOfCamera called with no active SoCamera");
     return NULL;
   }
-  SoSeparator * root = [SELF->scenegraph superSceneGraph];
+  SoGroup * root = [SELF->scenegraph superSceneGraph];
   SbBool wassearchingchildren = SoBaseKit::isSearchingChildren();
   SoBaseKit::setSearchingChildren(TRUE);
   SoSearchAction search;

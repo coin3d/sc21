@@ -71,7 +71,7 @@
 - (id)initWithContentsOfFile:(NSString *)filename
 {
   if (self = [self init]) {
-    SoSeparator * fileroot = [self _SC_readFile:filename];
+    SoGroup * fileroot = [self _SC_readFile:filename];
     if (fileroot == NULL) {
       [self release];
       self = nil;
@@ -119,7 +119,7 @@
 
 - (BOOL)readFromFile:(NSString *)name 
 {
-  SoSeparator * fileroot = [self _SC_readFile:name];
+  SoGroup * fileroot = [self _SC_readFile:name];
   if (fileroot) { 
     [self setRoot:fileroot];
     return YES; 
@@ -133,7 +133,7 @@
   Returns the root node in the receiver's Open Inventor scenegraph, or
   NULL if there is no valid scenegraph.
   "*/
-- (SoSeparator *)root
+- (SoGroup *)root
 {
   return SELF->scenegraph;
 }
@@ -147,7 +147,7 @@
   implementation will in that case add a light/camera and the root
   node supplied by the user.
 "*/
-- (SoSeparator *)superSceneGraph
+- (SoGroup *)superSceneGraph
 {
   return SELF->superscenegraph;
 }
@@ -166,7 +166,7 @@
  
   Both the passed and the actual scene graph will be !{ref()}'ed.
 "*/
-- (void)setRoot:(SoSeparator *)root
+- (void)setRoot:(SoGroup *)root
 {
   if (root == NULL) { return; }
   
@@ -441,16 +441,20 @@
   SELF->scenegraph->unref();
 }
 
-- (SoSeparator *)_SC_readFile:(NSString *)filename
+- (SoGroup *)_SC_readFile:(NSString *)filename
 {
-  SoSeparator * fileroot = NULL;
+  SoGroup * fileroot = NULL;
   SoInput in;
   if (!in.openFile([filename UTF8String])) {  
     [[NSNotificationCenter defaultCenter]
         postNotificationName:SCCouldNotOpenFileNotification object:self];
     return NULL;
   } else {
-    fileroot = SoDB::readAll(&in);
+    if (in.isFileVRML2()) {
+      fileroot = (SoGroup *)SoDB::readAllVRML(&in);
+    } else {
+      fileroot = SoDB::readAll(&in);
+    }
     // Note that this is not strictly necessary, but I consider it bad 
     // practice to leave the closing of my resources to the destructor...
     // *shrug*, kyrah
