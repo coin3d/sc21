@@ -52,6 +52,9 @@
                                         selector:@selector(modeChanged:)
                                         name:SCModeChangedNotification
                                         object:nil];
+
+  // To avoid garbage when no scenegraph is loaded
+  [coincontroller setSceneGraph:new SoSeparator];
 }
 
 
