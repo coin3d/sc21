@@ -30,6 +30,7 @@ class SoSceneManager;
 - (void) awakeFromNib;
 
 /*" Getting the view associated with the controller "*/
+- (void) setView:(SCView *) view;
 - (SCView *) view;
 
 /*" Coin rendering and related functionality "*/

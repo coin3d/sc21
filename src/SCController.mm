@@ -168,6 +168,15 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 // ------------ getting the view associated with the controller -------
 
+/*" Set the view to newview. newview is retained by the controller. "*/
+
+- (void) setView:(SCView *)newview
+{
+  [newview retain];
+  [view release];
+  view = newview;
+}
+
 /*" Returns the SCView the SCController's view outlet is connected to. "*/
 
 - (SCView *) view 
@@ -267,7 +276,6 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     SoFullPath * fullpath = (SoFullPath *) sa.getPath();
     scenecamera = (SoCamera *)fullpath->getTail();
   }
-  NSLog(@"Camera %sfound in scene", scenecamera ? "" : "not ");
   return scenecamera;
 }
 
@@ -292,7 +300,6 @@ otherwise NULL.
     SoFullPath * fullpath = (SoFullPath *) sa.getPath();
     light = (SoLight *)fullpath->getTail();
   }
-  NSLog(@"Light %sfound in scene", light ? "" : "not ");
   return light;
 }
 
