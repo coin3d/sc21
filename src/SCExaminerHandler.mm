@@ -32,7 +32,7 @@
 
 - (void)dealloc
 {
-  [SELF->emulator release];
+  //[SELF->emulator release];
   [SELF release];
 }
 
@@ -223,7 +223,7 @@
       SELF->zoommodifier = [coder decodeIntForKey:@"SC_zoommodifier"];
       SELF->spinenabled = [coder decodeBoolForKey:@"SC_spinenabled"];
       SELF->scrollwheelzoomenabled = [coder decodeBoolForKey:@"SC_scrollwheelzoomenabled"];
-      SELF->emulator = [coder decodeObjectForKey:@"SC_emulator"];
+      SELF->emulator = [[coder decodeObjectForKey:@"SC_emulator"] retain];
     }
   }
   return self;

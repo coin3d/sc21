@@ -80,7 +80,7 @@
 - (void)encodeWithCoder:(NSCoder *)coder
 {
   if ([coder allowsKeyedCoding]) {
-    [coder encodeObject:emulationdict forKey:@"SC_emulationdict"];
+     [coder encodeObject:emulationdict forKey:@"SC_emulationdict"];
   }
 }
 
@@ -88,9 +88,11 @@
 {
   if (self = [super init]) {
     if ([coder allowsKeyedCoding]) {
+      NSLog(@"");
       emulationdict = [[coder decodeObjectForKey:@"SC_emulationdict"] retain];
     }
   }
   return self;
 }
+
 @end
