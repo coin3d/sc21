@@ -616,9 +616,9 @@ otherwise NULL.
 
   NSMutableString * info = [NSMutableString stringWithCapacity:100];
   [info appendFormat:@"Coin version: %s\n", coinversion];
+  [info appendFormat:@"OpenGL version: %s\n", (const char *)version];
   [info appendFormat:@"Vendor: %s\n", (const char *)vendor];
   [info appendFormat:@"Renderer: %s\n", (const char *)renderer];
-  [info appendFormat:@"Version: %s\n", (const char *)version];
   [info appendFormat:@"Color depth (RGBA): %d, %d, %d, %d\n",
     colors[0], colors[1], colors[2], colors[3]];
   [info appendFormat:@"Accumulation buffer depth (RGBA): %d, %d, %d, %d\n",
