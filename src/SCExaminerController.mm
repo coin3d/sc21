@@ -56,9 +56,9 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 
 @interface SCExaminerController (InternalAPI)
-- (void) _setInternalSceneGraph:(SoGroup *)root;
-- (SoLight *) _findLightInSceneGraph:(SoGroup *)root;    // impl in super
-- (SoCamera *) _findCameraInSceneGraph:(SoGroup *)root; // impl in super
+- (void)_setInternalSceneGraph:(SoGroup *)root;
+- (SoLight *)_findLightInSceneGraph:(SoGroup *)root;    // impl in super
+- (SoCamera *)_findCameraInSceneGraph:(SoGroup *)root; // impl in super
 @end
 
 @implementation SCExaminerController
@@ -100,27 +100,9 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     class. Returns !{self}.
  "*/
 
-- (id) init
+- (id)init
 {
   if (self = [super init]) {
-    // Note that commonInit will be called by our superclass'
-    // initWithCoder method, so do not call it here.
-    ; 
-  }
-  return self;
-}
-
-
-/*" Initializes a newly allocated SCExaminerController instance from the 
-    data in decoder. Returns !{self}
-
-    Calls #commonInit, which contains common initialization
-    code needed both in #init and #initWithCoder.
-"*/
-
-- (id) initWithCoder:(NSCoder *) coder
-{
-  if (self = [super initWithCoder:coder]) {
     // Note that commonInit will be called by our superclass'
     // initWithCoder method, so do not call it here.
     ; 
@@ -135,7 +117,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     implementation to make sure everything is set up properly.
  "*/
 
-- (void) commonInit
+- (void)commonInit
 {
   [super commonInit];
   _headlight = NULL;
@@ -152,8 +134,9 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 /*" Clean up after ourselves. "*/
 
-- (void) dealloc
+- (void)dealloc
 {
+  NSLog(@"SCExaminerController.dealloc");
   [_mouselog release];
   delete _spinprojector;
   delete _spinrotation;
@@ -166,7 +149,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     rendering the scene.
  "*/
  
-- (void) render
+- (void)render
 {
   [_camera updateClippingPlanes:_userscenegraph];
   [super render];
@@ -185,7 +168,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
      A camera is added before the scenegraph, if it does not contain one.
  */
 
-- (void) setSceneGraph:(SoGroup*)root
+- (void)setSceneGraph:(SoGroup*)root
 {
   [super setSceneGraph:root];
   
@@ -201,7 +184,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     %SCCameraOrthographic (see SCCamera.h).
  "*/
 
-- (void) setCameraType:(SCCameraType) type
+- (void)setCameraType:(SCCameraType)type
 {
   [_camera convertToType:type];
 }
@@ -209,7 +192,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 /*" Repositions the camera so that we can se the whole scene. "*/
 
-- (void) viewAll
+- (void)viewAll
 {
   [_camera viewAll]; // SCViewAllNotification sent by _camera
 }
@@ -218,7 +201,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 /*" Returns !{YES} if the headlight is on, and !{NO} if it is off. "*/
 
-- (BOOL) headlightIsOn
+- (BOOL)headlightIsOn
 {
   if (_headlight == NULL) return FALSE;
   return (_headlight->on.getValue() == TRUE) ? YES : NO;
@@ -227,7 +210,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 /*" Turns the headlight on or off. "*/
 
-- (void) setHeadlightIsOn:(BOOL) yn
+- (void)setHeadlightIsOn:(BOOL)yn
 {
   if (_headlight == NULL) return;
   _headlight-> on = yn ? TRUE : FALSE;
@@ -238,7 +221,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 /*" Returns the headlight of the current scene graph. "*/
 
-- (SoDirectionalLight *) headlight
+- (SoDirectionalLight *)headlight
 {
   return _headlight;
 }
@@ -271,7 +254,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 "*/
 
-- (BOOL) handleEventAsViewerEvent:(NSEvent *) event
+- (BOOL)handleEventAsViewerEvent:(NSEvent *)event
 {
   BOOL handled = NO;
   NSEventType type = [event type];
@@ -343,7 +326,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     of mouse positions used in #dragWithPoint:
 "*/
 
-- (void) startDraggingWithPoint:(NSPoint)point
+- (void)startDraggingWithPoint:(NSPoint)point
 {
   NSValue * v = [NSValue valueWithPoint:point];
   // Clear log and project to the last position we stored.
@@ -358,7 +341,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     of mouse positions used in #panWithPoint:
 "*/
 
-- (void) startPanningWithPoint:(NSPoint) point
+- (void)startPanningWithPoint:(NSPoint)point
 {
   SbViewVolume vv;
   NSValue * v = [NSValue valueWithPoint:point];
@@ -374,7 +357,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     of mouse positions used in #zoomWithPoint:
  "*/
 
-- (void) startZoomingWithPoint:(NSPoint)point
+- (void)startZoomingWithPoint:(NSPoint)point
 {
   NSValue * v = [NSValue valueWithPoint:point];
   // Clear log and project to the last position we stored.
@@ -391,7 +374,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     the extent of the dragging.
  "*/
 
-- (void) dragWithPoint:(NSPoint)point
+- (void)dragWithPoint:(NSPoint)point
 {
   NSPoint p, q, qn, pn;
   SbRotation r;
@@ -423,7 +406,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     the extent of the panning.
 "*/
 
-- (void) panWithPoint:(NSPoint) point
+- (void)panWithPoint:(NSPoint)point
 {
   NSPoint p, q, pn, qn;
   SbLine line;
@@ -463,7 +446,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     method.
  "*/
 
-- (void) zoomWithDelta:(float)delta
+- (void)zoomWithDelta:(float)delta
 {
   [_camera zoom:delta];
 }
@@ -480,7 +463,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     In this case, #zoomWithDelta: is called instead of this method.
 "*/
 
-- (void) zoomWithPoint:(NSPoint)point
+- (void)zoomWithPoint:(NSPoint)point
 {
   NSValue * v = [NSValue valueWithPoint:point];
   NSPoint p, q, qn, pn;
@@ -496,7 +479,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 /*" Does nothing. Used as default action for unhandled events. "*/
 
-- (void) ignore:(NSValue *) v
+- (void)ignore:(NSValue *)v
 {
   // Do nothing.
 }
@@ -505,10 +488,30 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 // ---------------- NSCoder conformance -------------------------------
 
+/*" Initializes a newly allocated SCExaminerController instance from the 
+    data in decoder. Returns !{self}
+
+    Calls #commonInit, which contains common initialization
+    code needed both in #init and #initWithCoder.
+"*/
+
+- (id)initWithCoder:(NSCoder *)coder
+{
+  NSLog(@"SCExaminerController.initWithCoder:");
+  if (self = [super initWithCoder:coder]) {
+    // Note that commonInit will be called by our superclass'
+    // initWithCoder method, so do not call it here.
+    ; 
+  }
+  return self;
+}
+
+
 /*" Encodes the SCController using encoder coder "*/
 
-- (void) encodeWithCoder:(NSCoder *) coder
+- (void)encodeWithCoder:(NSCoder *)coder
 {
+  NSLog(@"SCExaminerController.encodeWithCoder:");
   [super encodeWithCoder:coder];
   // FIXME: Encode members. kyrah 20030618
 }
@@ -519,7 +522,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 // Methods below are called by setSceneGraph
 
-- (void) _setInternalSceneGraph:(SoGroup *)scenegraph
+- (void)_setInternalSceneGraph:(SoGroup *)scenegraph
 {
   _userscenegraph = scenegraph;
   _scenegraph = new SoSeparator;
@@ -530,7 +533,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 }
 
 
-- (void) _handleLighting
+- (void)_handleLighting
 {
   if (![self _findLightInSceneGraph:_userscenegraph]) {
     [self setHeadlightIsOn:YES];
@@ -539,7 +542,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   }
 }
 
-- (void) _handleCamera
+- (void)_handleCamera
 {
   SoCamera * scenecamera  = [self _findCameraInSceneGraph:_scenegraph];
   if (scenecamera == NULL) {

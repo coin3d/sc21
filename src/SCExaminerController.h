@@ -45,31 +45,31 @@ class SoDirectionalLight;
 }
 
 /*" Initializing and encoding/decoding an SCExaminerController "*/
-- (id) init;
-- (void) commonInit;
+- (id)init;
+- (void)commonInit;
 
 /*" Coin rendering and related functionality "*/
-- (void) render;
-- (void) setCameraType:(SCCameraType)type;
-- (void) viewAll;
+- (void)render;
+- (void)setCameraType:(SCCameraType)type;
+- (void)viewAll;
 
 /*" Automatic headlight configuration "*/
-- (SoDirectionalLight *) headlight;
-- (BOOL) headlightIsOn;
-- (void) setHeadlightIsOn:(BOOL)yn;
+- (SoDirectionalLight *)headlight;
+- (BOOL)headlightIsOn;
+- (void)setHeadlightIsOn:(BOOL)yn;
 
 /*" Event handling "*/
-- (BOOL) handleEventAsViewerEvent:(NSEvent *)event;
+- (BOOL)handleEventAsViewerEvent:(NSEvent *)event;
 
 /*" Interaction with the viewer. "*/
-- (void) startDraggingWithPoint:(NSPoint)point;
-- (void) startPanningWithPoint:(NSPoint)point;
-- (void) startZoomingWithPoint:(NSPoint)point;
-- (void) dragWithPoint:(NSPoint)point;
-- (void) panWithPoint:(NSPoint)point;
-- (void) zoomWithDelta:(float)delta;
-- (void) zoomWithPoint:(NSPoint)point;
-- (void) ignore:(NSValue *)v;
+- (void)startDraggingWithPoint:(NSPoint)point;
+- (void)startPanningWithPoint:(NSPoint)point;
+- (void)startZoomingWithPoint:(NSPoint)point;
+- (void)dragWithPoint:(NSPoint)point;
+- (void)panWithPoint:(NSPoint)point;
+- (void)zoomWithDelta:(float)delta;
+- (void)zoomWithPoint:(NSPoint)point;
+- (void)ignore:(NSValue *)v;
 
 @end
 

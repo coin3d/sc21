@@ -51,52 +51,52 @@ class SoSceneManager;
 }
 
 /*" Static initialization "*/
-+ (void) initCoin;
++ (void)initCoin;
 
 /*" Initializing and encoding/decoding an SCController "*/
-- (id) init;
-- (void) commonInit;
-- (void) activate;
+- (id)init;
+- (void)commonInit;
+- (void)activate;
 
 /*" Getting the view associated with the controller "*/
-- (void) setView:(SCView *) newview;
-- (SCView *) view;
+- (void)setView:(SCView *)newview;
+- (SCView *)view;
 
 /*" Coin rendering and related functionality "*/
-- (void) render;
-- (void) setSceneGraph:(SoGroup *)scenegraph;
-- (SoGroup *) sceneGraph;
-- (void) setSceneManager:(SoSceneManager *) scenemanager;
-- (SoSceneManager *) sceneManager;
-- (void) setBackgroundColor:(NSColor *)color;
-- (NSColor *) backgroundColor;
-- (void) viewSizeChanged:(NSRect)size;
-- (void) setAutoClipValue:(float)autoclipvalue;
-- (float) autoClipValue;
+- (void)render;
+- (void)setSceneGraph:(SoGroup *)scenegraph;
+- (SoGroup *)sceneGraph;
+- (void)setSceneManager:(SoSceneManager *)scenemanager;
+- (SoSceneManager *)sceneManager;
+- (void)setBackgroundColor:(NSColor *)color;
+- (NSColor *)backgroundColor;
+- (void)viewSizeChanged:(NSRect)size;
+- (void)setAutoClipValue:(float)autoclipvalue;
+- (float)autoClipValue;
 
 /*" Camera handling. "*/
-- (void) setCamera:(SoCamera *)camera;
-- (SoCamera *) camera;
-- (SCCameraType) cameraType; // see SCCamera.h for SCCameraType enum
+- (void)setCamera:(SoCamera *)camera;
+- (SoCamera *)camera;
+- (SCCameraType)cameraType; // see SCCamera.h for SCCameraType enum
 
 /*" Debugging aids. "*/
-- (NSString *) debugInfo;
-- (BOOL) dumpSceneGraph;
+- (NSString *)debugInfo;
+- (BOOL)dumpSceneGraph;
 
 /*" Event handling "*/
-- (BOOL) handleEvent:(NSEvent *)event;
-- (BOOL) handleEventAsCoinEvent:(NSEvent *)event;
-- (BOOL) handleEventAsViewerEvent:(NSEvent *)event;
-- (void) setHandlesEventsInViewer:(BOOL)yn;
-- (BOOL) handlesEventsInViewer;
+- (BOOL)handleEvent:(NSEvent *)event;
+- (BOOL)handleEventAsCoinEvent:(NSEvent *)event;
+- (BOOL)handleEventAsViewerEvent:(NSEvent *)event;
+- (void)setHandlesEventsInViewer:(BOOL)yn;
+- (BOOL)handlesEventsInViewer;
 
 /*" Timer management. "*/
-- (void) startTimers;
-- (void) stopTimers;
-- (void) setTimerInterval:(NSTimeInterval)interval;
-- (NSTimeInterval) timerInterval;
-- (void) setDelayQueueInterval:(NSTimeInterval)interval;
-- (NSTimeInterval) delayQueueInterval;
+- (void)startTimers;
+- (void)stopTimers;
+- (void)setTimerInterval:(NSTimeInterval)interval;
+- (NSTimeInterval)timerInterval;
+- (void)setDelayQueueInterval:(NSTimeInterval)interval;
+- (NSTimeInterval)delayQueueInterval;
 
 
 @end

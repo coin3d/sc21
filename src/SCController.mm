@@ -60,26 +60,26 @@
  "*/
 
 @interface NSTimer (SC21Extensions)
-- (void) deactivate;
+- (void)deactivate;
 @end
 
 @implementation NSTimer (SC21Extensions)
 
-- (void) deactivate
+- (void)deactivate
 {
   [self setFireDate:[NSDate distantFuture]];
 }
 @end
 
 @interface SCController (InternalAPI)
-- (void) _timerQueueTimerFired:(NSTimer *) t;
-- (void) _delayQueueTimerFired:(NSTimer *) t;
-- (void) _sensorQueueChanged;
-- (SoLight *) _findLightInSceneGraph:(SoGroup *)root;
-- (SoCamera *) _findCameraInSceneGraph:(SoGroup *) root;
-- (void) _setInternalSceneGraph:(SoGroup *)root;
-- (void) _handleLighting;
-- (void) _handleCamera;
+- (void)_timerQueueTimerFired:(NSTimer *)t;
+- (void)_delayQueueTimerFired:(NSTimer *)t;
+- (void)_sensorQueueChanged;
+- (SoLight *)_findLightInSceneGraph:(SoGroup *)root;
+- (SoCamera *)_findCameraInSceneGraph:(SoGroup *)root;
+- (void)_setInternalSceneGraph:(SoGroup *)root;
+- (void)_handleLighting;
+- (void)_handleCamera;
 @end  
 
 
@@ -87,7 +87,7 @@
 
 static void
 redraw_cb(void * user, SoSceneManager *) {
-  SCView * view = (SCView *) user;
+  SCView * view = (SCView *)user;
   [view setNeedsDisplay:YES]; 
 }
 
@@ -131,7 +131,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     automatically calls this function if needed. 
 "*/
 
-+ (void) initCoin
++ (void)initCoin
 {
   SoDB::init();
   SoInteraction::init();
@@ -151,7 +151,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     class. Returns !{self}.
  "*/
 
-- (id) init
+- (id)init
 {
   if (self = [super init]) {
     [self commonInit];
@@ -166,7 +166,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     implementation to make sure everything is set up properly.
 "*/
 
-- (void) commonInit
+- (void)commonInit
 {
   if (!_coinInitialized) [SCController initCoin];
   _camera = [[SCCamera alloc] init];
@@ -184,10 +184,10 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     #applicationDidFinishLaunching method.
 "*/
 
-- (void) activate
+- (void)activate
 {
   _scenemanager = new SoSceneManager;
-  _scenemanager->setRenderCallback(redraw_cb, (void*) view);
+  _scenemanager->setRenderCallback(redraw_cb, (void*)view);
   _scenemanager->setBackgroundColor(SbColor(0.0f, 0.0f, 0.0f));
   _scenemanager->getGLRenderAction()->setCacheContext(
     SoGLCacheContextElement::getUniqueCacheContext());
@@ -203,7 +203,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 }
 
 /* Clean up after ourselves. */
-- (void) dealloc
+- (void)dealloc
 {
   [self stopTimers];
   [view setController:nil];
@@ -218,7 +218,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 /*" Set the view to newview. newview is retained by the controller. "*/
 
-- (void) setView:(SCView *)newview
+- (void)setView:(SCView *)newview
 {
   // We intentionally do not retain the view here, to avoid
   // circular references.
@@ -227,7 +227,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 /*" Returns the SCView the SCController's view outlet is connected to. "*/
 
-- (SCView *) view 
+- (SCView *)view 
 { 
   return view; 
 }
@@ -253,7 +253,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     able to see anything.
  "*/
 
-- (void) setSceneGraph:(SoGroup *)scenegraph
+- (void)setSceneGraph:(SoGroup *)scenegraph
 {
   NSLog(@"SetSceneGraph called with %p", scenegraph);
   if (scenegraph == _scenegraph) return;
@@ -280,7 +280,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 /*" Returns the current scene graph used for rendering. "*/
 
-- (SoGroup *) sceneGraph 
+- (SoGroup *)sceneGraph 
 { 
   return _scenegraph; 
 }
@@ -294,10 +294,10 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     scene manager is created for you in #activate. 
  "*/
 
-- (void) setSceneManager:(SoSceneManager *) scenemanager
+- (void)setSceneManager:(SoSceneManager *)scenemanager
 {
   _scenemanager = scenemanager;
-  _scenemanager->setRenderCallback(redraw_cb, (void*) view);
+  _scenemanager->setRenderCallback(redraw_cb, (void*)view);
   _scenemanager->getGLRenderAction()->setCacheContext(
     SoGLCacheContextElement::getUniqueCacheContext());
   _scenemanager->activate();
@@ -306,7 +306,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 /*" Returns the current Coin scene manager instance. "*/
 
-- (SoSceneManager *) sceneManager 
+- (SoSceneManager *)sceneManager 
 { 
   return _scenemanager; 
 }
@@ -321,14 +321,14 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     in SCCamera.
  "*/
 
-- (void) setAutoClipValue:(float)autoclipvalue
+- (void)setAutoClipValue:(float)autoclipvalue
 {
   _autoclipvalue = autoclipvalue;
 }
 
 /*" Returns the current autoclipvalue. The default value is 0.6. "*/
 
-- (float) autoClipValue
+- (float)autoClipValue
 {
   return _autoclipvalue;
 }
@@ -342,14 +342,14 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     it is not inserted into it.
 "*/
 
-- (void) setCamera:(SoCamera *) cam
+- (void)setCamera:(SoCamera *)cam
 {
   [_camera setSoCamera:cam deleteOldCamera:YES];
 }
 
 /*" Returns the current SoCamera used for viewing. "*/
 
-- (SoCamera *) camera
+- (SoCamera *)camera
 {
   return [_camera soCamera];
 }
@@ -358,14 +358,14 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     and !{SCCameraOrthographic} if the camera is orthographic.
  "*/
 
-- (SCCameraType) cameraType
+- (SCCameraType)cameraType
 {
   return [_camera type];
 }
 
 /*" Renders the scene. "*/
 
-- (void) render
+- (void)render
 {
   _scenemanager->render();
 }
@@ -374,7 +374,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     color is not an RGB color.
  "*/
 
-- (void) setBackgroundColor:(NSColor *) color
+- (void)setBackgroundColor:(NSColor *)color
 {
   float red = [color redComponent];
   float green = [color greenComponent];
@@ -386,7 +386,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 /*" Returns the scene's background color. "*/
 
-- (NSColor *) backgroundColor
+- (NSColor *)backgroundColor
 {
   SbColor sbcolor = _scenemanager->getBackgroundColor();
   float red = sbcolor[0];
@@ -405,7 +405,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     the Coin subsystem.
  "*/
 
-- (void) viewSizeChanged:(NSRect)rect
+- (void)viewSizeChanged:(NSRect)rect
 {
   if (!_scenemanager) return;
   int w = (GLint)(rect.size.width);
@@ -443,7 +443,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     !{[controller handleEvent:event]} - so that it can be handled here.
 "*/
  
-- (BOOL) handleEvent:(NSEvent *) event
+- (BOOL)handleEvent:(NSEvent *)event
 {
   if ([self handlesEventsInViewer] == NO) {
     return [self handleEventAsCoinEvent:event];
@@ -458,7 +458,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     Returns !{YES} if the event has been handled, !{NO} otherwise.
  "*/
  
-- (BOOL) handleEventAsCoinEvent:(NSEvent *) event
+- (BOOL)handleEventAsCoinEvent:(NSEvent *)event
 {
   SoEvent * se = [_eventconverter createSoEvent:event];
   if (se) {
@@ -480,7 +480,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     the scene (camera control through the mouse etc.).
  "*/
  
-- (BOOL) handleEventAsViewerEvent:(NSEvent *) event
+- (BOOL)handleEventAsViewerEvent:(NSEvent *)event
 {
   if ([event type] == NSRightMouseDown) {
     [NSMenu popUpContextMenu:[view menu] withEvent:event forView:view];
@@ -494,7 +494,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     should be sent to the scene graph directly (yn = NO) 
 "*/
  
-- (void) setHandlesEventsInViewer:(BOOL)yn
+- (void)setHandlesEventsInViewer:(BOOL)yn
 {
   _handleseventsinviewer = yn;
   [[NSNotificationCenter defaultCenter] postNotificationName:SCModeChangedNotification object:self];
@@ -506,7 +506,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     FALSE if events are sent to the scene graph directly.
  "*/
 
-- (BOOL) handlesEventsInViewer
+- (BOOL)handlesEventsInViewer
 {
   return _handleseventsinviewer;
 }
@@ -518,7 +518,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     processing.
  "*/
 
-- (void) stopTimers
+- (void)stopTimers
 {
   if ([_timerqueuetimer isValid]) [_timerqueuetimer invalidate];
   _timerqueuetimer = nil;
@@ -527,7 +527,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   SoDB::getSensorManager()->setChangedCallback(NULL, NULL);
 }
 
-- (void) startTimers
+- (void)startTimers
 {
   if (_timerqueuetimer != nil) return;
 
@@ -550,7 +550,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     in seconds. Default value is 0.001.
  "*/
 
-- (void) setTimerInterval:(NSTimeInterval) interval
+- (void)setTimerInterval:(NSTimeInterval)interval
 {
   if ([_timerqueuetimer timeInterval] == interval) return;
   if ([_timerqueuetimer isValid]) [_timerqueuetimer invalidate];
@@ -567,7 +567,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     queue.
  "*/
 
-- (NSTimeInterval) timerInterval
+- (NSTimeInterval)timerInterval
 {
   return [_timerqueuetimer timeInterval];
 }
@@ -581,7 +581,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     function here instead.
 "*/
 
-- (void) setDelayQueueInterval:(NSTimeInterval) interval
+- (void)setDelayQueueInterval:(NSTimeInterval)interval
 {
   if ([_delayqueuetimer timeInterval] == interval) return;
   if ([_delayqueuetimer isValid]) [_delayqueuetimer invalidate];
@@ -598,7 +598,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     queue.
 "*/
 
-- (NSTimeInterval) delayQueueInterval
+- (NSTimeInterval)delayQueueInterval
 {
   return [_delayqueuetimer timeInterval];
 }
@@ -611,7 +611,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     (color depth, z buffer, accumulation buffer).
  "*/
 
-- (NSString *) debugInfo;
+- (NSString *)debugInfo;
 {
   GLint depth;
   GLint colors[4];
@@ -673,7 +673,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     !{YES} otherwise.
 "*/
 
-- (BOOL) dumpSceneGraph
+- (BOOL)dumpSceneGraph
 {
   SoOutput out;
   SbString filename = SbTime::getTimeOfDay().format();
@@ -691,7 +691,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 /*" Encodes the SCController using encoder coder "*/
 
-- (void) encodeWithCoder:(NSCoder *) coder
+- (void)encodeWithCoder:(NSCoder *)coder
 {
   [super encodeWithCoder:coder];
   // FIXME: Encode members. kyrah 20030618
@@ -700,7 +700,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 /*" Initializes a newly allocated SCController instance from the data
     in decoder. Returns !{self} "*/
     
-- (id) initWithCoder:(NSCoder *) coder
+- (id)initWithCoder:(NSCoder *)coder
 {
   if (self = [super initWithCoder:coder]) {
     [self commonInit];
@@ -713,7 +713,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 /* Timer callback function: process the timer sensor queue. */
 
-- (void) _timerQueueTimerFired:(NSTimer *)t
+- (void)_timerQueueTimerFired:(NSTimer *)t
 {
   NSLog(@"timerQueueTimerFired");
   SoDB::getSensorManager()->processTimerQueue();
@@ -722,7 +722,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 /* Timer callback function: process the delay queue when maximum time has been reached. */
 
-- (void) _delayQueueTimerFired:(NSTimer *)t
+- (void)_delayQueueTimerFired:(NSTimer *)t
 {
   NSLog(@"delayQueueTimerFired");
   SoDB::getSensorManager()->processTimerQueue();
@@ -732,7 +732,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 /* process delay queue when application is idle. */
 
-- (void) _idle
+- (void)_idle
 {
   // FIXME: Implement mechanism to call this function  
   SoDB::getSensorManager()->processTimerQueue();
@@ -741,7 +741,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 }
 
 // FIXME: Rename to something more appropriate... ;)
-- (void) _sensorQueueChanged
+- (void)_sensorQueueChanged
 {
 
   // FIXME: Process delay queue when application is idle. Problem:
@@ -770,12 +770,12 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   }
 }
 
-- (void) _setInternalSceneGraph:(SoGroup *)root
+- (void)_setInternalSceneGraph:(SoGroup *)root
 {
   _scenegraph = root;
 }
 
-- (void) _handleLighting
+- (void)_handleLighting
 {
   if (![self _findLightInSceneGraph:_scenegraph]) {
     [[NSNotificationCenter defaultCenter]
@@ -788,7 +788,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     otherwise NULL.
  */
 
-- (SoLight *) _findLightInSceneGraph:(SoGroup *) root
+- (SoLight *)_findLightInSceneGraph:(SoGroup *)root
 {
   if (root == NULL) return NULL;
 
@@ -812,7 +812,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     otherwise NULL.
 "*/
 
-- (SoCamera *) _findCameraInSceneGraph:(SoGroup *) root
+- (SoCamera *)_findCameraInSceneGraph:(SoGroup *)root
 {
   SoCamera * scenecamera = NULL;
   SbBool oldsearch = SoBaseKit::isSearchingChildren();
@@ -829,7 +829,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   return scenecamera;
 }
 
-- (void) _handleCamera
+- (void)_handleCamera
 {  
   SoCamera * scenecamera  = [self _findCameraInSceneGraph:_scenegraph];
   if (scenecamera == NULL) {
