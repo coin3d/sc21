@@ -1,0 +1,48 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {addViewpoint = id; dumpScenegraph = id; }; 
+            CLASS = MyDocument; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSDocument; 
+        }, 
+        {
+            CLASS = MyExaminerController; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = SCExaminerController; 
+        }, 
+        {
+            ACTIONS = {
+                dumpScenegraph = id; 
+                modeButtonClicked = id; 
+                modeMenuSelected = id; 
+                showDebugInfo = id; 
+            }; 
+            CLASS = MyWindowController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                controller = SCExaminerController; 
+                modebutton = NSButton; 
+                sizetext = NSTextField; 
+                typetext = NSTextField; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {
+            ACTIONS = {open = id; toggleModes = id; }; 
+            CLASS = SCController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {view = SCView; }; 
+            SUPERCLASS = NSResponder; 
+        }, 
+        {
+            ACTIONS = {toggleCameraType = id; toggleHeadlight = id; viewAll = id; }; 
+            CLASS = SCExaminerController; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = SCController; 
+        }, 
+        {CLASS = TestClass; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+    ); 
+    IBVersion = 1; 
+}
