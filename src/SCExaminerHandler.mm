@@ -203,6 +203,7 @@
 - (id)initWithCoder:(NSCoder *)coder
 {
   if (self = [super init]) {
+    [self _SC_commonInit];
     if ([coder allowsKeyedCoding]) {
       SELF->spinenabled = [coder decodeBoolForKey:@"SC_spinenabled"];
       SELF->scrollwheelzoomenabled = [coder decodeBoolForKey:@"SC_scrollwheelzoomenabled"];
