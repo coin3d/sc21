@@ -562,7 +562,10 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 /*" Returns YES to confirm becoming first responder.
     Needed to receive keyboard events
  "*/
- 
+
+// FIXME: The doc says this is the default.  Check if this
+// is true, and remove method if not needed. kyrah 20030714
+
 - (BOOL)becomeFirstResponder
 {
   return YES;
