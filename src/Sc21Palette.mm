@@ -9,6 +9,8 @@
 #import "SC21Palette.h"
 #import "SCExaminerController.h"
 
+#import <Inventor/SoDB.h>
+
 @implementation SC21Palette
 
 - (void)finishInstantiate
@@ -25,7 +27,6 @@
   [self associateObject:[[SCExaminerController alloc] init] 	ofType:IBObjectPboardType
                withView:examinerbutton];
 
-  NSLog(@"Calling reshape");
   [scview reshape];
 }
 @end
@@ -56,11 +57,11 @@
 // class' regular implementation in all cases.
 
 @interface SCView (IBTest)
-- (void) drawRect:(NSRect)frame;
+- (void) drawRect:(NSRect) frame;
 @end
 
 @implementation SCView (IBTest)
-- (void) drawRect:(NSRect)frame
+- (void) drawRect:(NSRect) frame
 {
   // "Test Interface" mode in IB - do regular drawRect:
   // FIXME: This should of course be shared code w/drawRect
@@ -73,6 +74,28 @@
   } else {
     [[NSColor blackColor] set];
     NSRectFill(frame);
+  }
+}
+@end
+
+
+// Another hack: For some reason, IB crashes if we are trying to
+// render while not in test-interface mode. Weird, but until I find
+// out what's going on, I'll just disable rendering unless we
+// are in test interface mode.
+
+@interface SCController (IBTest)
+- (void) _idle:(NSTimer *) t;
+@end
+
+@implementation SCController (IBTest)
+- (void) _idle:(NSTimer *) t
+{
+  if ([NSApp isTestingInterface]) {
+    SoDB::getSensorManager()->processTimerQueue();
+    SoDB::getSensorManager()->processDelayQueue(TRUE);
+  } else {
+    // do nothing
   }
 }
 @end
