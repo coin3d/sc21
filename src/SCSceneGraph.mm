@@ -57,7 +57,26 @@
 @implementation SCSceneGraph
 
 /*" 
-  SCSceneGraph... FIXME: Add doc.
+  An SCSceneGraph encapsulates a Coin scenegraph and provides
+ an abstraction for reading Inventor and VRML files.
+
+  #{Superscenegraph creation} 
+
+  When a scene is read that contains no light or no camera, nothing
+  would be visible, so by default SCSceneGraph inserts a light or
+  camera if none is found. This behaviour can be controlled in several
+  ways.
+
+  Here is an overview of how we determine superscenegraph creation:
+
+  (1) value of SCSceneGraph's IB inspector (default setting is !{YES})
+
+  (2) !{shouldCreateDefaultSuperSceneGraph} delegate method (if present)
+
+  (3) !{createSuperSceneGraph} delegate method (if present)
+
+  For more information about the delegate methods refer to the 
+  !{NSObject(SCSceneGraphDelegate)} documentation.
 "*/
  
 #pragma mark --- initialization and cleanup ---
@@ -193,19 +212,6 @@ method returns this headlight. Otherwise, NULL is returned. "*/
   return SELF->scenegraph;
 }
 
-/*"
-  Returns the root node in the receiver's _actually rendered_ Open
-  Inventor scenegraph, or NULL if there is no valid scenegraph.
-
-  The superscenegraph is a scenegraph created by the system if there
-  is no camera and/or no light in a scene. The controller default
-  implementation will in that case add a light/camera and the root
-  node supplied by the user.
-"*/
-- (SoGroup *)superSceneGraph
-{
-  return SELF->superscenegraph;
-}
 
 /*"
   Sets the receiver's Coin scenegraph to root. 
@@ -465,5 +471,71 @@ method returns this headlight. Otherwise, NULL is returned. "*/
 - (BOOL)_SC_createsSuperSceneGraph
 {
   return SELF->createsuperscenegraph;
+}
+
+
+/*"
+  Returns the root node in the receiver's _actually rendered_ Open
+  Inventor scenegraph, or NULL if there is no valid scenegraph.
+
+  The superscenegraph is a scenegraph created by the system if there
+  is no camera and/or no light in a scene. The controller default
+  implementation will in that case add a light/camera and the root
+  node supplied by the user.
+"*/
+- (SoGroup *)_SC_superSceneGraph
+{
+  return SELF->superscenegraph;
+}
+@end
+
+// Dummy implementations to force AutoDoc to generate documentation for 
+// delegate methods.
+
+@implementation NSObject (SCSceneGraphDelegate)
+
+/*" 
+  The following delegate methods allow you to control superscenegraph creation.
+"*/
+
+/*" 
+  Implement this method to return !{NO} to skip superscenegraph creation.
+"*/
+- (BOOL)shouldCreateDefaultSuperSceneGraph
+{
+  
+}
+/*" 
+
+  Implement this delegate method to skip the default superscenegraph
+  creation and call your own code instead.
+
+  The scenegraph argument is the root node of the Coin scene graph
+  that will be rendered. The method is expected to return a new node
+  that contains scenegraph as one of its children, or scenegraph itself.
+
+  Note that if !{createSuperSceneGraph:} is implemented, creation of
+  the default superscenegraph is always turned off, overriding the
+  return value of !{shouldCreateSuperSceneGraph} and the settings made
+  in the IB inspector.
+
+"*/
+- (SoGroup *)createSuperSceneGraph:(SoGroup *)scenegraph
+{
+  
+}
+/*" 
+
+  Called after the superscenegraph was created to allow
+  post-processing. 
+
+  Note that this method will be called both if the superscenegraph was
+  created using the internal default implementation, or the
+  !{createSuperSceneGraph:} delegate method.
+
+"*/
+- (void)didCreateSuperSceneGraph:(SoGroup *)superscenegraph
+{
+  
 }
 @end
