@@ -155,7 +155,6 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   [view addMenuEntry:@"view all" target:self action:@selector(viewAll:)];
   [view addMenuEntry:@"toggle camera type" target:self action:@selector(toggleCameraType:)];
   [view addMenuEntry:@"toggle headlight" target:self action:@selector(toggleHeadlight:)];
-
 }
 
 /* Clean up after ourselves. */
@@ -293,6 +292,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 /*" Handles event as viewer event, i.e. does not send it to the scene
     graph but interprets it as input for controlling the viewer. 
 
+    Returns YES if the event has been handled, NO otherwise.
 
     Clicking into the scene with the left mouse button and dragging
     rotates the camera around the scene.
@@ -311,8 +311,9 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 "*/
 
-- (void) handleEventAsViewerEvent:(NSEvent *) event
+- (BOOL) handleEventAsViewerEvent:(NSEvent *) event
 {
+  BOOL handled = NO;
   SEL action;
   NSEventType type = [event type];
   unsigned int flags = [event modifierFlags];
@@ -324,43 +325,53 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     
     case NSLeftMouseDown:
 
-      // show pop-up menu on ctrl-click
-      if ([event modifierFlags] & NSControlKeyMask) {
-        [NSMenu popUpContextMenu:[view menu] withEvent:event forView:view];
-        action = @selector(ignore:);
-        break;
-      }
+      // Note that we will never see ctrl-click -- this is translated
+      // into a menuForEvent: message and not forwarded here unless
+      // the app developer overrides menuForEvent: In that latter case,
+      // they probably specifically do _not_ want to get the menu on
+      // ctrl-click, so do not explicitly show the menu here!
 
       p = [view convertPoint:[event locationInWindow] fromView:nil];
       v = [NSValue valueWithPoint:p];
       if (_iswaitingforseek) action = @selector(performSeek:);
       else if (flags & NSAlternateKeyMask) action = @selector(startPanning:);
       else action = @selector(startDragging:);
+      handled = YES;
       break;
       
     case NSLeftMouseDragged:
       p = [view convertPoint:[event locationInWindow] fromView:nil];
       v = [NSValue valueWithPoint:p];
       if (flags & NSAlternateKeyMask) action = @selector(performPanning:);
-      else action = @selector(performDragging:); 
+      else action = @selector(performDragging:);
+      handled = YES;
+      break;
+
+    case NSRightMouseDown:
+      [NSMenu popUpContextMenu:[view menu] withEvent:event forView:view];
+      action = @selector(ignore:);
+      handled = YES;
       break;
 
     case NSOtherMouseDown:
       p = [view convertPoint:[event locationInWindow] fromView:nil];
       v = [NSValue valueWithPoint:p];
       action = @selector(startPanning:);
+      handled = YES;
       break;
       
     case NSOtherMouseDragged:
       p = [view convertPoint:[event locationInWindow] fromView:nil];
       v = [NSValue valueWithPoint:p];
       action = @selector(performPanning:);
+      handled = YES;
       break;
 
     case NSScrollWheel:
       delta = [event deltaY];
       v = [NSValue value:&delta withObjCType:@encode(float)];
       action = @selector(performZoom:);
+      handled = YES;
       break;
 
     case NSKeyDown:
@@ -373,23 +384,28 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
           case NSUpArrowFunctionKey:
             v = [NSValue valueWithPoint:NSMakePoint(0.0, 0.01)];
             action = @selector(performMove:);
+            handled = YES;
             break;
           case NSDownArrowFunctionKey:
             v = [NSValue valueWithPoint:NSMakePoint(0.0, -0.01)];
             action = @selector(performMove:);
+            handled = YES;
             break;
           case NSLeftArrowFunctionKey:
             v = [NSValue valueWithPoint:NSMakePoint(-0.01, 0.0)];
             action = @selector(performMove:);
+            handled = YES;
             break;
           case NSRightArrowFunctionKey:
             v = [NSValue valueWithPoint:NSMakePoint(0.01, 0.0)];
             action = @selector(performMove:);
+            handled = YES;
             break;
           case 's':
             NSLog(@"Waiting to seek...");
             _iswaitingforseek = YES;
             action = @selector(ignore:);
+            handled = YES;
             break;
           default:
             action = @selector(ignore:);
@@ -402,8 +418,8 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
       action = @selector(ignore:);
       break;
   }
-
-   [self performSelector:action withObject:v];
+  [self performSelector:action withObject:v];
+  return handled;
 }
 
 // --------------- Interaction with the viewer -------------------
