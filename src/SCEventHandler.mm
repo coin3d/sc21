@@ -1,6 +1,5 @@
-#import "SCEventHandler.h"
-#import "SCCursors.h"
-#import "SCCamera.h"
+#import <Sc21/SCEventHandler.h>
+#import <Sc21/SCCamera.h>
 #import "SCUtil.h"
 #import "SCMouseLog.h"
 #import "SCMode.h"
@@ -17,8 +16,9 @@
 
 - (id)init
 {
-  self = [super init];
-  [self _SC_commonInit];
+  if (self = [super init]) {
+    [self _SC_commonInit];
+  }
   return self;
 }
 
