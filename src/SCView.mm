@@ -37,8 +37,6 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
  "*/
 
 
-// --------------------- Actions ---------------------------
-
 
 // ----------------- initialization and cleanup ----------------------
 
@@ -77,9 +75,6 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
   NSOpenGLPixelFormat * pixelFormat;
   _colorbits = 32;
   _depthbits = 32;
-
-  NSLog(@"SCView initWithFrame: called");
-  
   if ((pixelFormat = [self createPixelFormat:rect]) != nil) {
     if (self = [super initWithFrame:rect pixelFormat:pixelFormat]) {
       // flush buffer only during the vertical retrace of the monitor
@@ -108,7 +103,6 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 - (id) initWithCoder:(NSCoder *)coder
 {
-  NSLog(@"SCView initWithCoder called.");
   if (self = [super initWithCoder:coder]) {
     [coder decodeValueOfObjCType:@encode(int) at:&_colorbits];
     [coder decodeValueOfObjCType:@encode(int) at:&_depthbits];

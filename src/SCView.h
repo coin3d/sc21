@@ -60,7 +60,12 @@
 
 @end
 
-/*" Notifications posted by SCView. "*/
+/*" Posted if no valid pixel format could be created. Typically, this
+    would happen in #initWithFrame:, in which case !{nil} is returned
+    by the initializer. You can use this notification as some kind of
+    informal error reporting, and try to recreate a view with a
+    different pixel format when this happens.
+ "*/
 
 extern NSString * SCCouldNotCreateValidPixelFormatNotification;
 

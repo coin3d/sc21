@@ -111,7 +111,6 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 - (void) commonInit
 {
   [super commonInit];
-  NSLog(@"SCExaminerController commonInit");
   _headlight = NULL;
   SbViewVolume volume;
   _mouselog = [[NSMutableArray alloc] init];

@@ -75,9 +75,29 @@ class SoSceneManager;
 @end
 
 
-/*" Notifications posted by SCController. "*/
+// --------------------- Notifications ------------------------
 
+/*" Posted whenever the viewer mode (pass events to the scenegraph
+    vs. interpret events as viewer manipulation) changes.
+ "*/
 extern NSString * SCModeChangedNotification;
+
+/*" Posted when the scenegraph is changed through #setSceneGraph: "*/
 extern NSString * SCSceneGraphChangedNotification;
+
+/*" Posted if #setSceneGraph: is called with a scenegraph that
+    does not contain a camera. Register for this notification if
+    you want to issue a warning to your users that they will not
+    be able to see anything. Note that SCExaminerController does
+    not post this notification; instead, it simply adds a camera
+    in front of the scenegraph.
+ "*/
 extern NSString * SCNoCameraFoundInSceneNotification;
+
+/*" Posted if #setSceneGraph: is called with a scenegraph that
+    does not contain a light. Register for this notification if
+    you want to issue a warning to your users that they will not
+    be able to see much in the scene (since only ambient light
+    will be used.)
+"*/
 extern NSString * SCNoLightFoundInSceneNotification;

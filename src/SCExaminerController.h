@@ -49,8 +49,18 @@ class SoDirectionalLight;
 
 @end
 
-/*" Notifications posted by SCExaminerController. "*/
 
+/*" Posted whenever the camera has been repositioned so that
+    the whole scene can be seen.
+ "*/
 extern NSString * SCViewAllNotification;
+
+/*" Posted whenever the camera type has been changed, i.e.
+    when the camera has been from orthographic to perspective
+    or vice versa.
+ "*/
 extern NSString * SCCameraTypeChangedNotification;
+
+/*" Posted whenever the headlight has been turned on or off. "*/
 extern NSString * SCHeadlightChangedNotification;
+
