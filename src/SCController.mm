@@ -610,29 +610,22 @@ otherwise NULL.
 /*" Writes the current scenegraph to a file. The filename will be
     XXX-dump.iv, where XXX is a number calculated based on the
     current time. The file will be stored in the current working
-    directory. Successfully writing the file will be indicated
-    by a message to %view's #displayInfo: If there was an error
-    writing the file, an error message will be sent using
-    #displayError:
+    directory. Returns NO if there was an error writing the file,
+    YES otherwise.
 "*/
 
-- (void) dumpSceneGraph
+- (BOOL) dumpSceneGraph
 {
   SoOutput out;
   SbString filename = SbTime::getTimeOfDay().format();
   filename += "-dump.iv";
   SbBool ok = out.openFile(filename.getString());
-  if (!ok) {
-    NSString * error = [NSString stringWithFormat:@"Could not open file '%s'",
-      filename.getString()];
-    [view displayError:error];
-    return;
+  if (ok) {
+    SoWriteAction wa(&out);
+    wa.apply(_scenegraph);
+    return YES;
   }
-  SoWriteAction wa(&out);
-  wa.apply(_scenegraph);
-  NSString * info = [NSString stringWithFormat:@"Dumped scene to file '%s'",
-    filename.getString()];
-  [view displayInfo:info];
+  return NO;
 }
 
 

@@ -51,7 +51,7 @@ class SoSceneManager;
 
 /*" Debugging aids. "*/
 - (NSString *) debugInfo;
-- (void) dumpSceneGraph;
+- (BOOL) dumpSceneGraph;
 
 /*" Event handling "*/
 - (BOOL) handleEvent:(NSEvent *)event;
