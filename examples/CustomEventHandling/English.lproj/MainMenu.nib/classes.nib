@@ -10,7 +10,7 @@
             }; 
             CLASS = AppController; 
             LANGUAGE = ObjC; 
-            OUTLETS = {coincontroller = SCController; filenametext = NSTextField; mode = NSButton; }; 
+            OUTLETS = {coincontroller = SCController; mode = NSButton; }; 
             SUPERCLASS = NSObject; 
         }, 
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 

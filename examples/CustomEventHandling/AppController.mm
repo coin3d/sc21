@@ -57,7 +57,7 @@ void selection_cb(void *userdata, SoPath *path)
 
 - (void)awakeFromNib
 {
-  [filenametext setStringValue:@"None"];
+  [[NSApp mainWindow] setTitle:@"None"];
 
   // use highlight renderaction to display bounding boxes of selected items
   ra->setCacheContext([coincontroller sceneManager]->getGLRenderAction()->getCacheContext());
@@ -120,7 +120,7 @@ void selection_cb(void *userdata, SoPath *path)
   if (rc == NSOKButton) {
     [[coincontroller sceneGraph] readFromFile:[panel filename]];
     [[coincontroller sceneGraph] viewAll];
-    [filenametext setStringValue:[panel filename]];
+    [[NSApp mainWindow] setTitle:[panel filename]];
   }
 }
 

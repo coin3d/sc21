@@ -42,7 +42,6 @@
 {
   IBOutlet SCController * coincontroller;
   IBOutlet NSButton * mode;
-  IBOutlet NSTextField * filenametext;
   SoBoxHighlightRenderAction * ra;
 }
 - (IBAction)dumpSceneGraph:(id)sender;
