@@ -46,10 +46,11 @@
 /*" Initialization "*/
 
 - (id)initWithContentsOfFile:(NSString *)filename;
-- (id)initWithContentsOfURL:(NSURL *)url;
+- (id)initWithContentsOfURL:(NSURL *)URL;
 
 /*" File system access. "*/
 - (BOOL)readFromFile:(NSString *)filename;
+- (BOOL)readFromURL:(NSURL *)URL;
 - (BOOL)writeToFile:(NSString *)filename;
 
 /*" Accessors for the scenegraph's scenemanager. "*/

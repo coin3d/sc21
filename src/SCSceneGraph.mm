@@ -37,6 +37,8 @@
 #import <Inventor/nodes/SoPerspectiveCamera.h>
 #import <Inventor/nodes/SoDirectionalLight.h>
 
+#import "SCUtil.h"
+
 @implementation _SCSceneGraphP
 @end
 
@@ -91,10 +93,24 @@
   if a valid Open Inventor scenegraph cannot be read from the
   specified file, the receiver is freed, and nil is returned.
 "*/
-- (id)initWithContentsOfURL:(NSURL *)url
+- (id)initWithContentsOfURL:(NSURL *)URL
 {
+  // local file system path - treat as regular file
+  if ([URL isFileURL]) {
+    return [self initWithContentsOfFile:[URL path]];
+  }
+  
+  // ... otherwise, load data from the Internet
   if (self = [self init]) {
-    // FIXME: Implement reading file from URL.
+    
+#if 1  // FIXME: Implement downloading (use NSURLDownload?) kyrah 20040802 
+    SC21_DEBUG(@"URL downloading not implemented!");    
+    [[NSNotificationCenter defaultCenter]
+        postNotificationName:SCCouldNotReadFileNotification object:self];
+    [self release];
+    self = nil;
+#endif
+    
   }
   return self;
 }
@@ -127,6 +143,21 @@
     return YES; 
   }
   return NO;
+}
+
+- (BOOL)readFromURL:(NSURL *)URL
+{
+  // local file system path - treat as regular file
+  if ([URL isFileURL]) {
+    return [self readFromFile:[URL path]];
+  } else {
+#if 1  // FIXME: Implement downloading (use NSURLDownload?) kyrah 20040802 
+    SC21_DEBUG(@"URL downloading not implemented!");    
+    [[NSNotificationCenter defaultCenter]
+        postNotificationName:SCCouldNotReadFileNotification object:self];
+#endif
+    return NO; 
+  }
 }
 
 - (BOOL)writeToFile:(NSString *)filename
