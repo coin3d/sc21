@@ -45,6 +45,8 @@ class SoSceneManager;
 - (NSColor *) backgroundColor;
 - (void) viewSizeChanged:(NSRect)size;
 - (SoLight *) findLightInSceneGraph:(SoGroup *)root;
+- (void) setAutoClipValue:(float)value;
+- (float) autoClipValue;
 
 /*" Camera handling. "*/
 - (void) setCamera:(SoCamera *)camera;
@@ -70,8 +72,6 @@ class SoSceneManager;
 - (void) setDelayQueueInterval:(NSTimeInterval)interval;
 - (NSTimeInterval) delayQueueInterval;
 
-  /*" Autoclipping "*/
-- (float) bestValueForNearPlane:(float)near farPlane:(float)far;
 
 @end
 

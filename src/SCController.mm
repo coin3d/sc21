@@ -300,6 +300,20 @@ otherwise NULL.
   return light;
 }
 
+/*" Sets the autoclip value to value."*/
+
+- (void) setAutoClipValue:(float)value
+{
+  _autoclipvalue = value;
+}
+
+/*" Returns the current autoclipvalue. "*/
+
+- (float) autoClipValue
+{
+  return _autoclipvalue;
+}
+
 
 /*" Sets the SoCamera used for viewing the scene to cam.
     It is first checked if the scenegraph contains a camera created by
@@ -631,40 +645,6 @@ otherwise NULL.
   }
   return NO;
 }
-
-
-
-// ------------------------ Autoclipping -------------------------------------
-
-/*" Determines the best value for the near clipping plane. Negative and very
-    small near clipping plane distances are disallowed.
-"*/
-- (float) bestValueForNearPlane:(float)near farPlane:(float) far
-{
-  // FIXME: Use delegate for doing plane calculation, instead of
-  // using strategy. kyrah 20030621.
-  float nearlimit, r;
-  int usebits;
-  GLint _depthbits[1];
-
-  if ([_camera type] == SCCameraOrthographic) return near;
-
-  // For simplicity, we are using what SoQt calls the
-  // VARIABLE_NEAR_PLANE strategy. As stated in the FIXME above,
-  // we should have a delegate for this in general.
-  glGetIntegerv(GL_DEPTH_BITS, _depthbits);
-  usebits = (int) (float(_depthbits[0]) * (1.0f - _autoclipvalue));
-  r = (float) pow(2.0, (double) usebits);
-  nearlimit = far / r;
-
-  // If we end up with a bogus value, use an empirically determined
-  // magic value that's supposed to work will (taken from SoQtViewer.cpp).
-  if (nearlimit >= far) {nearlimit = far / 5000.0f;}
-
-  if (near < nearlimit) return nearlimit;
-  else return near;
-}
-
 
 // ---------------- NSCoder conformance -------------------------------
 

@@ -10,6 +10,8 @@
 #import "SCController.h"
 #import "SCExaminerController.h" // for notifications
 
+#import <OpenGL/gl.h> // for GLint
+
 #import <Inventor/SbRotation.h>
 #import <Inventor/SbMatrix.h>
 #import <Inventor/SoType.h>
@@ -30,6 +32,7 @@
   - (void) _getCameraCoordinateSystem:(SbMatrix &)matrix inverse:(SbMatrix &)inverse;
   - (void) _cloneFromPerspectiveCamera:(SoOrthographicCamera *)orthocam;
   - (void) _cloneFromOrthographicCamera:(SoPerspectiveCamera *)perspectivecam;
+  - (float) _bestValueForNearPlane:(float)near farPlane:(float) far;
   - (SoGroup *) _getParentOfNode:(SoNode *)node inSceneGraph:(SoGroup *)root;
 @end
 
@@ -253,7 +256,7 @@
   if (farval <= 0.0f) return; 	// scene completely behind us
 
   // Disallow negative and very small near clipping plane distance
-  nearval = [_controller bestValueForNearPlane:nearval farPlane:farval];
+  nearval = [self _bestValueForNearPlane:nearval farPlane:farval];
 
   // Add some slack around bounding box in case the scene fits exactly
   // inside it, to avoid artifacts like the near clipping plane cutting
@@ -471,6 +474,38 @@
     inv = matrixaction.getInverse();
   }
 }
+
+
+/* Determines the best value for the near clipping plane. Negative and very
+   small near clipping plane distances are disallowed.
+ */
+
+- (float) _bestValueForNearPlane:(float)near farPlane:(float) far
+{
+  // FIXME: Use delegate for doing plane calculation, instead of
+  // using strategy. kyrah 20030621.
+  float nearlimit, r;
+  int usebits;
+  GLint _depthbits[1];
+
+  if ([self type] == SCCameraOrthographic) return near;
+
+  // For simplicity, we are using what SoQt calls the
+  // VARIABLE_NEAR_PLANE strategy. As stated in the FIXME above,
+  // we should have a delegate for this in general.
+  glGetIntegerv(GL_DEPTH_BITS, _depthbits);
+  usebits = (int) (float(_depthbits[0]) * (1.0f - [_controller autoClipValue]));
+  r = (float) pow(2.0, (double) usebits);
+  nearlimit = far / r;
+
+  // If we end up with a bogus value, use an empirically determined
+  // magic value that's supposed to work will (taken from SoQtViewer.cpp).
+  if (nearlimit >= far) {nearlimit = far / 5000.0f;}
+
+  if (near < nearlimit) return nearlimit;
+  else return near;
+}
+
 
 /* Get the parent node of node */
 
