@@ -6,10 +6,12 @@
 #import <Inventor/SoSceneManager.h>
 #import <Inventor/SbViewportRegion.h>
 #import <Inventor/actions/SoGLRenderAction.h>
+#import <Inventor/actions/SoSearchAction.h>
 #import <Inventor/actions/SoWriteAction.h>
 #import <Inventor/elements/SoGLCacheContextElement.h>
 #import <Inventor/manips/SoHandleBoxManip.h>
 #import <Inventor/nodekits/SoNodeKit.h>
+#import <Inventor/nodes/SoCamera.h>
 #import <Inventor/nodes/SoCone.h>
 #import <Inventor/nodes/SoDrawStyle.h>
 #import <Inventor/nodes/SoTranslation.h>
@@ -22,7 +24,8 @@
 #import <OpenGL/gl.h>
 
 @interface SCController (InternalAPI)
-- (void) _idle:(NSTimer *)t; 	// _timer callback function
+- (void) _idle:(NSTimer *) t; 	
+
 @end  
 
 
@@ -79,6 +82,7 @@ static BOOL _coinInitialized = NO;
 }
 
 
+
 /*" Displays a standard file open dialog. "*/
 
 - (IBAction)open:(id)sender
@@ -92,6 +96,32 @@ static BOOL _coinInitialized = NO;
                  didEndSelector:@selector(openPanelDidEnd:returnCode:contextInfo:)
                     contextInfo:nil];
 }
+
+/*" Writes the current scenegraph to a file. The filename will be
+    XXX-dump.iv, where XXX is a number calculated based on the
+    current time. The file will be stored in the current working
+    directory.
+"*/
+
+- (IBAction) dumpSceneGraph:(id)sender
+{
+  SoOutput out;
+  SbString filename = SbTime::getTimeOfDay().format();
+  filename += "-dump.iv";
+  SbBool ok = out.openFile(filename.getString());
+  if (!ok) {
+    NSString * error = [NSString stringWithFormat:@"Could not open file '%s'",
+      filename.getString()];
+    [view displayError:error];
+    return;
+  }
+  SoWriteAction wa(&out);
+  wa.apply(scenegraph);
+  NSString * info = [NSString stringWithFormat:@"Dumped scene to file '%s'",
+    filename.getString()];
+  [view displayInfo:info];
+}
+
 
 
 // ----------------- initialization and cleanup ----------------------
@@ -108,6 +138,11 @@ static BOOL _coinInitialized = NO;
 - (id) init
 {
   if (self = [super init]) {
+    camera = [[SCCamera alloc] init];
+    [camera setController:self];
+    NSLog(@"Created camera: %p", camera);
+    autoclipstrategy = VARIABLE_NEAR_PLANE;
+    autoclipvalue = 0.6;
     _handleseventsinviewer = YES;
     _eventconverter = [[SCEventConverter alloc] initWithController:self];
     if (!_coinInitialized) [SCController initCoin];
@@ -153,6 +188,7 @@ static BOOL _coinInitialized = NO;
   [view addMenuEntry:@"open file" target:self action:@selector(open:)];
   [view addMenuEntry:@"toggle mode" target:self action:@selector(toggleModes:)];
   [view addMenuEntry:@"show debug info" target:view action:@selector(debugInfo:)];
+  [view addMenuEntry:@"dump SG" target:self action:@selector(dumpSceneGraph:)];
   
 }
 
@@ -162,6 +198,7 @@ static BOOL _coinInitialized = NO;
   [_timer invalidate];
   [_timer release];
   [_eventconverter release];
+  [camera release];
   scenegraph->unref();
   delete _scenemanager;
   [super dealloc];
@@ -183,14 +220,30 @@ static BOOL _coinInitialized = NO;
 /*" Sets the scene graph that shall be rendered. The reference count of
     sg will be increased by 1 before use, so you there is no need to 
     !{ref()} the node before passing it to this method.
+
+    Note that the scenegraph is not modified in any way, i.e. you must
+    set up your own headlight and camera to be able to see anything. For
+    automatic setup of a camera and headlight if needed, use the
+    #SCExaminerController class.
  "*/
     
 - (void) setSceneGraph:(SoSeparator *)sg
 {
+  NSLog(@"In setScenegraph: camera = %p", camera);
   sg->ref();
+  SoCamera * scenecamera = [self findCameraInSceneGraph:sg];
+
+  if (scenecamera) {
+    [camera setSoCamera:scenecamera];
+    [camera setControllerHasCreatedCamera:NO];
+  } else {
+    NSLog(@"No camera found in scene, won't be able to see anything");
+  }
+ 
   if (scenegraph) scenegraph->unref();
   scenegraph = sg;
   _scenemanager->setSceneGraph(scenegraph);
+  [camera updateClippingPlanes:scenegraph];
   [view setNeedsDisplay:YES];
 }
 
@@ -220,10 +273,33 @@ static BOOL _coinInitialized = NO;
 }
 
 
+/*" Find camera in root. Returns a pointer to the camera, if found,
+    otherwise NULL.
+ "*/
+
+- (SoCamera *) findCameraInSceneGraph:(SoGroup *) root
+{
+  SoCamera * scenecamera = NULL;
+  SbBool oldsearch = SoBaseKit::isSearchingChildren();
+  SoBaseKit::setSearchingChildren(TRUE);
+  SoSearchAction sa;
+  sa.reset();
+  sa.setType(SoCamera::getClassTypeId());
+  sa.apply(root);
+  SoBaseKit::setSearchingChildren(oldsearch);
+  if (sa.getPath() != NULL) {
+    SoFullPath * fullpath = (SoFullPath *) sa.getPath();
+    scenecamera = (SoCamera *)fullpath->getTail();
+  }
+  NSLog(@"Camera %sfound in scene", scenecamera ? "" : "not ");
+  return scenecamera;
+}
+
 /*" Renders the scene. "*/
 
 - (void) render
 {
+//  [camera updateClippingPlanes:scenegraph];
   _scenemanager->render();
 }
 
@@ -361,31 +437,6 @@ static BOOL _coinInitialized = NO;
 }
 
 
-/*" Writes the current scenegraph to a file. The filename will be
-    XXX-dump.iv, where XXX is a number calculated based on the
-    current time. The file will be stored in the current working
-    directory.
-"*/
-
-- (void) dumpSceneGraph
-{
-  SoOutput out;
-  SbString filename = SbTime::getTimeOfDay().format();
-  filename += "-dump.iv";
-  SbBool ok = out.openFile(filename.getString());
-  if (!ok) {
-    NSString * error = [NSString stringWithFormat:@"Could not open file '%s'",
-      filename.getString()];
-    [view displayError:error];
-    return;
-  }
-  SoWriteAction wa(&out);
-  wa.apply(scenegraph);
-  NSString * info = [NSString stringWithFormat:@"Dumped scene to file '%s'",
-    filename.getString()];
-  [view displayInfo:info];
-}
-
 
 // ------------------------ NSApp delegate methods -------------------------
 
@@ -425,6 +476,63 @@ static BOOL _coinInitialized = NO;
 }
 
 
+// ------------------------ Autoclipping -------------------------------------
+
+/*" Set the autoclipping strategy. Possible values for strategy are:
+
+!{CONSTANT_NEAR_PLANE
+  VARIABLE_NEAR_PLANE}
+
+The default strategy is VARIABLE_NEAR_PLANE.
+"*/
+- (void) setAutoClippingStrategy:(AutoClipStrategy)strategy value:(float)v
+{
+
+  // FIXME: Make it possible to turn autoclipping off. kyrah 20030621.
+  // NSLog(@"setting autoclip strategy");
+  autoclipstrategy = strategy;
+  autoclipvalue = v;
+  [self render];
+}
+
+
+/*" Determines the best value for the near clipping plane. Negative and very
+small near clipping plane distances are disallowed.
+"*/
+- (float) bestValueForNearPlane:(float)near farPlane:(float) far
+{
+  // FIXME: Send notification when doing plane calculation, instead of
+  // using strategy. kyrah 20030621.
+  float nearlimit, r;
+  int usebits;
+  GLint _depthbits[1];
+
+  if (![camera isPerspective]) return near;
+
+  switch (autoclipstrategy) {
+    case CONSTANT_NEAR_PLANE:
+      nearlimit = autoclipvalue;
+      break;
+    case VARIABLE_NEAR_PLANE:
+      glGetIntegerv(GL_DEPTH_BITS, _depthbits);
+      usebits = (int) (float(_depthbits[0]) * (1.0f - autoclipvalue));
+      r = (float) pow(2.0, (double) usebits);
+      nearlimit = far / r;
+      break;
+    default:
+      NSLog(@"Unknown autoclip strategy: %d", autoclipstrategy);
+      break;
+  }
+
+  // If we end up with a bogus value, use an empirically determined
+  // magic value that's supposed to work will (taken from SoQtViewer.cpp).
+  if (nearlimit >= far) {nearlimit = far / 5000.0f;}
+
+  if (near < nearlimit) return nearlimit;
+  else return near;
+}
+
+
 // ---------------- NSCoder conformance -------------------------------
 
 /*" Encodes the SCController using encoder coder "*/
@@ -441,6 +549,11 @@ static BOOL _coinInitialized = NO;
 - (id) initWithCoder:(NSCoder *) coder
 {
   if (self = [super initWithCoder:coder]) {
+    camera = [[SCCamera alloc] init];
+    [camera setController:self];
+    NSLog(@"Created camera: %p", camera);
+    autoclipstrategy = VARIABLE_NEAR_PLANE;
+    autoclipvalue = 0.6;
     _handleseventsinviewer = YES;
     _eventconverter = [[SCEventConverter alloc] initWithController:self];
     if (!_coinInitialized) [SCController initCoin];
@@ -458,6 +571,7 @@ static BOOL _coinInitialized = NO;
   SoDB::getSensorManager()->processTimerQueue();
   SoDB::getSensorManager()->processDelayQueue(TRUE);
 }
+
 
 
 

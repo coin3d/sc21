@@ -1,23 +1,33 @@
 #import <Cocoa/Cocoa.h>
 #import "SCEventConverter.h"
+#import "SCCamera.h"
 
 @class SCView;
 
+class SoCamera;
+class SoGroup;
 class SoEvent;
 class SoNode;
 class SoSeparator;
 class SoSceneManager;
+class SoGetBoundingBoxAction;
 
 @interface SCController : NSResponder
 {
   IBOutlet SCView * view;
- 
+
+  SCCamera * camera;
   SCEventConverter * _eventconverter;
   NSTimer * _timer;
   NSRect _viewframe;
   SoSeparator * scenegraph;	  // the whole scenegraph
   SoSceneManager * _scenemanager;
   BOOL _handleseventsinviewer;
+  float autoclipvalue;
+  enum AutoClipStrategy {
+    CONSTANT_NEAR_PLANE,
+    VARIABLE_NEAR_PLANE
+  } autoclipstrategy;
 }
 
 /*" Static methods "*/
@@ -26,6 +36,7 @@ class SoSceneManager;
 /*" Actions "*/
 - (IBAction) open:(id)sender; 
 - (IBAction) toggleModes:(id)sender;
+- (IBAction) dumpSceneGraph:(id)sender;
 
 
 /*" Initializing an SCController "*/
@@ -44,11 +55,12 @@ class SoSceneManager;
 - (NSColor *) backgroundColor;
 - (void) viewSizeChanged:(NSRect)size;
 - (const SbViewportRegion &) viewportRegion;
+- (SoCamera *) findCameraInSceneGraph: (SoGroup *) root; 
 
 /*" Debugging aids. "*/
 
 - (NSString *) coinVersion;
-- (void) dumpSceneGraph;
+
 
 /*" Event handling "*/
 - (void) handleEvent:(NSEvent *) event;
@@ -60,6 +72,10 @@ class SoSceneManager;
 /*" NSCoding conformance "*/
 - (void) encodeWithCoder:(NSCoder *) coder;
 - (id) initWithCoder:(NSCoder *) coder;
+
+  /*" Autoclipping "*/
+- (void) setAutoClippingStrategy:(AutoClipStrategy)strategy value:(float)v;
+- (float) bestValueForNearPlane:(float)near farPlane:(float) far;
 
 /*" Delegate methods implemented by SCController "*/
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *) application;

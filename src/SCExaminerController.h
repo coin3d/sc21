@@ -2,14 +2,14 @@
 
 #import <Cocoa/Cocoa.h>
 #import "SCController.h"
-#import "SCCamera.h"
 
 class SoSeparator;
 class SoCamera;
+class SoGroup;
 class SbSphereSheetProjector;
 class SbRotation;
 class SbPlane;
-class SoGetBoundingBoxAction;
+
 class SbMatrix;
 class SoType;
 class SoDirectionalLight;
@@ -21,7 +21,6 @@ class SoDirectionalLight;
   // including a potential added camera and headlight,
   // while userscenegraph is the user supplied SG.
 
-  SCCamera * camera;
   NSPoint lastmousepos;
   NSMutableArray * mouselog;
 
@@ -31,11 +30,7 @@ class SoDirectionalLight;
   SoSeparator * userscenegraph;  
 
   BOOL iswaitingforseek;  
-  float autoclipvalue;
-  enum AutoClipStrategy {
-    CONSTANT_NEAR_PLANE,
-    VARIABLE_NEAR_PLANE
-  } autoclipstrategy;
+
 }
 
 /*" Actions "*/
@@ -71,9 +66,6 @@ class SoDirectionalLight;
 - (void) performMove:(NSValue *) v;
 - (void) ignore:(NSValue *) v;
 
-/*" Autoclipping "*/
-- (void) setAutoClippingStrategy:(AutoClipStrategy)strategy value:(float)v;
-- (float) bestValueForNearPlane:(float)near farPlane:(float) far;
 
 /*" NSCoding conformance "*/
 - (void) encodeWithCoder:(NSCoder *) coder;

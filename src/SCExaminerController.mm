@@ -89,10 +89,6 @@
 - (id) init
 {
   if (self = [super init]) {
-    camera = [[SCCamera alloc] init];
-    [camera setController:self];
-    autoclipstrategy = VARIABLE_NEAR_PLANE;
-    autoclipvalue = 0.6;
     SbViewVolume volume;
     mouselog = [[NSMutableArray alloc] init];
     spinprojector = new SbSphereSheetProjector(SbSphere(SbVec3f(0,0,0),0.8f));
@@ -145,14 +141,15 @@
   [view addMenuEntry:@"view all" target:self action:@selector(viewAll:)];
   [view addMenuEntry:@"toggle camera type" target:self action:@selector(toggleCameraType:)];
   [view addMenuEntry:@"toggle headlight" target:self action:@selector(toggleHeadlight:)];
-     }
+
+}
 
 /* Clean up after ourselves. */
 
 - (void) dealloc
 {
   [mouselog release];
-  [camera release];
+
   delete spinprojector;
   delete spinrotation;
   [super dealloc];
@@ -166,7 +163,8 @@
  
 - (void) render
 {
-  [camera updateClippingPlanes:userscenegraph];
+  [camera updateClippingPlanes:scenegraph];
+//  [camera updateClippingPlanes:userscenegraph];
   [super render];
 }
  
@@ -176,14 +174,13 @@
     A headlight is added before the scenegraph.    
     If sg does not contain a camera, one will be added automatically.
  "*/
- 
+
 - (void) setSceneGraph:(SoSeparator *)sg
 {
   SoSeparator * root;
-  SoCamera * scenecamera = NULL;
 
   // Check if somebody passes the scenegraph that is already set.
-  if (root != NULL && root == scenegraph) {
+  if (sg != NULL && sg == userscenegraph) {
     NSLog(@"setSceneGraph called with the same root as already set");
     return;
   }
@@ -195,20 +192,8 @@
   // FIXME: only add headlight if needed? kyrah 20030621
   root->addChild(headlight);       
   root->addChild(userscenegraph);
-  
-  // Search for camera in user-supplied scenegraph
-  SbBool oldsearch = SoBaseKit::isSearchingChildren();
-  SoBaseKit::setSearchingChildren(TRUE);
-  SoSearchAction sa;
-  sa.reset();
-  sa.setType(SoCamera::getClassTypeId());
-  sa.apply(userscenegraph);
-  SoBaseKit::setSearchingChildren(oldsearch);
-  if (sa.getPath() != NULL) {
-    SoFullPath * fullpath = (SoFullPath *) sa.getPath();
-    scenecamera = (SoCamera *)fullpath->getTail();
-  }
-  NSLog(@"Camera %sfound in scene", scenecamera ? "" : "not ");
+
+  SoCamera * scenecamera = [self findCameraInSceneGraph:userscenegraph];
 
   // Make our camera if there was none.
   if (!scenecamera) {
@@ -217,12 +202,25 @@
     [camera setControllerHasCreatedCamera:YES];
     root->insertChild(scenecamera, 1);
   } else {
+    SbVec3f pos = scenecamera->position.getValue();
+    SbRotation rot = scenecamera->orientation.getValue();
+    SbVec3f axis; float angle;
+    rot.getValue(axis, angle);
+    NSLog(@"### ex- Found camera: pos <%f %f %f>, orientation: <%f %f %f>, %f ",
+          pos[0], pos[1], pos[2], axis[0], axis[1], axis[2], angle);
+    
     [camera setSoCamera:scenecamera];
     [camera setControllerHasCreatedCamera:NO];
   }
 
-  [super setSceneGraph:root];
-  
+  // begin [super setSceneGraph:root];
+  root->ref();
+  if (scenegraph) scenegraph->unref();
+  scenegraph = root;
+  _scenemanager->setSceneGraph(scenegraph);
+  [view setNeedsDisplay:YES];
+  // end [super setSceneGraph:root];
+
   if ([camera controllerHasCreatedCamera]) [self viewAll:nil];
 
 }
@@ -476,62 +474,6 @@
   // Do nothing.
 }
 
-
-// ------------------------ Autoclipping -------------------------------------
-
-/*" Set the autoclipping strategy. Possible values for strategy are:
-
-      !{CONSTANT_NEAR_PLANE 
-      VARIABLE_NEAR_PLANE}
-
-    The default strategy is VARIABLE_NEAR_PLANE.
- "*/
-- (void) setAutoClippingStrategy:(AutoClipStrategy)strategy value:(float)v
-{
-
-  // FIXME: Make it possible to turn autoclipping off. kyrah 20030621.
-  // NSLog(@"setting autoclip strategy");
-  autoclipstrategy = strategy;
-  autoclipvalue = v;
-  [self render];
-}
-
-
-/*" Determines the best value for the near clipping plane. Negative and very 
-    small near clipping plane distances are disallowed.
-  "*/
-- (float) bestValueForNearPlane:(float)near farPlane:(float) far
-{
-  // FIXME: Send notification when doing plane calculation, instead of
-  // using strategy. kyrah 20030621.
-  float nearlimit, r;
-  int usebits;
-  GLint _depthbits[1];
-
-  if (![camera isPerspective]) return near;
-   
-  switch (autoclipstrategy) {
-    case CONSTANT_NEAR_PLANE:
-      nearlimit = autoclipvalue;
-      break;
-    case VARIABLE_NEAR_PLANE:
-      glGetIntegerv(GL_DEPTH_BITS, _depthbits);
-      usebits = (int) (float(_depthbits[0]) * (1.0f - autoclipvalue));
-      r = (float) pow(2.0, (double) usebits);
-      nearlimit = far / r;
-      break;
-    default:
-      NSLog(@"Unknown autoclip strategy: %d", autoclipstrategy);
-      break;
-  }
-  
-  // If we end up with a bogus value, use an empirically determined
-  // magic value that's supposed to work will (taken from SoQtViewer.cpp).
-  if (nearlimit >= far) {nearlimit = far / 5000.0f;}
-
-  if (near < nearlimit) return nearlimit;
-  else return near;
-}
 
 
 // ---------------- NSCoder conformance -------------------------------
