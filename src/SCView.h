@@ -16,6 +16,7 @@
 
 /*" Initializing an SCView "*/
 - (id) initWithFrame:(NSRect)rect;
+- (void) commonInit;
 - (void) awakeFromNib;
 
 /*" Accessing the SCController. "*/

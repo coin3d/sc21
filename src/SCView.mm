@@ -65,9 +65,13 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     %SCCouldNotCreateValidPixelFormatNotification is posted,
     the object is deallocated, and nil is returned.
 
+    Calls #commonInit, which contains common initialization
+    code needed both in #initWithFrame: and #initWithCoder.
+
     This method is the designated initializer for the SCView
     class. Returns !{self}.
  "*/
+
 - (id) initWithFrame:(NSRect)rect
 {
   NSOpenGLPixelFormat * pixelFormat;
@@ -82,7 +86,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
       const long int vals[1] = {1};
       [[self openGLContext] setValues:vals forParameter:NSOpenGLCPSwapInterval];
       [[self openGLContext] makeCurrentContext];
-      [self _initMenu];
+      [self commonInit];
     }
     [pixelFormat release];
   } else {
@@ -95,6 +99,37 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 }
 
 
+/*" Initializes a newly allocated SCView instance from the data
+    in decoder. Returns !{self}
+
+    Calls #commonInit, which contains common initialization
+    code needed both in #init and #initWithCoder.
+ "*/
+
+- (id) initWithCoder:(NSCoder *)coder
+{
+  NSLog(@"SCView initWithCoder called.");
+  if (self = [super initWithCoder:coder]) {
+    [coder decodeValueOfObjCType:@encode(int) at:&_colorbits];
+    [coder decodeValueOfObjCType:@encode(int) at:&_depthbits];
+    [self commonInit];
+  }
+  return self;
+}
+
+
+/*" Shared initialization code that is called both from #init:
+    and #initWithCoder: If you override this method, you must
+    call #{[super commonInit]} as the first call in your
+    implementation to make sure everything is set up properly.
+"*/
+
+- (void) commonInit
+{
+  [self _initMenu];
+}
+
+
 /*" Recreates the OpenGL context if the settings have been changed
     from within Interface builder. Called after the object has been 
     loaded from an Interface Builder archive or nib file. 
@@ -103,6 +138,16 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 - (void) awakeFromNib
 {
   [self recreateOpenGLContext];
+}
+
+
+/*" Encodes the SCView using encoder coder "*/
+
+- (void) encodeWithCoder:(NSCoder *)coder
+{
+  [super encodeWithCoder:coder];
+  [coder encodeValueOfObjCType:@encode(int) at:&_colorbits];
+  [coder encodeValueOfObjCType:@encode(int) at:&_depthbits];
 }
 
 
@@ -366,6 +411,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 - (void) mouseDown:(NSEvent *)event
 {
+  NSLog(@"mouseDown");
   if (![controller handleEvent:event]) {
     [[self nextResponder] mouseDown:event];
   }
@@ -558,31 +604,6 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 {
   NSSize s = [self _size];
   return s.width/s.height;
-}
-
-
-// ----------------------- Coding ---------------------------
-
-
-/*" Encodes the SCView using encoder coder "*/
-- (void) encodeWithCoder:(NSCoder *)coder
-{
-  [super encodeWithCoder:coder];
-  [coder encodeValueOfObjCType:@encode(int) at:&_colorbits];
-  [coder encodeValueOfObjCType:@encode(int) at:&_depthbits];
-}
-
-/*" Initializes a newly allocated SCView instance from the data
-    in decoder. Returns !{self} "*/
-- (id) initWithCoder:(NSCoder *)coder
-{
-  NSLog(@"SCView initWithCoder called.");
-  if (self = [super initWithCoder:coder]) {
-    [coder decodeValueOfObjCType:@encode(int) at:&_colorbits];
-    [coder decodeValueOfObjCType:@encode(int) at:&_depthbits];
-    [self _initMenu];
-  }
-  return self;
 }
 
 
