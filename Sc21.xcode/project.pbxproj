@@ -177,21 +177,21 @@
 		E015841606352EBB00B4C24F = {
 			isa = PBXFileReference;
 			lastKnownFileType = image.tiff;
-			path = background.tif;
+			path = background.tiff;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E015841706352EC900B4C24F = {
 			isa = PBXFileReference;
 			lastKnownFileType = image.tiff;
-			path = background.tif;
+			path = background.tiff;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E015841806352ED300B4C24F = {
 			isa = PBXFileReference;
 			lastKnownFileType = image.tiff;
-			path = background.tif;
+			path = background.tiff;
 			refType = 4;
 			sourceTree = "<group>";
 		};
