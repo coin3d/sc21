@@ -60,7 +60,7 @@
   SCMouseLog * mouselog = [SCMouseLog defaultMouseLog];
   lastp = [mouselog point:1];
   currp = [mouselog point:0];
-  cam = [camera soCamera];
+  if ((cam = [camera soCamera]) == nil) return NO;
     // Find projection points for the last and current mouse coordinates.
     //FIXME: Support diff. viewportmappings? (kintel 20040412)
     //     SbViewVolume vv = cam->getViewVolume([view aspectRatio]);
