@@ -36,7 +36,7 @@
 @implementation _SCOpenGLViewP
 @end
 
-#define PRIVATE(p) ((p)->scopenglviewpriv)
+#define PRIVATE(p) ((p)->_sc_openglview)
 #define SELF PRIVATE(self)
 
 @implementation SCOpenGLView

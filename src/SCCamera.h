@@ -52,7 +52,7 @@ typedef enum _SCCameraType {
 @interface SCCamera : NSObject
 {
   @protected
-    _SCCameraP * sccamerapriv;
+    _SCCameraP * _sc_camera;
 }
 
 /*" Initializing an SCCamera "*/

@@ -43,7 +43,7 @@
 #import <Inventor/nodekits/SoBaseKit.h>
 #import <Inventor/nodes/SoGroup.h>
 
-#define SELF (self->sccamerapriv)
+#define SELF (self->_sc_camera)
 
 @implementation _SCCameraP
 @end

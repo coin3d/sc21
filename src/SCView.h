@@ -36,9 +36,9 @@
 @interface SCView : SCOpenGLView /*" NSView : NSResponder : NSObject "*/
 {
  @protected
-  _SCViewP * scviewpriv;
+  _SCViewP * _sc_view;
  @private
-  IBOutlet SCController * controller;
+  SCController * controller;
 }
 
 /*" Initializing an SCView "*/

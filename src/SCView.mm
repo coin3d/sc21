@@ -41,7 +41,7 @@
 @implementation _SCViewP
 @end
 
-#define PRIVATE(p) ((p)->scviewpriv)
+#define PRIVATE(p) ((p)->_sc_view)
 #define SELF PRIVATE(self)
 
 @interface SCView(InternalAPI)

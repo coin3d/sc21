@@ -33,8 +33,8 @@ class SoSceneManager;
 @interface _SCControllerP : NSObject
 {
   id redrawhandler;
-  SEL redrawsel;
-  NSInvocation * redrawinv;
+  SEL redrawselector;
+  NSInvocation * redrawinvocation;
   SCEventConverter * eventconverter;
   NSTimer * timerqueuetimer;
   SoSceneManager * scenemanager;
@@ -48,7 +48,7 @@ class SoSceneManager;
 
 @interface SCController (InternalAPI)
 - (void)_SC_commonInit;
-- (void)_SC_timerQueueTimerFired:(NSTimer *)t;
+- (void)_SC_timerQueueTimerFired:(NSTimer *)timer;
 - (void)_SC_idle:(NSNotification *)notification;
 - (void)_SC_sensorQueueChanged;
 - (NSPoint)_SC_normalizePoint:(NSPoint)point;

@@ -46,7 +46,7 @@
 #import <Inventor/projectors/SbSphereSheetProjector.h>
 
 #import "SCControllerP.h"
-#define PRIVATE(p) ((p)->sccontrollerpriv)
+#define PRIVATE(p) ((p)->_sc_controller)
 
 @interface SCExaminerController (InternalAPI)
 @end

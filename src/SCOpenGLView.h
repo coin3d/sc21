@@ -34,7 +34,7 @@
 @interface SCOpenGLView : NSView
 {
  @protected
-   _SCOpenGLViewP * scopenglviewpriv;
+   _SCOpenGLViewP * _sc_openglview;
 }
 
 - (id)initWithFrame:(NSRect)rect;

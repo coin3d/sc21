@@ -38,7 +38,7 @@
 @interface SCSceneGraph : NSObject <NSCoding>
 {
  @protected
-  _SCSceneGraphP * scscenegraphpriv;
+  _SCSceneGraphP * _sc_scenegraph;
   @private
   id delegate;
 }
@@ -62,8 +62,6 @@
 - (BOOL)hasAddedCamera;
 
 /*" Accessing the actual Coin scenegraph. "*/
-- (NSString *)name;
-- (BOOL)setName:(NSString *)name;
 - (SoSeparator *)superSceneGraph; 
 - (SoSeparator *)root;
 - (void)setRoot:(SoSeparator *)root;

@@ -50,7 +50,7 @@
 @implementation _SCControllerP
 @end
 
-#define PRIVATE(p) ((p)->sccontrollerpriv)
+#define PRIVATE(p) ((p)->_sc_controller)
 #define SELF PRIVATE(self)
 
 /*" 
@@ -95,7 +95,7 @@ static void
 redraw_cb(void * user, SoSceneManager *)
 {
   SCController * controller = (SCController *)user; 
-  [PRIVATE(controller)->redrawinv invoke];
+  [PRIVATE(controller)->redrawinvocation invoke];
 }
 
 // This function is the SoSensorManager change callback.
@@ -264,7 +264,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   "*/
 - (void)setRedrawSelector:(SEL)sel
 {
-  SELF->redrawsel = sel;
+  SELF->redrawselector = sel;
   [self _SC_setupRedrawInvocation];
 }
 
@@ -274,7 +274,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   "*/
 - (SEL)redrawSelector
 {
-  return SELF->redrawsel;
+  return SELF->redrawselector;
 }
 
 /*" Sets the scene graph that shall be rendered. If nil is passed,
@@ -697,7 +697,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   [scenegraph->camera setController:self];
 #endif
   SELF->eventconverter = [[SCEventConverter alloc] init];
-  SELF->redrawsel = @selector(display);
+  SELF->redrawselector = @selector(display);
 
   [self setSceneManager:new SoSceneManager];
 
@@ -717,7 +717,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   // SC21_DEBUG(@"timerQueueTimerFired:");
   // The timer might fire after the view has
   // already been destroyed...
-  if (!SELF->redrawinv) return; 
+  if (!SELF->redrawinvocation) return; 
   SoDB::getSensorManager()->processTimerQueue();
   [self _SC_sensorQueueChanged];
 }
@@ -729,7 +729,7 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   // SC21_DEBUG(@"_idle:");
   // We might get the notification after the view has
   // already been destroyed...
-  if (!SELF->redrawinv) return; 
+  if (!SELF->redrawinvocation) return; 
   SoDB::getSensorManager()->processTimerQueue();
   SoDB::getSensorManager()->processDelayQueue(TRUE);
   [self _SC_sensorQueueChanged];
@@ -787,12 +787,12 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (void)_SC_setupRedrawInvocation
 {
-  [SELF->redrawinv release];
-  SELF->redrawinv = nil;
+  [SELF->redrawinvocation release];
+  SELF->redrawinvocation = nil;
   
-  if (SELF->redrawhandler && SELF->redrawsel) {
+  if (SELF->redrawhandler && SELF->redrawselector) {
     NSMethodSignature *sig = 
-      [SELF->redrawhandler methodSignatureForSelector:SELF->redrawsel];
+      [SELF->redrawhandler methodSignatureForSelector:SELF->redrawselector];
 
     if ([sig numberOfArguments] != 2 ||
         [sig numberOfArguments] == 3 &&
@@ -806,10 +806,10 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
       return;
     }
 
-    SELF->redrawinv = [[NSInvocation invocationWithMethodSignature:sig] retain];
-    [SELF->redrawinv setSelector:SELF->redrawsel];
-    [SELF->redrawinv setTarget:SELF->redrawhandler];
-    if ([sig numberOfArguments] == 3) [SELF->redrawinv setArgument:self atIndex:2];
+    SELF->redrawinvocation = [[NSInvocation invocationWithMethodSignature:sig] retain];
+    [SELF->redrawinvocation setSelector:SELF->redrawselector];
+    [SELF->redrawinvocation setTarget:SELF->redrawhandler];
+    if ([sig numberOfArguments] == 3) [SELF->redrawinvocation setArgument:self atIndex:2];
   }
 }
  

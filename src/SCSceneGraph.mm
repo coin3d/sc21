@@ -38,7 +38,7 @@
 @implementation _SCSceneGraphP
 @end
 
-#define PRIVATE(p) ((p)->scscenegraphpriv)
+#define PRIVATE(p) ((p)->_sc_scenegraph)
 #define SELF PRIVATE(self)
 
 // Note: I find it really degoutant that this class should be named
@@ -136,32 +136,7 @@
     [self setRoot:fileroot];
     return YES; 
   }
-
   return NO;
-}
-
-/*"
-  Returns the name assigned to the scenegraph, or nil if no name has
-  been assigned. This name corresponds to the node name of the Open
-  Inventor scenegraph's root node.
-  "*/
-- (NSString *)name
-{
-  // FIXME: Implement.
-  return @"foo";
-}
-
-/*"
-  Registers the receiver under the name specified by name.
-  "*/
-- (BOOL)setName:(NSString *)name
-{
-  // FIXME: Does name have to be unique? (If we want to make it correspond to 
-  // the saved filename in the bundle, then we probably want to do that... -> 
-  // cf. NSImage setName:) kyrah 20040715
-  
-  // FIXME: Implement.
-  return YES;
 }
 
 /*"

@@ -38,7 +38,7 @@ class SoSceneManager;
 @interface SCController : NSObject <NSCoding>
 {
  @protected
-  _SCControllerP * sccontrollerpriv;
+  _SCControllerP * _sc_controller;
   // FIXME: Are we sure we don't want the delegate to be protected? kyrah 20040716
  @private
   id delegate;

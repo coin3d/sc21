@@ -28,7 +28,7 @@
 #import <Sc21/SCOpenGLPixelFormat.h>
 #import "SCUtil.h"
 
-#define PRIVATE(p) ((p)->scopenglpixelformatpriv)
+#define PRIVATE(p) ((p)->_sc_openglpixelformat)
 #define SELF PRIVATE(self)
 
 @interface _SCOpenGLPixelFormatP : NSObject

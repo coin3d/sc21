@@ -31,6 +31,8 @@
 
 @implementation NSCursor (SCCursors)
 
+// FIXME: factory methods should autorelease the instance they return.
+// In our case here - who will ever release the cursor? kyrah 20040722.
 + (NSCursor *)rotateCursor
 {
   static NSCursor * rotateCursor = nil;
