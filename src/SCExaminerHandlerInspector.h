@@ -63,10 +63,17 @@
 
 @interface SCExaminerHandler (IBPalette)
 - (NSString *)_SC_conflictDescription;
-- (int)_SC_zoomButton;
-- (int)_SC_panButton;
-- (int)_SC_rotateButton;
-- (unsigned int)_SC_zoomModifier;
-- (unsigned int)_SC_panModifier;
-- (unsigned int)_SC_rotateModifier;
+- (int)zoomButton;
+- (int)panButton;
+- (int)rotateButton;
+- (unsigned int)zoomModifier;
+- (unsigned int)panModifier;
+- (unsigned int)rotateModifier;
+
+- (void)setRotateModifier:(unsigned int)modifier;
+- (void)setRotateButton:(int)button;
+- (void)setZoomModifier:(unsigned int)modifier;
+- (void)setZoomButton:(int)button;
+- (void)setPanModifier:(unsigned int)modifier;
+- (void)setPanButton:(int)button;
 @end

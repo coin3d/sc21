@@ -27,6 +27,7 @@
 
 #import <Sc21/SCCoinhandler.h>
 #import <Sc21/SCController.h>
+
 #import "SCCoinHandlerP.h"
 #import "SCEventConverter.h"
 #import "SCUtil.h"
@@ -35,6 +36,7 @@
 
 @implementation SCCoinHandlerP
 @end
+
 
 #define SELF self->_sc_coinhandler
 
@@ -58,12 +60,14 @@
   return self;
 }
 
+
 - (void)dealloc
 {
   [SELF->eventconverter release];
   [SELF release];
   [super dealloc];
 }
+
 
 /*" 
   Converts the NSEvent event to an SoEvent and sends it to the Coin
@@ -85,11 +89,13 @@
   return handled;
 }
 
+
 #pragma mark --- NSCoding conformance ---
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {
 }
+
 
 - (id)initWithCoder:(NSCoder *)coder
 {
@@ -100,6 +106,7 @@
 }
 
 @end
+
 
 @implementation SCCoinHandler (InternalAPI)
 

@@ -46,17 +46,30 @@
 @implementation SCControllerP
 @end
 
+
 #define PRIVATE(p) ((p)->_sc_controller)
 #define SELF PRIVATE(self)
 
-// -------------------- Callback functions ------------------------
 
-// This function is the SoSceneManager render callback.
-// Will tell our drawable (typically an SCView, but can
-// be any SCDrawable maintaining an OpenGL context) to redraw.
-// The invoked redraw method usually makes its OpenGL context
-// active and calls SCController's -render method, but not necessarily
-// synchronously.
+#pragma mark --- internal notifications ---
+
+/*
+  Used for triggering delayqueue sensors when idle.
+*/
+
+NSString * SCIdleNotification = @"_SC_IdleNotification";
+
+
+#pragma mark --- callback functions ---
+
+/*
+  This function is the SoSceneManager render callback.  Will tell our
+  drawable (typically an SCView, but can be any SCDrawable maintaining
+  an OpenGL context) to redraw.  The invoked redraw method usually
+  makes its OpenGL context active and calls SCController's -render
+  method, but not necessarily synchronously.
+*/
+
 static void
 redraw_cb(void * user, SoSceneManager *)
 {
@@ -64,12 +77,17 @@ redraw_cb(void * user, SoSceneManager *)
   [PRIVATE(controller)->drawable display];
 }
 
-// This function is the SoSensorManager change callback.
-// Note that in a multi-threaded Coin app, this callback
-// can be called simultaneously from multiple threads.
+
+/*
+  This function is the SoSensorManager change callback.  Note that in
+  a multi-threaded Coin app, this callback can be called
+  simultaneously from multiple threads.
+*/
+
 // FIXME: Make sure that this function and whatever is called
 // is thread-safe and will execute tasks in the correct threads
 // (e.g. rendering in the main thread) (kintel 20040616).
+
 static void
 sensorqueuechanged_cb(void * data)
 {
@@ -77,8 +95,6 @@ sensorqueuechanged_cb(void * data)
   [controller _SC_sensorQueueChanged];
 }
 
-// Internal. Used for triggering delayqueue sensors when idle.
-NSString * SCIdleNotification = @"_SC_IdleNotification";
 
 @implementation SCController
 
@@ -97,7 +113,8 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   be given a "drawable" (an object conforming to the !{SCDrawable}
   protocol) that should called upon such a redraw request. See the
   SCDrawable and SCView documentation for more information.
-  "*/
+"*/
+
 
 #pragma mark --- static methods ----
 
@@ -114,7 +131,8 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 
   This method calls !{SoDB::init()}, !{SoInteraction::init()} and
   !{SoNodeKit::init()}.
-  "*/
+"*/
+
 + (void)initCoin
 {       
   // This is _not_ done in +initialize since we want to allow people
@@ -127,6 +145,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
     initialized = YES;
   }
 }
+
 
 #pragma mark --- initialization and cleanup ---
 
@@ -146,6 +165,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   return self;
 }
 
+
 - (void)dealloc
 {
   SC21_DEBUG(@"SCController.dealloc");
@@ -158,6 +178,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   [super dealloc];
 }
 
+
 #pragma mark --- rendering ---
 
 /*" 
@@ -169,10 +190,10 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 
 - (void)render
 {
-//   SC21_DEBUG(@"SCController.render");
   // FIXME: Do clearing here instead of in SoSceneManager to support
   // alpha values? Alternatively, add SbColor4f support the necessary
   // places in Coin (kintel 20040502)
+
   if (SELF->drawable) {
     NSRect frame = [SELF->drawable frame];
     SELF->scenemanager->
@@ -188,24 +209,25 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   }
 }
 
+
 #pragma mark --- event handling ---
 
 /*"
-    Handle event by sending it down the eventhandler chain, starting
-    at the receiver's !{eventHandler}. If !{eventHandler} returns
-    !{NO}, event is sent to the !{eventHandler}'s !{nextEventHandler},
-    and so on. 
+  Handle event by sending it down the eventhandler chain, starting at
+  the receiver's !{eventHandler}. If !{eventHandler} returns !{NO},
+  event is sent to the !{eventHandler}'s !{nextEventHandler}, and so
+  on.
 
-    Note that the Sc21 way of handling events is different from the
-    one taken in Cocoa (where events are normally handled by NSView
-    subclasses) - SCView just passes on all events to this
-    method. (See the SCEventHandler documentation for more information
-    on eventhandling in Sc21.)
+  Note that the Sc21 way of handling events is different from the one
+  taken in Cocoa (where events are normally handled by NSView
+  subclasses) - SCView just passes on all events to this method. (See
+  the SCEventHandler documentation for more information on
+  eventhandling in Sc21.)
 
-    For overriding the default behavior of ctrl-clicks (context menu),
-    see the documentation for SCView's !{-mouseDown:} method.
+  For overriding the default behavior of ctrl-clicks (context menu),
+  see the documentation for SCView's !{-mouseDown:} method.
  
-    Returns !{YES} if the event has been handled, !{NO} otherwise. 
+  Returns !{YES} if the event has been handled, !{NO} otherwise. 
 "*/
  
 - (BOOL)handleEvent:(NSEvent *)event
@@ -220,6 +242,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   return handled;
 }
 
+
 /*" 
   Set the receiver's eventhandler, which will be the start of the
   eventhandler chain.(See handleEvent: for more information.)
@@ -233,19 +256,23 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   }
 }
 
-/*" Returns the first eventhandler in the receiver's eventhandler chain. "*/
+
+/*" 
+  Returns the first eventhandler in the receiver's eventhandler chain. 
+"*/
 
 - (SCEventHandler *)eventHandler
 {
   return self->eventHandler;
 }
 
+
 #pragma mark --- accessor methods ---
 
 /*" 
   Set the receiver's drawable. Note that you do not have to call this 
   method if you are using an SCView.
- "*/
+"*/
 
 - (void)setDrawable:(id<SCDrawable>)newdrawable
 {
@@ -257,15 +284,20 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   }
 }
 
-/*" Returns the receiver's drawable. "*/
+/*" 
+  Returns the receiver's drawable. 
+"*/
 
 - (id<SCDrawable>)drawable
 {
   return SELF->drawable;
 }
 
-/*" Sets the scene graph that shall be rendered. 
+
+/*" 
+  Sets the scene graph that shall be rendered. 
 "*/
+
 - (void)setSceneGraph:(SCSceneGraph *)sg
 {
   if (sg == sceneGraph) { return; }
@@ -283,20 +315,24 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   if (sceneGraph) {
     // We want to be informed whenever the scenegraph's root node changes.
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                          selector:@selector(_SC_sceneGraphChanged:)
-                                          name:SCRootChangedNotification
-                                          object:sceneGraph];
+     selector:@selector(_SC_sceneGraphChanged:)
+     name:SCRootChangedNotification
+     object:sceneGraph];
   }
   [self _SC_maintainTimers]; 
   [self _SC_sceneGraphChanged:nil];
 }
 
-/*" Returns the receiver's scenegraph "*/
+
+/*" 
+  Returns the receiver's scenegraph 
+"*/
 
 - (SCSceneGraph *)sceneGraph 
 { 
   return sceneGraph; 
 }
+
 
 /*" 
   Sets the receiver's scene manager to scenemanager. The scene manager's
@@ -309,11 +345,8 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   scene manager is created for you while initializing.
 "*/
 
-// FIXME: Should this method be part of the public API at all?
-// kyrah 20040809
 - (void)setSceneManager:(SoSceneManager *)scenemanager
 {
-
   if (scenemanager != SELF->scenemanager) {
     if (SELF->hascreatedscenemanager) {
       delete SELF->scenemanager;
@@ -333,7 +366,10 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   }
 }
 
-/*" Returns the receiver's Coin scene manager instance. "*/
+
+/*" 
+  Returns the receiver's Coin scene manager instance. 
+"*/
 
 - (SoSceneManager *)sceneManager 
 { 
@@ -341,9 +377,9 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 }
 
 
-
-/*" Sets the background color of the scene to color. Raises an exception if
-color cannot be converted to an RGB color.
+/*" 
+  Sets the background color of the scene to color. Raises an exception
+  if color cannot be converted to an RGB color.
 "*/
 
 - (void)setBackgroundColor:(NSColor *)color
@@ -361,7 +397,10 @@ color cannot be converted to an RGB color.
   SELF->scenemanager->scheduleRedraw();  
 }
 
-/*" Returns the scene's background color. "*/
+
+/*"   
+  Returns the scene's background color. 
+"*/
 
 - (NSColor *)backgroundColor
 {
@@ -376,42 +415,52 @@ color cannot be converted to an RGB color.
 /*"
   Controls whether the receiver should clear the color buffer before
   rendering. The default value is YES.
- "*/
+"*/
+
 - (void)setClearsColorBuffer:(BOOL)yesno
 {
   SELF->clearcolorbuffer = yesno;
 }
 
+
 /*"
   Returns YES if the receiver clears the color buffer before
   rendering. The default value is YES.
- "*/
+"*/
+
 - (BOOL)clearsColorBuffer
 {
   return SELF->clearcolorbuffer;
 }
 
+
 /*"
   Controls whether the receiver should clear the depth buffer before
   rendering. The default value is YES.
- "*/
+"*/
+
 - (void)setClearsDepthBuffer:(BOOL)yesno
 {
   SELF->cleardepthbuffer = yesno;
 }
 
+
 /*"
   Returns YES if the receiver clears the depth buffer before
   rendering. The default value is YES.
- "*/
+"*/
+
 - (BOOL)clearsDepthBuffer
 {
   return SELF->cleardepthbuffer;
 }
 
+
 #pragma mark --- NSCoding conformance ---
 
-/*" Encodes the receiver using encoder coder "*/
+/*" 
+  Encodes the receiver using encoder coder 
+"*/
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {
@@ -423,8 +472,10 @@ color cannot be converted to an RGB color.
   }
 }
 
-/*" Initializes a newly allocated SCController instance from the data
-    in decoder. Returns !{self} "*/
+/*" 
+  Initializes a newly allocated SCController instance from the data in
+  decoder. Returns !{self}
+"*/
     
 - (id)initWithCoder:(NSCoder *)coder
 {
@@ -453,7 +504,8 @@ color cannot be converted to an RGB color.
   If you override this method, you must call [super _SC_commonInit]
   as the first call in your implementation to make sure everything
   is set up properly.
-  "*/
+"*/
+
 - (void)_SC_commonInit
 {
   [SCController initCoin];
@@ -471,9 +523,10 @@ color cannot be converted to an RGB color.
   [self _SC_sensorQueueChanged];
 }
 
-/*!
+/*
   Timer callback function: process the timer sensor queue.
 */
+
 - (void)_SC_timerQueueTimerFired:(NSTimer *)t
 {
   // SC21_DEBUG(@"timerQueueTimerFired:");
@@ -484,7 +537,9 @@ color cannot be converted to an RGB color.
   [self _SC_sensorQueueChanged];
 }
 
-/* process delay queue when application is idle. */
+/* 
+  Process delay queue when application is idle. 
+*/
 
 - (void)_SC_idle:(NSNotification *)notification
 {
@@ -497,14 +552,16 @@ color cannot be converted to an RGB color.
   [self _SC_sensorQueueChanged];
 }
 
-/*!
+/*
   Will reschedule timer sensors to trigger at the time of the first pending
   timer sensor in SoSensorManager (or deactivated if there are no pending 
   sensors).
 
   Will initiate idle processing if there are pending delay queue sensors.
 */
+
 // FIXME: Rename to something more appropriate... ;)
+
 - (void)_SC_sensorQueueChanged
 {
   // SC21_DEBUG(@"_sensorQueueChanged");
@@ -538,6 +595,7 @@ color cannot be converted to an RGB color.
   }
 }
 
+
 - (void)_SC_cursorDidChange:(NSNotification *)notification
 {
   [[NSNotificationCenter defaultCenter] 
@@ -565,6 +623,7 @@ color cannot be converted to an RGB color.
     postNotificationName:SCSceneGraphChangedNotification object:self];
 }
 
+
 - (void)_SC_startTimers
 {
   if (SELF->timerqueuetimer || !SELF->drawable) return;
@@ -573,7 +632,7 @@ color cannot be converted to an RGB color.
   // so don't activate it yet.
   SELF->timerqueuetimer = [NSTimer scheduledTimerWithTimeInterval:1000
                                    target:self
-                                   selector:@selector(_SC_timerQueueTimerFired:) 
+                                   selector:@selector(_SC_timerQueueTimerFired:)
                                    userInfo:nil 
                                    repeats:YES];
   [SELF->timerqueuetimer _SC_deactivate];
@@ -584,6 +643,7 @@ color cannot be converted to an RGB color.
   
   SoDB::getSensorManager()->setChangedCallback(sensorqueuechanged_cb, self);
 }
+
 
 /* 
   Stops and releases the timers for timer queue and delay queue
@@ -599,10 +659,12 @@ color cannot be converted to an RGB color.
   SoDB::getSensorManager()->setChangedCallback(NULL, NULL);
 }
 
+
 /* 
   Starts or stops timers based on internal state (both a scenegraph and
   a drawable must be present to warrant having timers running).
 */
+
 - (void)_SC_maintainTimers
 {
   if (self->sceneGraph && SELF->drawable) {

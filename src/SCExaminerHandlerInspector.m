@@ -88,6 +88,14 @@
   // FIXME: Use tags instead of relying on order. kyrah 20040807
 
   SCExaminerHandler * scexaminerhandler = [self object];
+  
+  // Undo support
+  [self beginUndoGrouping];
+  [self noteAttributesWillChangeForObject:scexaminerhandler];  
+  
+  // FIXME: For some reason, undo works, except for the modifiers.
+  // It is possible to undo "unsetting" the checkbox, but not to
+  // undo setting it. Huh??? kyrah 20040827.
 
   // mouse button emulation
   [self _SC_okWithButton:2 index:[middleButtonEmulation indexOfSelectedItem]];
@@ -132,23 +140,23 @@
   [self _SC_revertPopUpButton:middleButtonEmulation forButton:2];
   
   // rotate mode: button, modifier flags, spinning?
-  int idx = [handler rotateButtonIsEnabled] ? [handler _SC_rotateButton] : 3;
+  int idx = [handler rotateButtonIsEnabled] ? [handler rotateButton] : 3;
   [rotateButton selectItemAtIndex:idx];
   [self _SC_setStateOfCommand:rotate_command alt:rotate_alt shift:rotate_shift 
-    forFlags:[handler _SC_rotateModifier]];
+    forFlags:[handler rotateModifier]];
   [enableSpin setState:([handler spinEnabled] ? NSOnState : NSOffState)];
     
   // pan mode: button, modifier flags
-  idx = [handler panButtonIsEnabled] ? [handler _SC_panButton] : 3;
+  idx = [handler panButtonIsEnabled] ? [handler panButton] : 3;
   [panButton selectItemAtIndex:idx];
   [self _SC_setStateOfCommand:pan_command alt:pan_alt shift:pan_shift 
-    forFlags:[handler _SC_panModifier]];
+    forFlags:[handler panModifier]];
   
   // zoom mode: button, modifier flags, use wheel?
-  idx = [handler zoomButtonIsEnabled] ? [handler _SC_zoomButton] : 3;
+  idx = [handler zoomButtonIsEnabled] ? [handler zoomButton] : 3;
   [zoomButton selectItemAtIndex:idx];
   [self _SC_setStateOfCommand:zoom_command alt:zoom_alt shift:zoom_shift 
-    forFlags:[handler _SC_zoomModifier]];
+    forFlags:[handler zoomModifier]];
   [enableWheel setState:([handler scrollWheelZoomEnabled] ?
     NSOnState:NSOffState)];
 
@@ -252,16 +260,16 @@
   
   if ([[self _SC_emulator] emulatesButton:1]) { 
     emulatesright = YES; count++;
-    if (enabled[0] && [self _SC_rotateButton] == 1) count++;
-    if (enabled[1] && [self _SC_panButton] == 1) count++;
-    if (enabled[2] && [self _SC_zoomButton] == 1) count++;
+    if (enabled[0] && [self rotateButton] == 1) count++;
+    if (enabled[1] && [self panButton] == 1) count++;
+    if (enabled[2] && [self zoomButton] == 1) count++;
   }
   
   if ([[self _SC_emulator] emulatesButton:2]) { 
     emulatesmiddle = YES; count++;
-    if (enabled[0] && [self _SC_rotateButton] == 2) count++;
-    if (enabled[1] && [self _SC_panButton] == 2) count++;
-    if (enabled[2] && [self _SC_zoomButton] == 2) count++;
+    if (enabled[0] && [self rotateButton] == 2) count++;
+    if (enabled[1] && [self panButton] == 2) count++;
+    if (enabled[2] && [self zoomButton] == 2) count++;
   }
   
   int buttons[count];
@@ -356,7 +364,7 @@
   return nil;
 }
 
-- (int)_SC_zoomButton
+- (int)zoomButton
 {
   int z;
   unsigned int m;
@@ -364,7 +372,7 @@
   return z;
 }
 
-- (int)_SC_panButton
+- (int)panButton
 {
   int p;
   unsigned int m;
@@ -372,7 +380,7 @@
   return p;
 }
 
-- (int)_SC_rotateButton
+- (int)rotateButton
 {
   int r;
   unsigned int m;
@@ -380,7 +388,7 @@
   return r; 
 }
 
-- (unsigned int)_SC_zoomModifier
+- (unsigned int)zoomModifier
 {
   int z;
   unsigned int m;
@@ -388,7 +396,7 @@
   return m;
 }
 
-- (unsigned int)_SC_panModifier
+- (unsigned int)panModifier
 {
   int p;
   unsigned int m;
@@ -396,12 +404,42 @@
   return m;
 }
 
-- (unsigned int)_SC_rotateModifier
+- (unsigned int)rotateModifier
 {
   int r;
   unsigned int m;
   [self getRotateButton:&r modifier:&m];
   return m; 
+}
+
+- (void)setRotateModifier:(unsigned int)modifier
+{
+  [self setRotateButton:[self rotateButton] modifier:modifier];
+}
+
+- (void)setRotateButton:(int)button
+{
+  [self setRotateButton:button modifier:[self rotateModifier]];
+}
+
+- (void)setZoomModifier:(unsigned int)modifier
+{
+  [self setZoomButton:[self zoomButton] modifier:modifier];
+}
+
+- (void)setZoomButton:(int)button
+{
+  [self setZoomButton:button modifier:[self zoomModifier]];
+}
+
+- (void)setPanModifier:(unsigned int)modifier
+{
+  [self setPanButton:[self panButton] modifier:modifier];
+}
+
+- (void)setPanButton:(int)button
+{
+  [self setPanButton:button modifier:[self panModifier]];
 }
 
 @end

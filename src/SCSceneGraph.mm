@@ -37,7 +37,7 @@
 #import <Inventor/errors/SoReadError.h>
 #import <Inventor/nodekits/SoBaseKit.h>
 #import <Inventor/nodes/SoPerspectiveCamera.h>
-#import <Inventor/nodes/SoDirectionalLight.h>
+
 #import <Inventor/VRMLnodes/SoVRMLGroup.h>
 
 #import "SCSceneGraphP.h"

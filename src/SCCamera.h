@@ -25,14 +25,10 @@
  |                                                                 |
  * =============================================================== */
  
-#import <Foundation/Foundation.h>
-
 #import <Sc21/SCDefines.h>
 
-#import <Inventor/SbLinear.h>
 #import <Inventor/SbRotation.h>
 #import <Inventor/nodes/SoCamera.h>
-#import <Inventor/nodes/SoSeparator.h>
 
 @class SCSceneGraph;
 @class SCCameraP;
@@ -66,7 +62,6 @@
 @end
 
 @interface NSObject (SCCameraDelegate)
-- (void)adjustNearClippingPlane:(float *)near 
-  farClippingPlane:(float *)far;
+- (void)adjustNearClippingPlane:(float *)near farClippingPlane:(float *)far;
 @end
 

@@ -26,14 +26,13 @@
  * =============================================================== */
 
 #import <Cocoa/Cocoa.h>
-#import <Sc21/SCDefines.h>
-#import <Sc21/SCCamera.h>
-#import <Sc21/SCSceneGraph.h>
-#import <Sc21/SCEventHandler.h>
-#import <Sc21/SCDrawable.h>
 
-class SoSceneManager;
-@class SCEventConverter;
+#import <Sc21/SCDrawable.h>
+#import <Sc21/SCEventHandler.h>
+#import <Sc21/SCSceneGraph.h>
+
+#import <Inventor/SoSceneManager.h>
+
 @class SCControllerP;
 
 @interface SCController : NSObject <NSCoding>
@@ -80,5 +79,8 @@ class SoSceneManager;
 
 // --------------------- Notifications ------------------------
 
-/*" Posted when the scenegraph is changed through !{setSceneGraph:} "*/
+/*" 
+  Posted when the scenegraph is changed through !{setSceneGraph:} 
+"*/
+
 SC21_EXTERN NSString * SCSceneGraphChangedNotification;

@@ -28,9 +28,6 @@
 #import <Sc21/SCCamera.h>
 
 #import <Inventor/SbMatrix.h>
-#import <Inventor/actions/SoGetBoundingBoxAction.h>
-#import <Inventor/nodes/SoPerspectiveCamera.h>
-#import <Inventor/nodes/SoOrthographicCamera.h>
 
 @interface SCCameraP : NSObject
 {
@@ -42,6 +39,7 @@
 
 @interface SCCamera (InternalAPI)
 - (void)_SC_commonInit;
-- (void)_SC_getCoordinateSystem:(SbMatrix &)matrix inverse:(SbMatrix &)inverse inSceneGraph:(SCSceneGraph *)sg;
+- (void)_SC_getCoordinateSystem:(SbMatrix &)matrix inverse:(SbMatrix &)inverse 
+  inSceneGraph:(SCSceneGraph *)sg;
 - (float)_SC_bestValueForNearPlane:(float)near farPlane:(float)far;
 @end

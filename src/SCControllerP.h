@@ -27,9 +27,6 @@
 
 #import <Sc21/SCController.h>
 
-class SoGroup;
-class SoSceneManager;
-
 @interface SCControllerP : NSObject
 {
   id<SCDrawable> drawable;

@@ -26,13 +26,15 @@
  * =============================================================== */
 
 #import <Cocoa/Cocoa.h>
-#import <Sc21/SCDefines.h>
 
-@class SCCamera;
+#import <Sc21/SCDefines.h>
+#import <Sc21/SCCamera.h>
+
+#import <Inventor/SoSceneManager.h>
+#import <Inventor/nodes/SoDirectionalLight.h>
+#import <Inventor/nodes/SoSeparator.h>
+
 @class SCSceneGraphP;
-class SoSceneManager;
-class SoGroup;
-class SoDirectionalLight;
 
 @interface SCSceneGraph : NSObject <NSCoding>
 {
@@ -43,7 +45,6 @@ class SoDirectionalLight;
 }
 
 /*" Initialization "*/
-
 - (id)initWithContentsOfFile:(NSString *)filename;
 - (id)initWithContentsOfURL:(NSURL *)URL;
 
@@ -70,18 +71,23 @@ class SoDirectionalLight;
 @end
 
 @interface NSObject (SCSceneGraphDelegate)
+
 /*" Turning off default superscenegraph creation "*/
 - (BOOL)shouldCreateDefaultSuperSceneGraph;
+
 /*" Supplying your own code for superscenegraph creation "*/
 - (SoGroup *)createSuperSceneGraph:(SoGroup *)scenegraph;
+
 /*" Postprocessing "*/
 - (void)didCreateSuperSceneGraph:(SoGroup *)superscenegraph;
+
 @end
 
 // ------------------ Notifications -----------------------
 
-/*" Posted if opening a requested file for reading failed 
-    because the file does not exist or cannot be read.
+/*" 
+  Posted if opening a requested file for reading failed because the
+  file does not exist or cannot be read.
 "*/
 SC21_EXTERN NSString * SCCouldNotOpenFileNotification;
 
@@ -92,7 +98,6 @@ SC21_EXTERN NSString * SCCouldNotOpenFileNotification;
   notification's !{userInfo} dictionary (as value for the
   key %{description}).
 "*/
-
 SC21_EXTERN NSString * SCCouldNotReadSceneNotification;
 
 /*" 
@@ -103,7 +108,6 @@ SC21_EXTERN NSString * SCCouldNotReadSceneNotification;
   Register for this notification if you want to issue a warning to
   your users that they will not be able to see anything. 
 "*/
-
 SC21_EXTERN NSString * SCNoCameraFoundInSceneNotification;
 
 /*" 
@@ -115,9 +119,9 @@ SC21_EXTERN NSString * SCNoCameraFoundInSceneNotification;
   your users that they will not be able to see much in the scene
   (since only ambient light will be used.)
 "*/
-
 SC21_EXTERN NSString * SCNoLightFoundInSceneNotification;
 
-/*" Posted when the scenegraph is changed through !{setRoot:} "*/
-
+/*" 
+  Posted when the scenegraph is changed through !{setRoot:} 
+"*/
 SC21_EXTERN NSString * SCSceneGraphChangedNotification;

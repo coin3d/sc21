@@ -25,7 +25,6 @@
  |                                                                 |
  * =============================================================== */
  
-
 #import <Sc21/SCCamera.h>
 #import <Sc21/SCSceneGraph.h>
 
@@ -33,14 +32,14 @@
 #import "SCSceneGraphP.h"
 #import "SCUtil.h"
 
-#import <OpenGL/gl.h> // for GLint
+#import <OpenGL/gl.h>
 
 #import <Inventor/SoType.h>
-#import <Inventor/SoSceneManager.h>
-#import <Inventor/actions/SoSearchAction.h>
+#import <Inventor/actions/SoGetBoundingBoxAction.h>
 #import <Inventor/actions/SoGetMatrixAction.h>
-#import <Inventor/nodekits/SoBaseKit.h>
-#import <Inventor/nodes/SoGroup.h>
+#import <Inventor/actions/SoSearchAction.h>
+#import <Inventor/nodes/SoPerspectiveCamera.h>
+#import <Inventor/nodes/SoOrthographicCamera.h>
 
 #define SELF (self->_sc_camera)
 
@@ -58,7 +57,6 @@
   In a typical Sc21 application, you will never need to create an
   SCCamera yourself, since SCSceneGraph automatically initializes
   one. Use SCSceneGraph's !{camera:} method to access that SCCamera.
-
 "*/
 
 #pragma mark --- initialization and cleanup ---
@@ -115,6 +113,7 @@
   SELF->camera->position = focalpt - SELF->camera->focalDistance.getValue()*dir;
 }
 
+
 /*" 
   Translates the receiver's SoCamera by vector relative to its own
   coordinate system.(In its own coordinate system, the camera is
@@ -131,6 +130,7 @@
   SELF->camera->position = SELF->camera->position.getValue() + v;
   pos = SELF->camera->position.getValue();
 }
+
 
 /*" 
   Zooms in if delta is > 0, else zoom out.
@@ -181,6 +181,7 @@
                "no zooming done.");
   }
 }
+
 
 /*" 
   Positions the receiver's SoCamera so the whole scene in scenegraph
@@ -301,6 +302,7 @@
   SELF->camera->enableNotify(wasnotifyenabled);
 }
 
+
 /*" 
   Returns !{YES} if the receiver automatically updates the clipping
   planes to optimzie z-buffer usage, and !{NO} otherwise. 
@@ -312,6 +314,7 @@
   return SELF->updatesclippingplanes;
 }
 
+
 /*" 
   Sets whether the receiver should automatically update the clipping
   planes to optimzie z-buffer usage. The default is !{YES}.
@@ -322,8 +325,8 @@
   SELF->updatesclippingplanes = yn;
 }
 
-#pragma mark --- accessor methods ---
 
+#pragma mark --- accessor methods ---
 
 /*" 
   Sets the receiver's SoCamera to newcamera. 
@@ -345,6 +348,7 @@
   return SELF->camera; 
 }
 
+
 #pragma mark --- delegate handling ---
 
 /*" Makes newdelegate the receiver's delegate. "*/
@@ -353,6 +357,7 @@
 {
   self->delegate = newdelegate;
 }
+
 
 /*" Returns the receiver's delegate. "*/
 
@@ -363,6 +368,7 @@
 
 @end
 
+
 @implementation SCCamera (InternalAPI)
 
 - (void)_SC_commonInit
@@ -370,6 +376,7 @@
   SELF = [[SCCameraP alloc] init];
   SELF->updatesclippingplanes = YES;
 }
+
 
 /* Get the camera's object coordinate system. */
 
@@ -391,6 +398,7 @@
     inv = matrixaction.getInverse();
   }
 }
+
 
 /* 
   Determines the best value for the near clipping plane. Negative and
@@ -425,6 +433,7 @@
 }
 
 @end
+
 
 #if FOR_AUTODOC_ONLY 
 
