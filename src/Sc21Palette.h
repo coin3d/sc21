@@ -31,11 +31,11 @@
 
 @interface SC21Palette : IBPalette
 {
-  IBOutlet id scopenglviewitem;
-  IBOutlet id scviewitem;
-  IBOutlet id sccontrolleritem;
-  IBOutlet id scexaminercontrolleritem;
-  IBOutlet id testitem;
+  IBOutlet NSImageView * scopenglviewitem;
+  IBOutlet NSImageView * scviewitem;
+  IBOutlet NSImageView * sccontrolleritem;
+  IBOutlet NSImageView * scexaminercontrolleritem;
+  IBOutlet NSImageView * testitem;
 
   SCOpenGLView * scopenglview;
   SCView * scview;
