@@ -28,6 +28,7 @@
 #import <Sc21/SCExaminerHandler.h> 
 #import <Sc21/SCDrawable.h>
 #import "SCMode.h"
+#import "SCEmulator.h"
 
  @interface SCExaminerHandlerP : NSObject
 {
