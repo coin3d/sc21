@@ -44,7 +44,6 @@
 - (void)awakeFromNib
 {
   [filenametext setStringValue:@"None"];
-  NSLog(@"Version nr: %lf",  Sc21VersionNumber);
   
   [[NSNotificationCenter defaultCenter] 
     addObserver:self selector:@selector(reportError:) 
