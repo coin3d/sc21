@@ -58,11 +58,11 @@
 /*" 
   Provide interface for deaction of NSTimer instance.
   
-  The current implementation sets the timer's fireDate to
-  "distantFuture" (cf. NSDate) but hopefully activation and
-  deactivation will be supported in the timer itself in the
-  future.
-  "*/
+  Note: We deactivate the timer by setting its fireDate to
+  "distantFuture" (cf. NSDate). IMNSHO, it is quite stupid that it is
+  not possible to activate and deactive NSTimers, but my radar
+  enhancement request was declined *shrug*. kyrah 20040910. 
+"*/
 @interface NSTimer (Sc21Extensions)
 - (void)_SC_deactivate;
 - (BOOL)_SC_isActive;
@@ -77,12 +77,12 @@
 
 - (BOOL)_SC_isActive
 {
-  // A timer is "active" if its fire date is less than 10000 seconds from now.
+  // A timer is "active" if its fire date is less than 100000 seconds from now.
   // Note that we cannot compare for "== distantFuture" here, since
   // distantFuture is "current time + a high number" (i.e. the actual 
   // date changes with time)
   
-  return ([self fireDate] < [NSDate dateWithTimeIntervalSinceNow:10000]);
+  return ([self fireDate] < [NSDate dateWithTimeIntervalSinceNow:100000]);
 }
 @end
 
@@ -122,18 +122,18 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 /*" 
   An SCController is the main component for rendering Coin scene
   graphs. It handles all actual scene management and rendering,
-  passes events on to the eventhandler chain, &c..
+  and passes events on to the eventhandler chain.
 
-  The simplest use of this class is to connect to it from an SCView
-  instance and set a scene graph using -setSceneGraph:.
-  
+  The most basic setup of using an SCController is to have an
+  SCSceneGraph, an SCView, and an SCController instance, connecting
+  the SCView's !{controller} outlet to the SCController and the
+  SCController's !{sceneGraph} outlet to the SCSceneGraph.
+
   Since Coin is a data driven API, redraws are usually requested by
   the scene graph itself. To handle these redraws, the controller must
-  be given a "drawable" that should called upon such a
-  redraw request. This is automatically handled by SCView but if you
-  want to use an SCController without having an SCView (e.g. when
-  doing fullscreen rendering), you have to supply set an SCDrawable 
-  using -setDrawble:.
+  be given a "drawable" (an object conforming to the !{SCDrawable}
+  protocol) that should called upon such a redraw request. See the
+  SCDrawable and SCView documentation for more information.
   "*/
 
 #pragma mark --- static methods ----
@@ -145,10 +145,9 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 
   You need to call this method explicitly only if you want to use Coin
   functionality before actually instantiating an SCController in your
-  application (e.g. if you want to read a 3D models using
-  SoDB::readAll() and load the nib file containing your SCView and
-  SCController only if the file was read successfully).
-  
+  application (e.g. if you want to read a 3D model from disk and load
+  the nib file containing your SCView and SCController only if the
+  file was read successfully).
 
   This method calls !{SoDB::init()}, !{SoInteraction::init()} and
   !{SoNodeKit::init()}.
@@ -210,10 +209,11 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 #pragma mark --- rendering ---
 
 /*" 
-  Renders the scene by calling the current SoSceneManager's render() funtion. 
-  After rendering, an !{update:} message is sent to each eventhandler in the
-  event handler chain, starting at the controller's !{eventHandler}.
- "*/
+  Renders the scene by calling the receiver's SoSceneManager's
+  !{render()} funtion.  After rendering, an !{update:} message is sent
+  to each eventhandler in the event handler chain, starting at the
+  receiver's !{eventHandler}.
+"*/
 
 - (void)render
 {
@@ -239,17 +239,19 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 #pragma mark --- event handling ---
 
 /*"
-    Handle events by sending events down the event handler chain, starting
-    at the controller's !{eventHandler}. If !{eventHandler} returns !{NO},
-    the event is sent to the !{eventHandler}'s !{nextEventHandler}, and so
-    on. (See the SCEventHandler documentation for more information.)
+    Handle event by sending it down the eventhandler chain, starting
+    at the receiver's !{eventHandler}. If !{eventHandler} returns
+    !{NO}, event is sent to the !{eventHandler}'s !{nextEventHandler},
+    and so on. 
 
     Note that the Sc21 way of handling events is different from the
     one taken in Cocoa (where events are normally handled by NSView
-    subclasses) - SCView just passes on all events to this method.
+    subclasses) - SCView just passes on all events to this
+    method. (See the SCEventHandler documentation for more information
+    on eventhandling in Sc21.)
 
     For overriding the default behavior of ctrl-clicks (context menu),
-    see !{-SCView.mouseDown:}
+    see the documentation for SCView's !{-mouseDown:} method.
  
     Returns !{YES} if the event has been handled, !{NO} otherwise. 
 "*/
@@ -267,7 +269,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 }
 
 /*" 
-  Set the Controller's eventhandler, which will be the start of the
+  Set the receiver's eventhandler, which will be the start of the
   eventhandler chain.(See handleEvent: for more information.)
 "*/
     
@@ -279,7 +281,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   }
 }
 
-/*" Returns the first eventhandler in the eventhandler chain. "*/
+/*" Returns the first eventhandler in the receiver's eventhandler chain. "*/
 
 - (SCEventHandler *)eventHandler
 {
@@ -289,7 +291,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 #pragma mark --- accessor methods ---
 
 /*" 
-  Set the controller's drawable. Note that you do not have to call this 
+  Set the receiver's drawable. Note that you do not have to call this 
   method if you are using an SCView.
  "*/
 
@@ -303,7 +305,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   }
 }
 
-/*" Returns the current drawable. "*/
+/*" Returns the receiver's drawable. "*/
 
 - (id<SCDrawable>)drawable
 {
@@ -337,7 +339,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   [self _SC_sceneGraphChanged:nil];
 }
 
-/*" Returns the controller's scenegraph "*/
+/*" Returns the receiver's scenegraph "*/
 
 - (SCSceneGraph *)sceneGraph 
 { 
@@ -345,7 +347,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 }
 
 /*" 
-  Sets the current scene manager to scenemanager. The scene manager's
+  Sets the receiver's scene manager to scenemanager. The scene manager's
   render callback will be set to SCController's internal redraw
   callback implementation; and scenemanager will be activated. Also,
   if a scenegraph has been set earlier, scenemanager's scenegraph will
@@ -379,7 +381,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   }
 }
 
-/*" Returns the current Coin scene manager instance. "*/
+/*" Returns the receiver's Coin scene manager instance. "*/
 
 - (SoSceneManager *)sceneManager 
 { 
@@ -420,10 +422,8 @@ color cannot be converted to an RGB color.
 }
 
 /*"
-Controls whether the color buffer is automatically cleared
- before rendering.
- 
- The default value is YES.
+  Controls whether the receiver should clear the color buffer before
+  rendering. The default value is YES.
  "*/
 - (void)setClearsColorBuffer:(BOOL)yesno
 {
@@ -431,10 +431,8 @@ Controls whether the color buffer is automatically cleared
 }
 
 /*"
-Returns YES if the color buffer is automatically cleared
- before rendering.
- 
- The default value is YES.
+  Returns YES if the receiver clears the color buffer before
+  rendering. The default value is YES.
  "*/
 - (BOOL)clearsColorBuffer
 {
@@ -442,10 +440,8 @@ Returns YES if the color buffer is automatically cleared
 }
 
 /*"
-Controls whether the depth buffer is automatically cleared
- before rendering.
- 
- The default value is YES.
+  Controls whether the receiver should clear the depth buffer before
+  rendering. The default value is YES.
  "*/
 - (void)setClearsDepthBuffer:(BOOL)yesno
 {
@@ -453,10 +449,8 @@ Controls whether the depth buffer is automatically cleared
 }
 
 /*"
-Returns YES if the depth buffer is automatically cleared
- before rendering.
- 
- The default value is YES.
+  Returns YES if the receiver clears the depth buffer before
+  rendering. The default value is YES.
  "*/
 - (BOOL)clearsDepthBuffer
 {
@@ -465,7 +459,7 @@ Returns YES if the depth buffer is automatically cleared
 
 #pragma mark --- NSCoding conformance ---
 
-/*" Encodes the SCController using encoder coder "*/
+/*" Encodes the receiver using encoder coder "*/
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {

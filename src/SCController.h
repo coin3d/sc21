@@ -80,5 +80,5 @@ class SoSceneManager;
 
 // --------------------- Notifications ------------------------
 
-/*" Posted when the scenegraph is changed through #setSceneGraph: "*/
+/*" Posted when the scenegraph is changed through !{setSceneGraph:} "*/
 SC21_EXTERN NSString * SCSceneGraphChangedNotification;
