@@ -33,7 +33,7 @@ class SoSceneManager;
 - (void) encodeWithCoder:(NSCoder *)coder;
 
 /*" Getting the view associated with the controller "*/
-- (void) setView:(SCView *) view;
+- (void) setView:(SCView *) newview;
 - (SCView *) view;
 
 /*" Coin rendering and related functionality "*/
@@ -45,7 +45,7 @@ class SoSceneManager;
 - (void) setBackgroundColor:(NSColor *)color;
 - (NSColor *) backgroundColor;
 - (void) viewSizeChanged:(NSRect)size;
-- (void) setAutoClipValue:(float)value;
+- (void) setAutoClipValue:(float)autoclipvalue;
 - (float) autoClipValue;
 
 /*" Camera handling. "*/

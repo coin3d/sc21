@@ -38,8 +38,8 @@
 
 @implementation SCCamera
 
-/*" An SCCamera is an abstraction for either an SoPerspectiveCamera or
-    an SoOrthographicCamera, enabling easy conversion between these
+/*" An SCCamera is an abstraction for either an !{SoPerspectiveCamera} or
+    an !{SoOrthographicCamera}, enabling easy conversion between these
     the two camera types. It also offers methods for moving and 
     reorienting the camera.
 
@@ -90,9 +90,9 @@
 
 // ---------- Switching between orthographic and perspective mode -------
 
-/*" Returns !SCCameraPerspective if the camera is a perspective camera,
-    !SCCameraOrthographic if the camera is an orthographic camera, and
-    !SCUnknown otherwise.
+/*" Returns !{SCCameraPerspective} if the camera is a perspective camera,
+    !{SCCameraOrthographic} if the camera is an orthographic camera, and
+    !{SCUnknown} otherwise.
  "*/
 
 - (SCCameraType) type
@@ -108,21 +108,22 @@
 
 
 /*" Converts from perspective to orthographic camera and vice versa.
-    Possible values for type are !SCCameraPerspective and
-    !SCCameraOrthographic.
-
-    Returns YES if the camera was changed, and NO if there was
-    an error.
-
-    An !SCCameraTypeChangedNotification is posted if the camera
-    has been converted successfully. Note that even if you
-    have an orthographic camera and set it to an orthographic
-    camera, you will trigger this notification.
+    Possible values for type are !{SCCameraPerspective} and
+    !{SCCameraOrthographic}.
 
     A new camera of the intended type is created and initialized
     with the values of the current camera. It is then inserted in
     the scenegraph and set to be the new current camera by calling
     the #setSoCamera: method.
+
+    Returns !{YES} if the camera was changed, and !{NO} if there was
+    an error.
+
+    An !{SCCameraTypeChangedNotification} is posted if the camera
+    has been converted successfully. Note that even if you
+    have an orthographic camera and set it to an orthographic
+    camera, you will trigger this notification.
+
  "*/
 
 - (BOOL) convertToType:(SCCameraType)type
@@ -303,7 +304,7 @@
 
 
 /*" Set whether the camera was created by the controller component
-    (as opposed to being part of the user-supplied scene graph. 
+    (as opposed to being part of the user-supplied scene graph). 
     When setting a new camera, this setting will determine if the
     old camera should be deleted or not.   
  "*/
@@ -312,8 +313,8 @@
   _controllerhascreatedcamera = yn; 
 }
 
-/*" Returns YES if the camera was created by the controller 
-    component, and NO if the camera is part of the user-supplied
+/*" Returns !{YES} if the camera was created by the controller
+    component, and !{NO} if the camera is part of the user-supplied
     scene graph.
  "*/
  
@@ -390,7 +391,7 @@
   }
   
   // Don't do anything if camera is already requested type.
-  // Note that we still return YES, since NO would indicate an error
+  // Note that we still return YES, since !{NO} would indicate an error
   // in the conversion.
   BOOL settoperspective = type.isDerivedFrom(SoPerspectiveCamera::getClassTypeId());
   if (([self type] == SCCameraPerspective && settoperspective) ||

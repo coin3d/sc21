@@ -193,7 +193,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 // ----------------- Automatic headlight configuration -----------------
 
-/*" Returns YES if the headlight is on, and NO if it is off. "*/
+/*" Returns !{YES} if the headlight is on, and !{NO} if it is off. "*/
 
 - (BOOL) headlightIsOn
 {
@@ -225,7 +225,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 /*" Handles event as viewer event, i.e. does not send it to the scene
     graph but interprets it as input for controlling the viewer. 
 
-    Returns YES if the event has been handled, NO otherwise.
+    Returns !{YES} if the event has been handled, !{NO} otherwise.
 
     Clicking into the scene with the left mouse button and dragging
     rotates the camera around the scene.
@@ -237,9 +237,12 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
     Pressing the cursor keys on the keyboard will move the camera in a
     similar way.
+    
+    The mouse wheel zooms in and out.
 
     Clicking into the scene with the right mouse button brings up a
-    context menu. Holding down th CTRL key and clicking with the left
+    context menu if the application programmer has set up menu items. 
+    Holding down th CTRL key and clicking with the left
     mouse button is interpreted the same way.
 
 "*/

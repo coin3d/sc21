@@ -13,6 +13,12 @@ class SoGetBoundingBoxAction;
 class SoPerspectiveCamera;
 class SoOrthographicCamera;
 
+/*" Possible camera types in the scene graph.
+    !{SCCameraPerspective} describes an !{SoPerspectiveCamera},
+    and !{SCCameraOrthographic} means an !{SoOrthographicCamera}.
+    All other camera types are currently !{SCCameraUnknown}.
+ "*/
+
 typedef enum _SCCameraType {
   SCCameraUnknown 	= -1,
   SCCameraPerspective   =  0,
@@ -40,7 +46,7 @@ typedef enum _SCCameraType {
 - (void) updateClippingPlanes:(SoGroup *)scenegraph;
 
 /*" Accessors "*/ 
-- (void) setController:(SCController *)ctrl;
+- (void) setController:(SCController *)controller;
 - (SCController *) controller;
 - (void) setSoCamera:(SoCamera *)c deleteOldCamera:(BOOL)deletecamera;
 - (SoCamera *) soCamera;

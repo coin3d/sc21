@@ -61,7 +61,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
     If no valid pixel format could be created, an
     %SCCouldNotCreateValidPixelFormatNotification is posted,
-    the object is deallocated, and nil is returned.
+    the object is deallocated, and !{nil} is returned.
 
     Calls #commonInit, which contains common initialization
     code needed both in #initWithFrame: and #initWithCoder.
@@ -95,7 +95,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 
 /*" Initializes a newly allocated SCView instance from the data
-    in decoder. Returns !{self}
+    in decoder. Returns !{self}.
 
     Calls #commonInit, which contains common initialization
     code needed both in #init and #initWithCoder.
@@ -114,7 +114,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 
 /*" Shared initialization code that is called both from #init:
     and #initWithCoder: If you override this method, you must
-    call #{[super commonInit]} as the first call in your
+    call !{[super commonInit]} as the first call in your
     implementation to make sure everything is set up properly.
 "*/
 
@@ -311,7 +311,8 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 /*" Returns a double buffered, accelerated pixel format. The 
     colordepth and depth are the current values as set by
     #setColorBits: and #setDepthBits: (or #setColorBitsNoRecreate: 
-    and #setDepthBitsNoRecreate:) respectively.
+    and #setDepthBitsNoRecreate:) respectively. Override this
+    method if you need specific settings.
  "*/
  
 - (NSOpenGLPixelFormat *) createPixelFormat:(NSRect)frame
@@ -342,14 +343,14 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
     setting the OpenGL state (enable lighting and z buffering)
     and then calling SCController's #render: method.
 
-    Note: As NSView's implementation of this method, #drawRect: is
-    intended to be completely overridden by each subclass that
-    performs drawing. Don't invoke !super's implementation in
-    your subclass.
 "*/
 
 - (void) drawRect:(NSRect)rect
 {
+  // Note: As NSView's implementation of this method, #drawRect: is
+  // intended to be completely overridden by each subclass that
+  // performs drawing, do _not_ invoke [super drawRect] here!
+  
   [[self openGLContext] makeCurrentContext];
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // FIXME: needed?
   glEnable(GL_DEPTH_TEST);
@@ -553,7 +554,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 }
 
 
-/*" Returns YES to confirm becoming first responder.
+/*" Returns !{YES} to confirm becoming first responder.
     Needed to receive keyboard events
  "*/
 
@@ -566,7 +567,7 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 }
 
 
-/*" Returns YES to accept becoming first responder.
+/*" Returns !{YES} to accept becoming first responder.
     Needed to receive keyboard events
  "*/
 

@@ -70,13 +70,15 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
  "*/
 
 
-/*" Initializes Coin. Call this method if you want to use Coin
+/*" Initializes Coin by calling !{SoDB::init()},
+    !{SoInteraction::init()} and !{SoNodeKit::init()}.
+
+    Call this method if you want to use Coin
     functionality before actually instantiating an SCController in your
     application (e.g. if you want to read a 3D models using SoDB::readAll()
     and load the nib file containing your SCView and SCController only
     if the file was read successfully). SCController's initializer
-    automatically calls this function if needed. This method calls
-    SoDB::init(), SoInteraction::init() and SoNodeKit::init().
+    automatically calls this function if needed. 
 "*/
 
 + (void) initCoin
@@ -90,7 +92,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 // ----------------- initialization and cleanup ----------------------
 
-/*" Initializes a newly allocated SCController, and calls #initCoin:
+/*" Initializes a newly allocated SCController, and calls #initCoin
     By default, events will be interpreted as viewer events (see 
     #handleEvent: documentation for more information about
     the event handling model).
@@ -110,7 +112,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 /*" Shared initialization code that is called both from #init:
     and #initWithCoder: If you override this method, you must
-    call [super commonInit] as the first call in your
+    call !{[super commonInit]} as the first call in your
     implementation to make sure everything is set up properly.
 "*/
 
@@ -275,14 +277,22 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   return _scenemanager; 
 }
 
-/*" Sets the autoclip value to value."*/
+/*" Sets the autoclip value to value. The default value is 0.6.
 
-- (void) setAutoClipValue:(float)value
+    This value influences the automatic setting of the near and
+    far clipping plane. The default should be good enough in most 
+    cases, so if you do not know what this means, don't worry.
+    If you are interested, check out the code in
+    !{- (float) _bestValueForNearPlane:(float)near farPlane:(float) far}
+    in SCCamera.
+ "*/
+
+- (void) setAutoClipValue:(float)autoclipvalue
 {
-  _autoclipvalue = value;
+  _autoclipvalue = autoclipvalue;
 }
 
-/*" Returns the current autoclipvalue. "*/
+/*" Returns the current autoclipvalue. The default value is 0.6. "*/
 
 - (float) autoClipValue
 {
@@ -310,8 +320,8 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   return [_camera soCamera];
 }
 
-/*" Returns %SCCameraPerspective if the camera is perspective,
-    %SCCameraOrthographic otherwise.
+/*" Returns !{SCCameraPerspective} if the camera is perspective
+    and !{SCCameraOrthographic} if the camera is orthographic.
  "*/
 
 - (SCCameraType) cameraType
@@ -382,7 +392,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     How events are treated can be controlled via the 
     #setHandlesEventsInViewer: method.
 
-    Returns YES if the event has been handled, NO otherwise. 
+    Returns !{YES} if the event has been handled, !{NO} otherwise. 
 
     All events are sent from %view to the controller via the
     #handleEvent: message. 
@@ -396,7 +406,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     ctrl-click yourself, you have to subclass SCView and override
     #{- (NSMenu *)menuForEvent:(NSEvent *)event} to return nil and
     pass on the event to the controller "manually" - 
-    %{[controller handleEvent:event]} - so that it can be handled here.
+    !{[controller handleEvent:event]} - so that it can be handled here.
 "*/
  
 - (BOOL) handleEvent:(NSEvent *) event
@@ -411,7 +421,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 /*" Handles event as Coin event, i.e. creates an SoEvent and passes 
     it on to the scenegraph.
 
-    Returns YES if the event has been handled, NO otherwise.
+    Returns !{YES} if the event has been handled, !{NO} otherwise.
  "*/
  
 - (BOOL) handleEventAsCoinEvent:(NSEvent *) event
@@ -428,7 +438,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 /*" Handles event as viewer event, i.e. does not send it to the scene
     graph but interprets it as input for controlling the viewer. 
 
-    Returns YES if the event has been handled, NO otherwise.
+    Returns !{YES} if the event has been handled, !{NO} otherwise.
 
     The default implementation pops up a context menu when the right mouse
     button has been pressed, and does nothing otherwise. Use
@@ -603,8 +613,8 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 /*" Writes the current scenegraph to a file. The filename will be
     XXX-dump.iv, where XXX is a number calculated based on the
     current time. The file will be stored in the current working
-    directory. Returns NO if there was an error writing the file,
-    YES otherwise.
+    directory. Returns !{NO} if there was an error writing the file,
+    !{YES} otherwise.
 "*/
 
 - (BOOL) dumpSceneGraph

@@ -120,6 +120,11 @@ static struct key1map KeyMap[] = {
 
 @implementation SCEventConverter
 
+/*" An SCEventConvert converts native Cocoa events (NSEvents) into Coin
+    events (SoEvents).
+ "*/
+
+
 // ---------------- Initialisation and cleanup -------------------------
 
 /*" Initializes a newly allocated SCEventConverter. 
