@@ -5,7 +5,11 @@
         {
             CLASS = SCController; 
             LANGUAGE = ObjC; 
-            OUTLETS = {delegate = id; eventhandler = id; scenegraph = id; }; 
+            OUTLETS = {
+                delegate = id; 
+                eventHandler = id; 
+                sceneGraph = SCSceneGraph; 
+            }; 
             SUPERCLASS = NSObject; 
         }, 
         {CLASS = SCEmulator; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 

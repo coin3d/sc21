@@ -22,6 +22,12 @@
             SUPERCLASS = NSObject; 
         }, 
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = SCController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {delegate = id; eventHandler = id; sceneGraph = SCSceneGraph; }; 
+            SUPERCLASS = NSObject; 
+        }, 
         {CLASS = SCExaminerHandler; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {
             CLASS = SCSceneGraph; 
