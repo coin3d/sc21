@@ -10,7 +10,7 @@
 		<string>94 283 210 44 0 0 1280 832 </string>
 	</dict>
 	<key>IBFramework Version</key>
-	<string>291.0</string>
+	<string>349.0</string>
 	<key>IBLockedObjects</key>
 	<array/>
 	<key>IBOpenObjects</key>
@@ -19,6 +19,6 @@
 		<integer>21</integer>
 	</array>
 	<key>IBSystem Version</key>
-	<string>6L60</string>
+	<string>7F44</string>
 </dict>
 </plist>
