@@ -8,8 +8,6 @@
 	<string>SC21</string>
 	<key>CFBundleGetInfoString</key>
 	<string>SC21 framework, copyright Systems in Motion AS 2003-2004</string>
-        <key>NSHumanReadableCopyright</key>
-	<string>Copyright Systems in Motion AS 2003-2004</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.coin3d.SC21.framework</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -21,6 +19,8 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>0.0.1</string>
+	<string>$(SC21_VERSION)</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright Systems in Motion AS 2003-2004</string>
 </dict>
 </plist>
