@@ -1,116 +1,113 @@
-#import <OpenGL/OpenGL.h>
-#import <OpenGL/gl.h>
-#import "SCOpenGLView.h"
-#import "SCOpenGLPixelFormat.h"
+ #import <OpenGL/OpenGL.h>
+ #import <OpenGL/gl.h>
+ #import "SCOpenGLView.h"
+ #import "SCOpenGLPixelFormat.h"
 
-@interface SCOpenGLView(InternalAPI)
-- (void)_surfaceNeedsUpdate:(NSNotification *)notification;
-- (void)_reshapeNeeded:(NSNotification *)notification;
-@end
+ @interface SCOpenGLView(InternalAPI)
+ - (void)_commonInit;
+ - (void)_updateNeeded:(NSNotification *)notification;
+ - (void)_reshapeNeeded:(NSNotification *)notification;
+ @end
 
-@implementation SCOpenGLView
+ @implementation SCOpenGLView
 
-/*!  
-  Designated initializer.
+ /*!  
+   Designated initializer.
 
-  Initializes a newly allocated NSOpenGLView with frameRect as its
-  frame rectangle and format as its pixel format.
-*/
-- (id)initWithFrame:(NSRect)frameRect pixelFormat:(SCOpenGLPixelFormat *)format
-{
-  NSLog(@"SCOpenGLView.initWithFrame:pixelFormat");
+   Initializes a newly allocated NSOpenGLView with frameRect as its
+   frame rectangle and format as its pixel format.
+ */
+ - (id)initWithFrame:(NSRect)frameRect pixelFormat:(SCOpenGLPixelFormat *)format
+ {
+   NSLog(@"SCOpenGLView.initWithFrame:pixelFormat");
 
-  self = [super initWithFrame:frameRect];
-  if (self) {
-    _pixelformat = [format retain];
-    //FIXME: This is for context update (kintel 20040404)
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                          selector:@selector(_surfaceNeedsUpdate:) 
-                                          name:NSViewGlobalFrameDidChangeNotification 
-                                          object:self];
-    
-    //FIXME: This is for reshape => remove it (kintel 20040404)
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                          selector:@selector(_reshapeNeeded:) 
-                                          name:NSViewFrameDidChangeNotification 
-                                          object:self];
-    //FIXME: update/reshape here? (kintel 20040404)
-  }
-  return self;
-}
+   self = [super initWithFrame:frameRect];
+   if (self) {
+     _pixelformat = [format retain];
+     [self _commonInit];
+   }
+   return self;
+ }
 
-- (id)initWithFrame:(NSRect)frameRect
-{  
-  NSLog(@"SCOpenGLView.initWithFrame:");
+ - (id)initWithFrame:(NSRect)frameRect
+ {  
+   NSLog(@"SCOpenGLView.initWithFrame:");
 
-  return [self initWithFrame:frameRect pixelFormat:nil];
-}
+   return [self initWithFrame:frameRect pixelFormat:nil];
+ }
 
-- (void)dealloc
-{
-  NSLog(@"SCOpenGLView.dealloc");
+ - (void)dealloc
+ {
+   NSLog(@"SCOpenGLView.dealloc");
 
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
+   [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-  [self clearGLContext];
-  [_pixelformat release];
-  [super dealloc];
-}
+   [self clearGLContext];
+   [_pixelformat release];
+   [super dealloc];
+ }
 
+
+ /*!
+   Will create and return a default pixel format:
+   Loops through an internal prioritized list of pixel format requirements
+   and selects the first valid pixelformat found.
+ */
+ + (SCOpenGLPixelFormat *)defaultPixelFormat
+ {
+   NSLog(@"SCOpenGLView.defaultPixelFormat");
+
+   SCOpenGLPixelFormat * pixelFormat = [[SCOpenGLPixelFormat alloc] init];
+   [pixelFormat setAttribute:NSOpenGLPFADoubleBuffer];
+   [pixelFormat setAttribute:NSOpenGLPFAAccelerated];
+   [pixelFormat setAttribute:NSOpenGLPFAColorSize toValue:24];
+   [pixelFormat setAttribute:NSOpenGLPFAAlphaSize toValue:8];
+   [pixelFormat setAttribute:NSOpenGLPFADepthSize toValue:32];
+   [pixelFormat autorelease];
+   return pixelFormat;
+
+ #if 0
+   NSOpenGLPFAAllRenderers
+   NSOpenGLPFADoubleBuffer
+   NSOpenGLPFAStereo      
+   NSOpenGLPFAMinimumPolicy
+   NSOpenGLPFAMaximumPolicy
+   NSOpenGLPFAOffScreen    
+   NSOpenGLPFAFullScreen   
+   NSOpenGLPFASingleRenderer 
+   NSOpenGLPFANoRecovery     
+   NSOpenGLPFAAccelerated    
+   NSOpenGLPFAClosestPolicy  
+   NSOpenGLPFARobust         
+   NSOpenGLPFABackingStore   
+   NSOpenGLPFAMPSafe         
+   NSOpenGLPFAWindow         
+   NSOpenGLPFAMultiScreen    
+   NSOpenGLPFACompliant      
+   NSOpenGLPFAPixelBuffer    
+
+   NSOpenGLPFAAuxBuffers  
+   NSOpenGLPFAColorSize   
+   NSOpenGLPFAAlphaSize   
+   NSOpenGLPFADepthSize   
+   NSOpenGLPFAStencilSize 
+   NSOpenGLPFAAccumSize   
+   NSOpenGLPFARendererID     
+   NSOpenGLPFAScreenMask     
+   NSOpenGLPFASampleBuffers
+   NSOpenGLPFASamples      
+
+   NSOpenGLPFAAuxDepthStencil
+ #endif
+ }
 
 /*!
-  Will create and return a default pixel format:
-  Loops through an internal prioritized list of pixel format requirements
-  and selects the first valid pixelformat found.
+  Will set the pixelformat for this view.
+  
+  FIXME: Should we force a recreation of our OpenGL context?
+  Test how NSOpenGLView behaves and document this
+  (kintel 20040456)
 */
-+ (SCOpenGLPixelFormat *)defaultPixelFormat
-{
-  NSLog(@"SCOpenGLView.defaultPixelFormat");
-
-  SCOpenGLPixelFormat * pixelFormat = [[SCOpenGLPixelFormat alloc] init];
-  [pixelFormat setAttribute:NSOpenGLPFADoubleBuffer];
-  [pixelFormat setAttribute:NSOpenGLPFAAccelerated];
-  [pixelFormat setAttribute:NSOpenGLPFAColorSize toValue:24];
-  [pixelFormat setAttribute:NSOpenGLPFAAlphaSize toValue:8];
-  [pixelFormat setAttribute:NSOpenGLPFADepthSize toValue:32];
-  [pixelFormat autorelease];
-  return pixelFormat;
-
-#if 0
-	NSOpenGLPFAAllRenderers
-	NSOpenGLPFADoubleBuffer
-	NSOpenGLPFAStereo      
-	NSOpenGLPFAMinimumPolicy
-	NSOpenGLPFAMaximumPolicy
-	NSOpenGLPFAOffScreen    
-	NSOpenGLPFAFullScreen   
-	NSOpenGLPFASingleRenderer 
-	NSOpenGLPFANoRecovery     
-	NSOpenGLPFAAccelerated    
-	NSOpenGLPFAClosestPolicy  
-	NSOpenGLPFARobust         
-	NSOpenGLPFABackingStore   
-	NSOpenGLPFAMPSafe         
-	NSOpenGLPFAWindow         
-	NSOpenGLPFAMultiScreen    
-	NSOpenGLPFACompliant      
-	NSOpenGLPFAPixelBuffer    
-
-	NSOpenGLPFAAuxBuffers  
-	NSOpenGLPFAColorSize   
-	NSOpenGLPFAAlphaSize   
-	NSOpenGLPFADepthSize   
-	NSOpenGLPFAStencilSize 
-	NSOpenGLPFAAccumSize   
-	NSOpenGLPFARendererID     
- 	NSOpenGLPFAScreenMask     
-	NSOpenGLPFASampleBuffers
-	NSOpenGLPFASamples      
-
-	NSOpenGLPFAAuxDepthStencil
-#endif
-}
-
 - (void)setPixelFormat:(SCOpenGLPixelFormat *)pixelFormat
 {
   NSLog(@"SCOpenGLView.setPixelFormat");
@@ -119,13 +116,15 @@
   _pixelformat = [pixelFormat retain];
 }
 
+/*!
+  Returns the current pixelformat.
+*/
 - (SCOpenGLPixelFormat *)pixelFormat
 {
   NSLog(@"SCOpenGLView.pixelFormat");
 
   return _pixelformat;
 }
-
 
 /*!
   Used by subclassers to initialize OpenGL state. This function is called
@@ -200,18 +199,15 @@
   nothing. Override this method if you need to adjust the viewport and
   display frustum.
 
-  reshape is called when:
-  - after init
-  - window size changes (i.e. after an NSViewFrameDidChangeNotification)
+  -reshape is called when:
+  o after init
+  o window size changes (i.e. after an NSViewFrameDidChangeNotification)
 
-  FIXME: What is really the difference between reshape and update?
   FIXME: Should we make sure that we have a valid context before calling reshape?
   FIXME: Should we call reshape after creating a context (i.e. after prepareOpenGL) ?
 */
 - (void)reshape
 {
-  NSLog(@"SCOpenGLView.reshape");
-
 }
 
 /*!
@@ -220,16 +216,39 @@
   NSOpenGLContext's update. Override this method if you need to add
   locks for multithreaded access to multiple contexts.
 
-  update is called whenever the view changes size or location
+  -update is called whenever the view changes size or location.
 */
 - (void)update
 {
-  NSLog(@"SCOpenGLView.update");
-
   if ([_openGLContext view] == self) [_openGLContext update];
 }
 
-// NSCoding compliance
+// Overridden methods from parent
+
+/*!
+  We are opaque; clearing the drawing rectangle.
+*/
+- (BOOL)isOpaque
+{
+  return YES;
+}
+
+/*!
+  Overridden from parent to make sure that we have a current context
+  bound to this view.
+*/
+- (void)lockFocus
+{
+  NSLog(@"SCOpenGLView.lockFocus");
+
+  NSOpenGLContext * context = [self openGLContext];
+  [super lockFocus];
+  
+  if ([context view] != self) [context setView:self];
+  [context makeCurrentContext];
+}
+
+// ----------------- NSCoding compliance --------------------
 
 - (void)encodeWithCoder:(NSCoder *)coder 
 {
@@ -255,46 +274,9 @@
       NSLog(@"  allowsKeyedCoding");
       _pixelformat = [[coder decodeObjectForKey:@"SC_pixelformat"] retain];
     }
-
-    // FIXME: Move to a common initializer? (kintel 20040404) 
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                          selector:@selector(_surfaceNeedsUpdate:) 
-                                          name:NSViewGlobalFrameDidChangeNotification 
-                                          object:self];
-    [[NSNotificationCenter defaultCenter] addObserver:self 
-                                          selector:@selector(_reshapeNeeded:) 
-                                          name:NSViewFrameDidChangeNotification 
-                                          object:self];
-    //FIXME: Update? (kintel 20040404)
-    [self reshape];
+    [self _commonInit];
   }
   return self;
-}
-
-// Overridden methods from parent
-
-- (BOOL)isOpaque
-{
-  NSLog(@"SCOpenGLView.isOpaque");
-
-  return YES;
-}
-
-- (void)lockFocus
-{
-  NSLog(@"SCOpenGLView.lockFocus");
-
-  // get context. will create if we don't have one yet
-  NSOpenGLContext * context = [self openGLContext];
-  
-  // make sure we are ready to draw
-  [super lockFocus];
-  
-  // when we are about to draw, make sure we are linked to the view
-  if ([context view] != self) [context setView:self];
-  
-  // make us the current OpenGL context
-  [context makeCurrentContext];
 }
 
 @end
@@ -303,20 +285,32 @@
 
 @implementation SCOpenGLView(InternalAPI)
 
-- (void)_surfaceNeedsUpdate:(NSNotification *)notification
+- (void)_commonInit
 {
-  NSLog(@"SCOpenGLView._surfaceNeedsUpdate");
+  [[NSNotificationCenter defaultCenter] 
+    addObserver:self 
+    selector:@selector(_updateNeeded:) 
+    name:NSViewGlobalFrameDidChangeNotification 
+    object:self];
+  
+  [[NSNotificationCenter defaultCenter] 
+    addObserver:self 
+    selector:@selector(_reshapeNeeded:) 
+    name:NSViewFrameDidChangeNotification 
+    object:self];
+  [self reshape];
+}
 
+- (void)_updateNeeded:(NSNotification *)notification
+{
+  NSLog(@"SCOpenGLView._updateNeeded");
   [self update];
-  //FIXME: reshape? (kintel 20040404)
 }
 
 - (void)_reshapeNeeded:(NSNotification *)notification
 {
   NSLog(@"SCOpenGLView._reshapeNeeded:");
-
   [self reshape];
 }
 
 @end
-  
