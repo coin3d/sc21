@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleGetInfoString</key>
-	<string>Sc21 @VERSION@</string>
+	<string>Sc21 0.9.0</string>
 	<key>CFBundleIdentifier</key>
-	<string>no.sim.sc21.palette</string>
+	<string>org.coin3d.sc21.palette.pkg</string>
 	<key>CFBundleName</key>
 	<string>Sc21 palette</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.1.2</string>
+	<string>0.9.0</string>
 	<key>IFMajorVersion</key>
 	<integer>0</integer>
 	<key>IFMinorVersion</key>
-	<integer>1</integer>
+	<integer>9</integer>
         <key>IFPkgFlagBackgroundAlignment</key>
         <string>left</string>
         <key>IFPkgFlagBackgroundScaling</key>
