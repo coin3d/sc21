@@ -296,7 +296,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
       v = [NSValue valueWithPoint:p];
 
       if (flags & NSAlternateKeyMask) action = @selector(startPanningWithPoint:);
-      else if (flags & NSShiftKeyMask) action = @selector(startZoomWithPoint:);
+      else if (flags & NSShiftKeyMask) action = @selector(startZoomingWithPoint:);
       else action = @selector(startDraggingWithPoint:);
       handled = YES;
       break;
@@ -304,9 +304,9 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     case NSLeftMouseDragged:
       p = [view convertPoint:[event locationInWindow] fromView:nil];
       v = [NSValue valueWithPoint:p];
-      if (flags & NSAlternateKeyMask) action = @selector(performPanningWithPoint:);
-      else if (flags & NSShiftKeyMask) action = @selector(performZoomWithPoint:);
-      else action = @selector(performDraggingWithPoint:);
+      if (flags & NSAlternateKeyMask) action = @selector(panWithPoint:);
+      else if (flags & NSShiftKeyMask) action = @selector(zoomWithPoint:);
+      else action = @selector(dragWithPoint:);
       handled = YES;
       break;
 
@@ -326,14 +326,14 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     case NSOtherMouseDragged:
       p = [view convertPoint:[event locationInWindow] fromView:nil];
       v = [NSValue valueWithPoint:p];
-      action = @selector(performPanningWithPoint:);
+      action = @selector(dragWithPoint:);
       handled = YES;
       break;
 
     case NSScrollWheel:
       delta = [event deltaY];
       v = [NSValue value:&delta withObjCType:@encode(float)];
-      action = @selector(performZoomWithDelta:);
+      action = @selector(zoomWithDelta:);
       handled = YES;
       break;
       
@@ -348,7 +348,16 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 // --------------- Interaction with the viewer -------------------
 
 
-/*" Prepares for dragging operation. "*/
+/*" Prepares for dragging operation. Dragging is done depending on the
+    user's mouse movements. The NSPoint corresponding to the initial
+    mouseDown event is passed in v, and stored in an internal log
+    of mouse positions used in #dragWithPoint:
+
+    Note that the actual %NSPoint value is encapsulated in an
+    %NSValue object. You can create such an NSValue by doing
+    !{NSValue * v = [NSValue valueWithPoint:p];} and extract the NSPoint
+    from it as !{NSPoint p = [v pointValue];}
+"*/
 
 - (void) startDraggingWithPoint:(NSValue *) v
 {
@@ -359,7 +368,16 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 }
 
 
-/*" Prepares for panning operation. "*/
+/*" Prepares for panning operation. Panninging is done depending on the
+    user's mouse movements. The NSPoint corresponding to the initial
+    mouseDown event is passed in v, and stored in an internal log
+    of mouse positions used in #panWithPoint:
+
+    Note that the actual %NSPoint value is encapsulated in an
+    %NSValue object. You can create such an NSValue by doing
+    !{NSValue * v = [NSValue valueWithPoint:p];} and extract the NSPoint
+    from it as !{NSPoint p = [v pointValue];}
+"*/
 
 - (void) startPanningWithPoint:(NSValue *) v
 {
@@ -368,37 +386,78 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   [_mouselog insertObject:v atIndex:0];
 }
 
-/*" Prepares for zooming operation. "*/
 
-- (void) startZoomWithPoint:(NSValue *) v
+/*" Prepares for zooming operation. Zooming is done depending on the
+    user's mouse movements. The NSPoint corresponding to the initial
+    mouseDown event is passed in v, and stored in an internal log
+    of mouse positions used in #zoomWithPoint:
+
+    Note that the actual %NSPoint value is encapsulated in an
+    %NSValue object. You can create such an NSValue by doing
+    !{NSValue * v = [NSValue valueWithPoint:p];} and extract the NSPoint
+    from it as !{NSPoint p = [v pointValue];}
+ "*/
+
+- (void) startZoomingWithPoint:(NSValue *) v
 {
   // Clear log and project to the last position we stored.
   [_mouselog removeAllObjects];
   [_mouselog insertObject:v atIndex:0];
 }
 
-/*" Performs dragging operation. "*/
 
-- (void) performDraggingWithPoint:(NSValue *) v
+/*" Performs dragging operation. Dragging is done depending on the
+    user's mouse movements. The NSPoint corresponding to the current
+    mouseDragged event is passed in v, stored in an internal log
+    of mouse positions, and compared with earlier values to determine
+    the extent of the dragging.
+
+    Note that the actual %NSPoint value is encapsulated in an
+    %NSValue object. You can create such an NSValue by doing
+   !{NSValue * v = [NSValue valueWithPoint:p];} and extract the NSPoint
+   from it as !{NSPoint p = [v pointValue];}
+ "*/
+
+- (void) dragWithPoint:(NSValue *) v
 {
   [_mouselog insertObject:v atIndex:0];
   [self _spin];
 }
 
-/*" Performs panning operation. "*/
 
-- (void) performPanningWithPoint:(NSValue *) v
+/*" Performs panning operation. Panning is done depending on the
+    user's mouse movements. The NSPoint corresponding to the current
+    mouseDragged event is passed in v, stored in an internal log
+    of mouse positions, and compared with earlier values to determine
+    the extent of the panning.
+
+    Note that the actual %NSPoint value is encapsulated in an
+    %NSValue object. You can create such an NSValue by doing
+    !{NSValue * v = [NSValue valueWithPoint:p];} and extract the NSPoint
+    from it as !{NSPoint p = [v pointValue];}
+"*/
+
+- (void) panWithPoint:(NSValue *) v
 {
   [_mouselog insertObject:v atIndex:0];
   [self _pan];
 }
 
-/*" Zooms into the scene by sending the #zoom: message to SCCamera. v must
-    contains a float value. Positive values mean zooming in, negative values
-    mean zooming out.
+/*" Performs zoom operation. Zooming is done based on the delta value
+    of the wheel mouse. The floating point value corresponding to the
+    current delta value is passed in v.
+
+    Zooming can also be done by dragging while holding down the
+    shift key. In this case, #zoomWithPoint: is called instead of this
+    method.
+
+    Note that the actual float value is encapsulated in an
+    %NSValue object. You can create such an NSValue by doing
+    !{NSValue * v = [NSValue value:&delta withObjCType:@encode(float)];}
+    and extract the float from it as !{float f; [v getValue:&f];}
  "*/
 
-- (void) performZoomWithDelta:(NSValue *) v
+- (void) zoomWithDelta:(NSValue *) v
 {
   float f;
   [v getValue:&f];
@@ -406,11 +465,22 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 }
 
 
-/*" Zooms into the scene by sending the #zoom: message to SCCamera. v must
-    contain an NSPoint value.
- "*/
+/*" Performs zoom operation. Zooming is done depending on the
+    user's mouse movements. The NSPoint corresponding to the current
+    mouseDragged event is passed in v, stored in an internal log
+    of mouse positions, and compared with earlier values to determine
+    whether to zoom in (mouse moved up) or zoom out (mouse moved down).
 
-- (void) performZoomWithPoint:(NSValue *) v
+    Zooming can also be done by using the wheel on a wheel mouse.
+    In this case, #zoomWithDelta: is called instead of this method.
+
+    Note that the actual %NSPoint value is encapsulated in an
+    %NSValue object. You can create such an NSValue by doing
+    !{NSValue * v = [NSValue valueWithPoint:p];} and extract the NSPoint
+    from it as !{NSPoint p = [v pointValue];}
+"*/
+
+- (void) zoomWithPoint:(NSValue *) v
 {
   NSPoint p, q, qn, pn;
   [_mouselog insertObject:v atIndex:0];

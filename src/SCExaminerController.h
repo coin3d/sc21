@@ -66,11 +66,11 @@ class SoDirectionalLight;
 /*" Interaction with the viewer. "*/
 - (void) startDraggingWithPoint:(NSValue *)v;
 - (void) startPanningWithPoint:(NSValue *)v;
-- (void) startZoomWithPoint:(NSValue *)v;
-- (void) performDraggingWithPoint:(NSValue *)v;
-- (void) performPanningWithPoint:(NSValue *)v;
-- (void) performZoomWithDelta:(NSValue *)v;
-- (void) performZoomWithPoint:(NSValue *)v;
+- (void) startZoomingWithPoint:(NSValue *)v;
+- (void) dragWithPoint:(NSValue *)v;
+- (void) panWithPoint:(NSValue *)v;
+- (void) zoomWithDelta:(NSValue *)v;
+- (void) zoomWithPoint:(NSValue *)v;
 - (void) ignore:(NSValue *)v;
 
 @end
