@@ -182,8 +182,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 }
 
 
- /*" Sets the scene graph that shall be rendered. The reference count of
-    sg will be increased by 1 before use, so you there is no need to 
+ /*" Sets the scene graph that shall be rendered. You do not need to
     !{ref()} the node before passing it to this method.
 
     A headlight is added before the scenegraph. If a light is present in the
@@ -195,38 +194,28 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 - (void) setSceneGraph:(SoGroup *)sg
 {
-  SoSeparator * root;
-
   // Check if somebody passes the scenegraph that is already set.
   if (sg != NULL && sg == _userscenegraph) {
     NSLog(@"setSceneGraph called with the same root as already set");
     return;
   }
 
-  // Set old headlight to NULL, or otherwise toggling the headlight will
-  // continue to have effect on the headlight of the previous (destroyed)
-  // scenegraph.
-  _headlight = NULL;
-  
-  root = new SoSeparator;
   _userscenegraph = sg;     // store user-supplied SG
-  _userscenegraph->ref();   // must ref() before applying action
-
+  
+  SoSeparator * root = new SoSeparator;
   _headlight = new SoDirectionalLight;
+  root->ref();
   root->addChild(_headlight);
-
+  root->addChild(_userscenegraph);
+  
   // If there was a light in the user scenegraph, turn off headlight
   // by default. We are adding one anyway, since you might want to
   // be able to view the whole model (regardless if lights are present
   // or not.
   [self setHeadlightIsOn: ([self findLightInSceneGraph:_userscenegraph]) ? NO : YES];
- 
-  root->addChild(_userscenegraph);
-  _userscenegraph->unref();
 
+  // Look for camera in scengraph. Make our own if we find none
   SoCamera * scenecamera = [self findCameraInSceneGraph:_userscenegraph];
-
-  // Make our camera if there was none.
   if (!scenecamera) {
     scenecamera = new SoPerspectiveCamera;
     [_camera setSoCamera:scenecamera];
@@ -237,18 +226,16 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     [_camera setControllerHasCreatedCamera:NO];
   }
 
-  // begin [super setSceneGraph:root];
-  root->ref();
-  if (_scenegraph) _scenegraph->unref();
+  _scenemanager->setSceneGraph(root);
+  root->unref(); // ref'ed by scenemanager
   _scenegraph = root;
-  _scenemanager->setSceneGraph(_scenegraph);
-  [view setNeedsDisplay:YES];
-  // end [super setSceneGraph:root];
 
   if ([_camera controllerHasCreatedCamera]) [self viewAll:nil];
-
+  [view setNeedsDisplay:YES];
+  
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCSceneGraphChangedNotification object:self];
+
 }
 
 
