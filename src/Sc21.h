@@ -27,10 +27,7 @@
 
 #import <Sc21/SCCamera.h>
 #import <Sc21/SCController.h>
-#import <Sc21/SCEventHandler.h>
 #import <Sc21/SCExaminerHandler.h>
-#import <Sc21/SCFlyHandler.h>
 #import <Sc21/SCOpenGLPixelFormat.h>
-#import <Sc21/SCOpenGLView.h>
 #import <Sc21/SCSceneGraph.h>
 #import <Sc21/SCView.h>
