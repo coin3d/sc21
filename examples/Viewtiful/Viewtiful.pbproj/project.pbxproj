@@ -265,12 +265,12 @@
 				2A37F4D1FDCFA73011CA2CEA,
 			);
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = /Users/kintel/code/checkout/SC21/framework/SC21/build;
+				FRAMEWORK_SEARCH_PATHS = "";
 				HEADER_SEARCH_PATHS = "";
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "-F/Users/kintel/code/checkout/SC21/framework/SC21/build";
+				OTHER_LDFLAGS = "";
 				PRECOMPILE_PREFIX_HEADER = YES;
 				PREFIX_HEADER = Viewtiful_Prefix.h;
 				PRODUCT_NAME = Viewtiful;
