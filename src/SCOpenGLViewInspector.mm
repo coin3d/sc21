@@ -25,7 +25,6 @@
  |                                                                |
  * ============================================================== */
  
-
 #import "SCOpenGLViewInspector.h"
 #import <SC21/SCOpenGLView.h>
 #import <SC21/SCOpenGLPixelFormat.h>
