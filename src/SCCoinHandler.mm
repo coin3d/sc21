@@ -64,7 +64,7 @@
 
 - (BOOL)controller:(SCController *)controller handleEvent:(NSEvent *)event
 {
-  SC21_DEBUG(@"SCController.handleEventAsCoinEvent:");
+  SC21_DEBUG(@"SCCoinHandler.controller:handleEvent:");
   BOOL handled = NO;
   SoEvent * se = [SELF->eventconverter createSoEvent:event 
                       inDrawable:[controller drawable]];
