@@ -55,10 +55,13 @@ static BOOL _coinInitialized = NO;
  "*/
 
 
-/*" Initialize Coin by calling SoDB::init() etc. Call this method if you
-    want to use Coin functionality before actually instantiating an
-    SCController in your application. Otherwise, it will be called from
-    SCController's initializer. "*/
+/*" Initializes Coin. Call this method if you want to use Coin functionality before
+    actually instantiating an SCController in your application (e.g. if you want to
+    read a 3D models using SoDB::readAll() and load the nib file containing your
+    SCView and SCController only if the file was read successfully). SCController's
+    initializer automatically calls this function if needed.
+    This method calls SoDB::init(), SoInteraction::init() and SoNodeKit::init().
+"*/
 
 + (void) initCoin
 {
@@ -149,9 +152,6 @@ static BOOL _coinInitialized = NO;
   }
   return self;
 }
-
-/*" Initalizes Coin. "*/
-
 
 /*" Sets up and activates a Coin scene manager. Sets up and schedules
     a timer for animation. Adds default entries to the context menu.
