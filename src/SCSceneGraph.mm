@@ -292,9 +292,6 @@ void error_cb(const class SoError * error, void * data)
   (See the class introduction at the top of this page for more
   information on how to control this behaviour.)
 
-  After a scene graph is set, the delegate method -didSetSceneGraph:
-  is called with the superscenegraph as parameter.
- 
   Returns !{YES} if the scenegraph was set successfully, and !{NO} if
   an unexpected problem occured. (Currently the only reason when !{NO}
   would be returned is when the delegate method
