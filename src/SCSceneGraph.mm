@@ -27,7 +27,6 @@
 
 #import <Sc21/SCSceneGraph.h>
 #import <Sc21/SCCamera.h>
-#import <Sc21/SCString.h>
 #import "SCUtil.h"
 
 #import <Inventor/SoDB.h>
@@ -46,7 +45,8 @@
 void error_cb(const class SoError * error, void * data)
 {
   SCSceneGraph * scenegraph = (SCSceneGraph *)data;
-  NSString * errstr = [NSString stringWithSbString:error->getDebugString()];
+  NSString * errstr = 
+    [NSString stringWithCString:error->getDebugString().getString()];
   [[NSNotificationCenter defaultCenter]
    postNotificationName:SCCouldNotReadSceneNotification object:scenegraph
    userInfo:[NSDictionary dictionaryWithObject:errstr forKey:@"description"]];
@@ -180,6 +180,7 @@ void error_cb(const class SoError * error, void * data)
   }
   return ret;
 }
+
 
 /*"
   Read a new Coin scenegraph from URL.
