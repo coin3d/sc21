@@ -34,6 +34,7 @@
 {
   int panbutton, rotatebutton, zoombutton;
   unsigned int panmodifier, rotatemodifier, zoommodifier;
+  BOOL panbuttonenabled, rotatebuttonenabled, zoombuttonenabled;
   BOOL spinenabled;
   BOOL scrollwheelzoomenabled;
   SCEmulator * emulator;

@@ -81,7 +81,8 @@
 - (void)ok:(id)sender
 {  
   // Note that mouse button emulation settings depends on the order of
-  // menu items being "no emulation", "command", "alt", "shift",
+  // menu items being "no emulation", "command", "alt", "shift";
+  // order of buttons being "left", "right", "middle", "none";
   // and modifier settings on the order "command", "alt", "shift".
 
   SCExaminerHandler * scexaminerhandler = [self object];
@@ -96,7 +97,7 @@
     [scexaminerhandler setRotateButton:r modifier: 
       [self _SC_flagsForCommand:rotate_command alt:rotate_alt 
       shift:rotate_shift]];
-  }
+  } else [scexaminerhandler disableRotateButton];
   [scexaminerhandler setSpinEnabled:([enableSpin state] == NSOnState)];
   
    // pan mode
@@ -105,7 +106,7 @@
     [scexaminerhandler setPanButton:p modifier: 
       [self _SC_flagsForCommand:pan_command alt:pan_alt 
       shift:pan_shift]];
-  }
+  } else [scexaminerhandler disablePanButton];
   
   // zoom mode
   int z  = [zoomButton indexOfSelectedItem];
@@ -113,7 +114,7 @@
     [scexaminerhandler setZoomButton:z modifier: 
       [self _SC_flagsForCommand:zoom_command alt:zoom_alt 
       shift:zoom_shift]];
-  }
+  } else [scexaminerhandler disableZoomButton];
   [scexaminerhandler 
     setScrollWheelZoomEnabled:([enableWheel state] == NSOnState)];
   
@@ -122,32 +123,34 @@
 
 - (void)revert:(id)sender
 {
-  SCExaminerHandler * scexaminerhandler = [self object];
+  SCExaminerHandler * handler = [self object];
   
   // mouse button emulation
   [self _SC_revertPopUpButton:rightButtonEmulation forButton:1];
   [self _SC_revertPopUpButton:middleButtonEmulation forButton:2];
   
   // rotate mode: button, modifier flags, spinning?
-  [rotateButton selectItemAtIndex:[scexaminerhandler _SC_rotateButton]];
+  int index = [handler rotateButtonIsEnabled] ? [handler _SC_rotateButton] : 3;
+  [rotateButton selectItemAtIndex:index];
   [self _SC_setStateOfCommand:rotate_command alt:rotate_alt shift:rotate_shift 
-    forFlags:[scexaminerhandler _SC_rotateModifier]];
-  [enableSpin setState:([scexaminerhandler spinEnabled] ? 
-     NSOnState : NSOffState)];
+    forFlags:[handler _SC_rotateModifier]];
+  [enableSpin setState:([handler spinEnabled] ? NSOnState : NSOffState)];
     
   // pan mode: button, modifier flags
-  [panButton selectItemAtIndex:[scexaminerhandler _SC_panButton]];
+  index = [handler panButtonIsEnabled] ? [handler _SC_panButton] : 3;
+  [panButton selectItemAtIndex:index];
   [self _SC_setStateOfCommand:pan_command alt:pan_alt shift:pan_shift 
-    forFlags:[scexaminerhandler _SC_panModifier]];
+    forFlags:[handler _SC_panModifier]];
   
   // zoom mode: button, modifier flags, use wheel?
-  [zoomButton selectItemAtIndex:[scexaminerhandler _SC_zoomButton]];
+  index = [handler zoomButtonIsEnabled] ? [handler _SC_zoomButton] : 3;
+  [zoomButton selectItemAtIndex:index];
   [self _SC_setStateOfCommand:zoom_command alt:zoom_alt shift:zoom_shift 
-    forFlags:[scexaminerhandler _SC_zoomModifier]];
-  [enableWheel setState:([scexaminerhandler scrollWheelZoomEnabled] ?
+    forFlags:[handler _SC_zoomModifier]];
+  [enableWheel setState:([handler scrollWheelZoomEnabled] ?
     NSOnState:NSOffState)];
 
-  NSString * conflict = [scexaminerhandler _SC_conflictDescription];
+  NSString * conflict = [handler _SC_conflictDescription];
   [conflictWarning setToolTip:conflict];
   
   if (supportsSetHidden) {
@@ -234,20 +237,29 @@
 {
   BOOL conflict = NO;
   BOOL emulatesright = NO, emulatesmiddle = NO;
+  BOOL enabled [3];
+  enabled[0] = [self rotateButtonIsEnabled];
+  enabled[1] = [self panButtonIsEnabled];
+  enabled[2] = [self zoomButtonIsEnabled];
   
-  int count = 3; // rotate, zoom, pan
+  int count = 0;
+  
+  if (enabled[0]) count ++;
+  if (enabled[1]) count ++;
+  if (enabled[2]) count ++;
+  
   if ([[self _SC_emulator] emulatesButton:1]) { 
     emulatesright = YES; count++;
-    if ([self _SC_rotateButton] == 1) count++;
-    if ([self _SC_panButton] == 1) count++;
-    if ([self _SC_zoomButton] == 1) count++;
+    if (enabled[0] && [self _SC_rotateButton] == 1) count++;
+    if (enabled[1] && [self _SC_panButton] == 1) count++;
+    if (enabled[2] && [self _SC_zoomButton] == 1) count++;
   }
   
   if ([[self _SC_emulator] emulatesButton:2]) { 
     emulatesmiddle = YES; count++;
-    if ([self _SC_rotateButton] == 2) count++;
-    if ([self _SC_panButton] == 2) count++;
-    if ([self _SC_zoomButton] == 2) count++;
+    if (enabled[0] && [self _SC_rotateButton] == 2) count++;
+    if (enabled[1] && [self _SC_panButton] == 2) count++;
+    if (enabled[2] && [self _SC_zoomButton] == 2) count++;
   }
   
   int buttons[count];
@@ -257,21 +269,27 @@
     [NSArray arrayWithObjects:@"Rotate", @"Pan", @"Zoom", nil];
   int idx = 0;  
   
-  [self getRotateButton:&buttons[idx] modifier:&modifiers[idx]];
-  [names addObject:[rotatepanzoom objectAtIndex:idx]]; 
-  idx++;
+  if (enabled[0]) {
+    [self getRotateButton:&buttons[idx] modifier:&modifiers[idx]];
+    [names addObject:[rotatepanzoom objectAtIndex:idx]]; 
+    idx++;
+  }
   
-  [self getPanButton:&buttons[idx] modifier:&modifiers[idx]]; 
-  [names addObject:[rotatepanzoom objectAtIndex:idx]]; 
-  idx++;
+  if (enabled[1]) {
+    [self getPanButton:&buttons[idx] modifier:&modifiers[idx]]; 
+    [names addObject:[rotatepanzoom objectAtIndex:idx]]; 
+    idx++;
+  }
   
-  [self getZoomButton:&buttons[idx] modifier:&modifiers[idx]];
-  [names addObject:[rotatepanzoom objectAtIndex:idx]]; 
-  idx++;
+  if (enabled[2]) {
+    [self getZoomButton:&buttons[idx] modifier:&modifiers[idx]];
+    [names addObject:[rotatepanzoom objectAtIndex:idx]]; 
+    idx++;
+  }
     
   if (emulatesright) {
     unsigned int emulationmodifier = 
-    [[self _SC_emulator] modifierToEmulateButton:1];
+      [[self _SC_emulator] modifierToEmulateButton:1];
 
     buttons[idx] = 0;
     modifiers[idx] = emulationmodifier;
@@ -284,7 +302,7 @@
     // middle button: left + command  
     int i;
     for (i = 0; i < 3; i++) {
-      if (buttons[i] == 1 && modifiers[i] != 0) {
+      if (enabled[i] && buttons[i] == 1 && modifiers[i] != 0) {
         buttons[idx] = 0;
         modifiers[idx] = modifiers[i] | emulationmodifier;
         [names addObject:[NSString 
@@ -307,7 +325,7 @@
     // see comment above
     int i;
     for (i = 0; i < 3; i++) {
-      if (buttons[i] == 2  && modifiers[i] != 0) {
+      if (enabled[i] && buttons[i] == 2  && modifiers[i] != 0) {
         buttons[idx] = 0;
         modifiers[idx] = modifiers[i] | emulationmodifier;        
         [names addObject:[NSString 

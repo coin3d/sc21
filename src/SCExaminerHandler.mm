@@ -40,22 +40,55 @@
 
 #pragma mark --- mouse- and keybindings --- 
 
+- (BOOL)panButtonIsEnabled
+{
+  return SELF->panbuttonenabled;
+}
+
+- (BOOL)rotateButtonIsEnabled
+{
+  return SELF->rotatebuttonenabled;
+}
+
+- (BOOL)zoomButtonIsEnabled
+{
+  return SELF->zoombuttonenabled;
+}
+
+- (void)disablePanButton
+{
+  SELF->panbuttonenabled = NO;
+}
+
+- (void)disableRotateButton
+{
+  SELF->rotatebuttonenabled = NO;
+}
+
+- (void)disableZoomButton
+{
+  SELF->zoombuttonenabled = NO;
+}
+
 - (void)setPanButton:(int)buttonNumber modifier:(unsigned int)modifierFlags
 {
   SELF->panbutton = buttonNumber;
   SELF->panmodifier = modifierFlags;
+  SELF->panbuttonenabled = YES;
 }
 
 - (void)setRotateButton:(int)buttonNumber modifier:(unsigned int)modifierFlags
 {
   SELF->rotatebutton = buttonNumber;
   SELF->rotatemodifier = modifierFlags;
+  SELF->rotatebuttonenabled = YES;
 }
 
 - (void)setZoomButton:(int)buttonNumber modifier:(unsigned int)modifierFlags
 {
   SELF->zoombutton = buttonNumber;
   SELF->zoommodifier = modifierFlags;
+  SELF->zoombuttonenabled = YES;  
 }
 
 - (void)getPanButton:(int*)button modifier:(unsigned int*)modifierFlags
@@ -205,6 +238,9 @@
     [coder encodeInt:SELF->panmodifier forKey:@"SC_panmodifier"];
     [coder encodeInt:SELF->rotatemodifier forKey:@"SC_rotatemodifier"];
     [coder encodeInt:SELF->zoommodifier forKey:@"SC_zoommodifier"];
+    [coder encodeBool:SELF->panbuttonenabled forKey:@"SC_panbuttonenabled"];
+    [coder encodeBool:SELF->rotatebuttonenabled forKey:@"SC_rotatebuttonenabled"];
+    [coder encodeBool:SELF->zoombuttonenabled forKey:@"SC_zoombuttonenabled"];
     [coder encodeBool:SELF->spinenabled forKey:@"SC_spinenabled"];
     [coder encodeBool:SELF->scrollwheelzoomenabled forKey:@"SC_scrollwheelzoomenabled"];
     [coder encodeObject:SELF->emulator forKey:@"SC_emulator"];
@@ -222,6 +258,9 @@
       SELF->panmodifier = [coder decodeIntForKey:@"SC_panmodifier"];
       SELF->rotatemodifier = [coder decodeIntForKey:@"SC_rotatemodifier"];
       SELF->zoommodifier = [coder decodeIntForKey:@"SC_zoommodifier"];
+      SELF->panbuttonenabled = [coder decodeBoolForKey:@"SC_panbuttonenabled"];
+      SELF->rotatebuttonenabled = [coder decodeBoolForKey:@"SC_rotatebuttonenabled"];
+      SELF->zoombuttonenabled = [coder decodeBoolForKey:@"SC_zoombuttonenabled"];
       SELF->spinenabled = [coder decodeBoolForKey:@"SC_spinenabled"];
       SELF->scrollwheelzoomenabled = [coder decodeBoolForKey:@"SC_scrollwheelzoomenabled"];
       SELF->emulator = [[coder decodeObjectForKey:@"SC_emulator"] retain];
@@ -276,21 +315,24 @@
   unsigned int matchedflags = 0;
   Class matchedmode = Nil;
   
-  if (SELF->rotatebutton == buttonNumber && 
+  if (SELF->rotatebuttonenabled && 
+      SELF->rotatebutton == buttonNumber && 
       (SELF->rotatemodifier & modifierFlags) == SELF->rotatemodifier &&
       SELF->rotatemodifier >= matchedflags) {
     matchedflags = SELF->rotatemodifier;
     matchedmode = [SCRotateMode class];    
   }
   
-  if (SELF->zoombutton  == buttonNumber && 
+  if (SELF->zoombuttonenabled && 
+      SELF->zoombutton  == buttonNumber && 
       (SELF->zoommodifier & modifierFlags) == SELF->zoommodifier &&
       SELF->zoommodifier >= matchedflags) {
     matchedflags = SELF->zoommodifier;
     matchedmode = [SCZoomMode class];  
   }
   
-  if (SELF->panbutton  == buttonNumber && 
+  if (SELF->panbuttonenabled && 
+      SELF->panbutton  == buttonNumber && 
       (SELF->panmodifier & modifierFlags) == SELF->panmodifier &&
       SELF->panmodifier >= matchedflags)  {
     matchedflags = SELF->panmodifier;

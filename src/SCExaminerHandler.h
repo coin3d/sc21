@@ -37,6 +37,14 @@
   SCExaminerHandlerP * _sc_examinerhandler;
 }
 
+- (BOOL)panButtonIsEnabled;
+- (BOOL)rotateButtonIsEnabled;
+- (BOOL)zoomButtonIsEnabled;
+
+- (void)disablePanButton;
+- (void)disableRotateButton;
+- (void)disableZoomButton;
+
 /*" Mouse- and keybindings for examiner modes "*/
 - (void)setPanButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
 - (void)setRotateButton:(int)buttonNumber modifier:(unsigned int)modifierFlags;
