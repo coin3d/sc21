@@ -831,18 +831,6 @@
 			target = E0DD072F0654F9CA009C673A;
 			targetProxy = E03800C406551033000633F5;
 		};
-		E03800C60655103C000633F5 = {
-			containerPortal = E0765C56060222BB0099F78E;
-			isa = PBXContainerItemProxy;
-			proxyType = 1;
-			remoteGlobalIDString = E0DD073F06550C23009C673A;
-			remoteInfo = "Sc21 doc pkg";
-		};
-		E03800C70655103C000633F5 = {
-			isa = PBXTargetDependency;
-			target = E0DD073F06550C23009C673A;
-			targetProxy = E03800C60655103C000633F5;
-		};
 		E0547AB706073E170089FA12 = {
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
@@ -1632,7 +1620,6 @@
 			dependencies = (
 				E079478B06341DF3006B5824,
 				E079478D06341E03006B5824,
-				E03800C70655103C000633F5,
 			);
 			isa = PBXNativeTarget;
 			name = "Sc21 meta pkg";
