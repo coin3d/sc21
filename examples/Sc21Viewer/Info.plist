@@ -7,9 +7,9 @@
 	<key>CFBundleExecutable</key>
 	<string>Sc21Viewer</string>
 	<key>CFBundleIconFile</key>
-	<string></string>
+	<string>coin.icns</string>
         <key>CFBundleIdentifier</key>
-	<string>com.apple.myCocoaApp</string>
+	<string>org.coin3d.Sc21.examples.Sc21Viewer</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
