@@ -6,6 +6,8 @@
             CLASS = SCExaminerHandlerInspector; 
             LANGUAGE = ObjC; 
             OUTLETS = {
+                conflictImage = NSImageView; 
+                conflictText = NSTextField; 
                 conflictWarning = NSBox; 
                 enableSpin = NSButton; 
                 enableWheel = NSButton; 
