@@ -28,7 +28,7 @@
 #import <Cocoa/Cocoa.h>
 #import "SCDefines.h"
 #import <Sc21/SCEventHandling.h>
-#import <Sc21/SCEmulator.h>
+#import "SCEmulator.h"
 
 @class SCExaminerHandlerP;
 
