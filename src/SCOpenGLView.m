@@ -122,7 +122,8 @@
   NSLog(@"SCOpenGLView.setPixelFormat");
   
   //   FIXME: Should we force a recreation of our OpenGL context?
-  //   Test how NSOpenGLView behaves and document this
+  //   NSOpenGLView doesn't seem to do this, but it needs to be
+  //   better tested.
   //   (kintel 20040456)
   [pixelFormat retain];
   [SELF->pixelformat release];
@@ -143,9 +144,8 @@
   Used by subclassers to initialize OpenGL state. This function is called
   once after an OpenGL context is created and the drawable is attached.
   
-  FIXME: This is just the current suggestion. Update when finished:
   Under Panther, NSOpenGLContext will automatically send this message to
-  its view from its makeCurrentContext method.
+  its view from its -makeCurrentContext method.
   Under Jaguar, this function is called explicitly from our
   -openGLContext method, emulating Panther's behavior.
   "*/
@@ -195,19 +195,17 @@
       [[NSOpenGLContext alloc] initWithFormat:[format pixelFormat]
                                shareContext:nil];
 
-    //FIXME: Decide how to handle OpenGL initialization under Jaguar.
-    // Take this into account:
-    // o The code below should _only_ be run under Jaguar since Panther
-    //   will run prepareOpenGL directly.
-    // o We can check run-time what OS/AppKit version we have
-    //   (NSAppKitVersionNumber).
-    // o Is it OK to assume that prepareOpenGL will work when compiling
-    //   under Jaguar and running under Panther? If not, we should
-    //   probably not use prepareOpenGL at all, but a similar method
-    //   that will work with both OS versions.
     [SELF->openGLContext setView:self];
     [SELF->openGLContext makeCurrentContext];
-    [self prepareOpenGL];
+    // Run this only under <= 10.2 since >=10.3 automatically calls
+    // prepareOpenGL from NSOpenGLContext.
+    //   FIXME:
+    //   Is it OK to assume that prepareOpenGL will work when compiling
+    //   under Jaguar and running under Panther? If not, we should
+    //   probably not use prepareOpenGL at all, but a similar method
+    //   that will work with both OS versions. (kintel 20040615)
+    if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_2)
+      [self prepareOpenGL];
   }
   return SELF->openGLContext;
 }
@@ -237,18 +235,11 @@
   nothing. Override this method if you need to adjust the viewport and
   display frustum.
 
-  -reshape is called when:
-  o after init (FIXME: Is this correct? kintel 20040505)
-  o window size changes (i.e. after an NSViewFrameDidChangeNotification)
-
   FIXME: Using NSOpenGLView, reshape is called when a scrollview is
   scrolled. This does not happen with SCOpenGLView. The reason seems to
   be that for our view, NSView.translateOriginToPoint: is not called.
   Test this with "OpenGL scroller"/"NSOpenGL scroller". (kintel 20040505)
-
-  FIXME: Should we make sure that we have a valid context before calling reshape?
-  FIXME: Should we call reshape after creating a context (i.e. after prepareOpenGL) ?
-"*/
+  "*/
 - (void)reshape
 {
 }
@@ -348,7 +339,6 @@
     selector:@selector(_SC_reshapeNeeded:) 
     name:NSViewFrameDidChangeNotification 
     object:self];
-  //  [self reshape]; //FIXME: Not sure if NSOpenGLView does this (kintel 20040505)
 }
 
 - (void)_SC_updateNeeded:(NSNotification *)notification
@@ -360,6 +350,8 @@
 - (void)_SC_reshapeNeeded:(NSNotification *)notification
 {
   NSLog(@"SCOpenGLView._SC_reshapeNeeded:");
+  //   FIXME: Should we make sure that we have a valid context before calling
+  //   reshape (e.g. in _SC_reshapeNeeded:) ? (kintel 20040615)
   [self reshape];
 }
 
