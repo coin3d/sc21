@@ -27,8 +27,8 @@
 #import <OpenGL/gl.h>
 
 @interface SCController (InternalAPI)
-- (void) _idle:(NSTimer *) t; 	
-
+- (void) _processTimerQueue:(NSTimer *) t;
+- (void) _processDelayQueue:(NSTimer *) t;
 @end  
 
 
@@ -156,26 +156,12 @@ static BOOL _coinInitialized = NO;
   return self;
 }
 
-- (void) disconnect
+- (void) stopTimers
 {
-  [_timer invalidate];
+  if ([_timerqueuetimer isValid]) [_timerqueuetimer invalidate];
+  if ([_delayqueuetimer isValid]) [_delayqueuetimer invalidate];
 }
 
-
-#if 0
-- (void)foo:(NSNotification *)notification
-{
-  id bar  = [notification object];
-  NSLog(@"Notification received: %@", [notification name]);
-}
-
-- (void) stopTimer:(NSNotification *) notification
-{
-  NSLog(@"Notification received: %@", [notification name]);
-  [_timer invalidate];
-}
-
-#endif
 
 /*" Sets up and activates a Coin scene manager. Sets up and schedules
     a timer for animation. Adds default entries to the context menu.
@@ -185,21 +171,6 @@ static BOOL _coinInitialized = NO;
 
 - (void) awakeFromNib
 {
-
-#if 0
-  NSLog(@"Register for notification");
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(foo:)
-                                               name:IBDidBeginTestingInterfaceNotification
-                                             object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(stopTimer:)
-                                               name:IBWillEndTestingInterfaceNotification
-                                             object:nil];
-
-
-#endif
-  
   _scenemanager = new SoSceneManager;
   _scenemanager->setRenderCallback(redraw_cb, (void*) view);
   _scenemanager->setBackgroundColor(SbColor(0.0f, 0.0f, 0.0f));
@@ -211,13 +182,29 @@ static BOOL _coinInitialized = NO;
     SoSeparator * root = new SoSeparator;
     [self setSceneGraph:root];
   }
-    
-  _timer = [[NSTimer scheduledTimerWithTimeInterval:0.01 target:self
-    selector:@selector(_idle:) userInfo:nil repeats:YES] retain];
-  [[NSRunLoop currentRunLoop] addTimer:_timer
-                               forMode:NSModalPanelRunLoopMode];
-  [[NSRunLoop currentRunLoop] addTimer:_timer
-                               forMode:NSEventTrackingRunLoopMode];
+
+  // FIXME: The timer and delay queue handling here is very
+  // primitive and should be re-written. Currently, we are processing
+  // the queues even if there are no pending sensors. The problem
+  // why it is not straightforward to use the approach in SoQt is
+  // NSTimer does not allow you to start/stop the timer - you have
+  // to invalidate it and create a new one.
+  // Also, there is not really a concept of "application is idle"
+  // in cocoa, so the delay queue is currently only processed each
+  // 100 milliseconds. (Might be able to use NSNotificationQueue
+  // with style NSPostWhenIdle, I'll have to verify that.)
+  // kyrah 20030713
+
+  // Setup timers.
+  _timerqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:0.001 target:self
+    selector:@selector(_processTimerQueue:) userInfo:nil repeats:YES] retain];
+  _delayqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:0.1 target:self
+    selector:@selector(_processDelayQueue:) userInfo:nil repeats:YES] retain];
+  
+  [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSModalPanelRunLoopMode];
+  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSModalPanelRunLoopMode];
+  [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSEventTrackingRunLoopMode];
+  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSEventTrackingRunLoopMode];
 
   [view addMenuEntry:@"open file" target:self action:@selector(open:)];
   [view addMenuEntry:@"toggle mode" target:self action:@selector(toggleModes:)];
@@ -229,11 +216,7 @@ static BOOL _coinInitialized = NO;
 /* Clean up after ourselves. */
 - (void) dealloc
 {
-#if 0
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
-#endif 
-  [_timer invalidate];
-  [_timer release];
+  [self stopTimers];
   [_eventconverter release];
   [_camera release];
   _scenegraph->unref();
@@ -640,16 +623,19 @@ small near clipping plane distances are disallowed.
 
 // ----------------------- InternalAPI -------------------------
 
-/* Timer callback function: process the sensor manager queues. */
+/* Timer callback function: process the timer sensor queue. */
 
-- (void) _idle:(NSTimer *)t
+- (void) _processTimerQueue:(NSTimer *)t
 {
   SoDB::getSensorManager()->processTimerQueue();
-  SoDB::getSensorManager()->processDelayQueue(TRUE);
 }
 
+/* Timer callback function: process the delay queue. */
 
-
+- (void) _processDelayQueue:(NSTimer *)t
+{
+  SoDB::getSensorManager()->processDelayQueue(FALSE);
+}
 
 @end
 
