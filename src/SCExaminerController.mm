@@ -273,73 +273,58 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 - (BOOL) handleEventAsViewerEvent:(NSEvent *) event
 {
   BOOL handled = NO;
-  SEL action;
   NSEventType type = [event type];
   unsigned int flags = [event modifierFlags];
   NSPoint p;
-  NSValue * v;
-  float delta;
 
   switch (type) {
     
     case NSLeftMouseDown:
-
       // Note that we will never see ctrl-click -- this is translated
       // into a menuForEvent: message and not forwarded here unless
       // the app developer overrides menuForEvent: In that latter case,
       // they probably specifically do _not_ want to get the menu on
       // ctrl-click, so do not explicitly show the menu here!
-
       p = [view convertPoint:[event locationInWindow] fromView:nil];
-      v = [NSValue valueWithPoint:p];
-
-      if (flags & NSAlternateKeyMask) action = @selector(startPanningWithPoint:);
-      else if (flags & NSShiftKeyMask) action = @selector(startZoomingWithPoint:);
-      else action = @selector(startDraggingWithPoint:);
+      if (flags & NSAlternateKeyMask) [self startPanningWithPoint:p];
+      else if (flags & NSShiftKeyMask) [self startZoomingWithPoint:p];
+      else [self startDraggingWithPoint:p];
       handled = YES;
       break;
 
     case NSLeftMouseDragged:
       p = [view convertPoint:[event locationInWindow] fromView:nil];
-      v = [NSValue valueWithPoint:p];
-      if (flags & NSAlternateKeyMask) action = @selector(panWithPoint:);
-      else if (flags & NSShiftKeyMask) action = @selector(zoomWithPoint:);
-      else action = @selector(dragWithPoint:);
+      if (flags & NSAlternateKeyMask) [self panWithPoint:p];
+      else if (flags & NSShiftKeyMask) [self zoomWithPoint:p];
+      else [self dragWithPoint:p];
       handled = YES;
       break;
 
     case NSRightMouseDown:
       [NSMenu popUpContextMenu:[view menu] withEvent:event forView:view];
-      action = @selector(ignore:);
       handled = YES;
       break;
 
     case NSOtherMouseDown:
       p = [view convertPoint:[event locationInWindow] fromView:nil];
-      v = [NSValue valueWithPoint:p];
-      action = @selector(startPanning:);
+      [self startPanningWithPoint:p];
       handled = YES;
       break;
       
     case NSOtherMouseDragged:
       p = [view convertPoint:[event locationInWindow] fromView:nil];
-      v = [NSValue valueWithPoint:p];
-      action = @selector(dragWithPoint:);
+      [self dragWithPoint:p];
       handled = YES;
       break;
 
     case NSScrollWheel:
-      delta = [event deltaY];
-      v = [NSValue value:&delta withObjCType:@encode(float)];
-      action = @selector(zoomWithDelta:);
+      [self zoomWithDelta:[event deltaY]];
       handled = YES;
       break;
       
     default:
-      action = @selector(ignore:);
       break;
   }
-  [self performSelector:action withObject:v];
   return handled;
 }
 
@@ -348,38 +333,29 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 /*" Prepares for dragging operation. Dragging is done depending on the
     user's mouse movements. The NSPoint corresponding to the initial
-    mouseDown event is passed in v, and stored in an internal log
+    mouseDown event is passed in point, and stored in an internal log
     of mouse positions used in #dragWithPoint:
-
-    Note that the actual %NSPoint value is encapsulated in an
-    %NSValue object. You can create such an NSValue by doing
-    !{NSValue * v = [NSValue valueWithPoint:p];} and extract the NSPoint
-    from it as !{NSPoint p = [v pointValue];}
 "*/
 
-- (void) startDraggingWithPoint:(NSValue *) v
+- (void) startDraggingWithPoint:(NSPoint)point
 {
+  NSValue * v = [NSValue valueWithPoint:point];
   // Clear log and project to the last position we stored.
   [_mouselog removeAllObjects];
   _spinprojector->project(SbVec2f(_lastmousepos.x, _lastmousepos.y));
   [_mouselog insertObject:v atIndex:0];  
 }
 
-
 /*" Prepares for panning operation. Panninging is done depending on the
     user's mouse movements. The NSPoint corresponding to the initial
-    mouseDown event is passed in v, and stored in an internal log
+    mouseDown event is passed in point, and stored in an internal log
     of mouse positions used in #panWithPoint:
-
-    Note that the actual %NSPoint value is encapsulated in an
-    %NSValue object. You can create such an NSValue by doing
-    !{NSValue * v = [NSValue valueWithPoint:p];} and extract the NSPoint
-    from it as !{NSPoint p = [v pointValue];}
 "*/
 
-- (void) startPanningWithPoint:(NSValue *) v
+- (void) startPanningWithPoint:(NSPoint) point
 {
   SbViewVolume vv;
+  NSValue * v = [NSValue valueWithPoint:point];
   [_mouselog removeAllObjects];
   [_mouselog insertObject:v atIndex:0];
 }
@@ -387,17 +363,13 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 /*" Prepares for zooming operation. Zooming is done depending on the
     user's mouse movements. The NSPoint corresponding to the initial
-    mouseDown event is passed in v, and stored in an internal log
+    mouseDown event is passed in point, and stored in an internal log
     of mouse positions used in #zoomWithPoint:
-
-    Note that the actual %NSPoint value is encapsulated in an
-    %NSValue object. You can create such an NSValue by doing
-    !{NSValue * v = [NSValue valueWithPoint:p];} and extract the NSPoint
-    from it as !{NSPoint p = [v pointValue];}
  "*/
 
-- (void) startZoomingWithPoint:(NSValue *) v
+- (void) startZoomingWithPoint:(NSPoint)point
 {
+  NSValue * v = [NSValue valueWithPoint:point];
   // Clear log and project to the last position we stored.
   [_mouselog removeAllObjects];
   [_mouselog insertObject:v atIndex:0];
@@ -406,21 +378,17 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 /*" Performs dragging operation. Dragging is done depending on the
     user's mouse movements. The NSPoint corresponding to the current
-    mouseDragged event is passed in v, stored in an internal log
+    mouseDragged event is passed in point, stored in an internal log
     of mouse positions, and compared with earlier values to determine
     the extent of the dragging.
-
-    Note that the actual %NSPoint value is encapsulated in an
-    %NSValue object. You can create such an NSValue by doing
-   !{NSValue * v = [NSValue valueWithPoint:p];} and extract the NSPoint
-   from it as !{NSPoint p = [v pointValue];}
  "*/
 
-- (void) dragWithPoint:(NSValue *) v
+- (void) dragWithPoint:(NSPoint)point
 {
   NSPoint p, q, qn, pn;
   SbRotation r;
-  
+  NSValue * v = [NSValue valueWithPoint:point];
+    
   [_mouselog insertObject:v atIndex:0];
 
   if ([_mouselog count] < 2) return;
@@ -441,22 +409,18 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 /*" Performs panning operation. Panning is done depending on the
     user's mouse movements. The NSPoint corresponding to the current
-    mouseDragged event is passed in v, stored in an internal log
+    mouseDragged event is passed in point, stored in an internal log
     of mouse positions, and compared with earlier values to determine
     the extent of the panning.
-
-    Note that the actual %NSPoint value is encapsulated in an
-    %NSValue object. You can create such an NSValue by doing
-    !{NSValue * v = [NSValue valueWithPoint:p];} and extract the NSPoint
-    from it as !{NSPoint p = [v pointValue];}
 "*/
 
-- (void) panWithPoint:(NSValue *) v
+- (void) panWithPoint:(NSPoint) point
 {
   NSPoint p, q, pn, qn;
   SbLine line;
   SbVec3f curplanepoint, prevplanepoint;
   SoCamera * cam = [_camera soCamera];
+  NSValue * v = [NSValue valueWithPoint:point];
 
   [_mouselog insertObject:v atIndex:0];
   
@@ -488,18 +452,11 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     Zooming can also be done by dragging while holding down the
     shift key. In this case, #zoomWithPoint: is called instead of this
     method.
-
-    Note that the actual float value is encapsulated in an
-    %NSValue object. You can create such an NSValue by doing
-    !{NSValue * v = [NSValue value:&delta withObjCType:@encode(float)];}
-    and extract the float from it as !{float f; [v getValue:&f];}
  "*/
 
-- (void) zoomWithDelta:(NSValue *) v
+- (void) zoomWithDelta:(float)delta
 {
-  float f;
-  [v getValue:&f];
-  [_camera zoom:f];
+  [_camera zoom:delta];
 }
 
 
@@ -511,15 +468,11 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
     Zooming can also be done by using the wheel on a wheel mouse.
     In this case, #zoomWithDelta: is called instead of this method.
-
-    Note that the actual %NSPoint value is encapsulated in an
-    %NSValue object. You can create such an NSValue by doing
-    !{NSValue * v = [NSValue valueWithPoint:p];} and extract the NSPoint
-    from it as !{NSPoint p = [v pointValue];}
 "*/
 
-- (void) zoomWithPoint:(NSValue *) v
+- (void) zoomWithPoint:(NSPoint)point
 {
+  NSValue * v = [NSValue valueWithPoint:point];
   NSPoint p, q, qn, pn;
   [_mouselog insertObject:v atIndex:0];
   if ([_mouselog count] < 2) return;
