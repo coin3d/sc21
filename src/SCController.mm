@@ -542,7 +542,6 @@ sensorqueuechanged_cb(void * data)
 
 - (void)_SC_idle:(NSNotification *)notification
 {
-  // SC21_DEBUG(@"_idle:");
   // We might get the notification after the view has
   // already been destroyed...
   if (!SELF->drawable) return; 
