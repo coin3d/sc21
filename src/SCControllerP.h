@@ -52,4 +52,7 @@ class SoSceneManager;
 - (void)_SC_sensorQueueChanged;
 - (void)_SC_cursorDidChange:(NSNotification *)notification;
 - (void)_SC_viewSizeChanged;
+- (void)_SC_sceneGraphChanged:(id)sender;
 @end  
+
+SC21_EXTERN NSString * SCInternalRootChangedNotification;

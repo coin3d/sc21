@@ -223,7 +223,7 @@
   }
   
   [[NSNotificationCenter defaultCenter]
-    postNotificationName:SCSceneGraphChangedNotification object:self];  
+    postNotificationName:SCInternalRootChangedNotification object:self];  
 }
 
 - (void)setSceneManager:(SoSceneManager *)scenemanager

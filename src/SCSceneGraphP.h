@@ -50,3 +50,5 @@
 - (void)_SC_setCreatesSuperSceneGraph:(BOOL)yn;
 - (BOOL)_SC_createsSuperSceneGraph;
 @end  
+
+SC21_EXTERN NSString * SCInternalRootChangedNotification;

@@ -429,8 +429,12 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   if (scenegraph == nil) { [self stopTimers]; }
   else { [self startTimers]; }
   
-  [[NSNotificationCenter defaultCenter]
-    postNotificationName:SCSceneGraphChangedNotification object:self];
+  // We want to be informed whenever the scenegraph's root node changes.
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(_SC_sceneGraphChanged:)
+                                               name:SCInternalRootChangedNotification
+                                             object:scenegraph];
+  [self _SC_sceneGraphChanged:nil];
 }
 
 - (SCSceneGraph *)sceneGraph 
@@ -765,10 +769,10 @@ Returns the receiver's delegate.
     postNotificationName:SCCursorChangedNotification object:self];
 }
 
-/*" This method is called when %view's size has been changed. 
+/* This method is called when %view's size has been changed. 
     It makes the necessary adjustments for the new size in 
     the Coin subsystem.
- "*/
+ */
 - (void)_SC_viewSizeChanged
 {
   if (!SELF->scenemanager || !SELF->drawable) return;
@@ -776,6 +780,18 @@ Returns the receiver's delegate.
   SELF->scenemanager->
     setViewportRegion(SbViewportRegion((short)frame.size.width,
                                        (short)frame.size.height));
+}
+
+
+/*
+  Called when the scenegraph, or the scenegraph's root node, has changed.
+  This is done so that we have one common notification for both cases.
+ */
+
+- (void)_SC_sceneGraphChanged:(id)sender
+{
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:SCSceneGraphChangedNotification object:self];
 }
 
 @end
