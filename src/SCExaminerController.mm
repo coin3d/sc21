@@ -79,9 +79,6 @@
 
 /*" Initializes a newly allocated SCExaminerController.
 
-    Calls #commonInit, which contains common initialization
-    code needed both in #init and #initWithCoder.
-
     This method is the designated initializer for the SCController
     class. Returns !{self}.
  "*/
@@ -89,7 +86,7 @@
 - (id)init
 {
   if (self = [super init]) {
-    // Note that commonInit will be called by our superclass'
+    // Note that _SC_commonInit will be called by our superclass'
     // initWithCoder method, so do not call it here.
     ; 
   }
@@ -98,13 +95,12 @@
 
 
 /*" Shared initialization code that is called both from #init:
-    and #initWithCoder: If you override this method, you must
-    call [super commonInit] as the first call in your
-    implementation to make sure everything is set up properly.
+    and #initWithCoder:
  "*/
 
-- (void)commonInit
+- (void)_SC_commonInit
 {
+  [super _SC_commonInit];
   SbViewVolume volume;
   _mouselog = [[NSMutableArray alloc] init];
   _spinprojector = new SbSphereSheetProjector(SbSphere(SbVec3f(0,0,0),0.8f));
@@ -423,16 +419,13 @@
 
 /*" Initializes a newly allocated SCExaminerController instance from the 
     data in decoder. Returns !{self}
-
-    Calls #commonInit, which contains common initialization
-    code needed both in #init and #initWithCoder.
 "*/
 
 - (id)initWithCoder:(NSCoder *)coder
 {
   NSLog(@"SCExaminerController.initWithCoder:");
   if (self = [super initWithCoder:coder]) {
-    // Note that commonInit will be called by our superclass'
+    // Note that _SC_commonInit will be called by our superclass'
     // initWithCoder method, so do not call it here.
     ; 
   }
