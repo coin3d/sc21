@@ -19,6 +19,8 @@
 */
 - (id)initWithFrame:(NSRect)frameRect pixelFormat:(NSOpenGLPixelFormat *)format
 {
+  NSLog(@"SCOpenGLView.initWithFrame:pixelFormat");
+
   self = [super initWithFrame:frameRect];
   if (self) {
     _pixelFormat = [format retain];
@@ -41,12 +43,16 @@
 // FIXME: Remove and let default pixel format be nil?
 - (id)initWithFrame:(NSRect)frameRect
 {  
+  NSLog(@"SCOpenGLView.initWithFrame:");
+
   return [self initWithFrame: frameRect
                  pixelFormat: [self createPixelFormat]];
 }
 
 - (void)dealloc
 {
+  NSLog(@"SCOpenGLView.dealloc");
+
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 
   [self clearGLContext];
@@ -60,28 +66,28 @@
 //   => Select the first valid pixelformat found.
 - (NSOpenGLPixelFormat *)createPixelFormat
 {
+  NSLog(@"SCOpenGLView.createPixelFormat");
+
   NSOpenGLPixelFormat *pixelFormat = nil;
   NSOpenGLPixelFormatAttribute *attrs = nil;
   int numattrs = 0;
   if (!pixelFormat) {
-    if (numattrs < 16) {
-      numattrs = 16;
-      attrs = realloc(attrs, numattrs);
-      int i = 0;
-      attrs[i++] = NSOpenGLPFADoubleBuffer;
-      attrs[i++] = NSOpenGLPFAAccelerated;
-      attrs[i++] = NSOpenGLPFAAccumSize;
-      attrs[i++] = (NSOpenGLPixelFormatAttribute)32;
-      attrs[i++] = NSOpenGLPFAColorSize;
-      attrs[i++] = (NSOpenGLPixelFormatAttribute)24;
-      attrs[i++] = NSOpenGLPFADepthSize;
-      attrs[i++] = (NSOpenGLPixelFormatAttribute)8;
-      attrs[i++] = NSOpenGLPFAScreenMask;
-      attrs[i++] = (NSOpenGLPixelFormatAttribute)
-        CGDisplayIDToOpenGLDisplayMask(kCGDirectMainDisplay);
-      attrs[i] = (NSOpenGLPixelFormatAttribute)0;
-      pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
-    }
+    attrs = malloc(16*sizeof(NSOpenGLPixelFormatAttribute));
+    int i = 0;
+    attrs[i++] = NSOpenGLPFADoubleBuffer;
+    attrs[i++] = NSOpenGLPFAAccelerated;
+    attrs[i++] = NSOpenGLPFAAccumSize;
+    attrs[i++] = (NSOpenGLPixelFormatAttribute)32;
+    attrs[i++] = NSOpenGLPFAColorSize;
+    attrs[i++] = (NSOpenGLPixelFormatAttribute)24;
+    attrs[i++] = NSOpenGLPFADepthSize;
+    attrs[i++] = (NSOpenGLPixelFormatAttribute)8;
+    attrs[i++] = NSOpenGLPFAScreenMask;
+    attrs[i++] = (NSOpenGLPixelFormatAttribute)
+      CGDisplayIDToOpenGLDisplayMask(kCGDirectMainDisplay);
+    attrs[i] = (NSOpenGLPixelFormatAttribute)0;
+    pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
+    [pixelFormat autorelease];
   }
 
   if (attrs) free(attrs);
@@ -90,12 +96,16 @@
 
 - (void)setPixelFormat:(NSOpenGLPixelFormat *)pixelFormat
 {
+  NSLog(@"SCOpenGLView.setPixelFormat");
+
   [_pixelFormat release];
   _pixelFormat = [pixelFormat retain];
 }
 
 - (NSOpenGLPixelFormat *)pixelFormat
 {
+  NSLog(@"SCOpenGLView.pixelFormat");
+
   return _pixelFormat;
 }
 
@@ -104,10 +114,12 @@
   Used by subclassers to initialize OpenGL state. This function is called
   once after an OpenGL context is created and the drawable is attached.
   
-  The context will made current before calling this function.
+  This function is called from within NSOpenGLContext.
 */
 - (void)prepareOpenGL
 {
+  NSLog(@"SCOpenGLView.prepareOpenGL");
+
 }
 
 /*!
@@ -117,6 +129,8 @@
 */
 - (void)clearGLContext
 {
+  NSLog(@"SCOpenGLView.clearGLContext");
+
   if (_openGLContext) {
     if ([_openGLContext view] == self) [_openGLContext clearDrawable];
     [_openGLContext release];
@@ -134,14 +148,12 @@
 - (NSOpenGLContext *)openGLContext
 {
   if (!_openGLContext) {
+    NSLog(@"SCOpenGLView.openGLContext: Creating new context");
+  
     NSOpenGLPixelFormat *format = [self pixelFormat];
     if (!format) format = [self createPixelFormat];
     _openGLContext = [[NSOpenGLContext alloc] initWithFormat:format
-                                                shareContext:nil];
-    //FIXME: Realle perform a setView here? Check docs
-    [_openGLContext setView:self];
-    [_openGLContext makeCurrentContext];
-    [self prepareOpenGL];
+                                              shareContext:nil];
   }
   return _openGLContext;
 }
@@ -155,6 +167,8 @@
 */
 - (void)setOpenGLContext:(NSOpenGLContext *)context
 {
+  NSLog(@"SCOpenGLView.setOpenGLContext");
+
   [self clearGLContext];
   _openGLContext = [context retain];
 }
@@ -175,6 +189,8 @@
 */
 - (void)reshape
 {
+  NSLog(@"SCOpenGLView.reshape");
+
 }
 
 /*!
@@ -187,6 +203,8 @@
 */
 - (void)update
 {
+  NSLog(@"SCOpenGLView.update");
+
   if ([_openGLContext view] == self) [_openGLContext update];
 }
 
@@ -194,11 +212,15 @@
 
 - (void)encodeWithCoder:(NSCoder *)coder 
 {
+  NSLog(@"SCOpenGLView.encodeWithCoder:");
+
   [super encodeWithCoder:coder];
 }
 
 - (id)initWithCoder:(NSCoder *)coder 
 {
+  NSLog(@"SCOpenGLView.initWithCoder:");
+
   if (self = [super initWithCoder:coder]) {
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(_surfaceNeedsUpdate:) 
@@ -218,11 +240,15 @@
 
 - (BOOL)isOpaque
 {
+  NSLog(@"SCOpenGLView.isOpaque");
+
   return YES;
 }
 
 - (void)lockFocus
 {
+  NSLog(@"SCOpenGLView.lockFocus");
+
   // get context. will create if we don't have one yet
   NSOpenGLContext * context = [self openGLContext];
   
@@ -244,13 +270,18 @@
 
 - (void)_surfaceNeedsUpdate:(NSNotification *)notification
 {
+  NSLog(@"SCOpenGLView._surfaceNeedsUpdate");
+
   [self update];
   //FIXME: reshape?
 }
 
 - (void)_reshapeNeeded:(NSNotification *)notification
 {
+  NSLog(@"SCOpenGLView._reshapeNeeded:");
+
   [self reshape];
 }
 
 @end
+  
