@@ -7,6 +7,7 @@
 #import <Inventor/SbViewportRegion.h>
 #import <Inventor/actions/SoGLRenderAction.h>
 #import <Inventor/actions/SoWriteAction.h>
+#import <Inventor/elements/SoGLCacheContextElement.h>
 #import <Inventor/manips/SoHandleBoxManip.h>
 #import <Inventor/nodekits/SoNodeKit.h>
 #import <Inventor/nodes/SoCone.h>
@@ -30,15 +31,13 @@
 static void
 redraw_cb(void * user, SoSceneManager * manager) {
   SCView * view = (SCView *) user;
-  [view drawRect:[view frame]];
-  // FIXME: according to the Apple docs, I should not call drawRect but
-  // rather setNeedsDisplay:YES. If I do that, I get an "invalid drawable"
-  // error and a black screen. Cocoa bug? Investigate. kyrah 20030529
+  [view drawRect:[view frame]]; // do actual drawing
+  [view setNeedsDisplay:YES];   // needed to get redraw when view is not active
 }
 
 
 // Obj-C does not support class variables, so: static :(
-static BOOL _coinInitialized;
+static BOOL _coinInitialized = NO;
 
 @implementation SCController
 
@@ -131,6 +130,8 @@ static BOOL _coinInitialized;
   _scenemanager = new SoSceneManager;
   _scenemanager->setRenderCallback(redraw_cb, (void*) view);
   _scenemanager->setBackgroundColor(SbColor(0.0f, 0.0f, 0.0f));
+  _scenemanager->getGLRenderAction()->setCacheContext(
+    SoGLCacheContextElement::getUniqueCacheContext());
   _scenemanager->activate();
 
   // Register ourselves as delegate. Needed to be able to quit the 
@@ -213,8 +214,9 @@ static BOOL _coinInitialized;
 - (const SbViewportRegion &) viewportRegion
 {
   assert (_scenemanager);
+  
   SoGLRenderAction * a = _scenemanager->getGLRenderAction();
-  return a->getViewportRegion();
+  return a->getViewportRegion();  
 }
 
 
@@ -265,8 +267,6 @@ static BOOL _coinInitialized;
   // FIXME: Shouldn't we use notifications here? kyrah 20030614
   int w = (GLint)(rect.size.width);
   int h = (GLint)(rect.size.height);
-  _scenemanager->setWindowSize(SbVec2s(w, h));
-  _scenemanager->setSize(SbVec2s(w, h));
   _scenemanager->setViewportRegion(SbViewportRegion(w, h));
   _scenemanager->scheduleRedraw();  
 }
