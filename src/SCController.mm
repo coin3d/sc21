@@ -242,13 +242,11 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
     Handle events by sending events down the event handler chain, starting
     at the controller's !{eventHandler}. If !{eventHandler} returns !{NO},
     the event is sent to the !{eventHandler}'s !{nextEventHandler}, and so
-    on.
+    on. (See the SCEventHandler documentation for more information.)
 
-    Note that the Sc21 way of handling events is different from the one taken
-    in NSView and its subclasses: All the events received by the view are sent to the
-    controller's !{handleEvent:} method. Please refer to
-    http://www.coin3d.org/mac/Sc21/eventhandling/ for an overview of
-    the Sc21 eventhandling system.
+    Note that the Sc21 way of handling events is different from the
+    one taken in Cocoa (where events are normally handled by NSView
+    subclasses) - SCView just passes on all events to this method.
 
     For overriding the default behavior of ctrl-clicks (context menu),
     see !{-SCView.mouseDown:}
