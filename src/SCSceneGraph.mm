@@ -127,7 +127,64 @@
   return NO;
 }
 
-#pragma mark --- accessor methods ---
+#pragma mark --- camera handling ---
+
+/*"
+Sets the SoCamera used for viewing the scene to cam. It is first
+ checked if the scenegraph contains a camera created by the
+ controller, and if yes, this camera is deleted.
+ 
+ Note that cam is expected to be part of the scenegraph already; it
+ is not inserted into it.
+ "*/
+- (SCCamera *)camera
+{
+  return SELF->camera; 
+}
+
+// Note that I removed the methods for getting and setting the
+// SoCamera -- app programmers should get the current SCCamera 
+// and access the SoCamera this way.
+
+/*" Returns !{YES} if a camera was added in the superscenegraph,
+and !{NO} if the camera is part of the user-supplied
+scenegraph.
+"*/
+- (BOOL) hasAddedCamera
+{
+  return SELF->addedcamera;
+}
+
+
+- (void)viewAll
+{
+  [SELF->camera viewAll:self];
+}
+
+#pragma mark --- headlight access ---
+
+// Note that I intentionally removed the methods for turning the
+// headlight on and off. This can easily be done by the application
+// programmer by first getting the scenegraph's headlight and then
+// modifying its values directly. kyrah 20040717.
+
+/*" If an additional light was added as part of the superscenegraph, this
+method returns this headlight. Otherwise, NULL is returned. "*/
+
+- (SoDirectionalLight *)headlight
+{
+  return (SELF->addedlight) ? SELF->headlight : NULL;
+}
+
+/*" Returns !{YES} if a light was added in the superscenegraph,
+and !{NO} otherwise.
+"*/
+- (BOOL)hasAddedLight
+{
+  return SELF->addedlight;
+}
+
+#pragma mark --- Coin scenegraph access ---
 
 /*"
   Returns the root node in the receiver's Open Inventor scenegraph, or
@@ -237,61 +294,7 @@
   return SELF->scenemanager;
 }
 
-/*"
-  Sets the SoCamera used for viewing the scene to cam. It is first
-  checked if the scenegraph contains a camera created by the
-  controller, and if yes, this camera is deleted.
 
-  Note that cam is expected to be part of the scenegraph already; it
-  is not inserted into it.
-"*/
-- (SCCamera *)camera
-{
-  return SELF->camera; 
-}
-
-// Note that I removed the methods for getting and setting the
-// SoCamera -- app programmers should get the current SCCamera 
-// and access the SoCamera this way.
-
-/*" Returns !{YES} if a camera was added in the superscenegraph,
-    and !{NO} if the camera is part of the user-supplied
-    scenegraph.
-"*/
-- (BOOL) hasAddedCamera
-{
-  return SELF->addedcamera;
-}
-
-
-- (void)viewAll
-{
-  [SELF->camera viewAll:self];
-}
-
-// ----------------- Automatic headlight configuration -----------------
-
-// Note that I intentionally removed the methods for turning the
-// headlight on and off. This can easily be done by the application
-// programmer by first getting the scenegraph's headlight and then
-// modifying its values directly. kyrah 20040717.
-
-
-/*" If an additional light was added as part of the superscenegraph, this
-    method returns this headlight. Otherwise, NULL is returned. "*/
-
-- (SoDirectionalLight *)headlight
-{
-  return (SELF->addedlight) ? SELF->headlight : NULL;
-}
-
-/*" Returns !{YES} if a light was added in the superscenegraph,
-    and !{NO} otherwise.
-"*/
-- (BOOL)hasAddedLight
-{
-  return SELF->addedlight;
-}
 
 #pragma mark --- delegate handling ---
 
