@@ -260,7 +260,8 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   if (scenegraph == NULL) {
     scenegraph = new SoSeparator;
     // Don't waste cycles by animating an empty scene. 
-    [self stopTimers];
+    [_delayqueuetimer deactivate];
+    [_timerqueuetimer deactivate];
   }
 
   [self _setInternalSceneGraph:scenegraph];
