@@ -61,7 +61,7 @@
 @end
 
 @interface SCExaminerHandler (IBPalette)
-- (NSString *)_SC_hasConflictingBindings;
+- (NSString *)_SC_conflictDescription;
 - (int)_SC_zoomButton;
 - (int)_SC_panButton;
 - (int)_SC_rotateButton;

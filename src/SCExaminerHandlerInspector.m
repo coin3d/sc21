@@ -129,7 +129,7 @@
   [enableWheel setState:([scexaminerhandler scrollWheelZoomEnabled] ?
     NSOnState:NSOffState)];
 
-  NSString * conflict = [scexaminerhandler _SC_hasConflictingBindings];
+  NSString * conflict = [scexaminerhandler _SC_conflictDescription];
   
   [conflictWarning setHidden:!conflict]; 
   [conflictWarning setToolTip:conflict];
@@ -138,7 +138,6 @@
 }
 
 @end
-
 
 @implementation SCExaminerHandlerInspector (InternalAPI)
 
@@ -208,51 +207,99 @@
   return idx;
 }
 
-
-
 @end
-
-
 
 @implementation SCExaminerHandler (IBPalette)
 
-- (NSString *)_SC_hasConflictingBindings
+- (NSString *)_SC_conflictDescription
 {
   BOOL conflict = NO;
   BOOL emulatesright = NO, emulatesmiddle = NO;
   
   int count = 3; // rotate, zoom, pan
-  if ([[self _SC_emulator] emulatesButton:1]) { emulatesright = YES; count++; }
-  if ([[self _SC_emulator] emulatesButton:2]) { emulatesmiddle = YES; count++; }
+  if ([[self _SC_emulator] emulatesButton:1]) { 
+    emulatesright = YES; count++;
+    if ([self _SC_rotateButton] == 1) count++;
+    if ([self _SC_panButton] == 1) count++;
+    if ([self _SC_zoomButton] == 1) count++;
+  }
+  
+  if ([[self _SC_emulator] emulatesButton:2]) { 
+    emulatesmiddle = YES; count++;
+    if ([self _SC_rotateButton] == 2) count++;
+    if ([self _SC_panButton] == 2) count++;
+    if ([self _SC_zoomButton] == 2) count++;
+  }
   
   int buttons[count];
   unsigned int modifiers[count];
-  NSMutableArray * names = [NSMutableArray arrayWithCapacity:5];
-  
+  NSMutableArray * names = [NSMutableArray arrayWithCapacity:5];  
+  NSArray * rotatepanzoom = 
+    [NSArray arrayWithObjects:@"Rotate", @"Pan", @"Zoom", nil];
   int idx = 0;  
   
   [self getRotateButton:&buttons[idx] modifier:&modifiers[idx]];
-  [names addObject:@"Rotate"]; idx++;
+  [names addObject:[rotatepanzoom objectAtIndex:idx]]; 
+  idx++;
   
   [self getPanButton:&buttons[idx] modifier:&modifiers[idx]]; 
-  [names addObject:@"Pan"]; idx++;
+  [names addObject:[rotatepanzoom objectAtIndex:idx]]; 
+  idx++;
   
   [self getZoomButton:&buttons[idx] modifier:&modifiers[idx]];
-  [names addObject:@"Zoom"]; idx++;
-  
+  [names addObject:[rotatepanzoom objectAtIndex:idx]]; 
+  idx++;
+    
   if (emulatesright) {
+    unsigned int emulationmodifier = 
+    [[self _SC_emulator] modifierToEmulateButton:1];
+
     buttons[idx] = 0;
-    modifiers[idx] = [[self _SC_emulator] modifierToEmulateButton:1];
+    modifiers[idx] = emulationmodifier;
     [names addObject:@"Right mouse emulation"]; 
-    idx++;
+    idx++;    
+    
+    // Add combinations for mouse emulation being used, to cover cases like
+    // zoom: left + alt + command
+    // pan: middle + alt
+    // middle button: left + command  
+    int i;
+    for (i = 0; i < 3; i++) {
+      if (buttons[i] == 1) {
+        buttons[idx] = 0;
+        modifiers[idx] = modifiers[i] | emulationmodifier;
+        [names addObject:[NSString 
+          stringWithFormat:@"%@ with emulated right button", 
+          [rotatepanzoom objectAtIndex:i]]];
+        idx++;
+      }
+    }    
   }
   
   if (emulatesmiddle) {
+    unsigned int emulationmodifier = 
+      [[self _SC_emulator] modifierToEmulateButton:2];
+    
     buttons[idx] = 0;
-    modifiers[idx] = [[self _SC_emulator] modifierToEmulateButton:2];
+    modifiers[idx] = emulationmodifier;
     [names addObject:@"Middle mouse emulation"]; 
+    idx++;
+
+    // see comment above
+    int i;
+    for (i = 0; i < 3; i++) {
+      if (buttons[i] == 2) {
+        buttons[idx] = 0;
+        modifiers[idx] = modifiers[i] | emulationmodifier;        
+        [names addObject:[NSString 
+          stringWithFormat:@"%@ with emulated middle button", 
+          [rotatepanzoom objectAtIndex:i]]];        
+        idx++;
+      }
+    }        
   }
-      
+        
+  // actual conflict check
   int i, j;
   for (i = 0; i < count; i++) {
     for (j = 0; j < count; j++) {
