@@ -136,6 +136,24 @@
 			refType = 4;
 			sourceTree = "<group>";
 		};
+		E04107950608DBBA00F8E8B5 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = SC21_Description.plist;
+			path = packaging/SC21_Description.plist;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E04107960608DBBA00F8E8B5 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = SC21_Info.plist;
+			path = packaging/SC21_Info.plist;
+			refType = 4;
+			sourceTree = "<group>";
+		};
 		E0547AB706073E170089FA12 = {
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
@@ -156,15 +174,200 @@
 			settings = {
 			};
 		};
+		E056E6D70609F9FE0068145A = {
+			buildPhases = (
+				E056E6D80609F9FE0068145A,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				INSTALL_PATH = /;
+				PRODUCT_NAME = "$(PROJECT_NAME).pkg";
+			};
+			dependencies = (
+				E056E6F20609FAC10068145A,
+			);
+			isa = PBXNativeTarget;
+			name = "SC21 pkg";
+			productInstallPath = /usr/local/bin;
+			productName = Untitled;
+			productReference = E056E6DA0609F9FE0068145A;
+			productType = "com.apple.product-type.tool";
+		};
+		E056E6D80609F9FE0068145A = {
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(PROJECT_NAME).palette",
+			);
+			isa = PBXShellScriptBuildPhase;
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(PRODUCT_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Script A\"\nset -x\n./packaging/makesc21pkg.sh -v\ntouch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit 0";
+		};
+		E056E6DA0609F9FE0068145A = {
+			explicitFileType = "compiled.mach-o.executable";
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = SC21.pkg;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E056E6EA0609FA880068145A = {
+			buildPhases = (
+				E056E6EB0609FA880068145A,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				INSTALL_PATH = /;
+				PRODUCT_NAME = "$(PROJECT_NAME)-0.0.1.dmg";
+			};
+			dependencies = (
+				E056E6F00609FAB00068145A,
+			);
+			isa = PBXNativeTarget;
+			name = "SC21 dmg";
+			productInstallPath = /usr/local/bin;
+			productName = "Target B";
+			productReference = E056E6ED0609FA880068145A;
+			productType = "com.apple.product-type.tool";
+		};
+		E056E6EB0609FA880068145A = {
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(PROJECT_NAME).pkg",
+			);
+			isa = PBXShellScriptBuildPhase;
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(PRODUCT_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "echo \"SC21 dmg script:\"\necho \"  in: $BUILT_PRODUCTS_DIR/$PROJECT_NAME.pkg\"\necho \"  out: $TARGET_BUILD_DIR/$PRODUCT_NAME\"\nset -x\n./packaging/makesc21dmg.sh -v -c $PROJECT_NAME-0.0.1\nexit 0\n";
+		};
+		E056E6ED0609FA880068145A = {
+			explicitFileType = "compiled.mach-o.executable";
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = "SC21-0.0.1.dmg";
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E056E6EF0609FAB00068145A = {
+			containerPortal = E0765C56060222BB0099F78E;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E056E6D70609F9FE0068145A;
+			remoteInfo = "Target A";
+		};
+		E056E6F00609FAB00068145A = {
+			isa = PBXTargetDependency;
+			target = E056E6D70609F9FE0068145A;
+			targetProxy = E056E6EF0609FAB00068145A;
+		};
+		E056E6F10609FAC10068145A = {
+			containerPortal = E0765C56060222BB0099F78E;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E09CFA55060245710000E227;
+			remoteInfo = "SC21 palette";
+		};
+		E056E6F20609FAC10068145A = {
+			isa = PBXTargetDependency;
+			target = E09CFA55060245710000E227;
+			targetProxy = E056E6F10609FAC10068145A;
+		};
+		E056E712060A13650068145A = {
+			buildPhases = (
+				E056E713060A13650068145A,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				PRODUCT_NAME = dummy.txt;
+			};
+			dependencies = (
+				E056E718060A13970068145A,
+			);
+			isa = PBXNativeTarget;
+			name = dummy;
+			productInstallPath = /usr/local/bin;
+			productName = dummy;
+			productReference = E056E715060A13650068145A;
+			productType = "com.apple.product-type.tool";
+		};
+		E056E713060A13650068145A = {
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(PROJECTNAME)-0.0.1.dmg",
+			);
+			isa = PBXShellScriptBuildPhase;
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(PRODUCT_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "echo \"dummy script:\"\n./test.sh\nexit 0";
+		};
+		E056E715060A13650068145A = {
+			explicitFileType = "compiled.mach-o.executable";
+			includeInIndex = 0;
+			isa = PBXFileReference;
+			path = dummy.txt;
+			refType = 3;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E056E717060A13970068145A = {
+			containerPortal = E0765C56060222BB0099F78E;
+			isa = PBXContainerItemProxy;
+			proxyType = 1;
+			remoteGlobalIDString = E056E6EA0609FA880068145A;
+			remoteInfo = "SC21 dmg";
+		};
+		E056E718060A13970068145A = {
+			isa = PBXTargetDependency;
+			target = E056E6EA0609FA880068145A;
+			targetProxy = E056E717060A13970068145A;
+		};
+		E070FB1E0608992200A60FCA = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text.script.sh;
+			name = makesc21pkg.sh;
+			path = packaging/makesc21pkg.sh;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E070FB1F0608992A00A60FCA = {
+			children = (
+				E070FB1E0608992200A60FCA,
+				E0AC6A8806060F3300907ED7,
+			);
+			isa = PBXGroup;
+			name = Scripts;
+			refType = 4;
+			sourceTree = "<group>";
+		};
 		E0765C52060222BB0099F78E = {
 			children = (
+				E04107950608DBBA00F8E8B5,
+				E04107960608DBBA00F8E8B5,
+				E070FB1F0608992A00A60FCA,
 				E09CFAB206024B510000E227,
 				E09CFA9F060249F60000E227,
 				E09CFD9506024B5B0000E227,
 				E0765C61060223120099F78E,
 				E0765C62060223120099F78E,
 				E09CFA57060245720000E227,
-				E0AC6A8806060F3300907ED7,
 			);
 			isa = PBXGroup;
 			refType = 4;
@@ -228,6 +431,7 @@
 				E0765C54060222BB0099F78E,
 				E0765C55060222BB0099F78E,
 				E01C24CB0605FDCE0000C5C7,
+				E0D32D3F0608BD8900FDEF66,
 			);
 			hasScannedForEncodings = 1;
 			isa = PBXProject;
@@ -237,6 +441,9 @@
 			targets = (
 				E0765C5F060223120099F78E,
 				E09CFA55060245710000E227,
+				E056E6D70609F9FE0068145A,
+				E056E6EA0609FA880068145A,
+				E056E712060A13650068145A,
 			);
 		};
 		E0765C5B060223120099F78E = {
@@ -286,7 +493,6 @@
 				E0765C5C060223120099F78E,
 				E0765C5D060223120099F78E,
 				E0765C5E060223120099F78E,
-				E0AC6A8706060F1D00907ED7,
 			);
 			buildRules = (
 			);
@@ -354,6 +560,9 @@
 			children = (
 				E0765C60060223120099F78E,
 				E09CFA56060245710000E227,
+				E056E6DA0609F9FE0068145A,
+				E056E6ED0609FA880068145A,
+				E056E715060A13650068145A,
 			);
 			isa = PBXGroup;
 			name = Products;
@@ -431,7 +640,6 @@
 				E01100A70605E5B800F93EC1,
 				E01100A50605E5B200F93EC1,
 				E09C036B06024BEF0000E227,
-				E0AC6A8906060F3300907ED7,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -869,19 +1077,6 @@
 			refType = 4;
 			sourceTree = "<group>";
 		};
-		E0AC6A8706060F1D00907ED7 = {
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			isa = PBXShellScriptBuildPhase;
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "./test.sh\n";
-		};
 		E0AC6A8806060F3300907ED7 = {
 			fileEncoding = 4;
 			isa = PBXFileReference;
@@ -890,17 +1085,47 @@
 			refType = 4;
 			sourceTree = "<group>";
 		};
-		E0AC6A8906060F3300907ED7 = {
-			fileRef = E0AC6A8806060F3300907ED7;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
 		E0AC6A98060631AA00907ED7 = {
 			fileRef = E09C038906024CFB0000E227;
 			isa = PBXBuildFile;
 			settings = {
 			};
+		};
+		E0D32D3F0608BD8900FDEF66 = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_ENABLE_ASM_KEYWORD = YES;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+			};
+			isa = PBXBuildStyle;
+			name = install;
 		};
 	};
 	rootObject = E0765C56060222BB0099F78E;
