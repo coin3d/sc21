@@ -165,7 +165,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 {
   [super setSceneGraph:root];
   
-  if ([_camera controllerHasCreatedCamera]) {
+  if ([_camera controllerHasCreatedCamera] && _scenemanager) {
     [self viewAll];
     [view setNeedsDisplay:YES];
   }  
