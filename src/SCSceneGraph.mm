@@ -324,9 +324,8 @@ void error_cb(const class SoError * error, void * data)
   SELF->addedlight = NO;
   
   if (root) { 
-    //
-    // Find out who will create a superscenegraph
-    //
+
+    // --- Find out who will create a superscenegraph ---
     
     // SELF->createsuperscenegraph is controlled through the IB inspector.
     BOOL createdefaultsupersg = SELF->createsuperscenegraph;
@@ -342,15 +341,14 @@ void error_cb(const class SoError * error, void * data)
       }
 
       // Let delegate do its own superscenegraph setup work.
-      if ([self->delegate 
-               respondsToSelector:@selector(createSuperSceneGraph:)]) {
+      if ([self->delegate respondsToSelector:
+                 @selector(createSuperSceneGraph:)]) {
         createdelegatesupersg = YES;
       }    
     }
 
-    //
-    // Superscenegraph creation
-    //
+    // --- Superscenegraph creation --- 
+
     if (!createdefaultsupersg && !createdelegatesupersg) {
       SELF->superscenegraph = root;
     }
@@ -378,6 +376,7 @@ void error_cb(const class SoError * error, void * data)
       SELF->superscenegraph->ref();
       SELF->scenegraph = root;
     }
+
     // If superscenegraph == NULL at this point, it is because the
     // delegate returned NULL for superscenegraph. We regard that as a
     // sign that something is very wrong. No scenegraph has been set
@@ -386,9 +385,8 @@ void error_cb(const class SoError * error, void * data)
       retval = NO; // The only reason why we may fail
     }
 
-    //
-    // Camera && light handling
-    //
+    // --- Camera and light handling ---
+
     if (SELF->superscenegraph) {
       // Set active camera to use in viewer. Note that we have to do this
       // after the delegate had the chance to create its own
