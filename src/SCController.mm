@@ -695,7 +695,9 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 - (void)_setInternalSceneGraph:(SoGroup *)root
 {
+  if (_scenegraph) _scenegraph->unref();
   _scenegraph = root;
+  _scenegraph->ref();
 }
 
 - (void)_handleLighting

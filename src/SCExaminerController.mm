@@ -520,6 +520,7 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
 
 - (void)_setInternalSceneGraph:(SoGroup *)scenegraph
 {
+  if (_scenegraph) _scenegraph->unref();
   _userscenegraph = scenegraph;
   _scenegraph = new SoSeparator;
   _headlight = new SoDirectionalLight;
