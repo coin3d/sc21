@@ -57,12 +57,10 @@
   #{SCView and SCDrawable} 
 
   SCView conforms to the SCDrawable protocol, which means it can be
-  used to display a Coin scenegraph through using an SCController,
-  which will do all actual Coin scene management, rendering, event
-  handling &c.
+  used by an SCController to display a Coin scenegraph. 
 
-  Note: When connecting SCView's !{controller} outlet, the controller's
-  drawable will automatically be set to the SCView.
+  Note that when connecting SCView's !{controller} outlet, the
+  controller's drawable will automatically be set to the SCView.
 
   #{Event handling}
 
@@ -90,8 +88,8 @@
   Designated initializer.
   
   Initializes a newly allocated SCView with rect as its frame
-  rectangle. Sets up an OpenGL context with the given pixel format.
-  The format parameter is passed on to its superclass.
+  rectangle and sets up an OpenGL context with the pixelformat
+  format. Returns !{self}.
 "*/
 
 - (id)initWithFrame:(NSRect)rect pixelFormat:(SCOpenGLPixelFormat *)format
@@ -125,7 +123,7 @@
 #pragma mark --- accessor methods ---
 
 /*" 
-Returns the currently used SCController.
+  Returns the receiver's SCController.
 "*/
 - (SCController *)controller
 {
@@ -134,7 +132,7 @@ Returns the currently used SCController.
 
 
 /*" 
-  Sets the SCController to newcontroller. newcontroller is retained.
+  Sets the receiver's SCController to newcontroller. newcontroller is retained.
 "*/
 - (void)setController:(SCController *)newcontroller
 {
@@ -208,12 +206,12 @@ Returns the currently used SCController.
 #pragma mark --- event handling ---
 
 
-/*" Forwards event to the controller by sending it the !{handleEvent:}
-  message. If the event is not handled by the controller, it will be
-  forwarded through the responder chain as usual.
+/*" 
+  Forwards event to the controller. If the event is not handled by the
+  controller, it will be sent on through the responder chain as usual.
 
-  Note: NSWindow.setAcceptsMouseMovedEvents: must be called to enable
-  NSMouseMoved events.
+  Note: You have to send !{setAcceptsMouseMovedEvents:YES} to the
+  receiver's parent NSWindow to enable NSMouseMoved events.
 "*/
 
 - (void)mouseMoved:(NSEvent *)event
@@ -224,16 +222,15 @@ Returns the currently used SCController.
 }
 
 /*" 
-  Forwards event to the controller by sending it the !{handleEvent:}
-  message. If the event is not handled by the controller, it will
-  be forwarded through the responder chain as usual.
+  Forwards event to the controller. If the event is not handled by the
+  controller, it will be sent on through the responder chain as usual.
 
   Note that if you press the left mouse button while holding
   down the ctrl key, you will not receive a mouseDown event.
   Instead, the view's default context menu will be shown. (This
   behavior is inherited from NSView.) If you want to handle
   ctrl-click yourself, you have to subclass SCView and override
-  #{- (NSMenu *)menuForEvent:(NSEvent *)event} to return nil.
+  !{- (NSMenu *)menuForEvent:(NSEvent *)event} to return nil.
   This will cause the event to be passed on to this function.
   "*/
 - (void)mouseDown:(NSEvent *)event
@@ -244,10 +241,9 @@ Returns the currently used SCController.
 }
 
 /*" 
-  Forwards event to the controller by sending it the !{handleEvent:}
-  message. If the event is not handled by the controller, it will
-  be forwarded through the responder chain as usual. 
-  "*/
+  Forwards event to the controller. If the event is not handled by the
+  controller, it will be sent on through the responder chain as usual.
+"*/
 - (void)mouseUp:(NSEvent *)event
 {
   if (![self->controller handleEvent:event]) {
@@ -256,10 +252,9 @@ Returns the currently used SCController.
 }
 
 /*" 
-  Forwards event to the controller by sending it the !{handleEvent:}
-  message. If the event is not handled by the controller, it will
-  be forwarded through the responder chain as usual.
-  
+  Forwards event to the controller. If the event is not handled by the
+  controller, it will be sent on through the responder chain as usual.
+
   Note that when processing "mouse dragged" events, Coin does not
   distinguish between left and right mouse button. If you interested
   in that information, you have to evaluate the last mouseDown that
@@ -273,9 +268,9 @@ Returns the currently used SCController.
 }
 
 /*"
-  Forwards event to the controller by sending it the !{handleEvent:}
-  message. If the event is not handled by the controller, it will
-  be forwarded through the responder chain as usual.
+  Forwards event to the controller. If the event is not handled by the
+  controller, it will be sent on through the responder chain as usual.
+
 "*/
 
 // FIXME: Unhandled right-clicks will usually result in NSView displaying
@@ -291,9 +286,9 @@ Returns the currently used SCController.
 
 
 /*" 
-  Forwards event to the controller by sending it the !{handleEvent:}
-  message. If the event is not handled by the controller, it will
-  be forwarded through the responder chain as usual.
+  Forwards event to the controller. If the event is not handled by the
+  controller, it will be sent on through the responder chain as usual.
+
   "*/
 - (void)rightMouseUp:(NSEvent *)event
 {
@@ -303,10 +298,9 @@ Returns the currently used SCController.
 }
 
 /*"
-  Forwards event to the controller by sending it the !{handleEvent:}
-  message. If the event is not handled by the controller, it will
-  be forwarded through the responder chain as usual.
-  
+  Forwards event to the controller. If the event is not handled by the
+  controller, it will be sent on through the responder chain as usual.
+
   Note that when processing "mouse dragged" events, Coin does not
   distinguish between left and right mouse button. If you are interested
   in that information, you have to evaluate the last mouseDown that
@@ -320,9 +314,9 @@ Returns the currently used SCController.
 }
 
 /*" 
-  Forwards event to the controller by sending it the !{handleEvent:}
-  message. If the event is not handled by the controller, it will
-  be forwarded through the responder chain as usual 
+  Forwards event to the controller. If the event is not handled by the
+  controller, it will be sent on through the responder chain as usual.
+
   "*/
 - (void)otherMouseDown:(NSEvent *)event
 {
@@ -332,9 +326,9 @@ Returns the currently used SCController.
 }
 
 /*" 
-  Forwards event to the controller by sending it the !{handleEvent:}
-  message. If the event is not handled by the controller, it will
-  be forwarded through the responder chain as usual. 
+  Forwards event to the controller. If the event is not handled by the
+  controller, it will be sent on through the responder chain as usual.
+
   "*/
 - (void)otherMouseUp:(NSEvent *)event
 {
@@ -344,10 +338,9 @@ Returns the currently used SCController.
 }
 
 /*" 
-  Forwards event to the controller by sending it the !{handleEvent:}
-  message. If the event is not handled by the controller, it will
-  be forwarded through the responder chain as usual.
-  
+  Forwards event to the controller. If the event is not handled by the
+  controller, it will be sent on through the responder chain as usual.
+
   Note that when processing "mouse dragged" events, Coin does not
   distinguish between left and right mouse button. If you are interested
   in that information, you have to evaluate the last mouseDown that
@@ -361,9 +354,9 @@ Returns the currently used SCController.
 }
 
 /*" 
-  Forwards event to the controller by sending it the !{handleEvent:}
-  message. If the event is not handled by the controller, it will
-  be forwarded through the responder chain as usual.
+  Forwards event to the controller. If the event is not handled by the
+  controller, it will be sent on through the responder chain as usual.
+
   "*/
 - (void)scrollWheel:(NSEvent *)event
 {
@@ -372,10 +365,11 @@ Returns the currently used SCController.
   }
 }
 
-/*" Forwards event to the controller by sending it the
-  !{handleEvent:} message. If the event is not handled by the
-  controller, it will be forwarded through the responder chain as
-  usual. "*/
+
+/*" 
+  Forwards event to the controller. If the event is not handled by the
+  controller, it will be sent on through the responder chain as usual.
+"*/
 - (void)keyDown:(NSEvent *)event 
 {
   if ([event isARepeat]) return;
@@ -386,10 +380,9 @@ Returns the currently used SCController.
 
 
 /*" 
-  Forwards event to the controller by sending it the !{handleEvent:}
-  message. If the event is not handled by the controller, it will
-  be forwarded through the responder chain as usual.
-  "*/
+  Forwards event to the controller. If the event is not handled by the
+  controller, it will be sent on through the responder chain as usual.
+"*/
 - (void)keyUp:(NSEvent *)event 
 {
   if (![self->controller handleEvent:event]) {
@@ -397,10 +390,10 @@ Returns the currently used SCController.
   } 
 }
 
-/*" Forwards event to the controller by sending it the !{handleEvent:}
-    message. If the event is not handled by the controller, it will
-    be forwarded through the responder chain as usual.
- "*/
+/*" 
+  Forwards event to the controller. If the event is not handled by the
+  controller, it will be sent on through the responder chain as usual.
+"*/
 
 - (void)flagsChanged:(NSEvent *)event 
 {
