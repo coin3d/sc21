@@ -32,7 +32,6 @@
 @interface AppController : NSObject
 {
   IBOutlet SCController * coincontroller;
-  IBOutlet SCView * view;
   IBOutlet NSTextField * filenametext;
 }
 - (IBAction)open:(id)sender;
