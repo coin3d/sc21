@@ -45,8 +45,8 @@
 //104
 		1058C7A0FEA54F0111CA2CBB = {
 			children = (
-				E05D294F06074D3100C6A248,
 				E05D267806074D0300C6A248,
+				E0436F7B0621908200376DF6,
 				1058C7A1FEA54F0111CA2CBB,
 			);
 			isa = PBXGroup;
@@ -234,12 +234,10 @@
 			);
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
-				DEBUGGING_SYMBOLS = YES;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				OPTIMIZATION_CFLAGS = "-O0";
 				ZERO_LINK = YES;
 			};
 			isa = PBXBuildStyle;
@@ -276,22 +274,12 @@
 			buildRules = (
 			);
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = /tmp/SC21.dst/Library/Frameworks;
-				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = SC21Viewer_Prefix.pch;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
-				GCC_WARN_UNKNOWN_PRAGMAS = NO;
-				HEADER_SEARCH_PATHS = "";
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = SC21Viewer;
-				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
 				WRAPPER_EXTENSION = app;
 			};
@@ -354,7 +342,7 @@
 			files = (
 				8D11072F0486CEB800E47090,
 				E05D267906074D0300C6A248,
-				E05D295006074D3100C6A248,
+				E0436F7C0621908200376DF6,
 			);
 			isa = PBXFrameworksBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -391,6 +379,20 @@
 //E02
 //E03
 //E04
+		E0436F7B0621908200376DF6 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = SC21.framework;
+			path = /Library/Frameworks/SC21.framework;
+			refType = 0;
+			sourceTree = "<absolute>";
+		};
+		E0436F7C0621908200376DF6 = {
+			fileRef = E0436F7B0621908200376DF6;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		E05D256A06074CA900C6A248 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
@@ -443,20 +445,6 @@
 		};
 		E05D267906074D0300C6A248 = {
 			fileRef = E05D267806074D0300C6A248;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		E05D294F06074D3100C6A248 = {
-			isa = PBXFileReference;
-			lastKnownFileType = wrapper.framework;
-			name = SC21.framework;
-			path = /Library/Frameworks/SC21.framework;
-			refType = 0;
-			sourceTree = "<absolute>";
-		};
-		E05D295006074D3100C6A248 = {
-			fileRef = E05D294F06074D3100C6A248;
 			isa = PBXBuildFile;
 			settings = {
 			};
