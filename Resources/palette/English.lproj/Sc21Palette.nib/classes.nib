@@ -1,14 +1,16 @@
 {
     IBClasses = (
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
-        {CLASS = SC21; LANGUAGE = ObjC; SUPERCLASS = NSView; }, 
+        {CLASS = Foo; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {
             CLASS = SC21Palette; 
             LANGUAGE = ObjC; 
             OUTLETS = {
-                controllerbutton = NSButton; 
-                examinerbutton = NSButton; 
-                viewbutton = NSButton; 
+                sccontrolleritem = id; 
+                scexaminercontrolleritem = id; 
+                scopenglviewitem = id; 
+                scviewitem = id; 
+                testitem = id; 
             }; 
             SUPERCLASS = IBPalette; 
         }, 
