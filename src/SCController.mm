@@ -86,13 +86,15 @@
 // -------------------- Callback function ------------------------
 
 static void
-redraw_cb(void * user, SoSceneManager *) {
+redraw_cb(void * user, SoSceneManager *)
+{
   SCView * view = (SCView *)user;
   [view setNeedsDisplay:YES]; 
 }
 
 static void
-sensorqueuechanged_cb(void * data) {
+sensorqueuechanged_cb(void * data)
+{
   SCController * ctrl = (SCController *)data;
   [ctrl _sensorQueueChanged];
 }
@@ -107,6 +109,7 @@ NSString * SCModeChangedNotification = @"SCModeChangedNotification";
 NSString * SCSceneGraphChangedNotification = @"SCSceneGraphChangedNotification";
 NSString * SCNoCameraFoundInSceneNotification = @"SCNoCameraFoundInSceneNotification";
 NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotification";
+NSString * SCIdleNotification = @"SCIdleNotification";
 
 @implementation SCController
 
@@ -130,7 +133,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     if the file was read successfully). SCController's initializer
     automatically calls this function if needed. 
 "*/
-
+//FIXME: Do this in +initialize instead? (kintel 20040406)
 + (void)initCoin
 {
   SoDB::init();
@@ -165,7 +168,9 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
     call !{[super commonInit]} as the first call in your
     implementation to make sure everything is set up properly.
 "*/
-
+//FIXME: We should be able to move the contents of this method
+// to -init and archive/unarchive the aggregated instance variables.
+// (kintel 20040406)
 - (void)commonInit
 {
   if (!_coinInitialized) [SCController initCoin];
@@ -186,23 +191,12 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 - (void)activate
 {
-  _scenemanager = new SoSceneManager;
-  _scenemanager->setRenderCallback(redraw_cb, (void*)view);
-  _scenemanager->setBackgroundColor(SbColor(0.0f, 0.0f, 0.0f));
-  _scenemanager->getGLRenderAction()->setCacheContext(
-    SoGLCacheContextElement::getUniqueCacheContext());
-  _scenemanager->activate();
+  SoSceneManager *scenemanager = new SoSceneManager;
+  [self setSceneManager:scenemanager];
 
-  if (_scenegraph == NULL) {
-    [self setSceneGraph:NULL];
-  } else {
-    _scenemanager->setSceneGraph(_scenegraph); 
-  }
-
-  // FIXME: use name constant for notification name
-  [[NSNotificationCenter defaultCenter] addObserver: self
-    selector:@selector(_idle:) name:@"SCIdleNotification"
-    object:nil];  
+  [[NSNotificationCenter defaultCenter] addObserver:self
+    selector:@selector(_idle:) name:SCIdleNotification
+    object:nil];
 
   [self _sensorQueueChanged];
 }
@@ -266,8 +260,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   if (scenegraph == _scenegraph) return;
   if (scenegraph == NULL) {
     scenegraph = new SoSeparator;
-    // Don't waste cycles by animating an empty scene. 
-    [self stopTimers];
+    [self stopTimers];   // Don't waste cycles by animating an empty scene. 
   } else {
     [self startTimers];
   }
@@ -303,8 +296,9 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 - (void)setSceneManager:(SoSceneManager *)scenemanager
 {
+  //FIXME: Keep old background color if set? (kintel 20040406)
   _scenemanager = scenemanager;
-  _scenemanager->setRenderCallback(redraw_cb, (void*)view);
+  _scenemanager->setRenderCallback(redraw_cb, (void *)view);
   _scenemanager->getGLRenderAction()->setCacheContext(
     SoGLCacheContextElement::getUniqueCacheContext());
   _scenemanager->activate();
@@ -383,6 +377,9 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 - (void)setBackgroundColor:(NSColor *)color
 {
+  // FIXME: use smth. like colorUsingColorSpaceName:NSCalibratedRGBColorSpace
+  // instead of raising exception. Use Calibrated or Device colors?
+  // (kintel 20040406)
   float red = [color redComponent];
   float green = [color greenComponent];
   float blue = [color blueComponent];
@@ -502,7 +499,8 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 - (void)setHandlesEventsInViewer:(BOOL)yn
 {
   _handleseventsinviewer = yn;
-  [[NSNotificationCenter defaultCenter] postNotificationName:SCModeChangedNotification object:self];
+  [[NSNotificationCenter defaultCenter] 
+    postNotificationName:SCModeChangedNotification object:self];
 }
 
 
@@ -549,10 +547,14 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
                        selector:@selector(_delayQueueTimerFired:) userInfo:nil 
                        repeats:YES] retain];
   
-  [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSModalPanelRunLoopMode];
-  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSModalPanelRunLoopMode];
-  [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSEventTrackingRunLoopMode];
-  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSEventTrackingRunLoopMode];
+  [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer 
+                              forMode:NSModalPanelRunLoopMode];
+  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer 
+                              forMode:NSModalPanelRunLoopMode];
+  [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer 
+                              forMode:NSEventTrackingRunLoopMode];
+  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer 
+                              forMode:NSEventTrackingRunLoopMode];
   
   SoDB::getSensorManager()->setChangedCallback(sensorqueuechanged_cb, self);
 }
@@ -570,11 +572,14 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   if ([_delayqueuetimer timeInterval] == interval) return;
   if ([_delayqueuetimer isValid]) [_delayqueuetimer invalidate];
 
-  _delayqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:interval target:self
+  _delayqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:interval 
+                               target:self
   selector:@selector(_delayQueueTimerFired:) userInfo:nil repeats:YES] retain];
 
-  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSModalPanelRunLoopMode];
-  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSEventTrackingRunLoopMode];
+  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer 
+                              forMode:NSModalPanelRunLoopMode];
+  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer 
+                              forMode:NSEventTrackingRunLoopMode];
 }
 
 
@@ -734,7 +739,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   // Create timers at first invocation
   if (!_timerqueuetimer) {
     [self startTimers];
- }
+  }
 
   SoSensorManager * sm = SoDB::getSensorManager();
   SbTime t;  
@@ -747,11 +752,11 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   
   if (sm->isDelaySensorPending()) {
     [[NSNotificationQueue defaultQueue] enqueueNotification:[NSNotification 
-      notificationWithName:@"SCIdleNotification" object:self]
+      notificationWithName:SCIdleNotification object:self]
       postingStyle:NSPostWhenIdle coalesceMask:NSNotificationCoalescingOnName
-      forModes:[NSArray arrayWithObjects: NSDefaultRunLoopMode, NSModalPanelRunLoopMode,
-      NSEventTrackingRunLoopMode, nil]];
-    [_delayqueuetimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:0.08]];      
+      forModes:[NSArray arrayWithObjects: NSDefaultRunLoopMode, 
+      NSModalPanelRunLoopMode, NSEventTrackingRunLoopMode, nil]];
+    [_delayqueuetimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:0.08]];
   } else {
     [_delayqueuetimer deactivate];
   }
@@ -828,6 +833,3 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 }
 
 @end
-
-
-
