@@ -29,10 +29,6 @@
 #import <Cocoa/Cocoa.h>
 #import <OpenGL/gl.h>
 
-#import <Inventor/events/SoKeyboardEvent.h>
-#import <Inventor/events/SoMouseButtonEvent.h>
-#import <Inventor/events/SoEvent.h>
-
 @class SCController;
 
 @interface SCView : NSOpenGLView <NSCoding>

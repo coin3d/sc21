@@ -30,15 +30,6 @@
 #import "SCController.h"
 #import "SCExaminerController.h"
 
-#import <Inventor/SoDB.h>
-#import <Inventor/SoInteraction.h>
-#import <Inventor/SoSceneManager.h>
-#import <Inventor/events/SoKeyboardEvent.h>
-#import <Inventor/events/SoMouseButtonEvent.h>
-#import <Inventor/events/SoEvent.h>
-#import <OpenGL/glu.h>
-
-
 // ---------------------- Notifications ----------------------------
 
 NSString * SCCouldNotCreateValidPixelFormatNotification =
@@ -381,6 +372,8 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
   
   [[self openGLContext] makeCurrentContext];
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // FIXME: needed?
+  // FIXME: do this only once, after creating a context and binding it
+  // (kintel 20040323)
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_LIGHTING);
   [controller render];

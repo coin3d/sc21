@@ -43,7 +43,6 @@
 #import <Inventor/nodekits/SoBaseKit.h>
 #import <Inventor/nodes/SoCamera.h>
 #import <Inventor/nodes/SoGroup.h>
-#import <Inventor/nodes/SoSeparator.h>
 #import <Inventor/nodes/SoPerspectiveCamera.h>
 #import <Inventor/nodes/SoOrthographicCamera.h>
 

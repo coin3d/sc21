@@ -31,15 +31,9 @@
 @class SCController;
 
 class SbRotation;
-class SbMatrix;
-class SbVec3f;
-class SbViewportRegion;
 class SoCamera;
-class SoType;
 class SoGroup;
 class SoGetBoundingBoxAction;
-class SoPerspectiveCamera;
-class SoOrthographicCamera;
 
 /*" Possible camera types in the scene graph.
     !{SCCameraPerspective} describes an !{SoPerspectiveCamera},
