@@ -581,6 +581,128 @@
 			settings = {
 			};
 		};
+		E000936306C64E700068E0BF = {
+			children = (
+				E000936406C64E700068E0BF,
+				E000936506C64E700068E0BF,
+				E000936606C64E700068E0BF,
+			);
+			isa = PBXGroup;
+			name = doc;
+			path = packaging/doc;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E000936406C64E700068E0BF = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			path = Description.plist;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E000936506C64E700068E0BF = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			path = Info.plist;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E000936606C64E700068E0BF = {
+			children = (
+				E000936706C64E700068E0BF,
+				E000936806C64E700068E0BF,
+				E000936906C64E700068E0BF,
+			);
+			isa = PBXGroup;
+			path = Resources;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E000936706C64E700068E0BF = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.tiff;
+			path = background.tiff;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E000936806C64E700068E0BF = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.rtf;
+			path = License.rtf;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E000936906C64E700068E0BF = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.rtf;
+			path = Welcome.rtf;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E000936F06C64E8E0068E0BF = {
+			children = (
+				E000949006C64F350068E0BF,
+				E000949106C64F350068E0BF,
+				E000949206C64F350068E0BF,
+			);
+			isa = PBXGroup;
+			path = examples;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E000949006C64F350068E0BF = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = Description.plist;
+			path = packaging/examples/Description.plist;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		E000949106C64F350068E0BF = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = text.plist.xml;
+			name = Info.plist;
+			path = packaging/examples/Info.plist;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		E000949206C64F350068E0BF = {
+			children = (
+				E000949306C64F350068E0BF,
+				E000949406C64F350068E0BF,
+				E000949506C64F350068E0BF,
+			);
+			isa = PBXGroup;
+			name = Resources;
+			path = packaging/examples/Resources;
+			refType = 2;
+			sourceTree = SOURCE_ROOT;
+		};
+		E000949306C64F350068E0BF = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.tiff;
+			path = background.tiff;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E000949406C64F350068E0BF = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.rtf;
+			path = License.rtf;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E000949506C64F350068E0BF = {
+			isa = PBXFileReference;
+			lastKnownFileType = text.rtf;
+			path = Welcome.rtf;
+			refType = 4;
+			sourceTree = "<group>";
+		};
 		E01100A40605E5B200F93EC1 = {
 			children = (
 				E09CFAAE06024B1F0000E227,
@@ -1537,6 +1659,8 @@
 		};
 		E079476206340BEA006B5824 = {
 			children = (
+				E000936F06C64E8E0068E0BF,
+				E000936306C64E700068E0BF,
 				E0D1CE0406343F5B00269948,
 				E0D1CDFE06343F4E00269948,
 				E0D1CDEB06343F3100269948,
@@ -2673,7 +2797,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Script: Sc21 examples\"\nset -x\nmkdir -p $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME\ntar c -C examples README.txt Models/README.txt Models/basic/2cubes.iv Models/basic/cube.iv Models/basic/enginecube.iv Models/basic/rotorcube.iv Models/watch.wrl Models/textures/Watch2.jpg Models/textures/leather.jpg Sc21Viewer/main.m Sc21Viewer/AppController.h Sc21Viewer/AppController.mm Sc21Viewer/Sc21Viewer_Prefix.pch Sc21Viewer/Info.plist Sc21Viewer/version.plist Sc21Viewer/English.lproj/InfoPlist.strings Sc21Viewer/English.lproj/MainMenu.nib/classes.nib Sc21Viewer/English.lproj/MainMenu.nib/data.dependency Sc21Viewer/English.lproj/MainMenu.nib/info.nib Sc21Viewer/English.lproj/MainMenu.nib/keyedobjects.nib Sc21Viewer/Sc21Viewer.xcode/project.pbxproj Sc21FullscreenViewer/main.m Sc21FullscreenViewer/AppController.h Sc21FullscreenViewer/AppController.mm Sc21FullscreenViewer/Sc21FullscreenViewer_Prefix.pch Sc21FullscreenViewer/Info.plist Sc21FullscreenViewer/version.plist Sc21FullscreenViewer/English.lproj/MainMenu.nib/classes.nib Sc21FullscreenViewer/English.lproj/MainMenu.nib/data.dependency Sc21FullscreenViewer/English.lproj/MainMenu.nib/info.nib Sc21FullscreenViewer/English.lproj/MainMenu.nib/keyedobjects.nib Sc21FullscreenViewer/Sc21FullscreenViewer.xcode/project.pbxproj NoNibViewer/main.mm NoNibViewer/AppController.h NoNibViewer/AppController.mm NoNibViewer/NoNibViewer_Prefix.pch NoNibViewer/NoNibViewer.xcode/project.pbxproj NoNibViewer/build.sh Viewtiful/main.mm Viewtiful/MyCoinController.h Viewtiful/MyCoinController.mm Viewtiful/MyDocument.h Viewtiful/MyDocument.mm Viewtiful/MyWindowController.h Viewtiful/MyWindowController.mm Viewtiful/AppController.h Viewtiful/AppController.mm Viewtiful/Viewtiful_Prefix.pch Viewtiful/coin.icns Viewtiful/Info.plist Viewtiful/version.plist Viewtiful/English.lproj/InfoPlist.strings Viewtiful/English.lproj/MainMenu.nib/classes.nib Viewtiful/English.lproj/MainMenu.nib/info.nib Viewtiful/English.lproj/MainMenu.nib/keyedobjects.nib Viewtiful/English.lproj/MyDocument.nib/classes.nib Viewtiful/English.lproj/MyDocument.nib/data.dependency Viewtiful/English.lproj/MyDocument.nib/info.nib Viewtiful/English.lproj/MyDocument.nib/keyedobjects.nib Viewtiful/Viewtiful.xcode/project.pbxproj | tar x -C $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME\nretval=$?\nexit $retval\n";
+			shellScript = "echo \"Script: Sc21 examples\"\nset -x\n$SRCROOT/packaging/scripts/copyexamples.sh\nretval=$?\nexit $retval\n";
 		};
 		E0F867CA06C2750B0022BF2A = {
 			explicitFileType = "compiled.mach-o.executable";
