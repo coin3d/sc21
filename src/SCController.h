@@ -37,6 +37,8 @@ class SoGroup;
 class SoLight;
 class SoSceneManager;
 
+// FIXME: Why inherit from NSResponder? (kintel 20040407)
+// If we change it, we might need to fix initWithCoder, incl. versioning
 @interface SCController : NSResponder
 {
   IBOutlet SCView * view;
@@ -53,10 +55,9 @@ class SoSceneManager;
 /*" Static initialization "*/
 + (void)initCoin;
 
-/*" Initializing and encoding/decoding an SCController "*/
+/*" Initializing an SCController "*/
 - (id)init;
 - (void)commonInit;
-- (void)activate;
 
 /*" Getting the view associated with the controller "*/
 - (void)setView:(SCView *)newview;

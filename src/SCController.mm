@@ -200,12 +200,6 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   [self _sensorQueueChanged];
 }
 
-// FIXME: Remove when example apps are updated (kintel 20040406)
-- (void)activate
-{
-}
-
-
 /* Clean up after ourselves. */
 - (void)dealloc
 {
