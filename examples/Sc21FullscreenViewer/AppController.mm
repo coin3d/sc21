@@ -81,8 +81,10 @@
   long oldSwapInterval;
   long newSwapInterval;
 
-  SCOpenGLPixelFormat * oldformat = [view pixelFormat];
-  SCOpenGLPixelFormat * newformat = [[oldformat copy] autorelease];
+  SCOpenGLPixelFormat * newformat = [[[SCOpenGLPixelFormat alloc] init] autorelease];
+  [newformat setAttribute:NSOpenGLPFAAccelerated];
+  [newformat setAttribute:NSOpenGLPFADoubleBuffer];
+  [newformat setAttribute:NSOpenGLPFADepthSize toValue:16];
   [newformat setAttribute:NSOpenGLPFAFullScreen];
 
   NSScreen * screen = [[view window] screen];
@@ -114,6 +116,7 @@
   // 1. Create a window that lies on a level guaranteed to be higher
   //    than all existing windows.
   // 2  Lock drawing to that window.
+
   err = CGDisplayCapture(displayid);
   if (err != CGDisplayNoErr) {
     NSRunAlertPanel(@"Error", @"Failed to capture display", 
