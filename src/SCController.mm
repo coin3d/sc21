@@ -14,6 +14,7 @@
 #import <Inventor/nodes/SoCamera.h>
 #import <Inventor/nodes/SoCone.h>
 #import <Inventor/nodes/SoDrawStyle.h>
+#import <Inventor/nodes/SoLight.h>
 #import <Inventor/nodes/SoTranslation.h>
 #import <Inventor/nodes/SoSelection.h>
 #import <Inventor/nodes/SoSeparator.h>
@@ -229,17 +230,20 @@ static BOOL _coinInitialized = NO;
     
 - (void) setSceneGraph:(SoSeparator *)sg
 {
-  NSLog(@"In setScenegraph: camera = %p", camera);
   sg->ref();
-  SoCamera * scenecamera = [self findCameraInSceneGraph:sg];
 
+  SoCamera * scenecamera = [self findCameraInSceneGraph:sg];
   if (scenecamera) {
     [camera setSoCamera:scenecamera];
     [camera setControllerHasCreatedCamera:NO];
   } else {
-    NSLog(@"No camera found in scene, won't be able to see anything");
+    NSLog(@"No camera found in scene, you won't be able to see anything");
   }
- 
+  
+  if (![self findLightInSceneGraph:sg]) {
+    NSLog(@"No light found in scene, you won't be able to see anything");
+  }
+
   if (scenegraph) scenegraph->unref();
   scenegraph = sg;
   _scenemanager->setSceneGraph(scenegraph);
@@ -293,6 +297,31 @@ static BOOL _coinInitialized = NO;
   }
   NSLog(@"Camera %sfound in scene", scenecamera ? "" : "not ");
   return scenecamera;
+}
+
+
+/*" Find light in root. Returns a pointer to the light, if found,
+otherwise NULL.
+"*/
+
+- (SoLight *) findLightInSceneGraph:(SoGroup *) root
+{
+  if (root == NULL) return NULL;
+
+  SoLight * light = NULL;
+  SbBool oldsearch = SoBaseKit::isSearchingChildren();
+  SoBaseKit::setSearchingChildren(TRUE);
+  SoSearchAction sa;
+  sa.reset();
+  sa.setType(SoLight::getClassTypeId());
+  sa.apply(root);
+  SoBaseKit::setSearchingChildren(oldsearch);
+  if (sa.getPath() != NULL) {
+    SoFullPath * fullpath = (SoFullPath *) sa.getPath();
+    light = (SoLight *)fullpath->getTail();
+  }
+  NSLog(@"Light %sfound in scene", light ? "" : "not ");
+  return light;
 }
 
 

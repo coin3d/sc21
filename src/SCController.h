@@ -7,6 +7,7 @@
 class SoCamera;
 class SoGroup;
 class SoEvent;
+class SoLight;
 class SoNode;
 class SoSeparator;
 class SoSceneManager;
@@ -55,9 +56,10 @@ class SoGetBoundingBoxAction;
 - (NSColor *) backgroundColor;
 - (void) viewSizeChanged:(NSRect)size;
 - (const SbViewportRegion &) viewportRegion;
-- (SoCamera *) findCameraInSceneGraph: (SoGroup *) root;
 - (void) setCamera:(SoCamera *) camera;
 - (SoCamera *) camera;
+- (SoCamera *) findCameraInSceneGraph: (SoGroup *) root;
+- (SoLight *) findLightInSceneGraph:(SoGroup *) root;
 
 /*" Debugging aids. "*/
 
