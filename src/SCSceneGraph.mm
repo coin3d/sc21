@@ -215,6 +215,14 @@
     }
   }
   
+  // Set active camera to use in viewer. Note that we have to do this after the 
+  // delegate had the chance to create its own superscenegraph to make sure the
+  // right camera is picked up.
+  SoCamera * scenecamera  = [self _SC_findCameraInSceneGraph:SELF->superscenegraph];
+  if (scenecamera != NULL) {
+    [SELF->camera setSoCamera:scenecamera deleteOldCamera:NO];
+  }
+  
   // Give delegate the chance to do postprocessing, regardless of 
   // whether the superscenegraph was created by us or by the delegate.
   if (SELF->superscenegraph && self->delegate &&
@@ -335,16 +343,16 @@
     otherwise NULL.
  */
 
-- (SoCamera *)_SC_findCamera
+- (SoCamera *)_SC_findCameraInSceneGraph:(SoGroup *)sg
 {
-  assert (SELF->scenegraph);
+  assert(sg);
   SoCamera * scenecamera = NULL;
   SbBool oldsearch = SoBaseKit::isSearchingChildren();
   SoBaseKit::setSearchingChildren(TRUE);
   SoSearchAction sa;
   sa.reset();
   sa.setType(SoCamera::getClassTypeId());
-  sa.apply(SELF->scenegraph);
+  sa.apply(sg);
   SoBaseKit::setSearchingChildren(oldsearch);
   if (sa.getPath() != NULL) {
     SoFullPath * fullpath = (SoFullPath *) sa.getPath();
@@ -388,16 +396,13 @@
   }
   
   // Handle camera
-  SoCamera * scenecamera  = [self _SC_findCamera];
+  SoCamera * scenecamera  = [self _SC_findCameraInSceneGraph:SELF->scenegraph];
   if (scenecamera == NULL) {
-    scenecamera = new SoPerspectiveCamera;
-    [SELF->camera setSoCamera:scenecamera deleteOldCamera:NO];
     SELF->addedcamera = YES;
-    SELF->superscenegraph->addChild(scenecamera);
+    SELF->superscenegraph->addChild(new SoPerspectiveCamera);
     [[NSNotificationCenter defaultCenter]
         postNotificationName:SCNoCameraFoundInSceneNotification object:self];
   } else {
-    [SELF->camera setSoCamera:scenecamera deleteOldCamera:NO];
     SELF->addedcamera = NO;
   }
 

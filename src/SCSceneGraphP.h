@@ -42,7 +42,7 @@
 @interface SCSceneGraph (InternalAPI)
 - (void)_SC_commonInit;
 - (SoLight *)_SC_findLight;
-- (SoCamera *)_SC_findCamera;
+- (SoCamera *)_SC_findCameraInSceneGraph:(SoGroup *)sg;
 - (void)_SC_setHasAddedCamera:(BOOL)yn;
 - (void)_SC_createSuperSceneGraph;
 - (SoSeparator*)_SC_readFile:(NSString *)name;

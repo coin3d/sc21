@@ -44,6 +44,7 @@
 }
 
 /*" Initialization "*/
+
 - (id)initWithContentsOfFile:(NSString *)filename;
 - (id)initWithContentsOfURL:(NSURL *)url;
 
