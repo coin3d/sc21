@@ -49,25 +49,23 @@
 
 @implementation SCView
 
-/*" An SCView displays a Coin scene graph. It also provides convenience 
-    methods for initializing and re-initializing the OpenGL subsystem
-    and querying the current OpenGL state information.
+/*"
+  An SCView displays a Coin scene graph.
+  
+  This class is a subclass of SCOpenGLView, its main purpose being
+  forwarding of draw and user events to its controller.
 
-    Note that all actual Coin scene management, rendering, event 
-    translation, etc is done by the SCController class and its 
-    subclasses. Connect SCView's !{controller} outlet to a valid
-    SCController instance to use SCView.
- "*/
-
-
-
-// ----------------- initialization and cleanup ----------------------
+  All actual Coin scene management, rendering, event translation etc.
+  is done by the SCController class.
+  Connect SCView's !{controller} outlet to a valid SCController instance
+  to use SCView.
+  "*/
 
 + (void)initialize
 {
   // The version is set to 1 to be able to distinguish between objects
   // created with the public beta (version=0) and newer objects.
-  // FIXME; It is expected that we'll stop supporting the public beta
+  // FIXME: It is expected that we'll stop supporting the public beta
   // from Sc21 V1.0.1 and versioning is probably not needed later since
   // we only support keyed archiving.
   [SCView setVersion:1];
@@ -75,7 +73,7 @@
 
 /*"
   Designated initializer.
-
+  
   Initializes a newly allocated SCView with rect as its frame
   rectangle. Sets up an OpenGL context with the given pixel format.
   The format parameter is passed on to its superclass.
@@ -86,20 +84,19 @@
     // flush buffer only during the vertical retrace of the monitor
     const long int vals[1] = {1};
     [[self openGLContext] setValues:vals forParameter:NSOpenGLCPSwapInterval];
-    [[self openGLContext] makeCurrentContext];
   }
   return self;
-  
 }
 
 /*"
-  Initializer. Equivalent to calling [self initWithFrame:rect format:nil].
+  Initializer.
+
+  Equivalent to calling [self initWithFrame:rect format:nil].
   "*/
 - (id)initWithFrame:(NSRect)rect
 {
   return [self initWithFrame:rect pixelFormat:nil];
 }
-
 
 - (void)dealloc
 {
@@ -113,19 +110,18 @@
 }
 
 
-// ---------------------- Accessing SCController --------------------
-
-/*" Returns the currently used SCController. "*/
+/*" 
+  Returns the currently used SCController.
+  "*/
 - (SCController *)controller
 {
   return self->controller;  
 }
 
 
-/*" Set the controller to newcontroller. newcontroller is
-    retained.
- "*/
-
+/*" 
+  Sets the controller to newcontroller. newcontroller is retained.
+  "*/
 - (void)setController:(SCController *)newcontroller
 {
   [newcontroller retain];
@@ -133,17 +129,16 @@
   self->controller = newcontroller;
   // Use [self display] as a redraw handler
   [self->controller setRedrawHandler:self];
+  [self->controller setRedrawSelector:@selector(display)];
   [self reshape]; // Initialize viewport
 }
 
 
-// ------------------ viewing and drawing --------------------------------
+/*"
+  Renders the current scene graph into frame rectangle rect.
 
-/*" Renders the current scene graph into frame rectangle rect by
-    setting the OpenGL state (enable lighting and z buffering)
-    and then calling SCController's #render: method.
-"*/
-
+  Calls SCController's #render: method.
+  "*/
 - (void)drawRect:(NSRect)rect
 {
   // NSLog(@"SCView.drawRect");
@@ -155,11 +150,11 @@
 }
 
 
-/*" Informs the SCView's %controller of the size change by
-    calling its #viewSizeChanged: method, and updates the
-    OpenGL context.
- "*/
-
+/*" 
+  Informs the SCView's %controller of the size change by
+  calling its #viewSizeChanged: method, and updates the
+  OpenGL context.
+  "*/
 - (void)reshape
 {
   [self->controller viewSizeChanged:[self visibleRect]];
@@ -169,19 +164,19 @@
 
 // ----------- Mouse and keyboard event handling --------------------------
 
-/*" Forwards event to %controller by sending it the #handleEvent:inView:
-    message.  If the event is not handled by the controller, it will
-    be forwarded through the responder chain as usual.
+/*" 
+  Forwards event to %controller by sending it the #handleEvent:inView:
+  message. If the event is not handled by the controller, it will
+  be forwarded through the responder chain as usual.
 
-    Note that if you press the left mouse button while holding
-    down the ctrl key, you will not receive a mouseDown event.
-    Instead, the view's default context menu will be shown. (This
-    behavior is inherited from NSView.) If you want to handle
-    ctrl-click yourself, you have to subclass SCView and override
-    #{- (NSMenu *)menuForEvent:(NSEvent *)event} to return nil.
-    This will cause the event to be passed on to this function.
- "*/
-
+  Note that if you press the left mouse button while holding
+  down the ctrl key, you will not receive a mouseDown event.
+  Instead, the view's default context menu will be shown. (This
+  behavior is inherited from NSView.) If you want to handle
+  ctrl-click yourself, you have to subclass SCView and override
+  #{- (NSMenu *)menuForEvent:(NSEvent *)event} to return nil.
+  This will cause the event to be passed on to this function.
+  "*/
 - (void)mouseDown:(NSEvent *)event
 {
   if (![self->controller handleEvent:event inView:self]) {
@@ -189,12 +184,11 @@
   }
 }
 
-
-/*" Forwards event to %controller by sending it the #handleEvent:inView:
-    message.  If the event is not handled by the controller, it will
-    be forwarded through the responder chain as usual. 
- "*/
-
+/*" 
+  Forwards event to %controller by sending it the #handleEvent:inView:
+  message. If the event is not handled by the controller, it will
+  be forwarded through the responder chain as usual. 
+  "*/
 - (void)mouseUp:(NSEvent *)event
 {
   if (![self->controller handleEvent:event inView:self]) {
@@ -202,17 +196,16 @@
   }
 }
 
-
-/*" Forwards event to %controller by sending it the #handleEvent:inView: 
-    message. If the event is not handled by the controller, it will
-    be forwarded through the responder chain as usual.
-
-    Note that when processing "mouse dragged" events, Coin does not
-    distinguish between left and right mouse button. If you interested
-    in that information, you have to evaluate the last mouseDown that
-    occured before the dragging.
- "*/
-
+/*" 
+  Forwards event to %controller by sending it the #handleEvent:inView: 
+  message. If the event is not handled by the controller, it will
+  be forwarded through the responder chain as usual.
+  
+  Note that when processing "mouse dragged" events, Coin does not
+  distinguish between left and right mouse button. If you interested
+  in that information, you have to evaluate the last mouseDown that
+  occured before the dragging.
+  "*/
 - (void)mouseDragged:(NSEvent *)event
 {
   if (![self->controller handleEvent:event inView:self]) {
@@ -220,17 +213,16 @@
   }
 }
 
-
-/*" Forwards event to %controller by sending it the #handleEvent:inView: 
-    message. If the event is not handled by the controller, it will
-    be forwarded through the responder chain as usual.
-
-    FIXME: Unhandled right-clicks will usually result in NSView displaying
-    a context menu. In this case, the corresponding rightMouseUp: will
-    never reach us but be sent to the context menu. This might confuse
-    any state machines implemented in the controller (kintel 20040502).
- "*/
-
+/*"
+  Forwards event to %controller by sending it the #handleEvent:inView: 
+  message. If the event is not handled by the controller, it will
+  be forwarded through the responder chain as usual.
+  
+  FIXME: Unhandled right-clicks will usually result in NSView displaying
+  a context menu. In this case, the corresponding rightMouseUp: will
+  never reach us but be sent to the context menu. This will confuse
+  any state machines implemented in the controller (kintel 20040502).
+  "*/
 - (void)rightMouseDown:(NSEvent *)event
 {
   if (![self->controller handleEvent:event inView:self]) {
@@ -239,11 +231,11 @@
 }
 
 
-/*" Forwards event to %controller by sending it the #handleEvent:inView: 
-    message. If the event is not handled by the controller, it will
-    be forwarded through the responder chain as usual.
- "*/
-
+/*" 
+  Forwards event to %controller by sending it the #handleEvent:inView: 
+  message. If the event is not handled by the controller, it will
+  be forwarded through the responder chain as usual.
+  "*/
 - (void)rightMouseUp:(NSEvent *)event
 {
   if (![self->controller handleEvent:event inView:self]) {
@@ -251,16 +243,16 @@
   }
 }
 
-/*" Forwards event to %controller by sending it the #handleEvent:inView: 
-    message. If the event is not handled by the controller, it will
-    be forwarded through the responder chain as usual.
-
-    Note that when processing "mouse dragged" events, Coin does not
-    distinguish between left and right mouse button. If you interested
-    in that information, you have to evaluate the last mouseDown that
-    occured before the dragging.
- "*/
-
+/*"
+  Forwards event to %controller by sending it the #handleEvent:inView: 
+  message. If the event is not handled by the controller, it will
+  be forwarded through the responder chain as usual.
+  
+  Note that when processing "mouse dragged" events, Coin does not
+  distinguish between left and right mouse button. If you interested
+  in that information, you have to evaluate the last mouseDown that
+  occured before the dragging.
+  "*/
 - (void)rightMouseDragged:(NSEvent *)event
 {
   if (![self->controller handleEvent:event inView:self]) {
@@ -268,12 +260,11 @@
   }
 }
 
-
-/*" Forwards event to %controller by sending it the #handleEvent:inView: 
-    message.  If the event is not handled by the controller, it will
-    be forwarded through the responder chain as usual 
- "*/
-
+/*" 
+  Forwards event to %controller by sending it the #handleEvent:inView: 
+  message.  If the event is not handled by the controller, it will
+  be forwarded through the responder chain as usual 
+  "*/
 - (void)otherMouseDown:(NSEvent *)event
 {
   if (![self->controller handleEvent:event inView:self]) {
@@ -281,12 +272,11 @@
   }
 }
 
-
-/*" Forwards event to %controller by sending it the #handleEvent:inView: 
-    message.  If the event is not handled by the controller, it will
-    be forwarded through the responder chain as usual. 
- "*/
-
+/*" 
+  Forwards event to %controller by sending it the #handleEvent:inView: 
+  message.  If the event is not handled by the controller, it will
+  be forwarded through the responder chain as usual. 
+  "*/
 - (void)otherMouseUp:(NSEvent *)event
 {
   if (![self->controller handleEvent:event inView:self]) {
@@ -294,17 +284,16 @@
   }
 }
 
-
-/*" Forwards event to %controller by sending it the #handleEvent:inView: 
-    message. If the event is not handled by the controller, it will
-    be forwarded through the responder chain as usual.
-
-    Note that when processing "mouse dragged" events, Coin does not
-    distinguish between left and right mouse button. If you interested
-    in that information, you have to evaluate the last mouseDown that
-    occured before the dragging.
- "*/
-
+/*" 
+  Forwards event to %controller by sending it the #handleEvent:inView: 
+  message. If the event is not handled by the controller, it will
+  be forwarded through the responder chain as usual.
+  
+  Note that when processing "mouse dragged" events, Coin does not
+  distinguish between left and right mouse button. If you interested
+  in that information, you have to evaluate the last mouseDown that
+  occured before the dragging.
+  "*/
 - (void)otherMouseDragged:(NSEvent *)event
 {
   if (![self->controller handleEvent:event inView:self]) {
@@ -312,11 +301,11 @@
   }
 }
 
-/*" Forwards event to %controller by sending it the #handleEvent:inView: 
-    message.  If the event is not handled by the controller, it will
-    be forwarded through the responder chain as usual.
- "*/
-
+/*" 
+  Forwards event to %controller by sending it the #handleEvent:inView: 
+  message.  If the event is not handled by the controller, it will
+  be forwarded through the responder chain as usual.
+  "*/
 - (void)scrollWheel:(NSEvent *)event
 {
   if (![self->controller handleEvent:event inView:self]) {
@@ -324,12 +313,11 @@
   }
 }
 
-
-/*" Forwards event to %controller by sending it the #handleEvent:InView:
-    message.  If the event is not handled by the controller, it will
-    be forwarded through the responder chain as usual.
- "*/
-
+/*" 
+  Forwards event to %controller by sending it the #handleEvent:InView:
+  message.  If the event is not handled by the controller, it will
+  be forwarded through the responder chain as usual.
+  "*/
 - (void)keyDown:(NSEvent *)event 
 {
   if (![self->controller handleEvent:event inView:self]) {
@@ -338,11 +326,11 @@
 }
 
 
-/*" Forwards event to %controller by sending it the #handleEvent:inView:
-    message.  If the event is not handled by the controller, it will
-    be forwarded through the responder chain as usual.
- "*/
-
+/*" 
+  Forwards event to %controller by sending it the #handleEvent:inView:
+  message.  If the event is not handled by the controller, it will
+  be forwarded through the responder chain as usual.
+  "*/
 - (void)keyUp:(NSEvent *)event 
 {
   if (![self->controller handleEvent:event inView:self]) {
@@ -350,32 +338,35 @@
   } 
 }
 
-/*" Returns !{YES} to accept becoming first responder.
-    Needed to receive keyboard events
- "*/
+// --------------------------------------------------------------------
 
--(BOOL)acceptsFirstResponder
-{
-  return YES;
-}
-
-// -------- Cursor handling ----------
+// FIXME: Only used by the event handling scheme. Reconsider this as part
+// of redesigning event handling (kintel 20040615).
 - (void)resetCursorRects
 {
   NSLog(@"SCView.resetCursorRects");
   [self addCursorRect:[self visibleRect] cursor:SELF->cursor];
 }
 
+/*"
+  Associates the given cursor with this view and makes the cursor active.
+
+  FIXME: Only used by the event handling scheme. Reconsider this as part
+  of redesigning event handling (kintel 20040615).
+  "*/
 - (void)setCursor:(NSCursor *)cursor
 {
   SELF->cursor = cursor;
   [SELF->cursor set];
 }
 
+-(BOOL)acceptsFirstResponder
+{
+  return YES;
+}
+
 
 // ---------------- NSCoding conformance -------------------------------
-
-/*" Encodes the SCView using encoder coder "*/
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {
@@ -431,10 +422,6 @@
   return self;
 }
 
-/*" Initializes a newly allocated SCView instance from the data
-    in decoder. Returns !{self}.
- "*/
-
 - (id)initWithCoder:(NSCoder *)coder
 {
   NSLog(@"SCView.initWithCoder:");
@@ -463,7 +450,6 @@
   o call [super _SC_commonInit] as the first call in your
     implementation to make sure everything is set up properly.
   o _not_ call this method from init or initWithCoder in the subclass
-
   "*/
 - (void)_SC_commonInit
 {
