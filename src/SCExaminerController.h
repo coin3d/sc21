@@ -68,7 +68,7 @@ class SoDirectionalLight;
 
 @end
 
-/*" Notifications posted by SCController. "*/
+/*" Notifications posted by SCExaminerController. "*/
 
 extern NSString * SCViewAllNotification;
 extern NSString * SCCameraTypeChangedNotification;
