@@ -1,0 +1,30 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {modeChanged = id; open = id; }; 
+            CLASS = AppController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                coincontroller = SCExaminerController; 
+                filenametext = NSTextField; 
+                mode = NSButton; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {open = id; toggleModes = id; }; 
+            CLASS = SCController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {view = SCView; }; 
+            SUPERCLASS = NSResponder; 
+        }, 
+        {
+            ACTIONS = {toggleCameraType = id; toggleHeadlight = id; viewAll = id; }; 
+            CLASS = SCExaminerController; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = SCController; 
+        }
+    ); 
+    IBVersion = 1; 
+}
