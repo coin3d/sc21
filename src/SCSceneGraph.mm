@@ -302,11 +302,11 @@ void error_cb(const class SoError * error, void * data)
   // supply createSuperSceneGraph: to return its own superscenegraph.
   if (self->delegate) {
     if ([self->delegate 
-      respondsToSelector:@selector(shouldCreateDefaultSuperSceneGraph)]) {
-      createsuperscenegraph = [delegate shouldCreateDefaultSuperSceneGraph];    
-    } else if ([self->delegate 
-        respondsToSelector:@selector(createSuperSceneGraph:)]) {
+       respondsToSelector:@selector(createSuperSceneGraph:)]) {
       createsuperscenegraph = NO;
+    } else if ([self->delegate 
+        respondsToSelector:@selector(shouldCreateDefaultSuperSceneGraph)]) {
+      createsuperscenegraph = [delegate shouldCreateDefaultSuperSceneGraph];
     }
   }
 
@@ -314,7 +314,7 @@ void error_cb(const class SoError * error, void * data)
     SELF->superscenegraph = [self _SC_createSuperSceneGraph:SELF->scenegraph];
   } else { 
     if (self->delegate &&
-        [self->delegate respondsToSelector:@selector(createSuperSceneGraph:)]) {
+      [self->delegate respondsToSelector:@selector(createSuperSceneGraph:)]) {
       SELF->superscenegraph = [delegate createSuperSceneGraph:SELF->scenegraph];
     } else {
       SELF->superscenegraph = NULL;
@@ -560,11 +560,12 @@ void error_cb(const class SoError * error, void * data)
 "*/
 
 /*" 
-  Return !{NO} to skip superscenegraph creation.
+  Implement this method to return !{NO} to skip superscenegraph creation. 
 
-  Important note: If you want to implement your own superscenegraph
-  creation method, make sure to read the !{createSuperSceneGraph:}
-  documentation!
+  Note that this method will not be called if the delegate responds to
+  !{createSuperSceneGraph:} (since creation of the default
+  superscenegraph is always off in this case).
+
 "*/
 
 - (BOOL)shouldCreateDefaultSuperSceneGraph
@@ -574,20 +575,14 @@ void error_cb(const class SoError * error, void * data)
 
 /*" 
   If present, this method will be called instead of the internal
-  implementation to create a superscenegraph.
+  implementation to create a superscenegraph. (Note that in this case,
+  creation of the default superscenegraph is always off, regardless of
+  the settings, and !{shouldCreateDefaultSuperSceneGraph} does not get 
+  called.)
 
   The scenegraph argument is the root node of the Coin scene
   graph. The method is expected to return a new node that contains
   scenegraph as one of its children, or scenegraph itself.
-
-  Important note: If the delegate implements
-  !{shouldCreateDefaultSuperSceneGraph}, !{createSuperScenegraph:}
-  will be ignored.
-
-  (So if you want to implement your own superscenegraph creation
-  method, #{DO NOT} implement !{shouldCreateDefaultSuperSceneGraph} to
-  return !{NO}.  The right thing to do is to not have a
-  !{shouldCreateDefaultSuperSceneGraph} implementation at all.)
 "*/
 
 - (SoGroup *)createSuperSceneGraph:(SoGroup *)scenegraph
@@ -595,11 +590,11 @@ void error_cb(const class SoError * error, void * data)
   
 }
 /*" 
+  Implement this method to do postprocessing after creation of
+  superscenegraph.
 
-  Implement this method to do postprocessing after creation of superscenegraph.
-
-  This method will be called both if superscenegraph was
-  created using the internal default implementation, or the
+  This method will be called both if superscenegraph was created using
+  the internal default implementation, or the
   !{createSuperSceneGraph:} delegate method.
 
 "*/
