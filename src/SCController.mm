@@ -182,8 +182,9 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 /*"
   Designated initializer.
   
-  Initializes a newly allocated SCController and calls #initCoin.
-  "*/
+  Initializes a newly allocated SCController and calls !{initCoin}.
+"*/
+
 - (id)init
 {
   if (self = [super init]) {
@@ -267,6 +268,13 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   return handled;
 }
 
+/*" 
+  Set the Controller's eventhandler. Note that this eventhandler is really
+  the start of an eventhandler chain -- see
+  http://www.coin3d.org/mac/Sc21/eventhandling/ for an overview of the
+  Sc21 eventhandling system.
+"*/
+    
 - (void)setEventHandler:(SCEventHandler *)handler
 {
   if (handler != self->eventHandler) {
@@ -275,7 +283,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   }
 }
 
-/*" Returns first eventhandler in the eventhandler chain. "*/
+/*" Returns the first eventhandler in the eventhandler chain. "*/
 
 - (SCEventHandler *)eventHandler
 {
