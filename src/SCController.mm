@@ -456,12 +456,11 @@ Returns the redraw selector previously set by -setRedrawSelector or
   return SELF->redrawselector;
 }
 
-/*" Sets the scene graph that shall be rendered. If nil is passed,
-this method returns immediately.
+/*" Sets the scene graph that shall be rendered. 
 "*/
 - (void)setSceneGraph:(SCSceneGraph *)sg
 {
-  if (sg == scenegraph || sg == nil) { return; }
+  if (sg == scenegraph) { return; }
   
   [scenegraph release];
   scenegraph = [sg retain];    
