@@ -1,0 +1,9 @@
+001  Viewport not set correctly 
+
+     When the controller is not loaded from a nib file but
+     instantiated programmatically, a manual [view reshape] is necessary 
+     after connecting the controller to make sure the viewport is set
+     correctly. This should be done automatically when the other
+     Coin initialization takes place. Reported by kintel, writeup
+     by kyrah 20031113
+
