@@ -33,3 +33,4 @@ NSString * SCRendererIdToString(int rendererID);
 NSString * SCPixelFormatInfo(SCOpenGLPixelFormat * scpformat, 
                              NSOpenGLPixelFormat * nspformat);
 NSString * SCOpenGLInfo(void);
+BOOL SCDumpSceneGraph(class SoNode * scenegraph);

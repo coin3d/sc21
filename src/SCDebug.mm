@@ -29,6 +29,9 @@
 #import <Sc21/SCOpenGLPixelFormat.h>
 #import <Cocoa/Cocoa.h>
 #import <OpenGL/CGLRenderers.h>
+#import <Inventor/SoOutput.h>
+#import <Inventor/SbTime.h>
+#import <Inventor/actions/SoWriteAction.h>
 
 NSString *SCRendererIdToString(int rendererID)
 {
@@ -239,4 +242,26 @@ NSString * SCOpenGLInfo(void)
   [info appendFormat:@"Maximum number of clipping planes: %d\n", maxplanes];
 
   return info;
+}
+
+/*" 
+  Writes the given scenegraph to a file. The filename will be
+  XXX-dump.iv, where XXX is a number calculated based on the
+  current time. The file will be stored in the current working
+  directory. Returns !{NO} if there was an error writing the file,
+  !{YES} otherwise.
+  "*/
+
+BOOL SCDumpSceneGraph(SoNode * scenegraph)
+{
+  SoOutput out;
+  SbString filename = SbTime::getTimeOfDay().format();
+  filename += "-dump.iv";
+  SbBool ok = out.openFile(filename.getString());
+  if (ok) {
+    SoWriteAction wa(&out);
+    wa.apply(scenegraph);
+    return YES;
+  }
+  return NO;
 }
