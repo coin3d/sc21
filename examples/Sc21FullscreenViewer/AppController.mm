@@ -28,6 +28,7 @@
 #import "AppController.h"
 #import <Sc21/Sc21.h>
 #import <Sc21/SCDebug.h>
+#import <Inventor/SbTime.h>
 #import <Inventor/SoInput.h>
 #import <Inventor/nodes/SoSeparator.h>
 #import <Inventor/SoSceneManager.h>
@@ -174,14 +175,14 @@
   [newformat setAttribute:NSOpenGLPFAFullScreen];
 
   NSScreen * screen = [[view window] screen];
-  CGDirectDisplayID displayid = (CGDirectDisplayID)
+  _displayid = (CGDirectDisplayID)
     [[[screen deviceDescription] objectForKey:@"NSScreenNumber"] intValue];
-  CGOpenGLDisplayMask displaymask = CGDisplayIDToOpenGLDisplayMask(displayid);
+  CGOpenGLDisplayMask displaymask = CGDisplayIDToOpenGLDisplayMask(_displayid);
 
   [newformat setAttribute:NSOpenGLPFAScreenMask
              toValue:displaymask];
 //   [newformat setAttribute:NSOpenGLPFAScreenMask
-//              toValue:CGDisplayIDToOpenGLDisplayMask(kCGDirectMainDisplay)];
+//              toValue:displaymask];
   NSOpenGLPixelFormat *newnsformat = [newformat pixelFormat];
 
   NSLog([SCDebug infoForSCOpenGLPixelFormat:newformat 
@@ -191,6 +192,7 @@
   // Create an NSOpenGLContext with the FullScreen pixel format.  By specifying the non-FullScreen context as our "shareContext", we automatically inherit all of the textures, display lists, and other OpenGL objects it has defined.
   _fullScreenContext = [[NSOpenGLContext alloc] initWithFormat:newnsformat 
                                                 shareContext:nil];
+  
 //   _fullScreenContext = 
 //     [[NSOpenGLContext alloc] initWithFormat:newnsformat 
 //                              shareContext:[view openGLContext]];
@@ -201,7 +203,7 @@
   }
   
   // Take control of the display where we're about to go FullScreen.
-  err = CGDisplayCapture(displayid);
+  err = CGDisplayCapture(_displayid);
   if (err != CGDisplayNoErr) {
     [_fullScreenContext release];
     _fullScreenContext = nil;
@@ -226,6 +228,12 @@
   CGLSetParameter(cglContext, kCGLCPSwapInterval, &newSwapInterval);
 
   [coincontroller setDrawable:self];
+
+  const SbTime oldtimeout = SoDB::getDelaySensorTimeout();
+  // Set to force timeout rendering at 120 Hz
+  SoDB::setDelaySensorTimeout(SbTime(1.0/120.0));
+  // Disable timeout rendering
+//   SoDB::setDelaySensorTimeout(SbTime(0.0f));
   
   // Now that we've got the screen, we enter a loop in which we alternately 
   // process input events and computer and render the next frame of our 
@@ -268,19 +276,16 @@
       }
     }
     
-    // FIXME: We can either force constant rerendering or 
-    // trigger delivery of idle notifications. The latter seems
-    // to give jerky movement though. kintel 20040728
+    //FIXME: If we don't display explicitly, the delaysensor timeout will
+    //trigger
+//     [self display];
 
-#if 0 // force constant rerendering
-    [self display];
-#else  // Trigger delivery of idle notifications
-    NSNotification * notification = 
-      [NSNotification notificationWithName:@"_SCIdleNotification" object:nil];
-    [[NSNotificationQueue defaultQueue] 
-      dequeueNotificationsMatching:notification 
-      coalesceMask:NSNotificationCoalescingOnName];
-#endif
+    //FIXME: This attempt to deliver idle notifications didn't work.
+//    NSNotification * notification = 
+//      [NSNotification notificationWithName:@"_SCIdleNotification" object:nil];
+//     [[NSNotificationQueue defaultQueue] 
+//       dequeueNotificationsMatching:notification 
+//       coalesceMask:NSNotificationCoalescingOnName];
 
     // Clean up any autoreleased objects that were created this 
     // time through the loop.
@@ -306,8 +311,9 @@
   _fullScreenContext = nil;
   
   // Release control of the display.
-  CGDisplayRelease(displayid);
+  CGDisplayRelease(_displayid);
   
+  SoDB::setDelaySensorTimeout(oldtimeout);
   [coincontroller setDrawable:view];
   gra->setCacheContext(oldcachecontext);
 }
@@ -315,7 +321,6 @@
   // Render a frame, and swap the front and back buffers.
 - (void)display
 {
-//   NSLog(@"AppController.display");
   [coincontroller render];
   [_fullScreenContext flushBuffer];
 }
@@ -324,8 +329,8 @@
 {
   if (_fullScreenContext) {
     return NSMakeRect(0, 0, 
-                      CGDisplayPixelsWide(kCGDirectMainDisplay), 
-                      CGDisplayPixelsHigh(kCGDirectMainDisplay));
+                      CGDisplayPixelsWide(_displayid), 
+                      CGDisplayPixelsHigh(_displayid));
   } else {
     return [view frame];
   }

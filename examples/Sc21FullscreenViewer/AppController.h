@@ -34,6 +34,7 @@
   IBOutlet NSButton * mode;
   IBOutlet NSTextField * filenametext;
   NSOpenGLContext *_fullScreenContext;
+  CGDirectDisplayID _displayid;
 }
 - (void)modeChanged:(id)sender;
 - (IBAction)open:(id)sender;
@@ -44,7 +45,6 @@
 - (IBAction)dumpSceneGraph:(id)sender;
 - (IBAction)fullScreen:(id)sender;
 - (void)openPanelDidEnd:(NSOpenPanel *)panel returnCode:(int)rc contextInfo:(void *)ctx;
-- (void)display;
 
 - (void)display;
 - (NSRect)frame;
