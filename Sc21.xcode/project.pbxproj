@@ -373,30 +373,6 @@
 			settings = {
 			};
 		};
-		3D8AD59606B7C6CF00D618DB = {
-			isa = PBXFileReference;
-			lastKnownFileType = image.tiff;
-			name = SCWalkHandler.tiff;
-			path = Resources/palette/SCWalkHandler.tiff;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		3D8AD59706B7C6CF00D618DB = {
-			fileRef = 3D8AD59606B7C6CF00D618DB;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		3DA4938D06BAF780006C4DFA = {
-			children = (
-				E09CFA91060249EF0000E227,
-				E09CFA92060249EF0000E227,
-			);
-			isa = PBXGroup;
-			name = obsoleted;
-			refType = 4;
-			sourceTree = "<group>";
-		};
 		3DC6401D06BD29CB00301065 = {
 			fileEncoding = 4;
 			isa = PBXFileReference;
@@ -672,12 +648,13 @@
 		};
 		E01100B50605E71900F93EC1 = {
 			children = (
-				3DA4938D06BAF780006C4DFA,
 				E066294D065383E000FB6420,
 				E057B59A06219ADC0012C546,
 				E09CFA8B060249EF0000E227,
 				E09CFA8C060249EF0000E227,
 				3D669D2506AAB21900CB9330,
+				E0BE123606C4136E00923172,
+				E0BE123706C4136E00923172,
 				E09CFA8D060249EF0000E227,
 				E09CFA8E060249EF0000E227,
 				3D6AF42706AE769B00225657,
@@ -711,36 +688,6 @@
 			name = Framework;
 			refType = 4;
 			sourceTree = "<group>";
-		};
-		E011760406B67E450042ADED = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
-			name = SCFlyMode.h;
-			path = src/SCFlyMode.h;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		E011760506B67E450042ADED = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
-			name = SCFlyMode.mm;
-			path = src/SCFlyMode.mm;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		E011760606B67E450042ADED = {
-			fileRef = E011760406B67E450042ADED;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		E011760706B67E450042ADED = {
-			fileRef = E011760506B67E450042ADED;
-			isa = PBXBuildFile;
-			settings = {
-			};
 		};
 		E015841606352EBB00B4C24F = {
 			isa = PBXFileReference;
@@ -860,7 +807,7 @@
 			buildSettings = {
 				DESCRIPTION_PLIST_FILE = packaging/framework/Description.plist;
 				INFOPLIST_FILE = packaging/framework/Info.plist;
-				INSTALL_PATH = /;
+				INSTALL_PATH = /packages;
 				PRODUCT_NAME = "$(PROJECT_NAME) framework.pkg";
 				PRODUCT_ROOT = "$(DSTROOT)/framework";
 				RESOURCE_DIR = packaging/framework/Resources;
@@ -1141,6 +1088,7 @@
 			isa = PBXBuildFile;
 			settings = {
 				ATTRIBUTES = (
+					Public,
 				);
 			};
 		};
@@ -1219,10 +1167,6 @@
 				E0662923065383D600FB6420,
 				E0662924065383D600FB6420,
 				E0E5D14C06B15F61009165C8,
-				E0E5D14506B15E6E009165C8,
-				E0E5D14606B15E6E009165C8,
-				E011760406B67E450042ADED,
-				E011760506B67E450042ADED,
 				E0662929065383D600FB6420,
 				E066292A065383D600FB6420,
 				E066292C065383D600FB6420,
@@ -1250,7 +1194,7 @@
 			buildSettings = {
 				DESCRIPTION_PLIST_FILE = packaging/palette/Description.plist;
 				INFOPLIST_FILE = packaging/palette/Info.plist;
-				INSTALL_PATH = /;
+				INSTALL_PATH = /packages;
 				PRODUCT_NAME = "$(PROJECT_NAME) palette.pkg";
 				PRODUCT_ROOT = "$(DSTROOT)/palette";
 				RESOURCE_DIR = packaging/palette/Resources;
@@ -1423,7 +1367,6 @@
 				E09CFA97060249EF0000E227,
 				3DC6408606BD305800301065,
 				E09CFA99060249EF0000E227,
-				E09CFA9B060249EF0000E227,
 				E0EB290C0613442800C54774,
 				E0EB290E0613442800C54774,
 				E057B59B06219ADC0012C546,
@@ -1444,14 +1387,13 @@
 				E080C6DB06B12B080088958C,
 				3DC6401E06BD29CB00301065,
 				E080C71606B132550088958C,
-				E0E5D14706B15E6E009165C8,
 				E0E5D14D06B15F61009165C8,
-				E011760606B67E450042ADED,
 				E0D6A23206BA6FD900FF8E28,
 				E0D6A27106BA74ED00FF8E28,
 				3DE326EB06BC6A4900C5518B,
 				3D883EAE06BFB0CA0048CDB7,
 				E0F867AE06C254700022BF2A,
+				E0BE123806C4136E00923172,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1462,7 +1404,6 @@
 				E09CFA96060249EF0000E227,
 				E09CFA98060249EF0000E227,
 				E09CFA9A060249EF0000E227,
-				E09CFA9C060249EF0000E227,
 				E0EB290D0613442800C54774,
 				E0EB290F0613442800C54774,
 				E0662939065383D600FB6420,
@@ -1477,10 +1418,9 @@
 				3D6AF43006AE770400225657,
 				E080C6DC06B12B080088958C,
 				E080C71706B132550088958C,
-				E0E5D14806B15E6E009165C8,
-				E011760706B67E450042ADED,
 				3DC6408706BD305800301065,
 				3D883EAF06BFB0CA0048CDB7,
+				E0BE123906C4136E00923172,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1748,15 +1688,15 @@
 		};
 		E09A0E0206660511003EE738 = {
 			children = (
-				3D23339306BE4C2A00AF3094,
-				3D8AD59606B7C6CF00D618DB,
 				3D0D691806B7B5E100B64A18,
 				E01100A40605E5B200F93EC1,
 				3D016AAD06B6EDE500AD1116,
 				E000678706259B3000F49FCD,
 				E01100A60605E5B800F93EC1,
 				3DDD3FF006B8EE5C0038959E,
+				3D23339306BE4C2A00AF3094,
 				E09CFAA006024AD40000E227,
+				E0BE12B706C419AA00923172,
 				E09CFAA106024AD40000E227,
 				E09C036A06024BEF0000E227,
 				3D3BEE6906B00E43007A16DC,
@@ -1846,9 +1786,9 @@
 				3D016B0406B6F29E00AD1116,
 				3D0D68E406B7B3C800B64A18,
 				3D0D691A06B7B5E100B64A18,
-				3D8AD59706B7C6CF00D618DB,
 				3DDD3FF206B8EE5C0038959E,
 				3D23339406BE4C2A00AF3094,
+				E0BE12B806C419AA00923172,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2063,24 +2003,6 @@
 			refType = 4;
 			sourceTree = "<group>";
 		};
-		E09CFA91060249EF0000E227 = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
-			name = SCExaminerController.h;
-			path = src/SCExaminerController.h;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		E09CFA92060249EF0000E227 = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
-			name = SCExaminerController.mm;
-			path = src/SCExaminerController.mm;
-			refType = 4;
-			sourceTree = "<group>";
-		};
 		E09CFA93060249EF0000E227 = {
 			fileEncoding = 30;
 			isa = PBXFileReference;
@@ -2139,21 +2061,6 @@
 		};
 		E09CFA9A060249EF0000E227 = {
 			fileRef = E09CFA90060249EF0000E227;
-			isa = PBXBuildFile;
-			settings = {
-			};
-		};
-		E09CFA9B060249EF0000E227 = {
-			fileRef = E09CFA91060249EF0000E227;
-			isa = PBXBuildFile;
-			settings = {
-				ATTRIBUTES = (
-					Public,
-				);
-			};
-		};
-		E09CFA9C060249EF0000E227 = {
-			fileRef = E09CFA92060249EF0000E227;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -2275,6 +2182,53 @@
 		};
 		E0AC6A98060631AA00907ED7 = {
 			fileRef = E09C038906024CFB0000E227;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E0BE123606C4136E00923172 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCCoinHandler.h;
+			path = src/SCCoinHandler.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0BE123706C4136E00923172 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = SCCoinHandler.mm;
+			path = src/SCCoinHandler.mm;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0BE123806C4136E00923172 = {
+			fileRef = E0BE123606C4136E00923172;
+			isa = PBXBuildFile;
+			settings = {
+				ATTRIBUTES = (
+					Public,
+				);
+			};
+		};
+		E0BE123906C4136E00923172 = {
+			fileRef = E0BE123706C4136E00923172;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		E0BE12B706C419AA00923172 = {
+			isa = PBXFileReference;
+			lastKnownFileType = image.tiff;
+			name = SCCoinHandler.tiff;
+			path = Resources/palette/SCCoinHandler.tiff;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E0BE12B806C419AA00923172 = {
+			fileRef = E0BE12B706C419AA00923172;
 			isa = PBXBuildFile;
 			settings = {
 			};
@@ -2552,7 +2506,7 @@
 			buildSettings = {
 				DESCRIPTION_PLIST_FILE = packaging/doc/Description.plist;
 				INFOPLIST_FILE = packaging/doc/Info.plist;
-				INSTALL_PATH = /;
+				INSTALL_PATH = /packages;
 				PRODUCT_NAME = "$(PROJECT_NAME) doc.pkg";
 				PRODUCT_ROOT = "$(DSTROOT)/doc";
 				RESOURCE_DIR = packaging/doc/Resources;
@@ -2588,38 +2542,6 @@
 			path = "Sc21 doc.pkg";
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		E0E5D14506B15E6E009165C8 = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
-			name = SCFlyHandler.h;
-			path = src/SCFlyHandler.h;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		E0E5D14606B15E6E009165C8 = {
-			fileEncoding = 30;
-			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
-			name = SCFlyHandler.mm;
-			path = src/SCFlyHandler.mm;
-			refType = 4;
-			sourceTree = "<group>";
-		};
-		E0E5D14706B15E6E009165C8 = {
-			fileRef = E0E5D14506B15E6E009165C8;
-			isa = PBXBuildFile;
-			settings = {
-				ATTRIBUTES = (
-				);
-			};
-		};
-		E0E5D14806B15E6E009165C8 = {
-			fileRef = E0E5D14606B15E6E009165C8;
-			isa = PBXBuildFile;
-			settings = {
-			};
 		};
 		E0E5D14C06B15F61009165C8 = {
 			fileEncoding = 30;
@@ -2770,7 +2692,7 @@
 			buildSettings = {
 				DESCRIPTION_PLIST_FILE = packaging/examples/Description.plist;
 				INFOPLIST_FILE = packaging/examples/Info.plist;
-				INSTALL_PATH = /;
+				INSTALL_PATH = /packages;
 				PRODUCT_NAME = "$(PROJECT_NAME) examples.pkg";
 				PRODUCT_ROOT = "$(DSTROOT)/examples";
 				RESOURCE_DIR = packaging/examples/Resources;
