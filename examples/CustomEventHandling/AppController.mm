@@ -26,6 +26,7 @@
  * =============================================================== */
 
 #import "AppController.h"
+#import "MyEventHandler.h"
 #import <Sc21/Sc21.h>
 #import <Sc21/SCDebug.h>
 #import <Inventor/SoInput.h>
@@ -75,7 +76,9 @@ void selection_cb(void *userdata, SoPath *path)
 
 - (IBAction)toggleModes:(id)sender
 {
-  [[coincontroller eventHandler] toggleModes];
+  if ([coincontroller respondsToSelector:@selector(toggleModes:)]){
+    [(MyEventHandler *)[coincontroller eventHandler] toggleModes];
+  }
 }
 
 // "Wrapper"-action around toggleModes: for use from menu item.
@@ -133,7 +136,6 @@ void selection_cb(void *userdata, SoPath *path)
 
 - (SoGroup *)createSuperSceneGraph:(SoGroup *)scenegraph
 {
-  NSLog(@"Created SuperSceneGraph");
   SoSeparator * root = new SoSeparator;
   root->addChild(new SoDirectionalLight);
   root->addChild(new SoPerspectiveCamera);
