@@ -172,6 +172,8 @@ Translate camera relative to its own coordinate system.
 
 - (void)viewAll:(SCSceneGraph *)sceneGraph
 {
+  assert ([sceneGraph sceneManager]);
+  
   if (SELF->camera == NULL || sceneGraph == nil) return;
   SELF->camera->viewAll((SoNode *)([sceneGraph root]),
                         [sceneGraph sceneManager]->getViewportRegion());
