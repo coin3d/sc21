@@ -1,7 +1,6 @@
 {
     IBClasses = (
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
-        {CLASS = Foo; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {
             CLASS = SC21Palette; 
             LANGUAGE = ObjC; 
@@ -15,18 +14,12 @@
             SUPERCLASS = IBPalette; 
         }, 
         {
-            ACTIONS = {open = id; toggleModes = id; }; 
             CLASS = SCController; 
             LANGUAGE = ObjC; 
-            OUTLETS = {view = SCView; }; 
+            OUTLETS = {delegate = id; }; 
             SUPERCLASS = NSResponder; 
         }, 
-        {
-            ACTIONS = {toggleCameraType = id; toggleHeadlight = id; viewAll = id; }; 
-            CLASS = SCExaminerController; 
-            LANGUAGE = ObjC; 
-            SUPERCLASS = SCController; 
-        }, 
+        {CLASS = SCExaminerController; LANGUAGE = ObjC; SUPERCLASS = SCController; }, 
         {CLASS = SCOpenGLView; LANGUAGE = ObjC; SUPERCLASS = NSView; }, 
         {
             CLASS = SCView; 
