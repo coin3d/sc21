@@ -71,7 +71,6 @@ class SoDirectionalLight;
 - (void) performPanningWithPoint:(NSValue *)v;
 - (void) performZoomWithDelta:(NSValue *)v;
 - (void) performZoomWithPoint:(NSValue *)v;
-- (void) performMove:(NSValue *)v;
 - (void) ignore:(NSValue *)v;
 
 @end
