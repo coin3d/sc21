@@ -4,6 +4,7 @@
 #define SC21_EXTERN		extern
 #endif
 
+/*" The run-time Sc21 version number "*/
 SC21_EXTERN const double Sc21VersionNumber;
 
 // Version numbers are increased by the following scheme:
@@ -13,5 +14,6 @@ SC21_EXTERN const double Sc21VersionNumber;
 // o Major versions:              basically the same as for minor versions
 //                                but the Letter version will also change
 //                                (e.g. A -> B).
+/*" FIXME: Document "*/
 #define Sc21VersionNumber1_0 3
 //FIXME: or: #define SC21_VERSION_1_0 3

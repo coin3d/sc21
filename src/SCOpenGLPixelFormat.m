@@ -47,12 +47,17 @@
 
 @implementation SCOpenGLPixelFormat
 
-/*"
-  FIXME: write doc
+/*" 
+  SCOpenGLPixelFormat is a replacement for NSOpenGLPixelFormat.
+  
+  The purpose of this class is to be able to set and query any
+  NSOpenGLPixelFormatAttribute. In Sc21, this is used to be able to
+  archive/unarchive these attributes for use in the Interface Builder
+  inspector for SCView.
   "*/
 
 /*!
-  FIXME: write doc
+  Designated initializer.
 */
 - (id)init
 {
@@ -61,9 +66,6 @@
   return self;
 }
 
-/*!
-  FIXME: write doc
-*/
 - (void)dealloc
 {
   [SELF->attrdict release];
@@ -73,9 +75,9 @@
 }
 
 /*"
-  Sets the boolean pixel format attribute.
+  Sets boolean pixel format attribute.
 
-  As with #NSOpenGLPixelFormat, the existence of a boolean attribute
+  As with NSOpenGLPixelFormat, the existence of a boolean attribute
   implies a YES value.
   To set a boolean attribute to NO, use #removeAttribute:
 
@@ -83,28 +85,26 @@
 "*/
 - (void)setAttribute:(NSOpenGLPixelFormatAttribute)attr
 {
-  if (!SELF->attrdict) 
-    SELF->attrdict = [[NSMutableDictionary alloc] init];
+  if (!SELF->attrdict) SELF->attrdict = [[NSMutableDictionary alloc] init];
   BOOL yes = YES;
   [SELF->attrdict 
-          setObject:[NSValue value:&yes withObjCType:@encode(BOOL)] 
-          forKey:[NSNumber numberWithInt:attr]];
+       setObject:[NSValue value:&yes withObjCType:@encode(BOOL)] 
+       forKey:[NSNumber numberWithInt:attr]];
   [SELF->nspixelformat release];
   SELF->nspixelformat = nil;
 }
 
 /*"
-  Sets pixel format attribute to the given value
+  Sets integer pixel format attribute.
 
   FIXME:/sa setAttribute:, removeAttribute:
   "*/
 - (void)setAttribute:(NSOpenGLPixelFormatAttribute)attr toValue:(int)val
 {
-  if (!SELF->attrdict) 
-    SELF->attrdict = [[NSMutableDictionary alloc] init];
+  if (!SELF->attrdict) SELF->attrdict = [[NSMutableDictionary alloc] init];
   [SELF->attrdict 
-          setObject:[NSValue value:&val withObjCType:@encode(int)]
-          forKey:[NSNumber numberWithInt:attr]];
+       setObject:[NSValue value:&val withObjCType:@encode(int)]
+       forKey:[NSNumber numberWithInt:attr]];
   [SELF->nspixelformat release];
   SELF->nspixelformat = nil;
 }
@@ -112,63 +112,54 @@
 /*"
   Removes pixel format attribute.
 
-  Attributes that are not set will be set to their default value.
-  FIXME: How is this handled by NSOpenGLPixelFormat, especially in case 
-  of boolean attributes?
+  As with NSOpenGLPixelFormat, removing a boolean attribute implies a
+  NO value.
   "*/
 - (void)removeAttribute:(NSOpenGLPixelFormatAttribute)attr
 {
-  if (!SELF->attrdict) 
-    SELF->attrdict = [[NSMutableDictionary alloc] init];
+  if (!SELF->attrdict) SELF->attrdict = [[NSMutableDictionary alloc] init];
   [SELF->attrdict removeObjectForKey:[NSNumber numberWithInt:attr]];
   [SELF->nspixelformat release];
   SELF->nspixelformat = nil;
 }
 
-/*!
+/*"
   Copies the value of the given attribute into the integer pointed to by
   #valptr. 
-
-  If the attribute is a boolean value the value will be set to 1.
 
   Returns YES if the attribute exists or NO otherwise.
   On return value of NO, the contents of the valptr is not written.
 
+  If the attribute is a boolean value the valptr value will be set to 1
+  if the attribute exists.
+
   NB! This method returns the value previously set with -setAttribute*.
   If you want the real attribute value of the corresponding 
   NSOpenGLPixelFormat, use its -getValues:forAttribute:forVirtualScreen:.
-*/
+  "*/
 - (BOOL)getValue:(int *)valptr forAttribute:(NSOpenGLPixelFormatAttribute)attr
 {
-  NSValue * value = 
-    [SELF->attrdict objectForKey:[NSNumber numberWithInt:attr]];
-  if (!value) return NO;
-  if (!strcmp([value objCType], @encode(int))) [value getValue:valptr];
+  NSValue * val = [SELF->attrdict objectForKey:[NSNumber numberWithInt:attr]];
+  if (!val) return NO;
+  if (!strcmp([val objCType], @encode(int))) [val getValue:valptr];
   else *valptr = 1;
   return YES;
 }
 
-/*!
-  If we have a attrdict containing any values, create a new
-  NSOpenGLPixelFormat based on those values and return it,
-  else return nil.
+/*"
+  If any attributes have been set, creates and returns a new 
+  NSOpenGLPixelFormat instance from these attributes, else return nil.
 
   The returned pixelformat is cached, and the same instance will be returned
   if the attributes haven't changed since the last invocation of this
   method.
-*/
+  "*/
 - (NSOpenGLPixelFormat *)pixelFormat
 {
-  NSLog(@"SCOpenGLPixelFormat.pixelFormat");
-  // FIXME: Have a "valid" flag instead to avoid repeatedly
-  // trying to create a pixelformat and fail? (kintel 20040401)
-  if (!SELF->nspixelformat && 
-      SELF->attrdict && 
-      [SELF->attrdict count] > 0) {
+  if (!SELF->nspixelformat && SELF->attrdict && [SELF->attrdict count] > 0) {
     // Create an attribute array from dict
     NSOpenGLPixelFormatAttribute * attrs = 
-      malloc([SELF->attrdict count] * 2 * 
-             sizeof(NSOpenGLPixelFormatAttribute*) + 1);
+      malloc(2*[SELF->attrdict count]*sizeof(NSOpenGLPixelFormatAttribute*)+1);
     NSEnumerator * keys = [SELF->attrdict keyEnumerator];
     NSNumber * key;
     NSValue * val;
@@ -202,7 +193,6 @@
 
 - (void)encodeWithCoder:(NSCoder *)coder 
 {
-  NSLog(@"SCOpenGLPixelFormat.encodeWithCoder");
   if ([coder allowsKeyedCoding]) {
     [coder encodeObject:SELF->attrdict forKey:@"SC_attrdict"];
   }
@@ -210,7 +200,6 @@
 
 - (id)initWithCoder:(NSCoder *)coder 
 {
-  NSLog(@"SCOpenGLPixelFormat.initWithCoder");
   if (self = [super init]) {
     [self _SC_commonInit];
     if ([coder allowsKeyedCoding]) {
@@ -220,7 +209,7 @@
   return self;
 }
 
-// NSCopying compliance
+// ---------------- NSCopying conformance -------------------------------
 
 - (id)copyWithZone:(NSZone *)zone
 {

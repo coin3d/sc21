@@ -40,120 +40,102 @@
 
 @implementation SCOpenGLView
 
- /*"  
-   Designated initializer.
+/*" 
+  SCOpenGLView is a replacement for NSOpenGLView.
+  
+  The main purpose of this class is to be able to use an
+  SCOpenGLPixelFormat in order to be able to archive/unarchive
+  this class.
+  "*/
 
-   Initializes a newly allocated NSOpenGLView with frameRect as its
-   frame rectangle and format as its pixel format.
- "*/
- - (id)initWithFrame:(NSRect)frameRect pixelFormat:(SCOpenGLPixelFormat *)format
- {
-   NSLog(@"SCOpenGLView.initWithFrame:pixelFormat");
+/*"  
+  Designated initializer.
+  
+  Initializes a newly allocated NSOpenGLView with frameRect as its
+  frame rectangle and format as its pixel format.
 
-   self = [super initWithFrame:frameRect];
-   if (self) {
-     [self _SC_commonInit];
-     SELF->pixelformat = [format retain];
-   }
-   return self;
- }
-
- - (id)initWithFrame:(NSRect)frameRect
- {  
-   NSLog(@"SCOpenGLView.initWithFrame:");
-
-   return [self initWithFrame:frameRect pixelFormat:nil];
- }
-
- - (void)dealloc
- {
-   NSLog(@"SCOpenGLView.dealloc");
-
-   [[NSNotificationCenter defaultCenter] removeObserver:self];
-
-   [self clearGLContext];
-   [self setPixelFormat:nil];
-   [SELF release];
-   [super dealloc];
- }
-
-
- /*"
-   Returns a default #SCOpenGLPixelFormat.
-   Loops through an internal prioritized list of pixel format requirements
-   and selects the first valid pixelformat found.
- "*/
- + (SCOpenGLPixelFormat *)defaultPixelFormat
- {
-   NSLog(@"SCOpenGLView.defaultPixelFormat");
-
-   SCOpenGLPixelFormat * pixelFormat = [[SCOpenGLPixelFormat alloc] init];
-   [pixelFormat setAttribute:NSOpenGLPFADoubleBuffer];
-   [pixelFormat setAttribute:NSOpenGLPFAAccelerated];
-   [pixelFormat setAttribute:NSOpenGLPFAColorSize toValue:24];
-   [pixelFormat setAttribute:NSOpenGLPFAAlphaSize toValue:8];
-   [pixelFormat setAttribute:NSOpenGLPFADepthSize toValue:32];
-   [pixelFormat autorelease];
-   return pixelFormat;
-
- #if 0
-   NSOpenGLPFAAllRenderers
-   NSOpenGLPFADoubleBuffer
-   NSOpenGLPFAStereo      
-   NSOpenGLPFAMinimumPolicy
-   NSOpenGLPFAMaximumPolicy
-   NSOpenGLPFAOffScreen    
-   NSOpenGLPFAFullScreen   
-   NSOpenGLPFASingleRenderer 
-   NSOpenGLPFANoRecovery     
-   NSOpenGLPFAAccelerated    
-   NSOpenGLPFAClosestPolicy  
-   NSOpenGLPFARobust         
-   NSOpenGLPFABackingStore   
-   NSOpenGLPFAMPSafe         
-   NSOpenGLPFAWindow         
-   NSOpenGLPFAMultiScreen    
-   NSOpenGLPFACompliant      
-   NSOpenGLPFAPixelBuffer    
-
-   NSOpenGLPFAAuxBuffers  
-   NSOpenGLPFAColorSize   
-   NSOpenGLPFAAlphaSize   
-   NSOpenGLPFADepthSize   
-   NSOpenGLPFAStencilSize 
-   NSOpenGLPFAAccumSize   
-   NSOpenGLPFARendererID     
-   NSOpenGLPFAScreenMask     
-   NSOpenGLPFASampleBuffers
-   NSOpenGLPFASamples      
-
-   NSOpenGLPFAAuxDepthStencil
- #endif
- }
+  Passing nil as pixelFormat will result in the pixel format being
+  set to the result of +defaultPixelFormat when the OpenGL context
+  is initialized.
+  "*/
+- (id)initWithFrame:(NSRect)frameRect pixelFormat:(SCOpenGLPixelFormat *)format
+{
+  NSLog(@"SCOpenGLView.initWithFrame:pixelFormat");
+  
+  self = [super initWithFrame:frameRect];
+  if (self) {
+    [self _SC_commonInit];
+    SELF->pixelformat = [format retain];
+  }
+  return self;
+}
 
 /*"
-  Sets the receiver's #SCOpenGLPixelFormat to pixelFormat
+  Equivalent to -initWithFrame:frameRect pixelFormat:nil.
+  "*/
+- (id)initWithFrame:(NSRect)frameRect
+{  
+  NSLog(@"SCOpenGLView.initWithFrame:");
   
-  FIXME: Should we force a recreation of our OpenGL context?
-  Test how NSOpenGLView behaves and document this
-  (kintel 20040456)
-"*/
+  return [self initWithFrame:frameRect pixelFormat:nil];
+}
+
+- (void)dealloc
+{
+  NSLog(@"SCOpenGLView.dealloc");
+  
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  
+  [self clearGLContext];
+  [self setPixelFormat:nil];
+  [SELF release];
+  [super dealloc];
+}
+
+
+/*"
+  Returns a default #SCOpenGLPixelFormat.
+  "*/
++ (SCOpenGLPixelFormat *)defaultPixelFormat
+{
+  NSLog(@"SCOpenGLView.defaultPixelFormat");
+  
+  // FIXME: Loop through an internal prioritized list of pixel format
+  // requirements and select the first valid pixelformat found?
+  // (kintel 20040615)
+
+  SCOpenGLPixelFormat * pixelFormat = [[SCOpenGLPixelFormat alloc] init];
+  [pixelFormat setAttribute:NSOpenGLPFADoubleBuffer];
+  [pixelFormat setAttribute:NSOpenGLPFAAccelerated];
+  [pixelFormat setAttribute:NSOpenGLPFAColorSize toValue:24];
+  [pixelFormat setAttribute:NSOpenGLPFAAlphaSize toValue:8];
+  [pixelFormat setAttribute:NSOpenGLPFADepthSize toValue:32];
+  [pixelFormat autorelease];
+  return pixelFormat;
+}
+
+/*"
+  Sets the receiver's pixel format.
+  "*/
 - (void)setPixelFormat:(SCOpenGLPixelFormat *)pixelFormat
 {
   NSLog(@"SCOpenGLView.setPixelFormat");
-
+  
+  //   FIXME: Should we force a recreation of our OpenGL context?
+  //   Test how NSOpenGLView behaves and document this
+  //   (kintel 20040456)
   [pixelFormat retain];
   [SELF->pixelformat release];
   SELF->pixelformat = pixelFormat;
 }
 
 /*"
-  Returns the #SCOpenGLPixelFormat associated with the receiver.
-"*/
+  Returns the pixel format associated with the receiver.
+  "*/
 - (SCOpenGLPixelFormat *)pixelFormat
 {
   NSLog(@"SCOpenGLView.pixelFormat");
-
+  
   return SELF->pixelformat;
 }
 
@@ -166,7 +148,7 @@
   its view from its makeCurrentContext method.
   Under Jaguar, this function is called explicitly from our
   -openGLContext method, emulating Panther's behavior.
-"*/
+  "*/
 - (void)prepareOpenGL
 {
   NSLog(@"SCOpenGLView.prepareOpenGL");
@@ -179,13 +161,14 @@
   Releases the NSOpenGLContext associated with the receiver. If
   necessary, this method calls clearDrawable on the context before
   releasing it.
-"*/
+  "*/
 - (void)clearGLContext
 {
   NSLog(@"SCOpenGLView.clearGLContext");
 
   if (SELF->openGLContext) {
-    if ([SELF->openGLContext view] == self) [SELF->openGLContext clearDrawable];
+    if ([SELF->openGLContext view] == self) 
+      [SELF->openGLContext clearDrawable];
     [SELF->openGLContext autorelease];
     SELF->openGLContext = nil;
   }
@@ -197,7 +180,7 @@
   and returned. The new NSOpenGLContext is initialized with the
   receiver's -pixelFormat. If this function returns nil,
   a new pixelformat is created using +defaultPixelFormat.
-"*/
+  "*/
 - (NSOpenGLContext *)openGLContext
 {
   if (!SELF->openGLContext) {
@@ -353,7 +336,7 @@
 - (void)_SC_commonInit
 {
   SELF = [[_SCOpenGLViewP alloc] init];
-
+  
   [[NSNotificationCenter defaultCenter] 
     addObserver:self 
     selector:@selector(_SC_updateNeeded:) 
