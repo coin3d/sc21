@@ -18,7 +18,8 @@ class SoGetBoundingBoxAction;
 
   SCCamera * _camera;
   SCEventConverter * _eventconverter;
-  NSTimer * _timer;
+  NSTimer * _timerqueuetimer;
+  NSTimer * _delayqueuetimer;
   NSRect _viewframe;
   SoGroup * _scenegraph;	  // the whole scenegraph
   SoSceneManager * _scenemanager;
@@ -42,7 +43,7 @@ class SoGetBoundingBoxAction;
 /*" Initializing an SCController "*/
 - (id) init;
 - (void) awakeFromNib;
-- (void) disconnect;
+- (void) stopTimers;
 
 /*" Getting the view associated with the controller "*/
 - (SCView *) view;
@@ -83,10 +84,6 @@ class SoGetBoundingBoxAction;
 
 /*" Delegate methods implemented by SCController "*/
 - (void) openPanelDidEnd:(NSOpenPanel*)panel returnCode:(int)rc contextInfo:(void *) ctx;
-
-#if 0
-- (void)foo:(NSNotification *)notification;
-#endif
 
 @end
 

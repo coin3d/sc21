@@ -151,7 +151,8 @@
 
 - (void) dealloc
 {
-  [controller disconnect];
+  // Prevent controller from continuing to draw into our view.
+  [controller stopTimers];
   [super dealloc];  
 }
 
