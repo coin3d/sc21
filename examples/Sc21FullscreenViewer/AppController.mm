@@ -28,7 +28,6 @@
 #import "AppController.h"
 #import <Sc21/Sc21.h>
 #import <Sc21/SCDebug.h>
-#import <Inventor/SbTime.h>
 #import <Inventor/SoInput.h>
 #import <Inventor/nodes/SoSeparator.h>
 #import <Inventor/SoSceneManager.h>
@@ -229,12 +228,6 @@
 
   [coincontroller setDrawable:self];
 
-  const SbTime oldtimeout = SoDB::getDelaySensorTimeout();
-  // Set to force timeout rendering at 120 Hz
-  SoDB::setDelaySensorTimeout(SbTime(1.0/120.0));
-  // Disable timeout rendering
-//   SoDB::setDelaySensorTimeout(SbTime(0.0f));
-  
   // Now that we've got the screen, we enter a loop in which we alternately 
   // process input events and computer and render the next frame of our 
   // animation.  The shift here is from a model in which we passively receive 
@@ -248,10 +241,11 @@
     NSEvent *event;
     unichar c;
     BOOL handled;
-    while (event = [NSApp nextEventMatchingMask:NSAnyEventMask 
-                          untilDate:[NSDate distantPast] 
-                          inMode:NSDefaultRunLoopMode 
-                          dequeue:YES]) {
+    while (stayInFullScreenMode &&
+           (event = [NSApp nextEventMatchingMask:NSAnyEventMask 
+                           untilDate:[NSDate distantFuture] 
+                           inMode:NSDefaultRunLoopMode 
+                           dequeue:YES])) {
       handled = NO;
       switch ([event type]) {
       case NSKeyDown:
@@ -276,17 +270,6 @@
       }
     }
     
-    //FIXME: If we don't display explicitly, the delaysensor timeout will
-    //trigger
-//     [self display];
-
-    //FIXME: This attempt to deliver idle notifications didn't work.
-//    NSNotification * notification = 
-//      [NSNotification notificationWithName:@"_SCIdleNotification" object:nil];
-//     [[NSNotificationQueue defaultQueue] 
-//       dequeueNotificationsMatching:notification 
-//       coalesceMask:NSNotificationCoalescingOnName];
-
     // Clean up any autoreleased objects that were created this 
     // time through the loop.
     [pool release];
@@ -313,7 +296,6 @@
   // Release control of the display.
   CGDisplayRelease(_displayid);
   
-  SoDB::setDelaySensorTimeout(oldtimeout);
   [coincontroller setDrawable:view];
   gra->setCacheContext(oldcachecontext);
 }
