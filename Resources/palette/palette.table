@@ -12,7 +12,7 @@
 	<key>Icon</key> <string>coin</string>
 
 		<!-- Tool Tips string for the palette icon -->
-	<key>ToolTips</key> <string>SC21</string>
+	<key>ToolTips</key> <string>SC21 V0.1.2</string>
 
 		<!-- a list of class names exported from palette to IB -->
 	<key>ExportClasses</key>
