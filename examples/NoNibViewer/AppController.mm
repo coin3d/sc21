@@ -63,22 +63,19 @@
         SCExaminerController * sccontroller = 
           [[[SCExaminerController alloc] init] autorelease];
         // Create the view<->controller connection
-        [sccontroller setView:view];
         [view setController:sccontroller]; // retained by view
         // Set the scene graph
         [sccontroller setSceneGraph:sg];
-        [view reshape]; // FIXME: This must be called in order to set the correct initial viewport.
-                        // Should be done somewhere in SC21 instead (kintel 20031112)
         [sccontroller viewAll];
 
         // Add a "View All" context menu item.
-        [[sccontroller view] setMenu:[[[NSMenu alloc] initWithTitle:@"Context menu"] autorelease]];
+        [view setMenu:[[[NSMenu alloc] initWithTitle:@"Context menu"] autorelease]];
         
         NSMenuItem * item = [[[NSMenuItem alloc] init] autorelease];
         [item setTitle:@"View All"];
         [item setTarget:sccontroller];
         [item setAction:@selector(viewAll)];
-        [[[sccontroller view] menu] addItem:item];
+        [[view menu] addItem:item];
       }
     }
   }
