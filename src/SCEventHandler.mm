@@ -108,15 +108,6 @@
   return NO;
 }
 
-- (void)activateMode:(SCMode *)newmode event:(NSEvent *)event
-               point:(NSPoint *)pn 
-              camera:(SCCamera *)camera view:(NSView *)view
-{
-  [newmode activate:event point:pn camera:camera];
-  [[SCMouseLog defaultMouseLog] setStartPoint:pn timestamp:[event timestamp]];
-  [view setCursor:[newmode cursor]];
-}
-
 // ---------------- NSCoding conformance -------------------------------
 
 - (void)encodeWithCoder:(NSCoder *)coder
@@ -193,6 +184,15 @@
     }
   }
   return effectivebutton;
+}
+
+- (void)_SC_activateMode:(SCMode *)newmode event:(NSEvent *)event
+                   point:(NSPoint *)pn 
+                  camera:(SCCamera *)camera view:(NSView *)view
+{
+  [newmode activate:event point:pn camera:camera];
+  [[SCMouseLog defaultMouseLog] setStartPoint:pn timestamp:[event timestamp]];
+  [view setCursor:[newmode cursor]];
 }
 
 @end

@@ -69,7 +69,7 @@
       eventtype == NSRightMouseDragged ||
       eventtype == NSOtherMouseDragged) {
     if (![SELF->flymode isActive]) {
-      [self activateMode:SELF->flymode event:event 
+      [self _SC_activateMode:SELF->flymode event:event 
             point:&pn camera:camera view:view];
     } else {
       [[SCMouseLog defaultMouseLog] appendPoint:&pn 
@@ -105,7 +105,7 @@
     if (modeclass) {
       SCMode * newmode = [[[modeclass alloc] init] autorelease];
       [self _SC_setCurrentMode:newmode];
-      [self activateMode:newmode event:event point:&pn camera:camera view:view];
+      [self _SC_activateMode:newmode event:event point:&pn camera:camera view:view];
     }
     else [self _SC_setCurrentMode:nil];
   }

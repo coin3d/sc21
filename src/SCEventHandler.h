@@ -22,5 +22,4 @@ typedef int SCOperation;
 
 - (BOOL)handleEvent:(NSEvent *)event inView:(NSView *)view camera:(SCCamera *)camera;
 - (void)updateCamera:(SCCamera *)camera;
-- (void)activateMode:(SCMode *)mode event:(NSEvent *)event point:(NSPoint *)pn camera:(SCCamera *)camera view:(NSView *)view;
 @end

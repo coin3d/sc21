@@ -82,7 +82,7 @@
     SCMode * currentmode = [self _SC_currentMode];
     if (currentmode) {
       if (![currentmode isActive]) {
-        [self activateMode:currentmode event:event 
+        [self _SC_activateMode:currentmode event:event 
               point:&pn camera:camera view:view];
       } else {
         [[SCMouseLog defaultMouseLog] appendPoint:&pn 
@@ -118,7 +118,7 @@
     if (modeclass) {
       SCMode * newmode = [[[modeclass alloc] init] autorelease];
       [self _SC_setCurrentMode:newmode];
-      [self activateMode:newmode event:event point:&pn camera:camera view:view];
+      [self _SC_activateMode:newmode event:event point:&pn camera:camera view:view];
     }
     else [self _SC_setCurrentMode:nil];
   }
