@@ -1,0 +1,9 @@
+{
+	SCController = {
+		SuperClass = NSObject;
+		Attributes = {
+      clearsColorBuffer = {};
+      clearsDepthBuffer = {};
+		};
+	};
+}

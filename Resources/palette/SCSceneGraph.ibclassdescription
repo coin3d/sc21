@@ -1,0 +1,8 @@
+{
+	SCSceneGraph = {
+		SuperClass = NSObject;
+		Attributes = {
+      createsSuperSceneGraph = {};
+		};
+	};
+}

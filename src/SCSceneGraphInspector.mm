@@ -46,6 +46,11 @@
 {
   SC21_DEBUG(@"SCSceneGraphInspector.ok:");
   SCSceneGraph * scscenegraph = [self object];
+  
+  // Undo support
+  [self beginUndoGrouping];
+  [self noteAttributesWillChangeForObject:scscenegraph];
+  
   [scscenegraph _SC_setCreatesSuperSceneGraph:([createsuperscenegraph state] == NSOnState)];
   [super ok:sender];
 }
@@ -59,4 +64,26 @@
   [super revert:sender];
 }
 
+@end
+
+// Undo support workaround:
+// IB wants a standard accessor method - it does not accept our _SC_xxx one.
+// FIXME: Maybe there's a way to tell IB what accessor to use? Investigate.
+// kyrah 20040827
+
+@interface SCSceneGraph (UndoSupport)
+- (void)setCreatesSuperSceneGraph:(BOOL)yn;
+- (BOOL)createsSuperSceneGraph;
+@end
+
+@implementation SCSceneGraph (UndoSupport)
+- (void)setCreatesSuperSceneGraph:(BOOL)yn
+{
+  [self _SC_setCreatesSuperSceneGraph:yn]; 
+}
+
+- (BOOL)createsSuperSceneGraph
+{
+  return [self _SC_createsSuperSceneGraph];
+}
 @end

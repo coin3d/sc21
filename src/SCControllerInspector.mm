@@ -47,6 +47,10 @@
 {
   SC21_DEBUG(@"SCControllerInspector.ok:");
   SCController *sccontroller = [self object];
+  
+  // Undo support
+  [self beginUndoGrouping];
+  [self noteAttributesWillChangeForObject:sccontroller];
 
   [sccontroller setClearsColorBuffer:([clearcolorbuffer state] == NSOnState)];
   [sccontroller setClearsDepthBuffer:([cleardepthbuffer state] == NSOnState)];

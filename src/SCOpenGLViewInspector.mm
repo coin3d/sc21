@@ -29,6 +29,7 @@
 #import <Sc21/SCOpenGLView.h>
 #import <Sc21/SCOpenGLPixelFormat.h>
 #import "SCUtil.h"
+#import "SCView.h"
 
 @implementation SCOpenGLViewInspector
 
@@ -52,10 +53,14 @@
     pixelformat = [[SCOpenGLPixelFormat alloc] init];
     [scview setPixelFormat:pixelformat];
   }
-
+  
   //FIXME: Reconsider this
   [pixelformat setAttribute:NSOpenGLPFADoubleBuffer];
 
+  // Undo support
+  [self beginUndoGrouping];
+  [self noteAttributesWillChangeForObject:scview];
+  
   // Hidden handling
   [scview setHidden:([hidden state] == NSOnState)];
 
@@ -281,4 +286,19 @@
   [super revert:sender];
 }
 
+@end
+
+
+// Undo support workaround:
+// IB wants a standard accessor method - it does not accept NSView's isHidden
+
+@interface SCView (UndoSupport)
+- (BOOL)hidden;
+@end
+
+@implementation SCView (UndoSupport)
+- (BOOL)hidden
+{
+  return [self isHidden];
+}
 @end

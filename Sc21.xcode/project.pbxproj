@@ -6,18 +6,18 @@
 	objectVersion = 39;
 	objects = {
 		3D016A6506B6EBD800AD1116 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCExaminerHandlerInspector.h;
 			path = src/SCExaminerHandlerInspector.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		3D016A6606B6EBD800AD1116 = {
+			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.objc;
 			name = SCExaminerHandlerInspector.m;
 			path = src/SCExaminerHandlerInspector.m;
 			refType = 4;
@@ -46,8 +46,8 @@
 			sourceTree = "<group>";
 		};
 		3D016AAE06B6EDE500AD1116 = {
+			expectedFileType = wrapper.nib;
 			isa = PBXFileReference;
-			lastKnownFileType = wrapper.nib;
 			name = English;
 			path = Resources/palette/English.lproj/SCExaminerHandlerInspector.nib;
 			refType = 4;
@@ -60,8 +60,8 @@
 			};
 		};
 		3D016B0306B6F29E00AD1116 = {
+			expectedFileType = image.tiff;
 			isa = PBXFileReference;
-			lastKnownFileType = image.tiff;
 			name = SCExaminerHandler.tiff;
 			path = Resources/palette/SCExaminerHandler.tiff;
 			refType = 4;
@@ -74,18 +74,18 @@
 			};
 		};
 		3D02FB1F06A874CB00B9760F = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCSceneGraph.h;
 			path = src/SCSceneGraph.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		3D02FB2006A874CB00B9760F = {
+			expectedFileType = sourcecode.cpp.objcpp;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = SCSceneGraph.mm;
 			path = src/SCSceneGraph.mm;
 			refType = 4;
@@ -107,8 +107,8 @@
 			};
 		};
 		3D0D68E306B7B3C800B64A18 = {
+			expectedFileType = image.tiff;
 			isa = PBXFileReference;
-			lastKnownFileType = image.tiff;
 			name = SCFlyHandler.tiff;
 			path = Resources/palette/SCFlyHandler.tiff;
 			refType = 4;
@@ -131,8 +131,8 @@
 			sourceTree = "<group>";
 		};
 		3D0D691906B7B5E100B64A18 = {
+			expectedFileType = wrapper.nib;
 			isa = PBXFileReference;
-			lastKnownFileType = wrapper.nib;
 			name = English;
 			path = Resources/palette/English.lproj/SCFlyHandlerInspector.nib;
 			refType = 4;
@@ -145,8 +145,8 @@
 			};
 		};
 		3D23339306BE4C2A00AF3094 = {
+			expectedFileType = image.tiff;
 			isa = PBXFileReference;
-			lastKnownFileType = image.tiff;
 			name = InspectorError.tiff;
 			path = Resources/palette/InspectorError.tiff;
 			refType = 4;
@@ -159,8 +159,8 @@
 			};
 		};
 		3D3BEE6906B00E43007A16DC = {
+			expectedFileType = image.tiff;
 			isa = PBXFileReference;
-			lastKnownFileType = image.tiff;
 			name = SCSceneGraph.tiff;
 			path = Resources/palette/SCSceneGraph.tiff;
 			refType = 4;
@@ -173,9 +173,9 @@
 			};
 		};
 		3D669B2D06AA974F00CB9330 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCSceneGraphP.h;
 			path = src/SCSceneGraphP.h;
 			refType = 4;
@@ -188,9 +188,9 @@
 			};
 		};
 		3D669D2506AAB21900CB9330 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCCameraP.h;
 			path = src/SCCameraP.h;
 			refType = 4;
@@ -203,18 +203,18 @@
 			};
 		};
 		3D6AF40F06AE760200225657 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCCursors.h;
 			path = src/SCCursors.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		3D6AF41006AE760200225657 = {
+			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.objc;
 			name = SCCursors.m;
 			path = src/SCCursors.m;
 			refType = 4;
@@ -233,36 +233,36 @@
 			};
 		};
 		3D6AF42706AE769B00225657 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCControllerP.h;
 			path = src/SCControllerP.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		3D6AF42806AE769B00225657 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCDebug.h;
 			path = src/SCDebug.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		3D6AF42906AE769B00225657 = {
+			expectedFileType = sourcecode.cpp.objcpp;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = SCDebug.mm;
 			path = src/SCDebug.mm;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		3D6AF42A06AE769B00225657 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCDefines.h;
 			path = src/SCDefines.h;
 			refType = 4;
@@ -299,9 +299,9 @@
 			};
 		};
 		3D6AF42F06AE770400225657 = {
+			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.objc;
 			name = SCExterns.m;
 			path = src/SCExterns.m;
 			refType = 4;
@@ -314,18 +314,18 @@
 			};
 		};
 		3D883EAC06BFB0CA0048CDB7 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCSpinMode.h;
 			path = src/SCSpinMode.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		3D883EAD06BFB0CA0048CDB7 = {
+			expectedFileType = sourcecode.cpp.objcpp;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = SCSpinMode.mm;
 			path = src/SCSpinMode.mm;
 			refType = 4;
@@ -343,10 +343,55 @@
 			settings = {
 			};
 		};
-		3DC6401D06BD29CB00301065 = {
+		3DA8F98306DFEFB500173C27 = {
+			expectedFileType = text;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
+			name = SCController.ibclassdescription;
+			path = Resources/palette/SCController.ibclassdescription;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3DA8F98406DFEFB500173C27 = {
+			expectedFileType = text;
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			name = SCSceneGraph.ibclassdescription;
+			path = Resources/palette/SCSceneGraph.ibclassdescription;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3DA8F98506DFEFB500173C27 = {
+			expectedFileType = text;
+			fileEncoding = 4;
+			isa = PBXFileReference;
+			name = SCView.ibclassdescription;
+			path = Resources/palette/SCView.ibclassdescription;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3DA8F98606DFEFB500173C27 = {
+			fileRef = 3DA8F98306DFEFB500173C27;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		3DA8F98706DFEFB500173C27 = {
+			fileRef = 3DA8F98406DFEFB500173C27;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		3DA8F98806DFEFB500173C27 = {
+			fileRef = 3DA8F98506DFEFB500173C27;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		3DC6401D06BD29CB00301065 = {
+			expectedFileType = sourcecode.c.h;
+			fileEncoding = 4;
+			isa = PBXFileReference;
 			name = SCExaminerHandlerP.h;
 			path = src/SCExaminerHandlerP.h;
 			refType = 4;
@@ -359,18 +404,18 @@
 			};
 		};
 		3DC6408406BD305800301065 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCEmulator.h;
 			path = src/SCEmulator.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		3DC6408506BD305800301065 = {
+			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.objc;
 			name = SCEmulator.m;
 			path = src/SCEmulator.m;
 			refType = 4;
@@ -401,8 +446,8 @@
 			sourceTree = "<group>";
 		};
 		3DDD3FF106B8EE5C0038959E = {
+			expectedFileType = wrapper.nib;
 			isa = PBXFileReference;
-			lastKnownFileType = wrapper.nib;
 			name = English;
 			path = Resources/palette/English.lproj/SCSceneGraphInspector.nib;
 			refType = 4;
@@ -415,18 +460,18 @@
 			};
 		};
 		3DDD3FF506B8EE9D0038959E = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCSceneGraphInspector.h;
 			path = src/SCSceneGraphInspector.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		3DDD3FF606B8EE9D0038959E = {
+			expectedFileType = sourcecode.cpp.objcpp;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = SCSceneGraphInspector.mm;
 			path = src/SCSceneGraphInspector.mm;
 			refType = 4;
@@ -445,9 +490,9 @@
 			};
 		};
 		3DE326EA06BC6A4900C5518B = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCOpenGLViewP.h;
 			path = src/SCOpenGLViewP.h;
 			refType = 4;
@@ -470,18 +515,18 @@
 //E03
 //E04
 		E000676A062598DD00F49FCD = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCControllerInspector.h;
 			path = src/SCControllerInspector.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E000676B062598DD00F49FCD = {
+			expectedFileType = sourcecode.cpp.objcpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = SCControllerInspector.mm;
 			path = src/SCControllerInspector.mm;
 			refType = 4;
@@ -510,8 +555,8 @@
 			sourceTree = "<group>";
 		};
 		E000678806259B3000F49FCD = {
+			expectedFileType = wrapper.nib;
 			isa = PBXFileReference;
-			lastKnownFileType = wrapper.nib;
 			name = English;
 			path = Resources/palette/English.lproj/SCControllerInspector.nib;
 			refType = 4;
@@ -564,17 +609,17 @@
 			sourceTree = "<group>";
 		};
 		E000936406C64E700068E0BF = {
+			expectedFileType = text.plist;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
 			path = Description.plist;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E000936506C64E700068E0BF = {
+			expectedFileType = text.plist;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
 			path = Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -591,22 +636,22 @@
 			sourceTree = "<group>";
 		};
 		E000936706C64E700068E0BF = {
+			expectedFileType = image.tiff;
 			isa = PBXFileReference;
-			lastKnownFileType = image.tiff;
 			path = background.tiff;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E000936806C64E700068E0BF = {
+			expectedFileType = text.rtf;
 			isa = PBXFileReference;
-			lastKnownFileType = text.rtf;
 			path = License.rtf;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E000936906C64E700068E0BF = {
+			expectedFileType = text.rtf;
 			isa = PBXFileReference;
-			lastKnownFileType = text.rtf;
 			path = Welcome.rtf;
 			refType = 4;
 			sourceTree = "<group>";
@@ -623,18 +668,18 @@
 			sourceTree = "<group>";
 		};
 		E000949006C64F350068E0BF = {
+			expectedFileType = text.plist;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
 			name = Description.plist;
 			path = packaging/examples/Description.plist;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		E000949106C64F350068E0BF = {
+			expectedFileType = text.plist;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
 			name = Info.plist;
 			path = packaging/examples/Info.plist;
 			refType = 2;
@@ -653,22 +698,22 @@
 			sourceTree = SOURCE_ROOT;
 		};
 		E000949306C64F350068E0BF = {
+			expectedFileType = image.tiff;
 			isa = PBXFileReference;
-			lastKnownFileType = image.tiff;
 			path = background.tiff;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E000949406C64F350068E0BF = {
+			expectedFileType = text.rtf;
 			isa = PBXFileReference;
-			lastKnownFileType = text.rtf;
 			path = License.rtf;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E000949506C64F350068E0BF = {
+			expectedFileType = text.rtf;
 			isa = PBXFileReference;
-			lastKnownFileType = text.rtf;
 			path = Welcome.rtf;
 			refType = 4;
 			sourceTree = "<group>";
@@ -782,22 +827,22 @@
 			sourceTree = "<group>";
 		};
 		E015841606352EBB00B4C24F = {
+			expectedFileType = image.tiff;
 			isa = PBXFileReference;
-			lastKnownFileType = image.tiff;
 			path = background.tiff;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E015841706352EC900B4C24F = {
+			expectedFileType = image.tiff;
 			isa = PBXFileReference;
-			lastKnownFileType = image.tiff;
 			path = background.tiff;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E015841806352ED300B4C24F = {
+			expectedFileType = image.tiff;
 			isa = PBXFileReference;
-			lastKnownFileType = image.tiff;
 			path = background.tiff;
 			refType = 4;
 			sourceTree = "<group>";
@@ -850,9 +895,9 @@
 			name = debug;
 		};
 		E0242B5B06033BFF004FE05C = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = Sc21_Prefix.pch;
 			path = src/Sc21_Prefix.pch;
 			refType = 4;
@@ -871,8 +916,8 @@
 			targetProxy = E03800C406551033000633F5;
 		};
 		E0547AB706073E170089FA12 = {
+			expectedFileType = wrapper.framework;
 			isa = PBXFileReference;
-			lastKnownFileType = wrapper.framework;
 			name = Inventor.framework;
 			path = /Library/Frameworks/Inventor.framework;
 			refType = 0;
@@ -930,7 +975,7 @@
 			shellScript = "echo \"Script: Sc21 framework pkg\"\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\n#\U0013touch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit $retval";
 		};
 		E056E6DA0609F9FE0068145A = {
-			explicitFileType = "compiled.mach-o.executable";
+			expectedFileType = "compiled.mach-o.executable";
 			includeInIndex = 0;
 			isa = PBXFileReference;
 			path = "Sc21 framework.pkg";
@@ -973,7 +1018,7 @@
 			shellScript = "echo \"Sc21 dmg script:\"\necho \"  in: $BUILT_PRODUCTS_DIR/$PROJECT_NAME.pkg\"\necho \"  out: $TARGET_BUILD_DIR/$PRODUCT_NAME\"\nset -x\n./packaging/scripts/makesc21dmg.sh -v -c $PROJECT_NAME-0.0.1\nexit 0\n";
 		};
 		E056E6ED0609FA880068145A = {
-			explicitFileType = "compiled.mach-o.executable";
+			expectedFileType = "compiled.mach-o.executable";
 			includeInIndex = 0;
 			isa = PBXFileReference;
 			path = "Sc21-0.0.1.dmg";
@@ -1027,7 +1072,7 @@
 			shellScript = "echo \"dummy script:\"\nset -x\n./test.sh\nretval=$?\nrm -r $TARGET_BUILD_DIR/$PRODUCT_NAME\nmkdir $TARGET_BUILD_DIR/$PRODUCT_NAME\ncat dummy-in.txt > $TARGET_BUILD_DIR/$PRODUCT_NAME/dummy.txt\necho \"Added output\" >> $TARGET_BUILD_DIR/$PRODUCT_NAME/dummy.txt\nexit $retval";
 		};
 		E056E715060A13650068145A = {
-			explicitFileType = "compiled.mach-o.executable";
+			expectedFileType = "compiled.mach-o.executable";
 			includeInIndex = 0;
 			isa = PBXFileReference;
 			path = dummy.dir;
@@ -1035,9 +1080,9 @@
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		E057B59A06219ADC0012C546 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = Sc21.h;
 			path = src/Sc21.h;
 			refType = 4;
@@ -1053,123 +1098,123 @@
 			};
 		};
 		E057B6780621BC7F0012C546 = {
+			expectedFileType = image.tiff;
 			isa = PBXFileReference;
-			lastKnownFileType = image.tiff;
 			name = curs_rotate.tiff;
 			path = Resources/framework/curs_rotate.tiff;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E057B67C0621EA210012C546 = {
+			expectedFileType = image.tiff;
 			isa = PBXFileReference;
-			lastKnownFileType = image.tiff;
 			name = curs_pan.tiff;
 			path = Resources/framework/curs_pan.tiff;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E057B67D0621EA210012C546 = {
+			expectedFileType = image.tiff;
 			isa = PBXFileReference;
-			lastKnownFileType = image.tiff;
 			name = curs_zoom.tiff;
 			path = Resources/framework/curs_zoom.tiff;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E0662923065383D600FB6420 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCEventHandler.h;
 			path = src/SCEventHandler.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		E0662924065383D600FB6420 = {
+			expectedFileType = sourcecode.cpp.objcpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = SCEventHandler.mm;
 			path = src/SCEventHandler.mm;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		E0662929065383D600FB6420 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCMode.h;
 			path = src/SCMode.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		E066292A065383D600FB6420 = {
+			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.objc;
 			name = SCMode.m;
 			path = src/SCMode.m;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		E066292C065383D600FB6420 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCMouseLog.h;
 			path = src/SCMouseLog.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		E066292D065383D600FB6420 = {
+			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.objc;
 			name = SCMouseLog.m;
 			path = src/SCMouseLog.m;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		E066292F065383D600FB6420 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCPanMode.h;
 			path = src/SCPanMode.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		E0662930065383D600FB6420 = {
+			expectedFileType = sourcecode.cpp.objcpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = SCPanMode.mm;
 			path = src/SCPanMode.mm;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		E0662931065383D600FB6420 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCRotateMode.h;
 			path = src/SCRotateMode.h;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		E0662932065383D600FB6420 = {
+			expectedFileType = sourcecode.cpp.objcpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = SCRotateMode.mm;
 			path = src/SCRotateMode.mm;
 			refType = 2;
 			sourceTree = SOURCE_ROOT;
 		};
 		E0662937065383D600FB6420 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCUtil.h;
 			path = src/SCUtil.h;
 			refType = 2;
@@ -1314,7 +1359,7 @@
 			shellScript = "echo \"Script: Sc21 palette pkg\"\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\n#touch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit $retval\n";
 		};
 		E06867AF0633FC8700F702EA = {
-			explicitFileType = "compiled.mach-o.executable";
+			expectedFileType = "compiled.mach-o.executable";
 			includeInIndex = 0;
 			isa = PBXFileReference;
 			path = "Sc21 palette.pkg";
@@ -1346,9 +1391,9 @@
 			targetProxy = E06867B50633FDCA00F702EA;
 		};
 		E070FB1E0608992200A60FCA = {
+			expectedFileType = text.script.sh;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.script.sh;
 			name = makesc21pkg.sh;
 			path = packaging/scripts/makesc21pkg.sh;
 			refType = 4;
@@ -1580,7 +1625,7 @@
 			productType = "com.apple.product-type.framework";
 		};
 		E0765C60060223120099F78E = {
-			explicitFileType = wrapper.framework;
+			expectedFileType = wrapper.framework;
 			includeInIndex = 0;
 			isa = PBXFileReference;
 			path = Sc21.framework;
@@ -1607,16 +1652,16 @@
 			sourceTree = "<group>";
 		};
 		E0765C62060223120099F78E = {
+			expectedFileType = text.plist;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
 			name = Info.plist;
 			path = Resources/framework/Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E0765FBE060226AD0099F78E = {
+			expectedFileType = wrapper.framework;
 			isa = PBXFileReference;
-			lastKnownFileType = wrapper.framework;
 			name = OpenGL.framework;
 			path = /System/Library/Frameworks/OpenGL.framework;
 			refType = 0;
@@ -1679,7 +1724,7 @@
 			shellScript = "echo \"Script: Sc21.mpkg\"\nmkdir -p $DSTROOT/meta\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\n#touch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit $retval\n";
 		};
 		E079478806341DCE006B5824 = {
-			explicitFileType = "compiled.mach-o.executable";
+			expectedFileType = "compiled.mach-o.executable";
 			includeInIndex = 0;
 			isa = PBXFileReference;
 			path = Sc21.mpkg;
@@ -1711,18 +1756,18 @@
 			targetProxy = E079478C06341E03006B5824;
 		};
 		E080C6D906B12B080088958C = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCExaminerHandler.h;
 			path = src/SCExaminerHandler.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E080C6DA06B12B080088958C = {
+			expectedFileType = sourcecode.cpp.objcpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = SCExaminerHandler.mm;
 			path = src/SCExaminerHandler.mm;
 			refType = 4;
@@ -1744,18 +1789,18 @@
 			};
 		};
 		E080C71406B132550088958C = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCZoomMode.h;
 			path = src/SCZoomMode.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E080C71506B132550088958C = {
+			expectedFileType = sourcecode.cpp.objcpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = SCZoomMode.mm;
 			path = src/SCZoomMode.mm;
 			refType = 4;
@@ -1792,6 +1837,9 @@
 				3D016B0306B6F29E00AD1116,
 				3D0D68E306B7B3C800B64A18,
 				E09CFAA306024AD40000E227,
+				3DA8F98306DFEFB500173C27,
+				3DA8F98406DFEFB500173C27,
+				3DA8F98506DFEFB500173C27,
 			);
 			isa = PBXGroup;
 			name = Palette;
@@ -1812,8 +1860,8 @@
 			sourceTree = "<group>";
 		};
 		E09C036A06024BEF0000E227 = {
+			expectedFileType = image.tiff;
 			isa = PBXFileReference;
-			lastKnownFileType = image.tiff;
 			name = SCView.tiff;
 			path = Resources/palette/SCView.tiff;
 			refType = 4;
@@ -1826,8 +1874,8 @@
 			};
 		};
 		E09C037006024CD90000E227 = {
+			expectedFileType = wrapper.framework;
 			isa = PBXFileReference;
-			lastKnownFileType = wrapper.framework;
 			name = InterfaceBuilder.framework;
 			path = /System/Library/Frameworks/InterfaceBuilder.framework;
 			refType = 0;
@@ -1840,8 +1888,8 @@
 			};
 		};
 		E09C038906024CFB0000E227 = {
+			expectedFileType = wrapper.framework;
 			isa = PBXFileReference;
-			lastKnownFileType = wrapper.framework;
 			name = Cocoa.framework;
 			path = /System/Library/Frameworks/Cocoa.framework;
 			refType = 0;
@@ -1877,6 +1925,9 @@
 				3DDD3FF206B8EE5C0038959E,
 				3D23339406BE4C2A00AF3094,
 				E0BE12B806C419AA00923172,
+				3DA8F98606DFEFB500173C27,
+				3DA8F98706DFEFB500173C27,
+				3DA8F98806DFEFB500173C27,
 			);
 			isa = PBXResourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1961,7 +2012,7 @@
 			productType = "com.apple.product-type.bundle";
 		};
 		E09CFA56060245710000E227 = {
-			explicitFileType = wrapper.cfbundle;
+			expectedFileType = folder;
 			includeInIndex = 0;
 			isa = PBXFileReference;
 			path = Sc21.palette;
@@ -1969,44 +2020,44 @@
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		E09CFA57060245720000E227 = {
+			expectedFileType = text.plist;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
 			name = Info.plist;
 			path = Resources/palette/Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E09CFA83060249D50000E227 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCOpenGLViewInspector.h;
 			path = src/SCOpenGLViewInspector.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E09CFA84060249D50000E227 = {
+			expectedFileType = sourcecode.cpp.objcpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = SCOpenGLViewInspector.mm;
 			path = src/SCOpenGLViewInspector.mm;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E09CFA85060249D50000E227 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = Sc21Palette.h;
 			path = src/Sc21Palette.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E09CFA86060249D50000E227 = {
+			expectedFileType = sourcecode.cpp.objcpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = Sc21Palette.mm;
 			path = src/Sc21Palette.mm;
 			refType = 4;
@@ -2037,72 +2088,72 @@
 			};
 		};
 		E09CFA8B060249EF0000E227 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCCamera.h;
 			path = src/SCCamera.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E09CFA8C060249EF0000E227 = {
+			expectedFileType = sourcecode.cpp.objcpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = SCCamera.mm;
 			path = src/SCCamera.mm;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E09CFA8D060249EF0000E227 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCController.h;
 			path = src/SCController.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E09CFA8E060249EF0000E227 = {
+			expectedFileType = sourcecode.cpp.objcpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = SCController.mm;
 			path = src/SCController.mm;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E09CFA8F060249EF0000E227 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCEventConverter.h;
 			path = src/SCEventConverter.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E09CFA90060249EF0000E227 = {
+			expectedFileType = sourcecode.cpp.objcpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = SCEventConverter.mm;
 			path = src/SCEventConverter.mm;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E09CFA93060249EF0000E227 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCView.h;
 			path = src/SCView.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E09CFA94060249EF0000E227 = {
+			expectedFileType = sourcecode.cpp.objcpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = SCView.mm;
 			path = src/SCView.mm;
 			refType = 4;
@@ -2179,25 +2230,25 @@
 			sourceTree = "<group>";
 		};
 		E09CFAA006024AD40000E227 = {
+			expectedFileType = image.tiff;
 			isa = PBXFileReference;
-			lastKnownFileType = image.tiff;
 			name = Sc21Palette.tiff;
 			path = Resources/palette/Sc21Palette.tiff;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E09CFAA106024AD40000E227 = {
+			expectedFileType = image.tiff;
 			isa = PBXFileReference;
-			lastKnownFileType = image.tiff;
 			name = SCController.tiff;
 			path = Resources/palette/SCController.tiff;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E09CFAA306024AD40000E227 = {
+			expectedFileType = text.plist.xml;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
 			name = palette.table;
 			path = Resources/palette/palette.table;
 			refType = 4;
@@ -2222,16 +2273,16 @@
 			};
 		};
 		E09CFAAB06024B130000E227 = {
+			expectedFileType = wrapper.nib;
 			isa = PBXFileReference;
-			lastKnownFileType = wrapper.nib;
 			name = English;
 			path = Resources/palette/English.lproj/SCOpenGLViewInspector.nib;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E09CFAAE06024B1F0000E227 = {
+			expectedFileType = wrapper.nib;
 			isa = PBXFileReference;
-			lastKnownFileType = wrapper.nib;
 			name = English;
 			path = Resources/palette/English.lproj/Sc21Palette.nib;
 			refType = 4;
@@ -2260,9 +2311,9 @@
 			sourceTree = "<group>";
 		};
 		E0AC6A8806060F3300907ED7 = {
+			expectedFileType = text.script.sh;
 			fileEncoding = 4;
 			isa = PBXFileReference;
-			lastKnownFileType = text.script.sh;
 			path = test.sh;
 			refType = 4;
 			sourceTree = "<group>";
@@ -2274,18 +2325,18 @@
 			};
 		};
 		E0BE123606C4136E00923172 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCCoinHandler.h;
 			path = src/SCCoinHandler.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E0BE123706C4136E00923172 = {
+			expectedFileType = sourcecode.cpp.objcpp;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.cpp.objcpp;
 			name = SCCoinHandler.mm;
 			path = src/SCCoinHandler.mm;
 			refType = 4;
@@ -2307,8 +2358,8 @@
 			};
 		};
 		E0BE12B706C419AA00923172 = {
+			expectedFileType = image.tiff;
 			isa = PBXFileReference;
-			lastKnownFileType = image.tiff;
 			name = SCCoinHandler.tiff;
 			path = Resources/palette/SCCoinHandler.tiff;
 			refType = 4;
@@ -2344,31 +2395,31 @@
 			sourceTree = "<group>";
 		};
 		E0D1CDED06343F3100269948 = {
+			expectedFileType = text.rtf;
 			isa = PBXFileReference;
-			lastKnownFileType = text.rtf;
 			path = License.rtf;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E0D1CDEE06343F3100269948 = {
+			expectedFileType = text.rtf;
 			isa = PBXFileReference;
-			lastKnownFileType = text.rtf;
 			path = Welcome.rtf;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E0D1CDEF06343F3100269948 = {
+			expectedFileType = text.plist;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
 			path = Description.plist;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E0D1CDF006343F3100269948 = {
+			expectedFileType = text.plist;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
 			path = Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -2397,31 +2448,31 @@
 			sourceTree = "<group>";
 		};
 		E0D1CE0006343F4E00269948 = {
+			expectedFileType = text.rtf;
 			isa = PBXFileReference;
-			lastKnownFileType = text.rtf;
 			path = License.rtf;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E0D1CE0106343F4E00269948 = {
+			expectedFileType = text.rtf;
 			isa = PBXFileReference;
-			lastKnownFileType = text.rtf;
 			path = Welcome.rtf;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E0D1CE0206343F4E00269948 = {
+			expectedFileType = text.plist;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
 			path = Description.plist;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E0D1CE0306343F4E00269948 = {
+			expectedFileType = text.plist;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
 			path = Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -2450,39 +2501,39 @@
 			sourceTree = "<group>";
 		};
 		E0D1CE0606343F5B00269948 = {
+			expectedFileType = text.rtf;
 			isa = PBXFileReference;
-			lastKnownFileType = text.rtf;
 			path = License.rtf;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E0D1CE0706343F5B00269948 = {
+			expectedFileType = text.rtf;
 			isa = PBXFileReference;
-			lastKnownFileType = text.rtf;
 			path = Welcome.rtf;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E0D1CE0806343F5B00269948 = {
+			expectedFileType = text.plist;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
 			path = Description.plist;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E0D1CE0906343F5B00269948 = {
+			expectedFileType = text.plist;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = text.xml;
 			path = Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E0D6A23106BA6FD900FF8E28 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCDrawable.h;
 			path = src/SCDrawable.h;
 			refType = 4;
@@ -2531,7 +2582,7 @@
 			shellScript = "echo \"Script: Sc21 doc\"\nset -x\nbin/autodoc -project src -format html -template doc/HTMLTemplate.html -copyright \"Systems in Motion AS\" -destination $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME -tree -allclasses -force\ncp doc/style.css $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME\ncp doc/index.html $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME\nretval=$?\nexit $retval\n";
 		};
 		E0DD07320654F9CA009C673A = {
-			explicitFileType = "compiled.mach-o.executable";
+			expectedFileType = "compiled.mach-o.executable";
 			includeInIndex = 0;
 			isa = PBXFileReference;
 			path = Sc21;
@@ -2577,7 +2628,7 @@
 			shellScript = "echo \"Script: Sc21 DOC pkg\"\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\nexit $retval";
 		};
 		E0DD074206550C23009C673A = {
-			explicitFileType = "compiled.mach-o.executable";
+			expectedFileType = "compiled.mach-o.executable";
 			includeInIndex = 0;
 			isa = PBXFileReference;
 			path = "Sc21 doc.pkg";
@@ -2585,9 +2636,9 @@
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		E0E5D14C06B15F61009165C8 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCEventHandlerP.h;
 			path = src/SCEventHandlerP.h;
 			refType = 4;
@@ -2600,36 +2651,36 @@
 			};
 		};
 		E0EB29080613442800C54774 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCOpenGLPixelFormat.h;
 			path = src/SCOpenGLPixelFormat.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E0EB29090613442800C54774 = {
+			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.objc;
 			name = SCOpenGLPixelFormat.m;
 			path = src/SCOpenGLPixelFormat.m;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E0EB290A0613442800C54774 = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCOpenGLView.h;
 			path = src/SCOpenGLView.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E0EB290B0613442800C54774 = {
+			expectedFileType = sourcecode.c.objc;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.objc;
 			name = SCOpenGLView.m;
 			path = src/SCOpenGLView.m;
 			refType = 4;
@@ -2666,9 +2717,9 @@
 			};
 		};
 		E0F867AD06C254700022BF2A = {
+			expectedFileType = sourcecode.c.h;
 			fileEncoding = 30;
 			isa = PBXFileReference;
-			lastKnownFileType = sourcecode.c.h;
 			name = SCInternalDefines.h;
 			path = src/SCInternalDefines.h;
 			refType = 4;
@@ -2717,7 +2768,7 @@
 			shellScript = "echo \"Script: Sc21 examples\"\nset -x\n$SRCROOT/packaging/scripts/copyexamples.sh\nretval=$?\nexit $retval\n";
 		};
 		E0F867CA06C2750B0022BF2A = {
-			explicitFileType = "compiled.mach-o.executable";
+			expectedFileType = "compiled.mach-o.executable";
 			includeInIndex = 0;
 			isa = PBXFileReference;
 			path = Sc21;
@@ -2763,7 +2814,7 @@
 			shellScript = "echo \"Script: Sc21 examples pkg\"\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\nexit $retval";
 		};
 		E0F867D306C276D40022BF2A = {
-			explicitFileType = "compiled.mach-o.executable";
+			expectedFileType = "compiled.mach-o.executable";
 			includeInIndex = 0;
 			isa = PBXFileReference;
 			path = "Sc21 examples.pkg";
