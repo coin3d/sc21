@@ -22,7 +22,5 @@ typedef int SCOperation;
 - (void)emulateButton:(int)button usingModifier:(unsigned int)modifierFlags;
 - (unsigned int)modifierForEmulatedButton:(int)buttonNumber;
 
-// - (BOOL)handleEvent:(NSEvent *)event inView:(NSView *)view camera:(SCCamera *)camera;
-// - (void)updateCamera:(SCCamera *)camera;
 @end
 

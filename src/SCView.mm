@@ -146,9 +146,7 @@
 
 
 /*" 
-  Informs the SCView's %controller of the size change by
-  calling its #viewSizeChanged: method, and updates the
-  OpenGL context.
+
   "*/
 - (void)reshape
 {

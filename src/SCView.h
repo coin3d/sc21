@@ -34,7 +34,7 @@
 @class SCController;
 @class _SCViewP;
 
-@interface SCView : SCOpenGLView <SCDrawable> /*" NSView : NSResponder : NSObject "*/
+@interface SCView : SCOpenGLView  <SCDrawable> /*" NSView : NSResponder : NSObject "*/
 {
  @protected
   _SCViewP * _sc_view;
@@ -42,7 +42,7 @@
   SCController * controller;
 }
 
-/*" Initializing an SCView "*/
+/*" Initializing an SCView. "*/
 - (id)initWithFrame:(NSRect)rect pixelFormat:(SCOpenGLPixelFormat *)format;
 - (id)initWithFrame:(NSRect)rect;
 
@@ -50,7 +50,7 @@
 - (void)drawRect:(NSRect)rect;
 - (void)reshape;
 
-/*" Event handling "*/
+/*" Event handling. "*/
 - (void)mouseMoved:(NSEvent *)event;
 - (void)mouseDown:(NSEvent *)event;
 - (void)mouseUp:(NSEvent *)event;
@@ -66,8 +66,9 @@
 - (void)keyUp:(NSEvent *)event;
 - (void)flagsChanged:(NSEvent *)event;
 
-//   /*" Accessing the SCController. "*/
-// - (SCController *)controller;
-// - (void)setController:(SCController *)controller;
+/*" SCDrawable conformance. "*/
+
+- (SCController *)controller;
+- (void)setController:(SCController *)controller;
 
 @end
