@@ -201,6 +201,7 @@
     if (self->delegate &&
         [self->delegate respondsToSelector:@selector(createSuperSceneGraph:)]) {
       SELF->superscenegraph = [delegate createSuperSceneGraph:SELF->scenegraph];
+      SELF->superscenegraph->ref();
     } else {
       SELF->superscenegraph = NULL;
       SELF->scenegraph->ref();    
