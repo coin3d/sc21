@@ -24,8 +24,8 @@
 - (Class)_SC_modeForOperation:(SCOperation)operation;
 @end
 
-#define PRIVATE(p) ((p)->_sc_flyhandler)
-#define SELF PRIVATE(self)
+#define SUPER self->_sc_eventhandler
+#define SELF self->_sc_flyhandler
 
 @implementation SCFlyHandler
 
@@ -61,29 +61,28 @@
 
 #pragma mark --- SCEventHandler conformance ---
 
-- (BOOL)handleEvent:(NSEvent *)event inView:(NSView *)view camera:(SCCamera *)camera
+- (BOOL)handleEvent:(NSEvent *)event
 { 
   SC21_LOG_METHOD;
   BOOL handled = NO;
 
-  NSPoint p = [view convertPoint:[event locationInWindow] fromView:nil];
+  NSRect frame = [SUPER->currentdrawable frame];
+  NSPoint p = [event locationInWindow];
   NSPoint pn;
-  NSSize size = [view visibleRect].size;
-  pn.x = p.x / size.width;
-  pn.y = p.y / size.height;
+  pn.x = (p.x - frame.origin.x) / frame.size.width;
+  pn.y = (p.y - frame.origin.y) / frame.size.height;
 
   int eventtype = [event type];
   if (eventtype == NSLeftMouseDragged || 
       eventtype == NSRightMouseDragged ||
       eventtype == NSOtherMouseDragged) {
     if (![SELF->flymode isActive]) {
-      [self _SC_activateMode:SELF->flymode event:event 
-            point:&pn camera:camera view:view];
+      [self _SC_activateMode:SELF->flymode event:event point:&pn];
     } else {
       [[SCMouseLog defaultMouseLog] appendPoint:&pn 
                                     timestamp:[event timestamp]];
     }
-    handled = [SELF->flymode modifyCamera:camera withValue:[SELF->flymode valueForEvent:event]];
+    handled = [SELF->flymode modifyCamera:SUPER->currentcamera withValue:[SELF->flymode valueForEvent:event]];
   }
 
 #if 0
@@ -113,7 +112,7 @@
     if (modeclass) {
       SCMode * newmode = [[[modeclass alloc] init] autorelease];
       [self _SC_setCurrentMode:newmode];
-      [self _SC_activateMode:newmode event:event point:&pn camera:camera view:view];
+      [self _SC_activateMode:newmode event:event point:&pn];
     }
     else [self _SC_setCurrentMode:nil];
   }
@@ -148,12 +147,12 @@
   }
 
   if (handled) {
-    [camera soCamera]->touch();
+    [SUPER->currentcamera soCamera]->touch();
   }
   return handled;
 }
 
-- (void)updateCamera:(SCCamera *)camera
+- (void)update
 {
   SC21_LOG_METHOD;
   NSTimeInterval currtime = [NSDate timeIntervalSinceReferenceDate];
@@ -163,7 +162,7 @@
   float throttle = (SELF->uparrow)?1.0f:0.0f + (SELF->downarrow)?-1.0f:0.0f;
   [SELF->flymode setThrottle:throttle];
 
-  [SELF->flymode modifyCamera:camera withTimeInterval:currtime];
+  [SELF->flymode modifyCamera:SUPER->currentcamera withTimeInterval:currtime];
 }
 
 #pragma mark --- NSCoding conformance ---

@@ -26,6 +26,7 @@
  * =============================================================== */
 
 #import <Sc21/SCEventHandler.h>
+#import <Sc21/SCDrawable.h>
 
 @interface _SCEventHandlerP : NSObject
 {
@@ -34,6 +35,8 @@
   NSMutableDictionary * modifierdict;
   SCOperation currentoperation;
   SCMode * currentmode;
+  id<SCDrawable> currentdrawable;
+  SCCamera * currentcamera;
 }
 @end
 
@@ -44,5 +47,5 @@
 - (void)_SC_setCurrentOperation:(SCOperation)operation;
 - (SCOperation)_SC_currentOperation;
 - (int)_SC_emulatedButton:(int)buttonNumber forModifier:(unsigned int)modifierFlags;
-- (void)_SC_activateMode:(SCMode *)mode event:(NSEvent *)event point:(NSPoint *)pn camera:(SCCamera *)camera view:(NSView *)view;
+- (void)_SC_activateMode:(SCMode *)mode event:(NSEvent *)event point:(NSPoint *)pn;
 @end

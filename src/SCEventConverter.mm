@@ -185,14 +185,27 @@ static struct key1map KeyMap[] = {
 
 #pragma mark --- event conversion ---
 
-/*" Creates an SoEvent from the NSEvent event, setting the mouse button and
-    mouse state (for mouse events) or key information (for keyboard events), and
-     position, modifier keys, and time when the event occurred.
+/*"
+  Creates an SoEvent from the NSEvent event, setting the mouse button and
+  mouse state (for mouse events) or key information (for keyboard events), and
+  position, modifier keys, and time when the event occurred.
+  
+  view should be set to nil for fullscreen rendering.
   "*/
   
-- (SoEvent *)createSoEvent:(NSEvent *)event inView:(NSView *)view
+- (SoEvent *)createSoEvent:(NSEvent *)event inDrawable:(id<SCDrawable>)drawable
 {
-  NSPoint q = [view convertPoint:[event locationInWindow] fromView:nil];
+  NSPoint q = [event locationInWindow];
+
+  if ([drawable isKindOfClass:[NSView class]]) {
+    q = [((NSView *)drawable) convertPoint:q fromView:nil];
+  }
+  else {
+    NSRect frame = [drawable frame];
+    q.x -= frame.origin.x;
+    q.y -= frame.origin.y;
+  }
+
   unsigned int flags = [event modifierFlags];
   NSEventType type = [event type];
   SoEvent * se = NULL;

@@ -4,6 +4,7 @@
 #import "SCPanMode.h"
 #import "SCZoomMode.h"
 #import "SCMouseLog.h"
+#import "SCUtil.h"
 
 #import <Sc21/SCEventHandlerP.h>
 
@@ -22,8 +23,8 @@
 - (BOOL)_SC_performActionForEvent:(NSEvent *)event camera:(SCCamera *)camera;
 @end
 
-#define PRIVATE(p) ((p)->_sc_examinerhandler)
-#define SELF PRIVATE(self)
+#define SUPER self->_sc_eventhandler
+#define SELF self->_sc_examinerhandler
 
 @implementation SCExaminerHandler
 
@@ -73,13 +74,14 @@
 
 #pragma mark --- SCEventHandler conformance ---
 
-- (BOOL)handleEvent:(NSEvent *)event inView:(NSView *)view camera:(SCCamera *)camera
+- (BOOL)handleEvent:(NSEvent *)event
 { 
-  NSPoint p = [view convertPoint:[event locationInWindow] fromView:nil];
+  SC21_LOG_METHOD;
+  NSRect frame = [SUPER->currentdrawable frame];
+  NSPoint p = [event locationInWindow];
   NSPoint pn;
-  NSSize size = [view visibleRect].size;
-  pn.x = p.x / size.width;
-  pn.y = p.y / size.height;
+  pn.x = (p.x - frame.origin.x) / frame.size.width;
+  pn.y = (p.y - frame.origin.y) / frame.size.height;
 
   BOOL handled = NO;
   int eventtype = [event type];
@@ -89,13 +91,12 @@
     SCMode * currentmode = [self _SC_currentMode];
     if (currentmode) {
       if (![currentmode isActive]) {
-        [self _SC_activateMode:currentmode event:event 
-              point:&pn camera:camera view:view];
+        [self _SC_activateMode:currentmode event:event point:&pn];
       } else {
         [[SCMouseLog defaultMouseLog] appendPoint:&pn 
                                       timestamp:[event timestamp]];
       }
-      handled = [currentmode modifyCamera:camera withValue:[currentmode valueForEvent:event]];
+      handled = [currentmode modifyCamera:SUPER->currentcamera withValue:[currentmode valueForEvent:event]];
     }
     return handled;
   }
@@ -125,12 +126,13 @@
     if (modeclass) {
       SCMode * newmode = [[[modeclass alloc] init] autorelease];
       [self _SC_setCurrentMode:newmode];
-      [self _SC_activateMode:newmode event:event point:&pn camera:camera view:view];
+      [self _SC_activateMode:newmode event:event point:&pn];
     }
     else [self _SC_setCurrentMode:nil];
   }
 
-  if (!handled) return [self _SC_performActionForEvent:event camera:camera];
+  if (!handled) 
+    return [self _SC_performActionForEvent:event camera:SUPER->currentcamera];
 }
 
 #pragma mark --- NSCoding conformance ---

@@ -27,13 +27,14 @@
 
 #import <Cocoa/Cocoa.h>
 #import <OpenGL/gl.h>
+#import <Sc21/SCDrawable.h>
 #import <Sc21/SCOpenGLView.h>
 #import <Sc21/SCOpenGLPixelFormat.h>
 
 @class SCController;
 @class _SCViewP;
 
-@interface SCView : SCOpenGLView /*" NSView : NSResponder : NSObject "*/
+@interface SCView : SCOpenGLView <SCDrawable> /*" NSView : NSResponder : NSObject "*/
 {
  @protected
   _SCViewP * _sc_view;
@@ -65,11 +66,8 @@
 - (void)keyUp:(NSEvent *)event;
 - (void)flagsChanged:(NSEvent *)event;
 
-/*" Cursor handling "*/
-- (void)setCursor:(NSCursor *)cursor;
-
-  /*" Accessing the SCController. "*/
-- (SCController *)controller;
-- (void)setController:(SCController *)controller;
+//   /*" Accessing the SCController. "*/
+// - (SCController *)controller;
+// - (void)setController:(SCController *)controller;
 
 @end

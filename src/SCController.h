@@ -29,11 +29,12 @@
 #import <Sc21/SCDefines.h>
 #import <Sc21/SCCamera.h>
 #import <Sc21/SCSceneGraph.h>
+#import <Sc21/SCEventHandler.h>
+#import <Sc21/SCDrawable.h>
 
 class SoDirectionalLight;
 class SoSceneManager;
 @class SCEventConverter;
-@class SCEventHandler;
 @class _SCControllerP;
 @class SCMode;
 @class SCMouseMode;
@@ -47,7 +48,8 @@ class SoSceneManager;
  @private
   id delegate;
   SCSceneGraph * scenegraph;
-  SCEventHandler * eventhandler;
+  id<SCEventHandling> eventhandler;
+  id<SCDrawable> drawable;
 }
 
 /*" Static initialization "*/
@@ -62,13 +64,10 @@ class SoSceneManager;
 
 /*" Coin rendering and related functionality "*/
 - (void)render;
-- (void)viewSizeChanged:(NSRect)size;
 
 /*" Accesors "*/
-- (void)setRedrawHandler:(id)handler;
-- (id)redrawHandler;
-- (void)setRedrawSelector:(SEL)selector;
-- (SEL)redrawSelector;
+- (void)setDrawable:(id<SCDrawable>)newdrawable;
+- (id<SCDrawable>)drawable;
 - (void)setSceneGraph:(SCSceneGraph *)scenegraph;
 - (SCSceneGraph *)sceneGraph;
 - (void)setSceneManager:(SoSceneManager *)scenemanager;
@@ -81,25 +80,20 @@ class SoSceneManager;
 - (BOOL)clearsDepthBuffer;
 
 /*" Event handling "*/
-- (BOOL)handleEvent:(NSEvent *)event inView:(NSView *)view;
-- (BOOL)handleEventAsCoinEvent:(NSEvent *)event inView:(NSView *)view;
-- (BOOL)handleEventAsViewerEvent:(NSEvent *)event inView:(NSView *)view;
+- (BOOL)handleEvent:(NSEvent *)event;
+- (BOOL)handleEventAsCoinEvent:(NSEvent *)event;
+- (BOOL)handleEventAsViewerEvent:(NSEvent *)event;
 - (void)setHandlesEventsInViewer:(BOOL)yn;
 - (BOOL)handlesEventsInViewer;
 - (void)setModifierForCoinEvent:(unsigned int)modifier;
 - (unsigned int)modifierForCoinEvent;
-- (void)setEventHandler:(SCEventHandler *)handler;
-- (SCEventHandler *)eventHandler;
+- (void)setEventHandler:(id<SCEventHandling>)handler;
+- (id<SCEventHandling>)eventHandler;
 
 /*" Timer management. "*/
 - (void)startTimers;
 - (void)stopTimers;
 
-@end
-
-@interface NSObject (SCControllerDelegate)
-- (unsigned int)modifierForCoinEvent;
-- (BOOL)handleEvent:(NSEvent *)event inView:(NSView *)view;
 @end
 
 // --------------------- Notifications ------------------------
@@ -112,3 +106,8 @@ SC21_EXTERN NSString * SCModeChangedNotification;
 /*" Posted when the scenegraph is changed through #setSceneGraph: "*/
 SC21_EXTERN NSString * SCSceneGraphChangedNotification;
 
+/*" FIXME: Document "*/
+SC21_EXTERN NSString * SCDrawableChangedNotification;
+
+/*" FIXME: Document "*/
+SC21_EXTERN NSString * SCCameraChangedNotification;

@@ -47,6 +47,7 @@
 
 @interface SCView(InternalAPI)
 - (void)_SC_commonInit;
+- (void)_SC_cursorChanged:(NSNotification *)notification;
 @end
 
 @implementation SCView
@@ -108,7 +109,8 @@
 {
   SC21_DEBUG(@"SCView.dealloc");
   // Prevent controller from continuing to draw into our view.
-  [self->controller setRedrawHandler:nil];
+//   [self->controller setRedrawHandler:nil];
+  [self->controller setDrawable:nil];
   [self->controller stopTimers];
   [self->controller release];
   [SELF release];
@@ -128,8 +130,8 @@
    SC21_DEBUG(@"SCView.drawRect");
   // draw Interface Builder representation: black filled rectangle
   // FIXME: make sure this actually works on Jaguar too. kyrah 20040705
-  if ([[self class] respondsToSelector:@selector(isInInterfaceBuilder)] 
-      && [[self class] isInInterfaceBuilder]) {    
+   if ([[self class] respondsToSelector:@selector(isInInterfaceBuilder)] &&
+       [[self class] isInInterfaceBuilder]) {    
     [[NSColor blackColor] set];
     NSRectFill(rect);
     return;
@@ -150,7 +152,7 @@
   "*/
 - (void)reshape
 {
-  [self->controller viewSizeChanged:[self visibleRect]];
+//   [self->controller viewSizeChanged];
   if ([[self openGLContext] view] == self) [[self openGLContext] update];
 }
 
@@ -180,13 +182,13 @@
 
 - (void)mouseMoved:(NSEvent *)event
 {
-  if (![self->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event]) {
     [super flagsChanged:event];
   }
 }
 
 /*" 
-  Forwards event to %controller by sending it the #handleEvent:inView:
+  Forwards event to %controller by sending it the #handleEvent:
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual.
 
@@ -200,25 +202,25 @@
   "*/
 - (void)mouseDown:(NSEvent *)event
 {
-  if (![self->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event]) {
     [super mouseDown:event];
   }
 }
 
 /*" 
-  Forwards event to %controller by sending it the #handleEvent:inView:
+  Forwards event to %controller by sending it the #handleEvent:
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual. 
   "*/
 - (void)mouseUp:(NSEvent *)event
 {
-  if (![self->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event]) {
     [super mouseUp:event];
   }
 }
 
 /*" 
-  Forwards event to %controller by sending it the #handleEvent:inView: 
+  Forwards event to %controller by sending it the #handleEvent: 
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual.
   
@@ -229,13 +231,13 @@
   "*/
 - (void)mouseDragged:(NSEvent *)event
 {
-  if (![self->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event]) {
     [super mouseDragged:event];
   }
 }
 
 /*"
-  Forwards event to %controller by sending it the #handleEvent:inView: 
+  Forwards event to %controller by sending it the #handleEvent: 
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual.
   
@@ -246,26 +248,26 @@
   "*/
 - (void)rightMouseDown:(NSEvent *)event
 {
-  if (![self->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event]) {
     [super rightMouseDown:event];
   }
 }
 
 
 /*" 
-  Forwards event to %controller by sending it the #handleEvent:inView: 
+  Forwards event to %controller by sending it the #handleEvent: 
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual.
   "*/
 - (void)rightMouseUp:(NSEvent *)event
 {
-  if (![self->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event]) {
     [super rightMouseUp:event];
   }
 }
 
 /*"
-  Forwards event to %controller by sending it the #handleEvent:inView: 
+  Forwards event to %controller by sending it the #handleEvent: 
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual.
   
@@ -276,37 +278,37 @@
   "*/
 - (void)rightMouseDragged:(NSEvent *)event
 {
-  if (![self->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event]) {
     [super rightMouseDragged:event];
   }
 }
 
 /*" 
-  Forwards event to %controller by sending it the #handleEvent:inView: 
+  Forwards event to %controller by sending it the #handleEvent: 
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual 
   "*/
 - (void)otherMouseDown:(NSEvent *)event
 {
-  if (![self->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event]) {
     [super otherMouseDown:event];
   }
 }
 
 /*" 
-  Forwards event to %controller by sending it the #handleEvent:inView: 
+  Forwards event to %controller by sending it the #handleEvent: 
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual. 
   "*/
 - (void)otherMouseUp:(NSEvent *)event
 {
-  if (![self->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event]) {
     [super otherMouseUp:event];
   }
 }
 
 /*" 
-  Forwards event to %controller by sending it the #handleEvent:inView: 
+  Forwards event to %controller by sending it the #handleEvent: 
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual.
   
@@ -317,19 +319,19 @@
   "*/
 - (void)otherMouseDragged:(NSEvent *)event
 {
-  if (![self->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event]) {
     [super otherMouseDragged:event];
   }
 }
 
 /*" 
-  Forwards event to %controller by sending it the #handleEvent:inView: 
+  Forwards event to %controller by sending it the #handleEvent: 
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual.
   "*/
 - (void)scrollWheel:(NSEvent *)event
 {
-  if (![self->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event]) {
     [super scrollWheel:event];
   }
 }
@@ -342,20 +344,20 @@
 - (void)keyDown:(NSEvent *)event 
 {
   if ([event isARepeat]) return;
-  if (![self->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event]) {
     [super keyDown:event];
   } 
 }
 
 
 /*" 
-  Forwards event to %controller by sending it the #handleEvent:inView:
+  Forwards event to %controller by sending it the #handleEvent:
   message. If the event is not handled by the controller, it will
   be forwarded through the responder chain as usual.
   "*/
 - (void)keyUp:(NSEvent *)event 
 {
-  if (![self->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event]) {
     [super keyUp:event];
   } 
 }
@@ -367,7 +369,7 @@
 
 - (void)flagsChanged:(NSEvent *)event 
 {
-  if (![self->controller handleEvent:event inView:self]) {
+  if (![self->controller handleEvent:event]) {
     [super flagsChanged:event];
   } 
 }
@@ -387,19 +389,6 @@
   SC21_DEBUG(@"SCView.resetCursorRects");
   [self addCursorRect:[self visibleRect] cursor:SELF->cursor];
 }
-
-/*"
-  Associates the given cursor with this view and makes the cursor active.
-
-  FIXME: Only used by the event handling scheme. Reconsider this as part
-  of redesigning event handling (kintel 20040615).
-  "*/
-- (void)setCursor:(NSCursor *)cursor
-{
-  SELF->cursor = cursor;
-  [SELF->cursor set];
-}
-
 
 #pragma mark --- accessor methods ---
 
@@ -421,9 +410,13 @@ Sets the controller to newcontroller. newcontroller is retained.
   [self->controller release];
   self->controller = newcontroller;
   // Use [self display] as a redraw handler
-  [self->controller setRedrawHandler:self];
-  [self->controller setRedrawSelector:@selector(display)];
+//   [self->controller setRedrawHandler:self];
+//   [self->controller setRedrawSelector:@selector(display)];
+  [self->controller setDrawable:self];
   [self reshape]; // Initialize viewport
+  [[NSNotificationCenter defaultCenter] 
+    addObserver:self selector:@selector(_SC_cursorChanged:) 
+    name:SCCursorChangedNotification object:self->controller];
 }
 
 
@@ -519,5 +512,15 @@ Sets the controller to newcontroller. newcontroller is retained.
   [super _SC_commonInit];
   SELF = [[_SCViewP alloc] init];
 }
+
+/*"
+  Used to cache the current cursor so we can use it from -resetCursorRects
+  "*/
+- (void)_SC_cursorChanged:(NSNotification *)notification;
+{
+  SC21_LOG_METHOD;
+  SELF->cursor = [NSCursor currentCursor];
+}
+
 
 @end

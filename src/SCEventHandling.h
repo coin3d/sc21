@@ -25,30 +25,16 @@
  |                                                                 |
  * =============================================================== */
 
-#import <Sc21/SCController.h>
-
-class SoGroup;
-class SoSceneManager;
-
-@interface _SCControllerP : NSObject
-{
-  SCEventConverter * eventconverter;
-  NSTimer * timerqueuetimer;
-  SoSceneManager * scenemanager;
-  BOOL hascreatedscenemanager;
-  BOOL handleseventsinviewer;
-  BOOL modifierforcoinevent;
-  NSResponder * oldcontroller;
-  BOOL clearcolorbuffer;
-  BOOL cleardepthbuffer;
-}
+@protocol SCEventHandling <NSObject>
+- (BOOL)handleEvent:(NSEvent *)event;
+- (void)update;
+- (void)drawableDidChange:(NSNotification *)notification;
+- (void)sceneGraphDidChange:(NSNotification *)notification;
 @end
 
-@interface SCController (InternalAPI)
-- (void)_SC_commonInit;
-- (void)_SC_timerQueueTimerFired:(NSTimer *)timer;
-- (void)_SC_idle:(NSNotification *)notification;
-- (void)_SC_sensorQueueChanged;
-- (void)_SC_cursorDidChange:(NSNotification *)notification;
-- (void)_SC_viewSizeChanged;
-@end  
+/*"
+  Posted when the an event handling has changed the cursor.
+  This is automatically picked up by the SCView currently viewing the
+  scene graph.
+  "*/
+SC21_EXTERN NSString * SCCursorChangedNotification;

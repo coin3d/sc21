@@ -1,5 +1,6 @@
 #import <Sc21/SCEventHandler.h>
 #import <Sc21/SCCamera.h>
+#import <Sc21/SCController.h>
 #import "SCUtil.h"
 #import "SCMouseLog.h"
 #import "SCMode.h"
@@ -95,6 +96,7 @@
 
 #pragma mark --- SCEventHandler protocol ---
 
+#if 0
 - (void)updateCamera:(SCCamera *)camera
 {
   NSTimeInterval currtime = [NSDate timeIntervalSinceReferenceDate];
@@ -104,6 +106,30 @@
 - (BOOL)handleEvent:(NSEvent *)event inView:(NSView *)view camera:(SCCamera *)camera
 {
   return NO;
+}
+#endif
+
+- (void)update
+{
+  NSTimeInterval currtime = [NSDate timeIntervalSinceReferenceDate];
+  [SELF->currentmode modifyCamera:SELF->currentcamera withTimeInterval:currtime];
+}
+
+- (BOOL)handleEvent:(NSEvent *)event
+{
+  return NO;
+}
+
+- (void)drawableDidChange:(NSNotification *)notification
+{
+  SCController * controller = (SCController *)[notification object];
+  SELF->currentdrawable = [controller drawable];
+}
+
+- (void)sceneGraphDidChange:(NSNotification *)notification
+{
+  SCController * controller = (SCController *)[notification object];
+  SELF->currentcamera = [[controller sceneGraph] camera];
 }
 
 #pragma mark --- NSCoding conformance ---
@@ -185,12 +211,13 @@
 }
 
 - (void)_SC_activateMode:(SCMode *)newmode event:(NSEvent *)event
-                   point:(NSPoint *)pn 
-                  camera:(SCCamera *)camera view:(NSView *)view
+                   point:(NSPoint *)pn
 {
-  [newmode activate:event point:pn camera:camera];
+  [newmode activate:event point:pn camera:SELF->currentcamera];
   [[SCMouseLog defaultMouseLog] setStartPoint:pn timestamp:[event timestamp]];
-  [view setCursor:[newmode cursor]];
+  [[newmode cursor] set];
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:SCCursorChangedNotification object:self];  
 }
 
 @end

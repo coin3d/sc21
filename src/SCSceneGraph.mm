@@ -340,8 +340,8 @@
 {
   SELF = [[_SCSceneGraphP alloc] init];
   SELF->camera = [[SCCamera alloc] initWithSceneGraph:self];
-  SELF->addedcamera = NO;  
-  SELF->addedlight = NO;  
+  SELF->addedcamera = NO;
+  SELF->addedlight = NO;
 }
 
 /* Find light in root. Returns a pointer to the light, if found,

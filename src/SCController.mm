@@ -89,15 +89,16 @@
 // -------------------- Callback functions ------------------------
 
 // This function is the SoSceneManager render callback.
-// Will tell our redraw handler (typically an SCView, but can
-// be anyone maintaining an OpenGL context) to redraw.
+// Will tell our drawable (typically an SCView, but can
+// be any SCDrawable maintaining an OpenGL context) to redraw.
 // The invoked redraw method usually makes its OpenGL context
-// active and calls SCController's -render method.
+// active and calls SCController's -render method, but not necessarily
+// synchronously.
 static void
 redraw_cb(void * user, SoSceneManager *)
 {
   SCController * controller = (SCController *)user; 
-  [PRIVATE(controller)->redrawinvocation invoke];
+  [controller->drawable display];
 }
 
 // This function is the SoSensorManager change callback.
@@ -131,8 +132,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   be given an object and a selector that should called upon such a
   redraw request. This is automatically handled by SCView but if you
   want to use an SCController without having an SCView (e.g. when
-  doing fullscreen rendering), you should setup this yourself using
-  -setRedrawHandler and -setRedrawSelector.
+  doing fullscreen rendering), you should supply an SCDrawable instead
+  and set this using -setDrawble:.
   "*/
 
 #pragma mark --- static methods ----
@@ -200,8 +201,8 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [self setSceneGraph:nil];
   [self stopTimers];
-  SELF->redrawhandler = nil;
-  [self _SC_setupRedrawInvocation]; // will release related objects
+//   SELF->redrawhandler = nil;
+//   [self _SC_setupRedrawInvocation]; // will release related objects
   [SELF->eventconverter release];
   [self setEventHandler:nil];
   delete SELF->scenemanager;
@@ -221,32 +222,21 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   // FIXME: Do clearing here instead of in SoSceneManager to support
   // alpha values? Alternatively, add SbColor4f support the necessary
   // places in Coin (kintel 20040502)
+  [self _SC_viewSizeChanged];
   [[self->scenegraph camera] updateClippingPlanes:[self->scenegraph root]];
   SELF->scenemanager->render(SELF->clearcolorbuffer, SELF->cleardepthbuffer);
-  [self->eventhandler updateCamera:[self->scenegraph camera]];
-}
-
-/*" This method is called when %view's size has been changed. 
-    It makes the necessary adjustments for the new size in 
-    the Coin subsystem.
- "*/
-
-- (void)viewSizeChanged:(NSRect)rect
-{
-  SELF->viewrect = rect;
-  if (!SELF->scenemanager) return;
-  int w = (GLint)(rect.size.width);
-  int h = (GLint)(rect.size.height);
-  SELF->scenemanager->setViewportRegion(SbViewportRegion(w, h));
-  SELF->scenemanager->scheduleRedraw();  
+  [self->eventhandler update];
 }
 
 #pragma mark --- event handling ---
 
 /*" Handles event by either converting it to an %SoEvent and 
-    passing it on to the scenegraph via #handleEventAsCoinEvent:, 
-    or handle it in the viewer itself via #handleEventAsViewerEvent: 
-    to allow examination of the scene (spinning, panning, zoom etc.)
+    passes it on to the scenegraph via #handleEventAsCoinEvent:, 
+    or handles it in the viewer itself via #handleEventAsViewerEvent:.
+    
+    Handling events in the viewer will pass it on to the event handler,
+    allowing the use to control camera movement; examination of the scene
+    or flying through the scene.
 
     How events are treated can be controlled via the 
     #setHandlesEventsInViewer: method.
@@ -262,24 +252,14 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     see -SCView.mouseDown:
 "*/
  
-- (BOOL)handleEvent:(NSEvent *)event inView:(NSView *)view
+- (BOOL)handleEvent:(NSEvent *)event
 {
   SC21_LOG_METHOD;
-  BOOL handled = NO;
-  //FIXME: Should we do this only for viewer events, or add another
-  // delegate method? (kintel 20040609)
-  if (self->delegate && 
-      [self->delegate respondsToSelector:@selector(handleEvent:inView:)]) {
-    handled = [self->delegate handleEvent:event inView:view];
-  }
-
-  if (!handled) {
-    if ([self handlesEventsInViewer] == NO ||
-        ([event modifierFlags] & [self modifierForCoinEvent])) {
-      return [self handleEventAsCoinEvent:event inView:view];
-    } else {
-      return [self handleEventAsViewerEvent:event inView:view];
-    }
+  if ([self handlesEventsInViewer] == NO ||
+      ([event modifierFlags] & [self modifierForCoinEvent])) {
+    return [self handleEventAsCoinEvent:event];
+  } else {
+    return [self handleEventAsViewerEvent:event];
   }
 }
 
@@ -289,11 +269,12 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     Returns !{YES} if the event has been handled, !{NO} otherwise.
  "*/
  
-- (BOOL)handleEventAsCoinEvent:(NSEvent *)event inView:(NSView *)view
+- (BOOL)handleEventAsCoinEvent:(NSEvent *)event
 {
   SC21_DEBUG(@"SCController.handleEventAsCoinEvent:");
   BOOL handled = NO;
-  SoEvent * se = [SELF->eventconverter createSoEvent:event inView:view];
+  SoEvent * se = [SELF->eventconverter createSoEvent:event 
+                      inDrawable:self->drawable];
   if (se) {
     handled = SELF->scenemanager->processEvent(se);
     delete se;
@@ -309,13 +290,10 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
     The default implementation does nothing and returns !{NO}.
  "*/
  
-- (BOOL)handleEventAsViewerEvent:(NSEvent *)event inView:(NSView *)view
+- (BOOL)handleEventAsViewerEvent:(NSEvent *)event
 {
   SC21_DEBUG(@"SCController.handleEventAsViewerEvent:");
-  BOOL handled = NO;
-  handled = [self->eventhandler handleEvent:event inView:view 
-                 camera:[self->scenegraph camera]];
-  return handled;
+  return [self->eventhandler handleEvent:event];
 }
 
 /*" 
@@ -357,14 +335,23 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   return SELF->modifierforcoinevent;
 }
 
-- (void)setEventHandler:(SCEventHandler *)handler
+- (void)setEventHandler:(id<SCEventHandling>)handler
 {
-  [handler retain];
-  [self->eventhandler release];
-  self->eventhandler = handler;
+  if (handler != self->eventhandler) {
+    [self->eventhandler release];
+    self->eventhandler = [handler retain];
+    NSNotification * notification = [NSNotification notificationWithName:SCDrawableChangedNotification object:self];
+    [self->eventhandler drawableDidChange:notification];
+    notification = [NSNotification notificationWithName:SCSceneGraphChangedNotification object:self];
+    [self->eventhandler sceneGraphDidChange:notification];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self->eventhandler selector:@selector(drawableDidChange:) name:SCDrawableChangedNotification object:self];
+    [[NSNotificationCenter defaultCenter] addObserver:self->eventhandler selector:@selector(sceneGraphDidChange:) name:SCSceneGraphChangedNotification object:self];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_SC_cursorDidChange:) name:SCCursorChangedNotification object:self->eventhandler];
+  }
 }
 
-- (SCEventHandler *)eventHandler
+- (id<SCEventHandling>)eventHandler
 {
   return self->eventhandler;
 }
@@ -406,54 +393,16 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
 
 #pragma mark --- accessor methods ---
 
-/*"
-Sets the object that should handle redraw messages generated
- by the scene graph.
- 
- This is automatically set by SCView.setController and should only
- need to be set when not rendering into an SCView (e.g. when doing
-                                                   fullscreen rendering).
- 
-#{See Also:} #{-redrawHandler}, #{-setRedrawSelector}
- "*/
-- (void)setRedrawHandler:(id)handler
+- (void)setDrawable:(id<SCDrawable>)newdrawable
 {
-  SELF->redrawhandler = handler;
-  [self _SC_setupRedrawInvocation];
+  self->drawable = newdrawable;
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:SCDrawableChangedNotification object:self];
 }
 
-/*"
-Returns the redraw handler previously set by -setRedrawHandler:
- or nil if no redraw handler has been set.
- "*/
-- (id)redrawHandler
+- (id<SCDrawable>)drawable
 {
-  return SELF->redrawhandler;
-}
-
-/*"
-Sets the selector to be performed on the object set by -setRedrawHandler.
- 
- This defaults to @selector(display), but can be changed to any selector
- with and optional id argument. If an id argument exists, this controller
- object will be sent.
- 
- If the given selector doesn't conform, an NSInvalidArgumentException
- will be raised.
- "*/
-- (void)setRedrawSelector:(SEL)sel
-{
-  SELF->redrawselector = sel;
-  [self _SC_setupRedrawInvocation];
-}
-
-/*"
-Returns the redraw selector previously set by -setRedrawSelector or
- nil if no redraw selector has been set.
- "*/
-- (SEL)redrawSelector
-{
-  return SELF->redrawselector;
+  return self->drawable;
 }
 
 /*" Sets the scene graph that shall be rendered. 
@@ -489,13 +438,14 @@ Returns the redraw selector previously set by -setRedrawSelector or
   return scenegraph; 
 }
 
-/*" Sets the current scene manager to scenemanager. The scene manager's
-render callback will be set to %redraw_cb (SCController's default
-                                           redraw callback), and it will be activated. Also, if a scenegraph
-has been set earlier, scenemanager's scenegraph will be set to it.
-
-Note that you should not normally need to call that method, since a
-scene manager is created for you while initializing.
+/*"
+  Sets the current scene manager to scenemanager. The scene manager's
+  render callback will be set to %redraw_cb (SCController's default
+  redraw callback), and it will be activated. Also, if a scenegraph
+  has been set earlier, scenemanager's scenegraph will be set to it.
+  
+  Note that you should not normally need to call that method, since a
+  scene manager is created for you while initializing.
 "*/
 
 - (void)setSceneManager:(SoSceneManager *)scenemanager
@@ -729,7 +679,7 @@ Returns the receiver's delegate.
   scenegraph = nil;
   
   SELF->eventconverter = [[SCEventConverter alloc] init];
-  SELF->redrawselector = @selector(display);
+//   SELF->redrawselector = @selector(display);
 
   [self setSceneManager:new SoSceneManager];
   SELF->hascreatedscenemanager = YES;
@@ -750,7 +700,7 @@ Returns the receiver's delegate.
   // SC21_DEBUG(@"timerQueueTimerFired:");
   // The timer might fire after the view has
   // already been destroyed...
-  if (!SELF->redrawinvocation) return; 
+  if (!self->drawable) return; 
   SoDB::getSensorManager()->processTimerQueue();
   [self _SC_sensorQueueChanged];
 }
@@ -762,7 +712,7 @@ Returns the receiver's delegate.
   // SC21_DEBUG(@"_idle:");
   // We might get the notification after the view has
   // already been destroyed...
-  if (!SELF->redrawinvocation) return; 
+  if (!self->drawable) return; 
   SoDB::getSensorManager()->processTimerQueue();
   SoDB::getSensorManager()->processDelayQueue(TRUE);
   [self _SC_sensorQueueChanged];
@@ -809,41 +759,23 @@ Returns the receiver's delegate.
   }
 }
 
-- (NSPoint)_SC_normalizePoint:(NSPoint)point
+- (void)_SC_cursorDidChange:(NSNotification *)notification
 {
-  NSPoint normalized;
-  NSSize size = SELF->viewrect.size;
-  normalized.x = point.x / size.width;
-  normalized.y = point.y / size.height;
-  return normalized;
+  [[NSNotificationCenter defaultCenter] 
+    postNotificationName:SCCursorChangedNotification object:self];
 }
 
-- (void)_SC_setupRedrawInvocation
+/*" This method is called when %view's size has been changed. 
+    It makes the necessary adjustments for the new size in 
+    the Coin subsystem.
+ "*/
+- (void)_SC_viewSizeChanged
 {
-  [SELF->redrawinvocation release];
-  SELF->redrawinvocation = nil;
-  
-  if (SELF->redrawhandler && SELF->redrawselector) {
-    NSMethodSignature *sig = 
-      [SELF->redrawhandler methodSignatureForSelector:SELF->redrawselector];
-
-    if ([sig numberOfArguments] != 2 ||
-        [sig numberOfArguments] == 3 &&
-        [sig getArgumentTypeAtIndex:2] != @encode(id)) {
-
-      NSException * argException = 
-        [NSException exceptionWithName:NSInvalidArgumentException
-                     reason:@"Wrong format or number of selector arguments"
-                     userInfo:nil];
-      [argException raise];
-      return;
-    }
-
-    SELF->redrawinvocation = [[NSInvocation invocationWithMethodSignature:sig] retain];
-    [SELF->redrawinvocation setSelector:SELF->redrawselector];
-    [SELF->redrawinvocation setTarget:SELF->redrawhandler];
-    if ([sig numberOfArguments] == 3) [SELF->redrawinvocation setArgument:self atIndex:2];
-  }
+  if (!SELF->scenemanager || !self->drawable) return;
+  NSRect frame = [self->drawable frame];
+  SELF->scenemanager->
+    setViewportRegion(SbViewportRegion((short)frame.size.width,
+                                       (short)frame.size.height));
 }
 
 @end
