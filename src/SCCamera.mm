@@ -24,7 +24,7 @@
 #import <Inventor/nodes/SoOrthographicCamera.h>
 
 @interface SCCamera (InternalAPI)
-  - (SoGroup *) getParentOfNode:(SoNode *)node inSceneGraph:(SoNode *)root;
+  - (SoGroup *) getParentOfNode:(SoNode *)node inSceneGraph:(SoGroup *)root;
 @end
 
 @implementation SCCamera
@@ -178,7 +178,7 @@
   
   // insert into SG
   SoGroup * camparent = [self getParentOfNode:camera
-    inSceneGraph:(SoNode *)[_controller sceneGraph]];
+    inSceneGraph:(SoGroup *)[_controller sceneGraph]];
   camparent->insertChild(newcam, camparent->findChild(camera));
 
 #if 0
@@ -333,7 +333,7 @@
 
   if (controllerhascreatedcamera) { // delete camera if we created it
     SoGroup * camparent = [self getParentOfNode:camera
-      inSceneGraph:(SoNode*)[_controller sceneGraph]];
+      inSceneGraph:(SoGroup*)[_controller sceneGraph]];
     camparent->removeChild(camera);
     controllerhascreatedcamera = NO;
   }
@@ -411,7 +411,7 @@
 
 - (void) getCameraCoordinateSystem: (SbMatrix &)m inverse:(SbMatrix &)inv
 {
-  SoNode * root = [_controller sceneGraph];
+  SoGroup * root = [_controller sceneGraph];
   SoSearchAction searchaction;
   SoGetMatrixAction matrixaction(SbViewportRegion(100,100));
   
@@ -430,7 +430,7 @@
 
 // ----------------------- InternalAPI --------------------------
 
-- (SoGroup *) getParentOfNode:(SoNode *)node inSceneGraph:(SoNode *)root
+- (SoGroup *) getParentOfNode:(SoNode *)node inSceneGraph:(SoGroup *)root
 {
   SbBool wassearchingchildren = SoBaseKit::isSearchingChildren();
   SoBaseKit::setSearchingChildren(TRUE);
@@ -443,7 +443,7 @@
 
   // FIXME: Shouldn't I rather just return NULL here? kyrah 20030513
   assert(search.getPath() && "node not found in scenegraph");
-  SoNode * parent = ((SoFullPath *)search.getPath())->getNodeFromTail(1);
+  SoGroup * parent = (SoGroup*) ((SoFullPath *)search.getPath())->getNodeFromTail(1);
   assert(parent && "couldn't find parent");
 
   SoBaseKit::setSearchingChildren(wassearchingchildren);

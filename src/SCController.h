@@ -8,7 +8,6 @@ class SoCamera;
 class SoGroup;
 class SoEvent;
 class SoLight;
-class SoNode;
 class SoSeparator;
 class SoSceneManager;
 class SoGetBoundingBoxAction;
@@ -49,7 +48,7 @@ class SoGetBoundingBoxAction;
 
 /*" Coin rendering and related functionality "*/
 - (void) setSceneGraph:(SoGroup *)sg;
-- (SoNode *) sceneGraph;
+- (SoGroup *) sceneGraph;
 - (SoSceneManager *) sceneManager;
 - (void) render;
 - (void) setBackgroundColor:(NSColor *) color;

@@ -248,7 +248,7 @@ static BOOL _coinInitialized = NO;
 
 /*" Returns the current scene graph used for rendering. "*/
 
-- (SoNode *) sceneGraph 
+- (SoGroup *) sceneGraph 
 { 
   return scenegraph; 
 }
