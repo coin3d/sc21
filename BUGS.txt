@@ -24,3 +24,20 @@ are actually duplicates from Coin/BUGS.txt that are relevant to Sc21.
     <kyrah@sim.no> 20040917
 
 =====================================================================
+
+002 Window shadow artifacts on certain graphics cards
+
+    This behavior is reproducible under both 10.2 and 10.3 on
+    an iBook w/Rage 128 (e.g. Elektrobook).
+
+    When a window is casting shadow on an SCView, the area where
+    the window shadow should be is painted in transparent green
+    instead.
+
+    Note that on other graphics cards (e.g. Radeon 9000), the same
+    window shadow area will flicker a lot when the topmost window
+    is moving over the SCView.
+
+    <kintel@sim.no> 20040919
+
+=====================================================================
