@@ -56,6 +56,7 @@ void selection_cb(void *userdata, SoPath *path)
 {
   [filenametext setStringValue:@"None"];
   ra->setCacheContext([coincontroller sceneManager]->getGLRenderAction()->getCacheContext());
+  ra->setTransparencyType(SoGLRenderAction::DELAYED_BLEND);
   [coincontroller sceneManager]->setGLRenderAction(ra);
 }
 
