@@ -44,15 +44,16 @@
  "*/
 
 typedef enum _SCCameraType {
-  SCCameraUnknown 	= -1,
-  SCCameraPerspective   =  0,
-  SCCameraOrthographic  =  1
+  SCCameraUnknown       = -1,
+  SCCameraNone          =  0,
+  SCCameraPerspective   =  1,
+  SCCameraOrthographic  =  2
 } SCCameraType;
 
 @interface SCCamera : NSObject
 {
-  @protected
-    _SCCameraP * _sc_camera;
+ @protected
+  _SCCameraP * _sc_camera;
 }
 
 /*" Initializing an SCCamera "*/
