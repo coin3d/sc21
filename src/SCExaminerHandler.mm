@@ -139,11 +139,14 @@
 
   else if (eventtype == NSLeftMouseDown ||
            eventtype == NSRightMouseDown ||
-           eventtype == NSOtherMouseDown) {
+           eventtype == NSOtherMouseDown) {    
     
     // Check for emulations
     int effectivebutton = [SELF->emulator emulatedButtonForButton:[event buttonNumber] 
                                                          modifier:modifierflags];
+    
+    NSLog(@"Mousedown: %d (button = %d, effectivebutton = %d)", 
+          eventtype, [event buttonNumber], effectivebutton);
     
     Class newmode = [self _SC_modeForButton:effectivebutton 
                                    modifier:modifierflags];
@@ -158,10 +161,13 @@
       [self _SC_activateMode:newmode event:event point:&pn];
     }
     else [self _SC_setCurrentMode:nil];
+    handled = YES;
   }
 
   if (!handled) 
     return [self _SC_performActionForEvent:event camera:SELF->currentcamera];
+  
+  else return YES;
 }
 
 - (void)update
