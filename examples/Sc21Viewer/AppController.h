@@ -33,7 +33,6 @@
 {
   IBOutlet SCController * coincontroller;
   IBOutlet SCView * view;
-  IBOutlet NSButton * mode;
   IBOutlet NSTextField * filenametext;
 }
 - (IBAction)open:(id)sender;

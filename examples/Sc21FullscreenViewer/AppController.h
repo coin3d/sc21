@@ -31,7 +31,6 @@
 {
   IBOutlet SCController * coincontroller;
   IBOutlet SCView * view;
-  IBOutlet NSButton * mode;
   IBOutlet NSTextField * filenametext;
   NSOpenGLContext *_fullScreenContext;
   CGDirectDisplayID _displayid;
