@@ -55,6 +55,8 @@
 /*" Convenience methods and shortcuts "*/
 - (void) addMenuEntry:(NSString *) title target:(id) target action:(SEL) selector;
 - (NSSize) size;
+- (float) width;
+- (float) height;
 - (float) aspectRatio;
 - (NSPoint) normalizePoint:(NSPoint)p;
 
