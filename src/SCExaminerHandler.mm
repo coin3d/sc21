@@ -3,6 +3,7 @@
 #import "SCRotateMode.h"
 #import "SCPanMode.h"
 #import "SCZoomMode.h"
+#import "SCSpinMode.h"
 #import "SCMouseLog.h"
 #import "SCUtil.h"
 #import <Sc21/SCController.h>
@@ -168,7 +169,12 @@
       eventtype == NSRightMouseUp ||
       eventtype == NSOtherMouseUp) {
     if (mode) { 
-      mode = Nil;
+      if (mode == [SCRotateMode class]) {
+        mode = [SCSpinMode class];
+      }
+      else {
+        mode = Nil;
+      }
       [[NSCursor arrowCursor] set];
       [[NSNotificationCenter defaultCenter]
         postNotificationName:SCCursorChangedNotification object:self];  
