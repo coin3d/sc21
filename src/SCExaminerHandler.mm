@@ -497,6 +497,7 @@
 
 - (BOOL)_SC_usesEvent:(NSEvent *)event
 {
+  BOOL used = NO;
   int nr = [event buttonNumber];
   
   // It is not guaranteed that modifierflags == 0 when no modifier
@@ -510,30 +511,43 @@
   // that might be added in the future (the rest of SCExaminerHandler
   // is not using any specific modifier flags... only the IB palette
   // does). kyrah 20040827
-
+  
   unsigned int flags = [event modifierFlags] & 
     (NSAlphaShiftKeyMask | NSShiftKeyMask | NSControlKeyMask | 
      NSAlternateKeyMask | NSCommandKeyMask | NSNumericPadKeyMask | 
      NSHelpKeyMask | NSFunctionKeyMask);
   
+  // Actual check whether the event matches a known combination
+  if ((nr == SELF->panbutton && (flags == SELF->panmodifier)) || 
+      (nr == SELF->rotatebutton && (flags == SELF->rotatemodifier)) ||
+      (nr == SELF->zoombutton && (flags == SELF->zoommodifier))) {
+    used = YES;
+  } 
+  
   // Check for emulation
   if (SELF->emulator) {
-      nr = [SELF->emulator emulatedButtonForButton:nr modifier:flags];
-      // Remove modifier for emulation from the modifiers we look at.
-      // (e.g. if shift + click emulates rightclick, and we get
-      // shift + alt + click, we want to process this as
-      // alt + rightclick (not shift + alt + rightclick)!)
-      flags ^= [SELF->emulator modifierToEmulateButton:nr];
+    nr = [SELF->emulator emulatedButtonForButton:nr modifier:flags];
+    // Remove modifier for emulation from the modifiers we look at.
+    // (e.g. if shift + click emulates rightclick, and we get
+    // shift + alt + click, we want to process this as
+    // alt + rightclick (not shift + alt + rightclick)!)
+    flags ^= [SELF->emulator modifierToEmulateButton:nr];
   }
   
-  // Actual check whether the event matches a known combination
-   if ((nr == SELF->panbutton && (flags == SELF->panmodifier)) || 
-       (nr == SELF->rotatebutton && (flags == SELF->rotatemodifier)) ||
-       (nr == SELF->zoombutton && (flags == SELF->zoommodifier))) {
-    return YES;
-  } else {
-    return NO;
-  }
+  // Check again for the emulated mouse/modifier combination.
+  
+  // Note that it is *not* enough to only check for the emulated button and 
+  // flags here: Doing this would effectively disable the middle and right mouse
+  // button when emulation is active, since the right button event itself would 
+  // be considered unused!
+  
+  if ((nr == SELF->panbutton && (flags == SELF->panmodifier)) || 
+      (nr == SELF->rotatebutton && (flags == SELF->rotatemodifier)) ||
+      (nr == SELF->zoombutton && (flags == SELF->zoommodifier))) {
+    used = YES;
+  } 
+  
+  return used;
 }
 
 @end
