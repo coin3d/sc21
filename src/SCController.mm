@@ -52,9 +52,29 @@
 
 #import <OpenGL/gl.h>
 
+/*" Provide interface for deaction of NSTimer instance.  The
+    current implementation sets the timer's fireDate to
+    "distantFuture" (cf. NSDate) but hopefully activation and
+    deactivation will be supported in the timer itself in the
+    future.
+ "*/
+
+@interface NSTimer (SC21Extensions)
+- (void) deactivate;
+@end
+
+@implementation NSTimer (SC21Extensions)
+
+- (void) deactivate
+{
+  [self setFireDate:[NSDate distantFuture]];
+}
+@end
+
 @interface SCController (InternalAPI)
-- (void) _processTimerQueue:(NSTimer *) t;
-- (void) _processDelayQueue:(NSTimer *) t;
+- (void) _timerQueueTimerFired:(NSTimer *) t;
+- (void) _delayQueueTimerFired:(NSTimer *) t;
+- (void) _sensorQueueChanged;
 - (SoLight *) _findLightInSceneGraph:(SoGroup *)root;
 - (SoCamera *) _findCameraInSceneGraph:(SoGroup *) root;
 - (void) _setInternalSceneGraph:(SoGroup *)root;
@@ -66,14 +86,16 @@
 // -------------------- Callback function ------------------------
 
 static void
-redraw_cb(void * user, SoSceneManager * manager) {
+redraw_cb(void * user, SoSceneManager *) {
   SCView * view = (SCView *) user;
-//FIXME: We should be able to remove this (kintel 20040326)
-//Why is it here?
-  [view drawRect:[view frame]]; // do actual drawing
-  [view setNeedsDisplay:YES];   // needed to get redraw when view is not active
+  [view setNeedsDisplay:YES]; 
 }
 
+static void
+sensorqueuechanged_cb (void * data) {
+  SCController * ctrl = (SCController *)data;
+  [ctrl _sensorQueueChanged];
+}
 
 // Obj-C does not support class variables, so: static...
 static BOOL _coinInitialized = NO;
@@ -176,37 +198,14 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   } else {
     _scenemanager->setSceneGraph(_scenegraph); 
   }
-  
-  // FIXME: The timer and delay queue handling here is very
-  // primitive and should be re-written. Currently, we are processing
-  // the queues even if there are no pending sensors. The problem
-  // why it is not straightforward to use the approach in SoQt is
-  // NSTimer does not allow you to start/stop the timer - you have
-  // to invalidate it and create a new one.
-  // Also, there is not really a concept of "application is idle"
-  // in cocoa, so the delay queue is currently only processed once
-  // every millisecond. (Might be able to use NSNotificationQueue
-  // with style NSPostWhenIdle, I'll have to verify that.)
-  // kyrah 20030713
 
-  // Setup timers.
-  _timerqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:0.001 target:self
-    selector:@selector(_processTimerQueue:) userInfo:nil repeats:YES] retain];
-  _delayqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:0.001 target:self
-    selector:@selector(_processDelayQueue:) userInfo:nil repeats:YES] retain];
-
-  [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSModalPanelRunLoopMode];
-  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSModalPanelRunLoopMode];
-  [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSEventTrackingRunLoopMode];
-  [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSEventTrackingRunLoopMode];
-  
+  [self _sensorQueueChanged];
 }
 
 /* Clean up after ourselves. */
 - (void) dealloc
 {
-  // FIXME: release timers. Disabled since it causes a
-  // freak crash in IB. kyrah 20030714
+  [self stopTimers];
   [view release];
   [_eventconverter release];
   [_camera release];
@@ -256,8 +255,13 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 - (void) setSceneGraph:(SoGroup *)scenegraph
 {
+  NSLog(@"SetSceneGraph called with %p", scenegraph);
   if (scenegraph == _scenegraph) return;
-  if (scenegraph == NULL) scenegraph = new SoSeparator;
+  if (scenegraph == NULL) {
+    scenegraph = new SoSeparator;
+    // Don't waste cycles by animating an empty scene. 
+    [self stopTimers];
+  }
 
   [self _setInternalSceneGraph:scenegraph];
   [self _handleLighting];
@@ -528,7 +532,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   if ([_timerqueuetimer isValid]) [_timerqueuetimer invalidate];
   
   _timerqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:interval target:self
-    selector:@selector(_processTimerQueue:) userInfo:nil repeats:YES] retain];
+    selector:@selector(_timerQueueTimerFired:) userInfo:nil repeats:YES] retain];
 
   [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSModalPanelRunLoopMode];
   [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSEventTrackingRunLoopMode];
@@ -559,7 +563,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   if ([_delayqueuetimer isValid]) [_delayqueuetimer invalidate];
 
   _delayqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:interval target:self
-  selector:@selector(_processDelayQueue:) userInfo:nil repeats:YES] retain];
+  selector:@selector(_delayQueueTimerFired:) userInfo:nil repeats:YES] retain];
 
   [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSModalPanelRunLoopMode];
   [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSEventTrackingRunLoopMode];
@@ -685,18 +689,74 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
 
 /* Timer callback function: process the timer sensor queue. */
 
-- (void) _processTimerQueue:(NSTimer *)t
+- (void) _timerQueueTimerFired:(NSTimer *)t
 {
+  NSLog(@"timerQueueTimerFired");
   SoDB::getSensorManager()->processTimerQueue();
+  [self _sensorQueueChanged];
 }
 
-/* Timer callback function: process the delay queue. */
+/* Timer callback function: process the delay queue when maximum time has been reached. */
 
-- (void) _processDelayQueue:(NSTimer *)t
+- (void) _delayQueueTimerFired:(NSTimer *)t
 {
+  NSLog(@"delayQueueTimerFired");
+  SoDB::getSensorManager()->processTimerQueue();
   SoDB::getSensorManager()->processDelayQueue(FALSE);
+  [self _sensorQueueChanged];
 }
 
+/* process delay queue when application is idle. */
+
+- (void) _idle
+{
+  // FIXME: Implement mechanism to call this function  
+  SoDB::getSensorManager()->processTimerQueue();
+  SoDB::getSensorManager()->processDelayQueue(TRUE);
+  [self _sensorQueueChanged];
+}
+
+// FIXME: Rename to something more appropriate... ;)
+- (void) _sensorQueueChanged
+{
+
+  // FIXME: Process delay queue when application is idle. Problem:
+  // There is not really a concept of "application is idle" in 
+  // cocoa... Might be able to use NSNotificationQueue
+  // with style NSPostWhenIdle?
+
+  // Create timers at first invocation
+  if (!_timerqueuetimer) {
+    _timerqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:1 target:self
+                         selector:@selector(_timerQueueTimerFired:) userInfo:nil 
+                         repeats:YES] retain];
+    _delayqueuetimer = [[NSTimer scheduledTimerWithTimeInterval:1 target:self
+                         selector:@selector(_delayQueueTimerFired:) userInfo:nil 
+                         repeats:YES] retain];
+    
+    [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSModalPanelRunLoopMode];
+    [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSModalPanelRunLoopMode];
+    [[NSRunLoop currentRunLoop] addTimer:_timerqueuetimer forMode:NSEventTrackingRunLoopMode];
+    [[NSRunLoop currentRunLoop] addTimer:_delayqueuetimer forMode:NSEventTrackingRunLoopMode];
+  
+    SoDB::getSensorManager()->setChangedCallback(sensorqueuechanged_cb, self);
+  }
+
+  SoSensorManager * sm = SoDB::getSensorManager();
+  SbTime t;  
+  if (sm->isTimerSensorPending(t)) {    
+    SbTime interval = t - SbTime::getTimeOfDay();
+    [_timerqueuetimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:interval.getValue()]];
+  } else {
+    [_timerqueuetimer deactivate];
+  }
+  
+  if (sm->isDelaySensorPending()) {
+    [_delayqueuetimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:0.008]];      
+  } else {
+    [_delayqueuetimer deactivate];
+  }
+}
 
 - (void) _setInternalSceneGraph:(SoGroup *)root
 {
@@ -729,7 +789,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   sa.apply(root);
   SoBaseKit::setSearchingChildren(oldsearch);
   if (sa.getPath() != NULL) {
-    SoFullPath * fullpath = (SoFullPath *)sa.getPath();
+    SoFullPath * fullpath = (SoFullPath *) sa.getPath();
     light = (SoLight *)fullpath->getTail();
   }
   return light;
@@ -751,7 +811,7 @@ NSString * SCNoLightFoundInSceneNotification = @"SCNoLightFoundInSceneNotificati
   sa.apply(root);
   SoBaseKit::setSearchingChildren(oldsearch);
   if (sa.getPath() != NULL) {
-    SoFullPath * fullpath = (SoFullPath *)sa.getPath();
+    SoFullPath * fullpath = (SoFullPath *) sa.getPath();
     scenecamera = (SoCamera *)fullpath->getTail();
   }
   return scenecamera;
