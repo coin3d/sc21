@@ -20,6 +20,9 @@ class SoSceneManager;
   BOOL _handleseventsinviewer;
 }
 
+/*" Static methods "*/
++ (void) initCoin;
+
 /*" Actions "*/
 - (IBAction) open:(id)sender; 
 - (IBAction) toggleModes:(id)sender;
@@ -28,7 +31,6 @@ class SoSceneManager;
 /*" Initializing an SCController "*/
 - (id) init;
 - (void) awakeFromNib;
-- (void) initCoin;
 
 /*" Getting the view associated with the controller "*/
 - (SCView *) view;

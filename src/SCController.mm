@@ -36,8 +36,10 @@ redraw_cb(void * user, SoSceneManager * manager) {
   // error and a black screen. Cocoa bug? Investigate. kyrah 20030529
 }
 
-              
-              
+
+// Obj-C does not support class variables, so: static :(
+static BOOL _coinInitialized;
+
 @implementation SCController
 
 /*" An SCController is the main component for rendering Coin 
@@ -48,7 +50,20 @@ redraw_cb(void * user, SoSceneManager * manager) {
     Connect SCController's !{view} outlet to a valid SCView instance
     to use SCController.
  "*/
- 
+
+
+/*" Initialize Coin by calling SoDB::init() etc. Call this method if you
+    want to use Coin functionality before actually instantiating an
+    SCController in your application. Otherwise, it will be called from
+    SCController's initializer. "*/
+
++ (void) initCoin
+{
+  SoDB::init();
+  SoInteraction::init();
+  SoNodeKit::init();
+  _coinInitialized = YES;
+}
  
  
 // --------------------- actions -----------------------------
@@ -96,19 +111,13 @@ redraw_cb(void * user, SoSceneManager * manager) {
   if (self = [super init]) {
     _handleseventsinviewer = YES;
     _eventconverter = [[SCEventConverter alloc] initWithController:self];
-    [self initCoin];
+    if (!_coinInitialized) [SCController initCoin];
   }
   return self;
 }
 
 /*" Initalizes Coin. "*/
 
-- (void) initCoin
-{
-  SoDB::init();
-  SoInteraction::init();
-  SoNodeKit::init();
-}
 
 /*" Sets up and activates a Coin scene manager. Sets up and schedules
     a timer for animation. Adds default entries to the context menu.
@@ -434,7 +443,7 @@ redraw_cb(void * user, SoSceneManager * manager) {
   if (self = [super initWithCoder:coder]) {
     _handleseventsinviewer = YES;
     _eventconverter = [[SCEventConverter alloc] initWithController:self];
-    [self initCoin];
+    if (!_coinInitialized) [SCController initCoin];
   }
   return self;
 }
