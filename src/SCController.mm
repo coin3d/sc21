@@ -199,7 +199,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   SC21_DEBUG(@"SCController.dealloc");
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   [self setSceneGraph:nil];
-  [self stopTimers];
+  [self _SC_stopTimers];
   [self setEventHandler:nil];
   delete SELF->scenemanager;
   [SELF release];
@@ -282,41 +282,6 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   return self->eventHandler;
 }
 
-#pragma mark --- timer management ---
-
-- (void)startTimers
-{
-  if (SELF->timerqueuetimer != nil) return;
-  
-  // The timer will be controller from _SC_sensorQueueChanged,
-  // so don't activate it yet.
-  SELF->timerqueuetimer = [NSTimer scheduledTimerWithTimeInterval:1000
-                                                           target:self
-                                                         selector:@selector(_SC_timerQueueTimerFired:) 
-                                                         userInfo:nil 
-                                                          repeats:YES];
-  [SELF->timerqueuetimer _SC_deactivate];
-  [[NSRunLoop currentRunLoop] addTimer:SELF->timerqueuetimer 
-                               forMode:NSModalPanelRunLoopMode];
-  [[NSRunLoop currentRunLoop] addTimer:SELF->timerqueuetimer 
-                               forMode:NSEventTrackingRunLoopMode];
-  
-  SoDB::getSensorManager()->setChangedCallback(sensorqueuechanged_cb, self);
-}
-
-/*" Stops and releases the timers for timer queue and delay queue
-    processing.
- "*/
-
-- (void)stopTimers
-{
-  if (SELF->timerqueuetimer && [SELF->timerqueuetimer isValid]) {
-    [SELF->timerqueuetimer invalidate];
-    SELF->timerqueuetimer = nil;
-  }
-  SoDB::getSensorManager()->setChangedCallback(NULL, NULL);
-}
-
 #pragma mark --- accessor methods ---
 
 /*" 
@@ -356,19 +321,16 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 
   sceneGraph = [sg retain];
 
-  // Don't waste cycles by animating an empty scene
-  if (sceneGraph == nil) { [self stopTimers]; }
-  else { [self startTimers]; }
-
   if (sceneGraph) {
     // We want to be informed whenever the scenegraph's root node changes.
     [[NSNotificationCenter defaultCenter] addObserver:self
                                           selector:@selector(_SC_sceneGraphChanged:)
                                           name:SCRootChangedNotification
                                           object:sceneGraph];
-    [self startTimers];
+    [self _SC_startTimers];
   } else {
-    [self stopTimers]; 
+    // Don't waste cycles by animating an empty scene
+    [self _SC_stopTimers]; 
   }
 
   [self _SC_sceneGraphChanged:nil];
@@ -599,7 +561,7 @@ Returns YES if the depth buffer is automatically cleared
 {
   // SC21_DEBUG(@"_sensorQueueChanged");
   // Create timers at first invocation
-  if (!SELF->timerqueuetimer) [self startTimers];
+  if (!SELF->timerqueuetimer) [self _SC_startTimers];
 
   SoSensorManager * sm = SoDB::getSensorManager();
 
@@ -653,6 +615,40 @@ Returns YES if the depth buffer is automatically cleared
     
   [[NSNotificationCenter defaultCenter]
     postNotificationName:SCSceneGraphChangedNotification object:self];
+}
+
+- (void)_SC_startTimers
+{
+  if (SELF->timerqueuetimer != nil) return;
+  
+  // The timer will be controller from _SC_sensorQueueChanged,
+  // so don't activate it yet.
+  SELF->timerqueuetimer = [NSTimer scheduledTimerWithTimeInterval:1000
+                                                           target:self
+                                                         selector:@selector(_SC_timerQueueTimerFired:) 
+                                                         userInfo:nil 
+                                                          repeats:YES];
+  [SELF->timerqueuetimer _SC_deactivate];
+  [[NSRunLoop currentRunLoop] addTimer:SELF->timerqueuetimer 
+                               forMode:NSModalPanelRunLoopMode];
+  [[NSRunLoop currentRunLoop] addTimer:SELF->timerqueuetimer 
+                               forMode:NSEventTrackingRunLoopMode];
+  
+  SoDB::getSensorManager()->setChangedCallback(sensorqueuechanged_cb, self);
+}
+
+/* 
+  Stops and releases the timers for timer queue and delay queue
+  processing.
+*/
+
+- (void)_SC_stopTimers
+{
+  if (SELF->timerqueuetimer && [SELF->timerqueuetimer isValid]) {
+    [SELF->timerqueuetimer invalidate];
+    SELF->timerqueuetimer = nil;
+  }
+  SoDB::getSensorManager()->setChangedCallback(NULL, NULL);
 }
 
 @end

@@ -109,10 +109,9 @@
 {
   SC21_DEBUG(@"SCView.dealloc");
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  // Prevent controller from continuing to draw into our view.
-//   [self->controller setRedrawHandler:nil];
   [self->controller setDrawable:nil];
-  [self->controller stopTimers];
+  // FIXME: Do we have to manually stop the timers? kyrah 20040809
+  // [self->controller _SC_stopTimerss];
   [self setController:nil];
   [SELF release];
   [super dealloc];

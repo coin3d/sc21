@@ -72,11 +72,6 @@ class SoSceneManager;
 - (BOOL)handleEvent:(NSEvent *)event;
 - (void)setEventHandler:(SCEventHandler *)handler;
 - (SCEventHandler *)eventHandler;
-
-/*" Timer management. "*/
-- (void)startTimers;
-- (void)stopTimers;
-
 @end
 
 // --------------------- Notifications ------------------------
