@@ -37,9 +37,4 @@
     [self setNextEventHandler:coinhandler]; 
   }
 }
-
-- (BOOL)controller:(SCController *)ctrl handleEvent:(NSEvent *)event 
-{
-  return NO;
-}
 @end

@@ -38,7 +38,7 @@
 
 void selection_cb(void *userdata, SoPath *path)
 {
-  NSLog(@"foo!");
+  NSLog(@"Selected object!");
 }
 
 @implementation AppController
@@ -54,47 +54,24 @@ void selection_cb(void *userdata, SoPath *path)
   [filenametext setStringValue:@"None"];
 }
 
-- (IBAction)showDebugInfo:(id)sender
-{
-  NSString * info = [SCDebug openGLInfo];
-  NSWindow * panel = NSGetInformationalAlertPanel(@"Debug info",
-                                                  info, @"Dismiss", nil, nil);
-  [NSApp runModalForWindow:panel];
-  [panel close];
-  NSReleaseAlertPanel(panel);
-}
-
 // Toggles whether events should be interpreted as viewer events, i.e.
 // if they should be regarded as input for controlling the viewer or
 // sent to the scene graph directly.
+
+- (IBAction)menuToggleModes:(id)sender
+{
+  [mode setNextState];
+  [self toggleModes:sender];
+}
 
 - (IBAction)toggleModes:(id)sender
 {
   [[coincontroller eventHandler] toggleModes];
 }
 
-
-// Switches the headlight on and off.
-
-- (IBAction)toggleHeadlight:(id)sender
-{
-  SoLight * light = [[coincontroller sceneGraph] headlight];
-  if (light) {
-    NSLog(@"Toggling headlight");
-    light->on.setValue(!light->on.getValue());
-  } else {
-    NSLog(@"Tried to toggle headlight, but there is no headlight in scene.");
-  }
-}
-
 - (IBAction)viewAll:(id)sender
 {
   [[coincontroller sceneGraph] viewAll];
-}
-
-- (IBAction)dumpSceneGraph:(id)sender
-{
-  [SCDebug dumpSceneGraph:[coincontroller sceneManager]->getSceneGraph()];
 }
 
 // Displays a standard file open dialog. The sender argument is ignored. 
@@ -105,7 +82,7 @@ void selection_cb(void *userdata, SoPath *path)
   [panel beginSheetForDirectory:nil
                            file:nil
                           types:[NSArray arrayWithObjects:@"wrl", @"iv", nil]
-                 modalForWindow:[view window]
+                 modalForWindow:[NSApp mainWindow]
                   modalDelegate:self
                  didEndSelector:@selector(openPanelDidEnd:returnCode:contextInfo:)
                     contextInfo:nil];
@@ -133,7 +110,7 @@ void selection_cb(void *userdata, SoPath *path)
   return YES;
 }
 
-// SCSceneGraph delegate implementation
+// SCSceneGraph delegate implementation: add selection node before the scenegraph.
 
 - (SoGroup *)createSuperSceneGraph:(SoGroup *)scenegraph
 {
@@ -148,11 +125,4 @@ void selection_cb(void *userdata, SoPath *path)
   return root;
 }
 
-#if 0
-- (void)didCreateSuperSceneGraph:(SoSeparator *)superscenegraph
-{
-  // just checking that it works....
-  NSLog(@"Superscenegraph created.");
-}
-#endif
 @end

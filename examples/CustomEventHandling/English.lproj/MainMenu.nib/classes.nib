@@ -1,22 +1,10 @@
 {
     IBClasses = (
         {
-            ACTIONS = {
-                dumpSceneGraph = id; 
-                open = id; 
-                showDebugInfo = id; 
-                toggleHeadlight = id; 
-                toggleModes = id; 
-                viewAll = id; 
-            }; 
+            ACTIONS = {menuToggleModes = id; open = id; toggleModes = id; viewAll = id; }; 
             CLASS = AppController; 
             LANGUAGE = ObjC; 
-            OUTLETS = {
-                coincontroller = SCController; 
-                filenametext = NSTextField; 
-                mode = NSButton; 
-                view = SCView; 
-            }; 
+            OUTLETS = {coincontroller = SCController; filenametext = NSTextField; mode = NSButton; }; 
             SUPERCLASS = NSObject; 
         }, 
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 

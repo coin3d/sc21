@@ -32,15 +32,12 @@
 @interface AppController : NSObject
 {
   IBOutlet SCController * coincontroller;
-  IBOutlet SCView * view;
   IBOutlet NSButton * mode;
   IBOutlet NSTextField * filenametext;
 }
 - (IBAction)open:(id)sender;
 - (IBAction)toggleModes:(id)sender;
-- (IBAction)toggleHeadlight:(id)sender;
+- (IBAction)menuToggleModes:(id)sender;
 - (IBAction)viewAll:(id)sender;
-- (IBAction)showDebugInfo:(id)sender;
-- (IBAction)dumpSceneGraph:(id)sender;
 - (void)openPanelDidEnd:(NSOpenPanel *)panel returnCode:(int)rc contextInfo:(void *)ctx;
 @end
