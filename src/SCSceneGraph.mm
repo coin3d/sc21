@@ -135,15 +135,6 @@
   return ret;
 }
 
-- (BOOL)readFromURL:(NSURL *)URL
-{
-  NSData * data = [URL resourceDataUsingCache:YES];
-  if (data) {
-    return [self loadDataRepresentation:data];
-  }
-  return NO;
-}
-
 - (BOOL)writeToFile:(NSString *)filename
 {
   SoOutput out;
@@ -159,12 +150,39 @@
   return NO;
 }
 
+- (BOOL)readFromURL:(NSURL *)URL
+{
+  NSData * data = [URL resourceDataUsingCache:YES];
+  if (data) {
+    return [self loadDataRepresentation:data];
+  }
+  return NO;
+}
+
 - (BOOL)loadDataRepresentation:(NSData *)data
 {
   SoInput input;
   input.setBuffer((void *)[data bytes], [data length]);
   return [self _SC_readFromSoInput:&input];
 }
+
+static void *buffer_realloc(void *bufptr, size_t size)
+{
+  return realloc(bufptr, size);
+}
+
+- (NSData *)dataRepresentation
+{
+  SoOutput out;
+  size_t buffer_size = 102400;
+  char * buffer = (char *)malloc(buffer_size);
+  out.setBuffer(buffer, buffer_size, buffer_realloc);
+  SoWriteAction wra(&out);
+  wra.apply([self root]);
+
+  return [NSData dataWithBytesNoCopy:buffer length:buffer_size];
+}
+
 
 #pragma mark --- camera handling ---
 

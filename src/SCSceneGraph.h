@@ -50,9 +50,12 @@
 
 /*" File I/O "*/
 - (BOOL)readFromFile:(NSString *)filename;
-- (BOOL)readFromURL:(NSURL *)URL;
-- (BOOL)loadDataRepresentation:(NSData *)data;
 - (BOOL)writeToFile:(NSString *)filename;
+
+- (BOOL)readFromURL:(NSURL *)URL;
+
+- (BOOL)loadDataRepresentation:(NSData *)data;
+- (NSData *)dataRepresentation;
 
 /*" Accessors for the scenegraph's scenemanager. "*/
 - (void)setSceneManager:(SoSceneManager *)scenemanager;
