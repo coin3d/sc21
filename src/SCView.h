@@ -18,6 +18,10 @@
 - (id) initWithFrame:(NSRect)rect;
 - (void) awakeFromNib;
 
+/*" Accessing the SCController. "*/
+- (SCController *) controller;
+- (void) setController:(SCController *) controller;
+
 /*" Drawing, viewing, and view-dependant calculations "*/
 - (void) drawRect:(NSRect)rect;
 - (void) reshape;

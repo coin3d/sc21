@@ -110,10 +110,33 @@ NSString * SCCouldNotCreateValidPixelFormatNotification =
 {
   // Prevent controller from continuing to draw into our view.
   [controller stopTimers];
+  [controller release];
   [super dealloc];  
 }
 
-  // ------------------------- OpenGL setup ---------------------------
+
+// ---------------------- Accessing SCController --------------------
+
+/*" Returns the currently used SCController. "*/
+- (SCController *) controller
+{
+  return controller;  
+}
+
+
+/*" Set the controller to newcontroller. newcontroller is
+    retained.
+ "*/
+
+- (void) setController:(SCController *) newcontroller
+{
+  [newcontroller retain];
+  [controller release];
+  controller = newcontroller;
+}
+
+
+// ------------------------- OpenGL setup ---------------------------
 
 /*" Recreate OpenGL context with the current settings. Returns
     !{TRUE} if the reinitialization was successful, and !{FALSE}
