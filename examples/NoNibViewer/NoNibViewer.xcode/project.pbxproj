@@ -317,8 +317,8 @@
 		E0DD248E06074F44009D1EB4 = {
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
-			name = SC21.framework;
-			path = /Library/Frameworks/SC21.framework;
+			name = Sc21.framework;
+			path = /Library/Frameworks/Sc21.framework;
 			refType = 0;
 			sourceTree = "<absolute>";
 		};

@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleGetInfoString</key>
-	<string>SC21 @VERSION@</string>
+	<string>Sc21 @VERSION@</string>
 	<key>CFBundleIdentifier</key>
 	<string>no.sim.sc21.framework</string>
 	<key>CFBundleName</key>
-	<string>SC21 framework</string>
+	<string>Sc21 framework</string>
 	<key>CFBundleShortVersionString</key>
 	<string>0.1.2</string>
 	<key>IFMajorVersion</key>

@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleGetInfoString</key>
-	<string>SC21 0.1.2 Copyright © 2004 Systems in Motion AS</string>
+	<string>Sc21 0.1.2 Copyright © 2004 Systems in Motion AS</string>
 	<key>CFBundleIdentifier</key>
-	<string>no.sim.SC21</string>
+	<string>no.sim.Sc21</string>
 	<key>CFBundleName</key>
-	<string>SC21</string>
+	<string>Sc21</string>
 	<key>CFBundleShortVersionString</key>
 	<string>0.1.2</string>
 	<key>IFMajorVersion</key>
@@ -36,13 +36,13 @@
 		</dict>
 		<dict>
 			<key>IFPkgFlagPackageLocation</key>
-			<string>SC21 framework.pkg</string>
+			<string>Sc21 framework.pkg</string>
 			<key>IFPkgFlagPackageSelection</key>
 			<string>selected</string>
 		</dict>
 		<dict>
 			<key>IFPkgFlagPackageLocation</key>
-			<string>SC21 palette.pkg</string>
+			<string>Sc21 palette.pkg</string>
 			<key>IFPkgFlagPackageSelection</key>
 			<string>selected</string>
 		</dict>

@@ -1,19 +1,19 @@
 This folder contains the following example programs demonstrating how
-you can use SC21:
+you can use Sc21:
 
-++ SC21Viewer
+++ Sc21Viewer
 
-This is a simple viewer demonstrating how you can use SC21.
+This is a simple viewer demonstrating how you can use Sc21.
 It shows you how to open an Inventor or VRML file from disk and
 display it. It also demonstrates some ways to interact with 
 the SCController via context menu actions and user interface
 elements (like a checkbox). In addition, it contains an 
-example on how to use the notifications sent by SC21. 
+example on how to use the notifications sent by Sc21. 
 
 ++ Viewtiful
 
 Viewtiful is a little bit more involved example of how to create an
-MDI (Multiple Document Interface) viewer with SC21. It includes
+MDI (Multiple Document Interface) viewer with Sc21. It includes
 features such as:
  - Drag and Drop files to the viewer icon
  - Copy to pasteboard
@@ -28,7 +28,7 @@ SCController from Objective-C instead of in a nib file.
 
 --
 
-More information about SC21 can be found at
-http://www.coin3d.org/mac/SC21.
+More information about Sc21 can be found at
+http://www.coin3d.org/mac/Sc21.
 
 

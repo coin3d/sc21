@@ -1,34 +1,34 @@
-/* ============================================================== *
- |                                                                |
- | This file is part of SC21, a Cocoa user interface binding for  |
- | the Coin 3D visualization library.                             |
- |                                                                |
- | Copyright (c) 2003 Systems in Motion. All rights reserved.     |
- |                                                                |
- | SC21 is free software; you can redistribute it and/or          |
- | modify it under the terms of the GNU General Public License    |
- | ("GPL") version 2 as published by the Free Software            |
- | Foundation.                                                    |
- |                                                                |
- | A copy of the GNU General Public License can be found in the   |
- | source distribution of SC21. You can also read it online at    |
- | http://www.gnu.org/licenses/gpl.txt.                           |
- |                                                                |
- | For using Coin with software that can not be combined with the |
- | GNU GPL, and for taking advantage of the additional benefits   |
- | of our support services, please contact Systems in Motion      |
- | about acquiring a Coin Professional Edition License.           |
- |                                                                |
- | See http://www.coin3d.org/mac/SC21 for more information.       |
- |                                                                |
- | Systems in Motion, Bygdoy Alle 5, 0257 Oslo, Norway.           |
- |                                                                |
- * ============================================================== */
+/* =============================================================== *
+ |                                                                 |
+ | This file is part of Sc21, a Cocoa user interface binding for   |
+ | the Coin 3D visualization library.                              |
+ |                                                                 |
+ | Copyright (c) 2003-2004 Systems in Motion. All rights reserved. |
+ |                                                                 |
+ | Sc21 is free software; you can redistribute it and/or           |
+ | modify it under the terms of the GNU General Public License     |
+ | ("GPL") version 2 as published by the Free Software             |
+ | Foundation.                                                     |
+ |                                                                 |
+ | A copy of the GNU General Public License can be found in the    |
+ | source distribution of Sc21. You can also read it online at     |
+ | http://www.gnu.org/licenses/gpl.txt.                            |
+ |                                                                 |
+ | For using Coin with software that can not be combined with the  |
+ | GNU GPL, and for taking advantage of the additional benefits    |
+ | of our support services, please contact Systems in Motion       |
+ | about acquiring a Coin Professional Edition License.            |
+ |                                                                 |
+ | See http://www.coin3d.org/mac/Sc21 for more information.        |
+ |                                                                 |
+ | Systems in Motion, Bygdoy Alle 5, 0257 Oslo, Norway.            |
+ |                                                                 |
+ * =============================================================== */
  
-#import <SC21/SCView.h>
-#import <SC21/SCController.h>
-#import <SC21/SCExaminerController.h>
-#import <SC21/SCCursors.h>
+#import <Sc21/SCView.h>
+#import <Sc21/SCController.h>
+#import <Sc21/SCExaminerController.h>
+#import <Sc21/SCCursors.h>
 
 @implementation SCView
 
@@ -51,7 +51,7 @@
   // The version is set to 1 to be able to distinguish between objects
   // created with the public beta (version=0) and newer objects.
   // FIXME; It is expected that we'll stop supporting the public beta
-  // from SC21 V1.0.1 and versioning is probably not needed later since
+  // from Sc21 V1.0.1 and versioning is probably not needed later since
   // we only support keyed archiving.
   [SCView setVersion:1];
 }
@@ -381,12 +381,12 @@
 
 /*!
   This method is here only to support reading nib files created with
-  SC21 public beta.
+  Sc21 public beta.
 
   Here we decode the old instance variables, colorbits and depthbits,
   and copy all relevant settings from the old view.
 
-  FIXME: We should remove this after a grace period (say SC21 V1.0.1)
+  FIXME: We should remove this after a grace period (say Sc21 V1.0.1)
   (kintel 20040404)
 */
 - (id)awakeAfterUsingCoder:(NSCoder *)coder
@@ -434,8 +434,8 @@
 - (id)initWithCoder:(NSCoder *)coder
 {
   NSLog(@"SCView.initWithCoder:");
-  // This is support for reading archives from SC21 public beta
-  // FIXME: We should remove this after a grace period (say SC21 V1.0.1)
+  // This is support for reading archives from Sc21 public beta
+  // FIXME: We should remove this after a grace period (say Sc21 V1.0.1)
   // (kintel 20040404)
   if ([coder versionForClassName:@"SCView"] == 0) {
     _oldview = [[NSOpenGLView alloc] initWithCoder:coder];

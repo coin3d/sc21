@@ -126,7 +126,7 @@
 				19C28FACFE9D520D11CA2CBB,
 			);
 			isa = PBXGroup;
-			name = SC21Viewer;
+			name = Sc21Viewer;
 			path = "";
 			refType = 4;
 			sourceTree = "<group>";
@@ -215,7 +215,7 @@
 			fileEncoding = 4;
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.c.h;
-			path = SC21Viewer_Prefix.pch;
+			path = Sc21Viewer_Prefix.pch;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -276,19 +276,19 @@
 			buildSettings = {
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = SC21Viewer_Prefix.pch;
+				GCC_PREFIX_HEADER = Sc21Viewer_Prefix.pch;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				INFOPLIST_FILE = Info.plist;
-				PRODUCT_NAME = SC21Viewer;
+				PRODUCT_NAME = Sc21Viewer;
 				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
 				WRAPPER_EXTENSION = app;
 			};
 			dependencies = (
 			);
 			isa = PBXNativeTarget;
-			name = SC21Viewer;
+			name = Sc21Viewer;
 			productInstallPath = "$(HOME)/Applications";
-			productName = SC21Viewer;
+			productName = Sc21Viewer;
 			productReference = 8D1107320486CEB800E47090;
 			productType = "com.apple.product-type.application";
 		};
@@ -365,7 +365,7 @@
 			explicitFileType = wrapper.application;
 			includeInIndex = 0;
 			isa = PBXFileReference;
-			path = SC21Viewer.app;
+			path = Sc21Viewer.app;
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -382,8 +382,8 @@
 		E0436F7B0621908200376DF6 = {
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.framework;
-			name = SC21.framework;
-			path = /Library/Frameworks/SC21.framework;
+			name = Sc21.framework;
+			path = /Library/Frameworks/Sc21.framework;
 			refType = 0;
 			sourceTree = "<absolute>";
 		};

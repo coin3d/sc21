@@ -4,19 +4,19 @@
 <dict>
   <!-- a subclass of IBPalette -->
   <key>Class</key>
-  <string>SC21Palette</string>
+  <string>Sc21Palette</string>
 
   <!-- a nib file name -->
   <key>NibFile</key>
-  <string>SC21Palette</string>
+  <string>Sc21Palette</string>
 
   <!-- a tiff file name for icon used for palette -->
   <key>Icon</key>
-  <string>coin</string>
+  <string>Sc21Palette</string>
 
   <!-- Tool Tips string for the palette icon -->
   <key>ToolTips</key>
-  <string>SC21 V0.1.2</string>
+  <string>Sc21 V0.9.0</string>
 
   <!-- a list of class names exported from palette to IB -->
   <key>ExportClasses</key>

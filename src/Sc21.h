@@ -1,6 +1,6 @@
-#import <SC21/SCOpenGLPixelFormat.h>
-#import <SC21/SCOpenGLView.h>
-#import <SC21/SCView.h>
-#import <SC21/SCController.h>
-#import <SC21/SCExaminerController.h>
-#import <SC21/SCCamera.h>
+#import <Sc21/SCOpenGLPixelFormat.h>
+#import <Sc21/SCOpenGLView.h>
+#import <Sc21/SCView.h>
+#import <Sc21/SCController.h>
+#import <Sc21/SCExaminerController.h>
+#import <Sc21/SCCamera.h>

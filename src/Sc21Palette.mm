@@ -1,35 +1,35 @@
-/* ============================================================== *
- |                                                                |
- | This file is part of SC21, a Cocoa user interface binding for  |
- | the Coin 3D visualization library.                             |
- |                                                                |
- | Copyright (c) 2003 Systems in Motion. All rights reserved.     |
- |                                                                |
- | SC21 is free software; you can redistribute it and/or          |
- | modify it under the terms of the GNU General Public License    |
- | ("GPL") version 2 as published by the Free Software            |
- | Foundation.                                                    |
- |                                                                |
- | A copy of the GNU General Public License can be found in the   |
- | source distribution of SC21. You can also read it online at    |
- | http://www.gnu.org/licenses/gpl.txt.                           |
- |                                                                |
- | For using Coin with software that can not be combined with the |
- | GNU GPL, and for taking advantage of the additional benefits   |
- | of our support services, please contact Systems in Motion      |
- | about acquiring a Coin Professional Edition License.           |
- |                                                                |
- | See http://www.coin3d.org/mac/SC21 for more information.       |
- |                                                                |
- | Systems in Motion, Bygdoy Alle 5, 0257 Oslo, Norway.           |
- |                                                                |
- * ============================================================== */
+/* =============================================================== *
+ |                                                                 |
+ | This file is part of Sc21, a Cocoa user interface binding for   |
+ | the Coin 3D visualization library.                              |
+ |                                                                 |
+ | Copyright (c) 2003-2004 Systems in Motion. All rights reserved. |
+ |                                                                 |
+ | Sc21 is free software; you can redistribute it and/or           |
+ | modify it under the terms of the GNU General Public License     |
+ | ("GPL") version 2 as published by the Free Software             |
+ | Foundation.                                                     |
+ |                                                                 |
+ | A copy of the GNU General Public License can be found in the    |
+ | source distribution of Sc21. You can also read it online at     |
+ | http://www.gnu.org/licenses/gpl.txt.                            |
+ |                                                                 |
+ | For using Coin with software that can not be combined with the  |
+ | GNU GPL, and for taking advantage of the additional benefits    |
+ | of our support services, please contact Systems in Motion       |
+ | about acquiring a Coin Professional Edition License.            |
+ |                                                                 |
+ | See http://www.coin3d.org/mac/Sc21 for more information.        |
+ |                                                                 |
+ | Systems in Motion, Bygdoy Alle 5, 0257 Oslo, Norway.            |
+ |                                                                 |
+ * =============================================================== */
  
 
-#import "SC21Palette.h"
+#import "Sc21Palette.h"
 #import <Inventor/SoDB.h>
 
-@implementation SC21Palette
+@implementation Sc21Palette
 
 - (void)dealloc
 {
@@ -41,7 +41,7 @@
 
 - (void)finishInstantiate
 {
-  NSLog(@"SC21Palette.finishInstantiate");
+  NSLog(@"Sc21Palette.finishInstantiate");
   scopenglview = [[SCOpenGLView alloc] initWithFrame:[scopenglviewitem bounds]];
   scview = [[SCView alloc] initWithFrame:[scviewitem bounds]];
   sccontroller = [[SCController alloc] init];
@@ -72,7 +72,7 @@
 
 // ---------- IBObjectProtocol -----------
 
-@implementation SCOpenGLView (SC21PaletteInspector)
+@implementation SCOpenGLView (Sc21PaletteInspector)
 
 - (NSString *)inspectorClassName
 {
@@ -81,7 +81,7 @@
 
 @end
 
-@implementation SCView (SC21PaletteInspector)
+@implementation SCView (Sc21PaletteInspector)
 
 - (NSString *)inspectorClassName
 {
@@ -89,7 +89,7 @@
 }
 @end
 
-@implementation SCController (SC21PaletteInspector)
+@implementation SCController (Sc21PaletteInspector)
 
 - (NSString *)inspectorClassName
 {
@@ -108,7 +108,7 @@
 
 @end
 
-@implementation SCExaminerController (SC21PaletteInspector)
+@implementation SCExaminerController (Sc21PaletteInspector)
 
 - (NSString *)inspectorClassName
 {
@@ -146,7 +146,7 @@
 @implementation SCView (IBTest)
 - (void) drawRect:(NSRect) frame
 {
-  NSLog(@"SC21Palette: SCView.drawRect:");
+  NSLog(@"Sc21Palette: SCView.drawRect:");
   [[NSColor blackColor] set];
   NSRectFill(frame);
 

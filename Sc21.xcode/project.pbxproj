@@ -92,7 +92,8 @@
 				E09CFAAE06024B1F0000E227,
 			);
 			isa = PBXVariantGroup;
-			name = SC21Palette.nib;
+			name = Sc21Palette.nib;
+			path = "";
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -108,6 +109,7 @@
 			);
 			isa = PBXVariantGroup;
 			name = SCOpenGLViewInspector.nib;
+			path = "";
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -122,7 +124,7 @@
 			isa = PBXContainerItemProxy;
 			proxyType = 1;
 			remoteGlobalIDString = E0765C5F060223120099F78E;
-			remoteInfo = "SC21 framework";
+			remoteInfo = "Sc21 framework";
 		};
 		E01100AB0605E60300F93EC1 = {
 			isa = PBXTargetDependency;
@@ -243,8 +245,8 @@
 			fileEncoding = 4;
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.c.h;
-			name = SC21_Prefix.pch;
-			path = src/SC21_Prefix.pch;
+			name = Sc21_Prefix.pch;
+			path = src/Sc21_Prefix.pch;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -253,7 +255,7 @@
 			isa = PBXContainerItemProxy;
 			proxyType = 1;
 			remoteGlobalIDString = E0DD072F0654F9CA009C673A;
-			remoteInfo = "SC21 doc";
+			remoteInfo = "Sc21 doc";
 		};
 		E03800C506551033000633F5 = {
 			isa = PBXTargetDependency;
@@ -265,7 +267,7 @@
 			isa = PBXContainerItemProxy;
 			proxyType = 1;
 			remoteGlobalIDString = E0DD073F06550C23009C673A;
-			remoteInfo = "SC21 doc pkg";
+			remoteInfo = "Sc21 doc pkg";
 		};
 		E03800C70655103C000633F5 = {
 			isa = PBXTargetDependency;
@@ -343,7 +345,7 @@
 				E06867B60633FDCA00F702EA,
 			);
 			isa = PBXNativeTarget;
-			name = "SC21 framework pkg";
+			name = "Sc21 framework pkg";
 			productInstallPath = /usr/local/bin;
 			productName = Untitled;
 			productReference = E056E6DA0609F9FE0068145A;
@@ -362,13 +364,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Script: SC21 framework pkg\"\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\n#\U0013touch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit $retval";
+			shellScript = "echo \"Script: Sc21 framework pkg\"\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\n#\U0013touch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit $retval";
 		};
 		E056E6DA0609F9FE0068145A = {
 			explicitFileType = "compiled.mach-o.executable";
 			includeInIndex = 0;
 			isa = PBXFileReference;
-			path = "SC21 framework.pkg";
+			path = "Sc21 framework.pkg";
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -386,7 +388,7 @@
 				E056E6F00609FAB00068145A,
 			);
 			isa = PBXNativeTarget;
-			name = "SC21 dmg";
+			name = "Sc21 dmg";
 			productInstallPath = /usr/local/bin;
 			productName = "Target B";
 			productReference = E056E6ED0609FA880068145A;
@@ -405,13 +407,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "echo \"SC21 dmg script:\"\necho \"  in: $BUILT_PRODUCTS_DIR/$PROJECT_NAME.pkg\"\necho \"  out: $TARGET_BUILD_DIR/$PRODUCT_NAME\"\nset -x\n./packaging/scripts/makesc21dmg.sh -v -c $PROJECT_NAME-0.0.1\nexit 0\n";
+			shellScript = "echo \"Sc21 dmg script:\"\necho \"  in: $BUILT_PRODUCTS_DIR/$PROJECT_NAME.pkg\"\necho \"  out: $TARGET_BUILD_DIR/$PRODUCT_NAME\"\nset -x\n./packaging/scripts/makesc21dmg.sh -v -c $PROJECT_NAME-0.0.1\nexit 0\n";
 		};
 		E056E6ED0609FA880068145A = {
 			explicitFileType = "compiled.mach-o.executable";
 			includeInIndex = 0;
 			isa = PBXFileReference;
-			path = "SC21-0.0.1.dmg";
+			path = "Sc21-0.0.1.dmg";
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -474,8 +476,8 @@
 			fileEncoding = 30;
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.c.h;
-			name = SC21.h;
-			path = src/SC21.h;
+			name = Sc21.h;
+			path = src/Sc21.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -560,9 +562,9 @@
 				E06867B20633FC9E00F702EA,
 			);
 			isa = PBXNativeTarget;
-			name = "SC21 palette pkg";
+			name = "Sc21 palette pkg";
 			productInstallPath = /usr/local/bin;
-			productName = "SC21 palette pkg";
+			productName = "Sc21 palette pkg";
 			productReference = E06867AF0633FC8700F702EA;
 			productType = "com.apple.product-type.tool";
 		};
@@ -579,13 +581,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Script: SC21 palette pkg\"\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\n#touch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit $retval\n";
+			shellScript = "echo \"Script: Sc21 palette pkg\"\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\n#touch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit $retval\n";
 		};
 		E06867AF0633FC8700F702EA = {
 			explicitFileType = "compiled.mach-o.executable";
 			includeInIndex = 0;
 			isa = PBXFileReference;
-			path = "SC21 palette.pkg";
+			path = "Sc21 palette.pkg";
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -594,7 +596,7 @@
 			isa = PBXContainerItemProxy;
 			proxyType = 1;
 			remoteGlobalIDString = E09CFA55060245710000E227;
-			remoteInfo = "SC21 palette";
+			remoteInfo = "Sc21 palette";
 		};
 		E06867B20633FC9E00F702EA = {
 			isa = PBXTargetDependency;
@@ -606,7 +608,7 @@
 			isa = PBXContainerItemProxy;
 			proxyType = 1;
 			remoteGlobalIDString = E0765C5F060223120099F78E;
-			remoteInfo = "SC21 framework";
+			remoteInfo = "Sc21 framework";
 		};
 		E06867B60633FDCA00F702EA = {
 			isa = PBXTargetDependency;
@@ -618,7 +620,7 @@
 			isa = PBXContainerItemProxy;
 			proxyType = 1;
 			remoteGlobalIDString = E0765C5F060223120099F78E;
-			remoteInfo = "SC21 framework";
+			remoteInfo = "Sc21 framework";
 		};
 		E06867BF0634023400F702EA = {
 			isa = PBXTargetDependency;
@@ -652,8 +654,6 @@
 				E09CFD9506024B5B0000E227,
 				E0765C61060223120099F78E,
 				E079476206340BEA006B5824,
-				E0765C62060223120099F78E,
-				E09CFA57060245720000E227,
 			);
 			isa = PBXGroup;
 			refType = 4;
@@ -787,20 +787,20 @@
 				DYLIB_CURRENT_VERSION = 3;
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/SC21_Prefix.pch;
+				GCC_PREFIX_HEADER = src/Sc21_Prefix.pch;
 				INFOPLIST_FILE = Resources/framework/Info.plist;
 				INSTALL_PATH = /Library/Frameworks;
 				INSTALL_ROOT = "$(DSTROOT)/framework";
 				OTHER_LDFLAGS = "-headerpad_max_install_names -seg1addr 0x2f000000";
-				PRODUCT_NAME = SC21;
+				PRODUCT_NAME = Sc21;
 				SC21_VERSION = 0.0.2;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			dependencies = (
 			);
 			isa = PBXNativeTarget;
-			name = "SC21 framework";
-			productName = SC21;
+			name = "Sc21 framework";
+			productName = Sc21;
 			productReference = E0765C60060223120099F78E;
 			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
@@ -809,11 +809,11 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>SC21</string>
+	<string>Sc21</string>
 	<key>CFBundleGetInfoString</key>
 	<string></string>
 	<key>CFBundleIdentifier</key>
-	<string>com.MySoftwareCompany.SC21</string>
+	<string>com.MySoftwareCompany.Sc21</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -833,7 +833,7 @@
 			explicitFileType = wrapper.framework;
 			includeInIndex = 0;
 			isa = PBXFileReference;
-			path = SC21.framework;
+			path = Sc21.framework;
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -857,7 +857,7 @@
 		E0765C62060223120099F78E = {
 			isa = PBXFileReference;
 			lastKnownFileType = text.plist.xml;
-			name = "SC21-framework-Info.plist";
+			name = Info.plist;
 			path = Resources/framework/Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -902,9 +902,9 @@
 				E03800C70655103C000633F5,
 			);
 			isa = PBXNativeTarget;
-			name = "SC21 meta pkg";
+			name = "Sc21 meta pkg";
 			productInstallPath = /usr/local/bin;
-			productName = "SC21 meta pkg";
+			productName = "Sc21 meta pkg";
 			productReference = E079478806341DCE006B5824;
 			productType = "com.apple.product-type.tool";
 		};
@@ -922,13 +922,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Script: SC21.mpkg\"\nmkdir -p $DSTROOT/meta\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\n#touch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit $retval\n";
+			shellScript = "echo \"Script: Sc21.mpkg\"\nmkdir -p $DSTROOT/meta\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\n#touch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit $retval\n";
 		};
 		E079478806341DCE006B5824 = {
 			explicitFileType = "compiled.mach-o.executable";
 			includeInIndex = 0;
 			isa = PBXFileReference;
-			path = SC21.mpkg;
+			path = Sc21.mpkg;
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -937,7 +937,7 @@
 			isa = PBXContainerItemProxy;
 			proxyType = 1;
 			remoteGlobalIDString = E056E6D70609F9FE0068145A;
-			remoteInfo = "SC21 framework pkg";
+			remoteInfo = "Sc21 framework pkg";
 		};
 		E079478B06341DF3006B5824 = {
 			isa = PBXTargetDependency;
@@ -949,18 +949,47 @@
 			isa = PBXContainerItemProxy;
 			proxyType = 1;
 			remoteGlobalIDString = E06867AC0633FC8700F702EA;
-			remoteInfo = "SC21 palette pkg";
+			remoteInfo = "Sc21 palette pkg";
 		};
 		E079478D06341E03006B5824 = {
 			isa = PBXTargetDependency;
 			target = E06867AC0633FC8700F702EA;
 			targetProxy = E079478C06341E03006B5824;
 		};
+		E09A0E0206660511003EE738 = {
+			children = (
+				E09CFA57060245720000E227,
+				E01100A40605E5B200F93EC1,
+				E000678706259B3000F49FCD,
+				E01100A60605E5B800F93EC1,
+				E09CFAA006024AD40000E227,
+				E09CFAA106024AD40000E227,
+				E09CFAA206024AD40000E227,
+				E09C036A06024BEF0000E227,
+				E09CFAA306024AD40000E227,
+			);
+			isa = PBXGroup;
+			name = Palette;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		E09A0E0306660514003EE738 = {
+			children = (
+				E0765C62060223120099F78E,
+				E057B67C0621EA210012C546,
+				E057B6780621BC7F0012C546,
+				E057B67D0621EA210012C546,
+			);
+			isa = PBXGroup;
+			name = Framework;
+			refType = 4;
+			sourceTree = "<group>";
+		};
 		E09C036A06024BEF0000E227 = {
 			isa = PBXFileReference;
-			lastKnownFileType = image.pict;
-			name = SCView.pict;
-			path = Resources/palette/SCView.pict;
+			lastKnownFileType = image.tiff;
+			name = SCView.tiff;
+			path = Resources/palette/SCView.tiff;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -1049,21 +1078,21 @@
 			);
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/SC21_Prefix.pch;
+				GCC_PREFIX_HEADER = src/Sc21_Prefix.pch;
 				INFOPLIST_FILE = Resources/palette/Info.plist;
 				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Palettes";
 				INSTALL_ROOT = "$(DSTROOT)/palette";
 				OTHER_LDFLAGS = "-bundle";
 				PREBINDING = NO;
-				PRODUCT_NAME = SC21;
+				PRODUCT_NAME = Sc21;
 				WRAPPER_EXTENSION = palette;
 			};
 			dependencies = (
 				E01100AB0605E60300F93EC1,
 			);
 			isa = PBXNativeTarget;
-			name = "SC21 palette";
-			productName = SC21;
+			name = "Sc21 palette";
+			productName = Sc21;
 			productReference = E09CFA56060245710000E227;
 			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
@@ -1072,13 +1101,13 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>SC21</string>
+	<string>Sc21</string>
 	<key>CFBundleGetInfoString</key>
 	<string></string>
 	<key>CFBundleIconFile</key>
 	<string></string>
 	<key>CFBundleIdentifier</key>
-	<string>com.MySoftwareCompany.SC21</string>
+	<string>com.MySoftwareCompany.Sc21</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -1098,14 +1127,14 @@
 			explicitFileType = wrapper.cfbundle;
 			includeInIndex = 0;
 			isa = PBXFileReference;
-			path = SC21.palette;
+			path = Sc21.palette;
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		E09CFA57060245720000E227 = {
 			isa = PBXFileReference;
 			lastKnownFileType = text.plist.xml;
-			name = "SC21-palette-Info.plist";
+			name = Info.plist;
 			path = Resources/palette/Info.plist;
 			refType = 4;
 			sourceTree = "<group>";
@@ -1132,8 +1161,8 @@
 			fileEncoding = 30;
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.c.h;
-			name = SC21Palette.h;
-			path = src/SC21Palette.h;
+			name = Sc21Palette.h;
+			path = src/Sc21Palette.h;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -1141,8 +1170,8 @@
 			fileEncoding = 30;
 			isa = PBXFileReference;
 			lastKnownFileType = sourcecode.cpp.objcpp;
-			name = SC21Palette.mm;
-			path = src/SC21Palette.mm;
+			name = Sc21Palette.mm;
+			path = src/Sc21Palette.mm;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -1347,17 +1376,17 @@
 		};
 		E09CFAA006024AD40000E227 = {
 			isa = PBXFileReference;
-			lastKnownFileType = image.png;
-			name = coin.png;
-			path = Resources/palette/coin.png;
+			lastKnownFileType = image.tiff;
+			name = Sc21Palette.tiff;
+			path = Resources/palette/Sc21Palette.tiff;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E09CFAA106024AD40000E227 = {
 			isa = PBXFileReference;
-			lastKnownFileType = image.pict;
-			name = SCController.pict;
-			path = Resources/palette/SCController.pict;
+			lastKnownFileType = image.tiff;
+			name = SCController.tiff;
+			path = Resources/palette/SCController.tiff;
 			refType = 4;
 			sourceTree = "<group>";
 		};
@@ -1414,23 +1443,14 @@
 			isa = PBXFileReference;
 			lastKnownFileType = wrapper.nib;
 			name = English;
-			path = Resources/palette/English.lproj/SC21Palette.nib;
+			path = Resources/palette/English.lproj/Sc21Palette.nib;
 			refType = 4;
 			sourceTree = "<group>";
 		};
 		E09CFAB206024B510000E227 = {
 			children = (
-				E01100A40605E5B200F93EC1,
-				E000678706259B3000F49FCD,
-				E01100A60605E5B800F93EC1,
-				E057B67C0621EA210012C546,
-				E057B6780621BC7F0012C546,
-				E057B67D0621EA210012C546,
-				E09CFAA006024AD40000E227,
-				E09CFAA106024AD40000E227,
-				E09CFAA206024AD40000E227,
-				E09C036A06024BEF0000E227,
-				E09CFAA306024AD40000E227,
+				E09A0E0306660514003EE738,
+				E09A0E0206660511003EE738,
 			);
 			isa = PBXGroup;
 			name = Resources;
@@ -1660,14 +1680,14 @@
 			buildSettings = {
 				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Documentation";
 				INSTALL_ROOT = "$(DSTROOT)/doc";
-				PRODUCT_NAME = SC21;
+				PRODUCT_NAME = Sc21;
 			};
 			dependencies = (
 			);
 			isa = PBXNativeTarget;
-			name = "SC21 doc";
+			name = "Sc21 doc";
 			productInstallPath = /usr/local/bin;
-			productName = "SC21 doc";
+			productName = "Sc21 doc";
 			productReference = E0DD07320654F9CA009C673A;
 			productType = "com.apple.product-type.tool";
 		};
@@ -1682,13 +1702,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Script: SC21 doc\"\nset -x\nbin/autodoc -project src -format html -template doc/HTMLTemplate.html -copyright \"Systems in Motion AS\" -destination $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME -tree -allclasses -force\ncp doc/style.css $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME\ncp doc/index.html $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME\nretval=$?\nexit $retval\n";
+			shellScript = "echo \"Script: Sc21 doc\"\nset -x\nbin/autodoc -project src -format html -template doc/HTMLTemplate.html -copyright \"Systems in Motion AS\" -destination $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME -tree -allclasses -force\ncp doc/style.css $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME\ncp doc/index.html $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME\nretval=$?\nexit $retval\n";
 		};
 		E0DD07320654F9CA009C673A = {
 			explicitFileType = "compiled.mach-o.executable";
 			includeInIndex = 0;
 			isa = PBXFileReference;
-			path = SC21;
+			path = Sc21;
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -1710,9 +1730,9 @@
 				E03800C506551033000633F5,
 			);
 			isa = PBXNativeTarget;
-			name = "SC21 doc pkg";
+			name = "Sc21 doc pkg";
 			productInstallPath = /usr/local/bin;
-			productName = "SC21 doc pkg";
+			productName = "Sc21 doc pkg";
 			productReference = E0DD074206550C23009C673A;
 			productType = "com.apple.product-type.tool";
 		};
@@ -1727,13 +1747,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Script: SC21 DOC pkg\"\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\nexit $retval";
+			shellScript = "echo \"Script: Sc21 DOC pkg\"\nset -x\n$SRCROOT/packaging/scripts/makesc21pkg.sh -v\nretval=$?\nexit $retval";
 		};
 		E0DD074206550C23009C673A = {
 			explicitFileType = "compiled.mach-o.executable";
 			includeInIndex = 0;
 			isa = PBXFileReference;
-			path = "SC21 doc.pkg";
+			path = "Sc21 doc.pkg";
 			refType = 3;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};

@@ -5,13 +5,13 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>SC21</string>
+	<string>Sc21</string>
 	<key>CFBundleGetInfoString</key>
-	<string>Part of SC21 framework, copyright Systems in Motion AS 2003-2004</string>
+	<string>Part of Sc21 framework, copyright Systems in Motion AS 2003-2004</string>
         <key>NSHumanReadableCopyright</key>
 	<string>Copyright Systems in Motion AS 2003-2004</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.coin3d.SC21.palette</string>
+	<string>org.coin3d.Sc21.palette</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
