@@ -36,7 +36,7 @@
 @class SCController;
 @class SCViewP;
 
-@interface SCView : SCOpenGLView  <SCDrawable> 
+@interface SCView : SCOpenGLView  <SCDrawable, NSCoding> 
 /*" NSView : NSResponder : NSObject "*/
 {
  @protected

@@ -30,6 +30,7 @@
 @class SCCoinHandlerP;
 
 @interface SCCoinHandler : SCEventHandler <NSCoding>
+/*" NSObject "*/
 {
  @protected
   SCCoinHandlerP * _sc_coinhandler;

@@ -30,6 +30,7 @@
 @class SCExaminerHandlerP;
 
 @interface SCExaminerHandler : SCEventHandler <NSCoding>
+/*" NSObject "*/
 {
  @protected
   SCExaminerHandlerP * _sc_examinerhandler;

@@ -30,7 +30,8 @@
 @class SCOpenGLPixelFormat;
 @class SCOpenGLViewP;
 
-@interface SCOpenGLView : NSView
+@interface SCOpenGLView : NSView <NSCoding>
+/*" NSResponder : NSObject "*/
 {
  @protected
    SCOpenGLViewP * _sc_openglview;

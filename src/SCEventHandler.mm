@@ -57,7 +57,7 @@
   passed on to the SCController. SCController in turn passes them on
   to its SCEventHandler, who finally handles them. 
 
-  #{Eventhandler Chain}
+  #{Eventhandler chain}
 
   The eventhandler has an outlet !{nextEventHandler}, which can be set to
   another SCEventHandler, thus forming a chain of event handlers: If
@@ -65,7 +65,7 @@
   passed on to the next one, and so on - until the event has either
   been handled or there are no more eventhandlers in the chain. 
 
-  #{Sc21 eventhandler Chain and the Cocoa responder chain}
+  #{Sc21 eventhandler chain and the Cocoa responder chain}
 
   If an event was not handled by the Sc21 eventhandler chain, it is
   sent back to NSView, and thus passed on to Cocoa's responder chain.
