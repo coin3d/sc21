@@ -172,8 +172,16 @@
   
   SCOpenGLPixelFormat * newformat = [[oldformat copy] autorelease];
   [newformat setAttribute:NSOpenGLPFAFullScreen];
+
+  NSScreen * screen = [[view window] screen];
+  CGDirectDisplayID displayid = (CGDirectDisplayID)
+    [[[screen deviceDescription] objectForKey:@"NSScreenNumber"] intValue];
+  CGOpenGLDisplayMask displaymask = CGDisplayIDToOpenGLDisplayMask(displayid);
+
   [newformat setAttribute:NSOpenGLPFAScreenMask
-             toValue:CGDisplayIDToOpenGLDisplayMask(kCGDirectMainDisplay)];
+             toValue:displaymask];
+//   [newformat setAttribute:NSOpenGLPFAScreenMask
+//              toValue:CGDisplayIDToOpenGLDisplayMask(kCGDirectMainDisplay)];
   NSOpenGLPixelFormat *newnsformat = [newformat pixelFormat];
 
   NSLog([SCDebug infoForSCOpenGLPixelFormat:newformat 
@@ -193,10 +201,6 @@
   }
   
   // Take control of the display where we're about to go FullScreen.
-//   err = CGCaptureAllDisplays();
-//   newnsformat
-//   CGDirectDisplayID displayid = CGOpenGLDisplayMaskToDisplayID(mask);
-  CGDirectDisplayID displayid = CGMainDisplayID();
   err = CGDisplayCapture(displayid);
   if (err != CGDisplayNoErr) {
     [_fullScreenContext release];
@@ -302,7 +306,6 @@
   
   // Release control of the display.
   CGDisplayRelease(displayid);
-//   CGReleaseAllDisplays();
   
   [coincontroller setDrawable:view];
   gra->setCacheContext(oldcachecontext);
