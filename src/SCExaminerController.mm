@@ -141,7 +141,7 @@
 
 - (void)viewAll
 {
-  [self->scenegraph viewAll]; // SCViewAllNotification sent by _camera
+  [self->sceneGraph viewAll]; // SCViewAllNotification sent by _camera
 }
 
 #if 0

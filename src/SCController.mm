@@ -196,40 +196,6 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   return self;
 }
 
-- (void)awakeFromNib
-{
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(_SC_sceneGraphChanged:)
-                                               name:SCRootChangedNotification
-                                             object:scenegraph];  
- 
-  // Re-register for eventhandling-related notifications.
-  // Note that this is only necessary since our setEventHander: method is
-  // not called from IB. 
-  // FIXME: Remove this when we found out how to make IB use our accessor. 
-  
-  [self->eventHandler drawableDidChange:[NSNotification 
-    notificationWithName:SCDrawableChangedNotification object:self]];
-  
-  [self->eventHandler sceneGraphDidChange:[NSNotification
-    notificationWithName:SCSceneGraphChangedNotification object:self]];
-  
-  [[NSNotificationCenter defaultCenter] addObserver:self->eventHandler 
-                                           selector:@selector(drawableDidChange:) 
-                                               name:SCDrawableChangedNotification 
-                                             object:self];
-  
-  [[NSNotificationCenter defaultCenter] addObserver:self->eventHandler 
-                                           selector:@selector(sceneGraphDidChange:) 
-                                               name:SCSceneGraphChangedNotification 
-                                             object:self];
-  
-  [[NSNotificationCenter defaultCenter] addObserver:self 
-                                           selector:@selector(_SC_cursorDidChange:) 
-                                               name:SCCursorChangedNotification 
-                                             object:self->eventHandler];
-}
-
 - (void)dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -255,7 +221,7 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
   // alpha values? Alternatively, add SbColor4f support the necessary
   // places in Coin (kintel 20040502)
   [self _SC_viewSizeChanged];
-  [[self->scenegraph camera] updateClippingPlanes:self->scenegraph];
+  [[self->sceneGraph camera] updateClippingPlanes:self->sceneGraph];
   SELF->scenemanager->render(SELF->clearcolorbuffer, SELF->cleardepthbuffer);
   [self->eventHandler update];
 }
@@ -369,7 +335,6 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 
 - (void)setEventHandler:(id<SCEventHandling>)handler
 {
-  NSLog(@"SCController setEventHandler: called");
   if (handler != self->eventHandler) {
     [self->eventHandler release];
     self->eventHandler = [handler retain];
@@ -447,26 +412,27 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
 "*/
 - (void)setSceneGraph:(SCSceneGraph *)sg
 {
-  if (sg == scenegraph) { return; }
+  if (sg == sceneGraph) { return; }
   
-  [scenegraph release];
-  scenegraph = [sg retain];
+  [sceneGraph release];
+  sceneGraph = [sg retain];
    
   // Don't waste cycles by animating an empty scene
-  if (scenegraph == nil) { [self stopTimers]; }
+  if (sceneGraph == nil) { [self stopTimers]; }
   else { [self startTimers]; }
   
   // We want to be informed whenever the scenegraph's root node changes.
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(_SC_sceneGraphChanged:)
                                                name:SCRootChangedNotification
-                                             object:scenegraph];
+                                             object:sceneGraph];
+  
   [self _SC_sceneGraphChanged:nil];
 }
 
 - (SCSceneGraph *)sceneGraph 
 { 
-  return scenegraph; 
+  return sceneGraph; 
 }
 
 /*"
@@ -493,9 +459,9 @@ NSString * SCIdleNotification = @"_SC_IdleNotification";
     glra->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
     glra->setTransparencyType(SoGLRenderAction::DELAYED_BLEND);
     SELF->scenemanager->activate();
-    if (scenegraph) {
-      SELF->scenemanager->setSceneGraph([scenegraph superSceneGraph]);
-      [scenegraph setSceneManager:SELF->scenemanager];
+    if (sceneGraph) {
+      SELF->scenemanager->setSceneGraph([sceneGraph superSceneGraph]);
+      [sceneGraph setSceneManager:SELF->scenemanager];
     }
   }
 }
@@ -665,7 +631,7 @@ Returns the receiver's delegate.
 {
   [SCController initCoin];
   SELF = [[SCControllerP alloc] init];
-  scenegraph = nil;
+  sceneGraph = nil;
   
   SELF->eventconverter = [[SCEventConverter alloc] init];
 //   SELF->redrawselector = @selector(display);
@@ -779,9 +745,9 @@ Returns the receiver's delegate.
   // SoSceneManager must know the the SCSceneGraph's superscenegraph,
   // which might have changed in SCSceneGraph's setRoot: 
   
-  [scenegraph setSceneManager:SELF->scenemanager];
+  [sceneGraph setSceneManager:SELF->scenemanager];
   if (SELF->scenemanager) {
-    SELF->scenemanager->setSceneGraph([scenegraph superSceneGraph]);
+    SELF->scenemanager->setSceneGraph([sceneGraph superSceneGraph]);
   }
     
   [[NSNotificationCenter defaultCenter]
