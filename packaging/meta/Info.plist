@@ -19,7 +19,7 @@
         <key>IFPkgFlagBackgroundScaling</key>
         <string>proportional</string>
 	<key>IFPkgFlagComponentDirectory</key>
-	<string>..</string>
+	<string>../packages</string>
 	<key>IFPkgFlagPackageList</key>
 	<array>
 		<dict>
