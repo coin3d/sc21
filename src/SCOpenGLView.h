@@ -27,7 +27,6 @@
 
 #import <AppKit/NSView.h>
 
-@class NSOpenGLContext;
 @class SCOpenGLPixelFormat;
 @class SCOpenGLViewP;
 

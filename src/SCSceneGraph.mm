@@ -25,8 +25,9 @@
  |                                                                 |
  * =============================================================== */
 
-#import "SCSceneGraph.h"
-#import "SCSceneGraphP.h"
+#import <Sc21/SCSceneGraph.h>
+#import <Sc21/SCCamera.h>
+#import "SCUtil.h"
 
 #import <Inventor/SoDB.h>
 #import <Inventor/SoInput.h>
@@ -38,7 +39,7 @@
 #import <Inventor/nodes/SoDirectionalLight.h>
 #import <Inventor/VRMLnodes/SoVRMLGroup.h>
 
-#import "SCUtil.h"
+#import "SCSceneGraphP.h"
 
 @implementation SCSceneGraphP
 @end

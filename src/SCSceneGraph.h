@@ -26,14 +26,13 @@
  * =============================================================== */
 
 #import <Cocoa/Cocoa.h>
-#import <Sc21/SCCamera.h>
 #import <Sc21/SCDefines.h>
-#import <Inventor/SoSceneManager.h>
-#import <Inventor/nodes/SoCamera.h>
-#import <Inventor/nodes/SoGroup.h>
-#import <Inventor/nodes/SoDirectionalLight.h>
 
+@class SCCamera;
 @class SCSceneGraphP;
+class SoSceneManager;
+class SoGroup;
+class SoDirectionalLight;
 
 @interface SCSceneGraph : NSObject <NSCoding>
 {
@@ -76,12 +75,6 @@
   /*" Delegate handling. "*/
 - (void)setDelegate:(id)delegate;
 - (id)delegate;
-
-// FIXME: implement copy/paste - initWithPasteboard &c.
-// FIXME: add +(id) scenegraphNamed:(NSString *) name which will look for 
-//        named nodes in all .iv/.wrl files in the app bundle
-// FIXME: add "lazy initialization methods (initByReferencing[File|URL])
-// FIXME: Provide incremental loading delegate method (as in NSImage)?
 
 @end
 

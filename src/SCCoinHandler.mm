@@ -30,6 +30,8 @@
 #import "SCEventConverter.h"
 #import "SCUtil.h"
 
+#import <Inventor/SoSceneManager.h>
+
 @interface SCCoinHandlerP : NSObject
 {
   SCEventConverter * eventconverter;

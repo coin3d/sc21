@@ -25,7 +25,7 @@
  |                                                                 |
  * =============================================================== */
 
-#import <AppKit/NSOpenGL.h>
+#import <Cocoa/Cocoa.h>
 
 @class SCOpenGLPixelFormatP;
 

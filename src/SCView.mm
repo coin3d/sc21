@@ -31,6 +31,7 @@
 #import "SCOpenGLViewP.h"
 #import <Inventor/actions/SoGLRenderAction.h>
 #import <Inventor/misc/SoContextHandler.h>
+#import <Inventor/SoSceneManager.h>
 
 @interface SCViewP : NSObject
 {
@@ -186,7 +187,6 @@ Sets the controller to newcontroller. newcontroller is retained.
   "*/
 - (void)reshape
 {
-//   [self->controller viewSizeChanged];
   if ([[self openGLContext] view] == self) [[self openGLContext] update];
 }
 

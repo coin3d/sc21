@@ -26,12 +26,11 @@
  * =============================================================== */
 
 #import <Cocoa/Cocoa.h>
-#import <OpenGL/gl.h>
-#import <Sc21/SCDrawable.h>
 #import <Sc21/SCOpenGLView.h>
-#import <Sc21/SCOpenGLPixelFormat.h>
+#import <Sc21/SCDrawable.h>
 
 @class SCController;
+@class SCOpenGLPixelFormat;
 @class SCViewP;
 
 @interface SCView : SCOpenGLView  <SCDrawable> /*" NSView : NSResponder : NSObject "*/
@@ -49,10 +48,6 @@
 /*" Accessors methods. "*/
 - (SCController *)controller;
 - (void)setController:(SCController *)controller;
-
-/*" Drawing and resizing. "*/
-- (void)drawRect:(NSRect)rect;
-- (void)reshape;
 
 /*" Event handling. "*/
 - (void)mouseMoved:(NSEvent *)event;

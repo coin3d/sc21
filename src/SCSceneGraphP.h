@@ -27,6 +27,10 @@
 
 #import <Sc21/SCSceneGraph.h>
 
+class SoLight;
+class SoCamera;
+class SoInput;
+
 @interface SCSceneGraphP : NSObject
 {
   SCCamera * camera;
