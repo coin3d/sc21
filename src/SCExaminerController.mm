@@ -77,14 +77,10 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
     the screen. Holding down the ALT key and clicking with the left
     mouse button is interpreted the same way.
 
-    Pressing the cursor keys on the keyboard will move the camera in a
-    similar way.
-
     Clicking into the scene with the right mouse button brings up a
     context menu. Holding down th CTRL key and clicking with the left
     mouse button is interpreted the same way.
 
-    
     For general information, see also the SCController documentation.
     
     Note that for displaying the rendered scene, you need an SCView.
@@ -340,40 +336,6 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
       action = @selector(performZoomWithDelta:);
       handled = YES;
       break;
-
-    case NSKeyDown:
-      unsigned int i;
-      NSString * characters;
-      characters = [event charactersIgnoringModifiers];
-      for (i = 0; i < [characters length]; i++) {
-        unichar c = [characters characterAtIndex:i];
-        switch (c) {
-          case NSUpArrowFunctionKey:
-            v = [NSValue valueWithPoint:NSMakePoint(0.0, 0.01)];
-            action = @selector(performMove:);
-            handled = YES;
-            break;
-          case NSDownArrowFunctionKey:
-            v = [NSValue valueWithPoint:NSMakePoint(0.0, -0.01)];
-            action = @selector(performMove:);
-            handled = YES;
-            break;
-          case NSLeftArrowFunctionKey:
-            v = [NSValue valueWithPoint:NSMakePoint(-0.01, 0.0)];
-            action = @selector(performMove:);
-            handled = YES;
-            break;
-          case NSRightArrowFunctionKey:
-            v = [NSValue valueWithPoint:NSMakePoint(0.01, 0.0)];
-            action = @selector(performMove:);
-            handled = YES;
-            break;
-          default:
-            action = @selector(ignore:);
-            break;
-        }
-      }
-      break;
       
     default:
       action = @selector(ignore:);
@@ -457,30 +419,9 @@ NSString * SCHeadlightChangedNotification =@"SCHeadlightChangedNotification";
   q = [[_mouselog objectAtIndex:1] pointValue];
   qn = [view normalizePoint:q];
   pn = [view normalizePoint:p];
-  [_camera zoom:(qn.y - pn.y)];
+  [_camera zoom:(pn.y - qn.y)];
 }
 
-/*" Move the camera in the plane that is parallel to the screen. "*/
-
-- (void) performMove:(NSValue *) v
-{
-  // FIXME: This is the same as pan -> Reuse code!
-  // kyrah 20030515
-
-  NSPoint p = [v pointValue];
-  SbLine line;
-  SbVec3f curplanepoint, prevplanepoint;
-  SoCamera * cam = [_camera soCamera];
-  if (cam == NULL) return;
-  
-  SbViewVolume vv = cam->getViewVolume([view aspectRatio]);
-  SbPlane panplane = vv.getPlane(cam->focalDistance.getValue());
-  vv.projectPointToLine(SbVec2f(p.x, p.y) + SbVec2f(0.5, 0.5f), line);
-  panplane.intersect(line, curplanepoint);
-  vv.projectPointToLine(SbVec2f(0.5f, 0.5f), line);
-  panplane.intersect(line, prevplanepoint);
-  cam->position = cam->position.getValue() - (curplanepoint - prevplanepoint);
-}
 
 /*" Does nothing. Used as default action for unhandled events. "*/
 
