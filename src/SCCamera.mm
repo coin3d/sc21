@@ -49,21 +49,25 @@
 
 @implementation SCCamera
 
-/*" An SCCamera is an abstraction for either an !{SoPerspectiveCamera} or
-    an !{SoOrthographicCamera}, enabling easy conversion between these
-    the two camera types. It also offers methods for moving and 
-    reorienting the camera.
- "*/
+/*" 
+  An SCCamera encapsulates an !{SoCamera}. The purpose of this
+  abstraction is to provide convenience methods for moving and
+  reorienting the camera and for adjusting the clipping planes to
+  optimize z buffer usage.
+"*/
 
 #pragma mark --- initialization and cleanup ---
 
-/*" Initializes a newly allocated SCCamera.
-    Note that you must set the actual camera in the Coin scenegraph explicitly 
-    using the #setSoCamera: method before being able to use the camera.
+/*" 
+  Initializes a newly allocated SCCamera.
 
-    This method is the designated initializer for the SCCamera
-    class. Returns !{self}.
- "*/
+  This method is the designated initializer for the SCCamera
+  class. Returns !{self}.
+
+  You will probably never need to use this method, since
+  !{SCSceneGraph} automatically creates and initializes an SCCamera,
+  which never changes.
+"*/
 
 - (id)init
 {
@@ -110,11 +114,12 @@
 }
 
 /*"
-Translate camera relative to its own coordinate system.
+  Translate camera relative to its own coordinate system.
  
- In its own coordinate system, the camera is pointing in negative
- Z direction with the Y axis being up.
- "*/
+  In its own coordinate system, the camera is pointing in negative Z
+  direction with the Y axis being up.
+"*/
+
 - (void)translate:(SbVec3f)v
 {
   if (SELF->camera == NULL) return;
@@ -126,7 +131,9 @@ Translate camera relative to its own coordinate system.
   pos = SELF->camera->position.getValue();
 }
 
-/*" Zooms in if delta is > 0, else zooms out. "*/
+/*" 
+  Zoom in if delta is > 0, else zoom out. 
+"*/
 
 - (void)zoom:(float)delta
 {
@@ -134,14 +141,15 @@ Translate camera relative to its own coordinate system.
   
   float factor = float(exp(delta * 20.0f)); // Multiply by 20 to get a good
                                             // sensitivity.
-  SoType t = SELF->camera->getTypeId();
 
-  if ([self type] == SCCameraOrthographic) {
+  SoType cameratype = SELF->camera->getTypeId();
+
+  if (cameratype.isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
 
     SoOrthographicCamera * orthocam = (SoOrthographicCamera *)SELF->camera;
     orthocam->height = orthocam->height.getValue() * factor;
     
-  } else if ([self type] == SCCameraPerspective) {
+  } else if (cameratype.isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
     
     const float oldfocaldist = SELF->camera->focalDistance.getValue();
     const float newfocaldist = oldfocaldist * factor;
@@ -167,7 +175,9 @@ Translate camera relative to its own coordinate system.
   }
 }
 
-/*" Positions the camera so that we can see the whole scene. "*/
+/*" 
+  Position the camera so that we can see the whole scene. 
+"*/
 
 - (void)viewAll:(SCSceneGraph *)sceneGraph
 {
@@ -176,14 +186,10 @@ Translate camera relative to its own coordinate system.
   if (SELF->camera == NULL || sceneGraph == nil) return;
   SELF->camera->viewAll((SoNode *)([sceneGraph root]),
                         [sceneGraph _SC_sceneManager]->getViewportRegion());
-
-  [[NSNotificationCenter defaultCenter]
-    postNotificationName:SCViewAllNotification object:self];
 }
 
 
 /*" 
-
   Position the near and far clipping planes just in front of and
   behind the scene's bounding box to optimize depth buffer usage.
 
@@ -315,36 +321,8 @@ Translate camera relative to its own coordinate system.
 
 
 /*" 
-  Returns !{SCCameraPerspective} if the camera is a perspective camera,
-  !{SCCameraOrthographic} if the camera is an orthographic camera, and
-  !{SCUnknown} otherwise.
-"*/
-
-// FIXME: Since we don't do type conversion anymore, maybe we should
-// remove the SCCameraType concept altogether. kyrah 20040801.
-
-- (SCCameraType)type
-{
-  SoCamera * cam = SELF->camera;
-  
-  if (cam == NULL) { return SCCameraNone; }
-  
-  if (cam->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
-    return SCCameraPerspective;
-  } 
-  
-  if (cam->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
-    return SCCameraOrthographic;
-  } 
-  
-  return SCCameraUnknown;
-}
-
-
-/*" Sets the actual camera in the Coin scene graph to newcamera. 
-    
-    Note that newcamera is expected to be part of the scenegraph
-    already; it is not inserted into it. 
+  Sets the actual Coin camera  to newcamera. 
+  Note that newcamera is expected to be part of the scenegraph.
 "*/
 
 - (void)setSoCamera:(SoCamera *)newcamera 
@@ -356,7 +334,7 @@ Translate camera relative to its own coordinate system.
 }
 
 
-/*" Returns the actual camera used in the scene graph. "*/
+/*" Returns the actual Coin camera. "*/
 
 - (SoCamera *)soCamera
 {
@@ -422,7 +400,9 @@ Translate camera relative to its own coordinate system.
   GLint depthbits[1];
   const float autoclipvalue = 0.6f;
  
-  if ([self type] == SCCameraOrthographic) return near;
+  SoType cameratype = SELF->camera->getTypeId();
+  if (cameratype.isDerivedFrom(SoOrthographicCamera::getClassTypeId()))
+    return near;
 
   // For simplicity, we are using what SoQt calls the
   // VARIABLE_NEAR_PLANE strategy.
@@ -468,7 +448,6 @@ Translate camera relative to its own coordinate system.
   still like to be able to get up extremely close on details in some
   parts of the scene.
 "*/
-
 
 - (void)adjustNearClippingPlane:(float *)near 
                  farClippingPlane:(float *)far
