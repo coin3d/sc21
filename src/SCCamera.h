@@ -74,6 +74,3 @@
   farClippingPlane:(float *)far;
 @end
 
-/*" Posted whenever the camera type has been changed.
-"*/
-SC21_EXTERN NSString * SCCameraTypeChangedNotification;
