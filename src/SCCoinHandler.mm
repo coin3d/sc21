@@ -50,8 +50,8 @@
 @implementation SCCoinHandler
 
 /*" SCCoinHandler takes incoming NSEvents, converts them to SoEvents,
-    and sends them to the Coin scenegraph. SCCoinHandler does nothing 
-    on !{update:}
+    and sends them to the Coin scenegraph. SCCoinHandler does not
+    implement !{update:}
 "*/
 
 - (id)init

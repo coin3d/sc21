@@ -35,9 +35,44 @@
 #define PRIVATE(p) ((p)->_sc_eventhandler)
 #define SELF PRIVATE(self)
 
-// FIXME: Document.
-
 @implementation SCEventHandler
+
+/*" 
+
+  SCEventHandler is the superclass for Sc21 eventhandlers. It takes
+  care of managing the eventhandler chain. When writing your own
+  eventhandler, it should be derived from this class and override
+  !{controller:handleEvent:} (and potentially !{update:}).
+
+  #{Sc21 eventhandling overview}
+
+  The Sc21 eventhandling system takes a different approach than
+  Cocoa. In Cocoa, events are handled in the view - so to do your own
+  eventhandling, you have to subclass NSView and override a method for
+  each event type you are interested in (!{mouseUp:},
+  !{rightMouseDown:} etc). In Sc21, events received by the SCView are
+  passed on to the SCController. SCController in turn passes them on
+  to its SCEventHandler, who finally handles them. 
+
+  #{Eventhandler Chain}
+
+  The eventhandler has an outlet !{nextEventHandler}, which can be set to
+  another SCEventHandler, thus forming a chain of event handlers: If
+  an event is not handled by the first event handler, it will be
+  passed on to the next one, and so on - until the event has either
+  been handled or there are no more eventhandlers in the chain. 
+
+  #{Sc21 eventhandler Chain and the Cocoa responder chain}
+
+  If an event was not handled by the Sc21 eventhandler chain, it is
+  sent back to NSView, and thus passed on to Cocoa's responder chain.
+  To prevent unhandled events from being sent down the Cocoa responder
+  chain, subclass SCEventHandler and implement
+  !{controller:handleEvent:} to just return !{YES} in all cases. Then
+  place this eventhandler at the end of your eventhandler chain.
+
+"*/
+
 
 - (id)init
 {
@@ -46,21 +81,46 @@
   return self;
 }
 
+/*" 
+  Sets the next eventhandler in the eventhandler chain to nexthandler. 
+
+  Usually you do not need to override this method.
+"*/
+
 - (void)setNextEventHandler:(SCEventHandler *)nexthandler
 {
   self->nextEventHandler = nexthandler;
 }
+
+/*" 
+  Returns the next eventhandler in the eventhandler chain. 
+
+  Usually you do not need to override this method.
+"*/
 
 - (SCEventHandler *)nextEventHandler
 {
   return self->nextEventHandler;
 }
 
+/*" 
+  Handle the NSEvent event. The controller argument is sent to allow
+  subclasses to access the current camera, scenegraph, etc.
+
+  The default implementation does nothing and returns NO.
+ "*/
+
 - (BOOL)controller:(SCController *)controller handleEvent:(NSEvent *)event
 {
-  return YES;
+  return NO;
 }
 
+/*" 
+  Post-render callback that allows you to do continuous animation
+  (such as needed when simulating a fly mode). 
+
+  The default implementation does nothing and returns NO.
+"*/
 - (void)update:(SCController *)controller
 {
 }

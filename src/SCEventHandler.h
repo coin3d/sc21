@@ -39,16 +39,21 @@
   IBOutlet SCEventHandler * nextEventHandler;
 }
 
+/*" Actual event handling "*/
+- (BOOL)controller:(SCController *)controller handleEvent:(NSEvent *)event;
+
+/*" Support for continuous animation "*/
+- (void)update:(SCController *)controller;
+
+/*" Managing the eventhandler chain "*/
 - (void)setNextEventHandler:(SCEventHandler *)nexthandler;
 - (SCEventHandler *)nextEventHandler;
-- (BOOL)controller:(SCController *)controller handleEvent:(NSEvent *)event;
-- (void)update:(SCController *)controller;
 
 @end
 
 /*"
-  Posted when the an event handling has changed the cursor.
+  Posted when the cursor has been changed by an event handler. 
   This is automatically picked up by the SCView currently viewing the
   scene graph.
-  "*/
+"*/
 SC21_EXTERN NSString * SCCursorChangedNotification;
