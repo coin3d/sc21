@@ -48,6 +48,7 @@ class SoSceneManager;
 // (kintel 20040502)
 @interface SCController : NSResponder
 {
+  id _delegate;
   id _redrawhandler;
   SEL _redrawsel;
   NSInvocation * _redrawinv;
@@ -67,6 +68,9 @@ class SoSceneManager;
 /*" Initializing an SCController "*/
 - (id)init;
 - (void)commonInit;
+
+- (void)setDelegate:(id)newdelegate;
+- (id)delegate;
 
 /*" Coin rendering and related functionality "*/
 
@@ -104,6 +108,9 @@ class SoSceneManager;
 - (void)startTimers;
 - (void)stopTimers;
 
+@end
+
+@interface NSObject (SCControllerDelegate)
 @end
 
 // --------------------- Notifications ------------------------

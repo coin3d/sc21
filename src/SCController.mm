@@ -209,6 +209,17 @@ NSString * _SCIdleNotification = @"_SCIdleNotification";
   [super dealloc];
 }
 
+- (void)setDelegate:(id)newdelegate
+{
+  NSLog(@"SCController.setDelegate");
+  _delegate = newdelegate;
+}
+
+- (id)delegate
+{
+  return _delegate;
+}
+
 // ------------------- rendering and scene management ---------------------
 
 /*!
