@@ -213,21 +213,37 @@ static struct key1map KeyMap[] = {
       se = smbe;
       break;
       
+    case NSRightMouseDown:
+      smbe = new SoMouseButtonEvent;
+      smbe->setButton(SoMouseButtonEvent::BUTTON2);
+      smbe->setState(SoButtonEvent::DOWN);
+      se = smbe;
+      break;
+      
+    case NSRightMouseUp:
+      smbe = new SoMouseButtonEvent;
+      smbe->setButton(SoMouseButtonEvent::BUTTON2);
+      smbe->setState(SoButtonEvent::UP);
+      se = smbe;
+      break;
+
     case NSOtherMouseDown:
       smbe = new SoMouseButtonEvent;
       smbe->setButton(SoMouseButtonEvent::BUTTON3);
       smbe->setState(SoButtonEvent::DOWN);
       se = smbe;
       break;
-      
+
     case NSOtherMouseUp:
       smbe = new SoMouseButtonEvent;
       smbe->setButton(SoMouseButtonEvent::BUTTON3);
       smbe->setState(SoButtonEvent::UP);
       se = smbe;
-      break;
-      
+      break;      
+
     case NSLeftMouseDragged:
+    case NSRightMouseDragged:
+    case NSOtherMouseDragged:
       sle = new SoLocation2Event;
       se = sle;
       break;
