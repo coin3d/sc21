@@ -42,15 +42,15 @@
   NSLog(@"AppController.applicationDidFinishLaunching");
   NSOpenPanel * panel = [NSOpenPanel openPanel];
   [panel beginSheetForDirectory:nil
-                           file:nil
-                          types:[NSArray arrayWithObjects:@"wrl", @"iv", nil]
-                 modalForWindow:[view window]
-                  modalDelegate:self
-                 didEndSelector:@selector(openPanelDidEnd:returnCode:contextInfo:)
-                    contextInfo:nil];
+         file:nil
+         types:[NSArray arrayWithObjects:@"wrl", @"iv", nil]
+         modalForWindow:[view window]
+         modalDelegate:self
+         didEndSelector:@selector(openPanelDidEnd:returnCode:contextInfo:)
+         contextInfo:nil];
 }
 
-- (void) openPanelDidEnd:(NSOpenPanel*)panel returnCode:(int)rc contextInfo:(void *) ctx
+- (void)openPanelDidEnd:(NSOpenPanel *)panel returnCode:(int)rc contextInfo:(void *)ctx
 {
   if (rc == NSOKButton) {
     NSString * path = [panel filename];
@@ -60,25 +60,25 @@
       in.closeFile();
       if (sg) {
         // Create an new SCExaminerController
-        sccontroller = [[SCExaminerController alloc] init];
+        SCExaminerController * sccontroller = 
+          [[[SCExaminerController alloc] init] autorelease];
         // Create the view<->controller connection
         [sccontroller setView:view];
-        [view setController:sccontroller];
+        [view setController:sccontroller]; // retained by view
         // Set the scene graph
         [sccontroller setSceneGraph:sg];
-        // The magic activate
-        [sccontroller activate];
         [view reshape]; // FIXME: This must be called in order to set the correct initial viewport.
                         // Should be done somewhere in SC21 instead (kintel 20031112)
         [sccontroller viewAll];
 
         // Add a "View All" context menu item.
-        NSMenuItem * item = [[NSMenuItem alloc] init];
+        [[sccontroller view] setMenu:[[[NSMenu alloc] initWithTitle:@"Context menu"] autorelease]];
+        
+        NSMenuItem * item = [[[NSMenuItem alloc] init] autorelease];
         [item setTitle:@"View All"];
         [item setTarget:sccontroller];
         [item setAction:@selector(viewAll)];
         [[[sccontroller view] menu] addItem:item];
-        [item release]; // retained by menu
       }
     }
   }
