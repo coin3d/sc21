@@ -71,13 +71,6 @@
     double dt = [event timestamp] - [oldmouselog timestamp:2];
     rot.invert();
     
-    //FIXME: debug
-    SbVec3f axis;
-    float radians;
-    rot.getValue(axis, radians);
-    SC21_DEBUG(@"  axis: (%.2f %.2f %.2f) radians: %.2f", 
-          axis[0], axis[1], axis[2], radians);
-
     rot.scaleAngle(float(0.2 / dt));
     _spinrotation->setValue(rot.getValue());
 
