@@ -166,10 +166,7 @@
 {
   // FIXME: Shouldn't we inform Coin about the context change?
   // Test with textures and display lists! kyrah 20030616
-  
-  NSLog(@"Recreating openGL context with %d bit color and %d bit depth",
-        _colorbits, _depthbits);
-  
+    
   BOOL success = FALSE;
   NSOpenGLPixelFormat * pixelFormat;
   NSOpenGLContext * newContext;
