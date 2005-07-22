@@ -74,8 +74,9 @@ redraw_cb(void * user, SoSceneManager *)
 {
   SCController * controller = (SCController *)user; 
   [controller _SC_redraw];
-  // Note that calling [PRIVATE(controller)->drawable display] 
-  // is not possible here since drawable is protected.
+  // Note that calling [PRIVATE(controller)->drawable display], like 
+  // we used to, is not possible since PRIVATE(controller) expands to 
+  // controller->_sc_controller, which is protected.
 }
 
 
