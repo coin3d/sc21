@@ -29,6 +29,7 @@
 
 @interface SCControllerP : NSObject
 {
+ @public
   id<SCDrawable> drawable;
   NSTimer * timerqueuetimer;
   SoSceneManager * scenemanager;
@@ -48,4 +49,5 @@
 - (void)_SC_startTimers;
 - (void)_SC_stopTimers;
 - (void)_SC_maintainTimers;
+- (void)_SC_redraw;
 @end  

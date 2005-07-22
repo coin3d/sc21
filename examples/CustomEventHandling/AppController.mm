@@ -68,6 +68,7 @@ void selection_cb(void *userdata, SoPath *path)
 - (void) dealloc
 {
   delete ra; 
+  [super dealloc];
 }
 
 // Toggles whether events should be interpreted as viewer events, i.e.

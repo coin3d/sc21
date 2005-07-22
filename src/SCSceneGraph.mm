@@ -151,6 +151,7 @@ void error_cb(const class SoError * error, void * data)
   [self setRoot:NULL];
   [SELF->camera release];
   [SELF release];
+  [super dealloc];
 }
 
 #pragma mark --- file system access --- 

@@ -25,7 +25,7 @@
  |                                                                 |
  * =============================================================== */
 
-#import <Sc21/SCCoinhandler.h>
+#import <Sc21/SCCoinHandler.h>
 #import <Sc21/SCController.h>
 
 #import "SCCoinHandlerP.h"

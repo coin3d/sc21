@@ -31,6 +31,7 @@
 
 @interface SCCameraP : NSObject
 {
+ @public
   SoCamera * camera;
   SoGetBoundingBoxAction * autoclipboxaction;
   BOOL updatesclippingplanes;

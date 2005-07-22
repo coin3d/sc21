@@ -76,6 +76,7 @@
 - (void) dealloc
 {
   [img release]; 
+  [super dealloc];
 }
 
 - (void)ok:(id)sender

@@ -29,6 +29,7 @@
 
 @interface SCViewP : NSObject
 {
+ @public
   NSCursor * cursor;
 }
 @end

@@ -33,6 +33,7 @@ class SoInput;
 
 @interface SCSceneGraphP : NSObject
 {
+ @public
   SCCamera * camera;
   SoGroup * scenegraph;	 
   SoGroup * superscenegraph;

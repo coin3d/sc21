@@ -77,6 +77,7 @@
 {
   [SELF->emulator release];
   [SELF release];
+  [super dealloc];
 }
 
 

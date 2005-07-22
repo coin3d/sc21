@@ -73,7 +73,9 @@ static void
 redraw_cb(void * user, SoSceneManager *)
 {
   SCController * controller = (SCController *)user; 
-  [PRIVATE(controller)->drawable display];
+  [controller _SC_redraw];
+  // Note that calling [PRIVATE(controller)->drawable display] 
+  // is not possible here since drawable is protected.
 }
 
 
@@ -671,6 +673,16 @@ sensorqueuechanged_cb(void * data)
   else {
     [self _SC_stopTimers];
   }
+}
+
+
+/* 
+  Redraw the scene by calling the drawable's display method. 
+*/
+
+- (void)_SC_redraw
+{
+  [SELF->drawable display];
 }
 
 @end

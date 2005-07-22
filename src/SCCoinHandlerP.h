@@ -25,12 +25,13 @@
 |                                                                 |
 * =============================================================== */
 
-#import <Sc21/SCCoinhandler.h>
+#import <Sc21/SCCoinHandler.h>
 
 #import "SCEventConverter.h"
 
 @interface SCCoinHandlerP : NSObject
 {
+ @public
   SCEventConverter * eventconverter;
 }
 @end
