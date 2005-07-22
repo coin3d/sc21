@@ -29,6 +29,14 @@
 #import <Sc21/SCController.h>
 #import "AppController.h"
 
+// For some reason, the setAppleMenu: is AWOL in Mac OS 10.4,
+// but it has not been officially dropped, and NSApplication still
+// responds to the message. 
+
+@interface NSApplication(NSAppleMenu)
+- (void)setAppleMenu:(NSMenu *)menu;
+@end
+
 int main(int argc, const char *argv[])
 {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
