@@ -1,0 +1,6 @@
+New in Sc21 v1.0.1 (2005-07-27):
+* support for Mac OS 10.4 "Tiger"
+* bugfixes:
+  - redesign internal timer handling to avoid issues when having 
+    more than one SCController in an application
+
