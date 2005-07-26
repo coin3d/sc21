@@ -17,12 +17,21 @@ CoinTools. (You only need the CoinTools if you want to use SoQt.) You
 can select which components to install by choosing "Customize" in the
 installer's "Installation Type" screen.
 
-Note that the Coin and Sc21 frameworks have been built with gcc 3.3,
-meaning they should not be used in combination with any earlier
-version of gcc. The frameworks are, however, built with
+Note that the Coin and Sc21 frameworks for Mac OS 10.4 "Tiger"
+have been built with gcc 4, so they should not be used in
+combination with any earlier version of gcc. However, the
+frameworks are built with MACOS_DEPLOYMENT_TARGET=10.3, so you can
+deploy your Sc21 applications both on Tiger or the latest version
+of Panther (10.3.9) .
+
+The Coin and Sc21 frameworks for Mac OS 10.3 "Panther" have been
+built with gcc 3.3, and should not be used in combination with any
+earlier version of gcc. They are built with
 MACOS_DEPLOYMENT_TARGET=10.2 to be deployable on 10.2 (Jaguar) or
-later versions of Mac OS X. Please make sure to also read the relevant
-FAQ entry at http://www.coin3d.org/mac/faq.html#gcc_abi
+10.3 (Tiger).
+
+Please make sure to also read the relevant FAQ entries on the
+Coin/Mac website. 
 
 Check out the following resources for information on how to get
 started using Coin and Sc21:
