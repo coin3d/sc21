@@ -31,7 +31,6 @@
 {
  @public
   id<SCDrawable> drawable;
-  NSTimer * timerqueuetimer;
   SoSceneManager * scenemanager;
   BOOL hascreatedscenemanager;
   BOOL clearcolorbuffer;
@@ -39,15 +38,15 @@
 }
 @end
 
+
 @interface SCController (InternalAPI)
 - (void)_SC_commonInit;
-- (void)_SC_timerQueueTimerFired:(NSTimer *)timer;
-- (void)_SC_idle:(NSNotification *)notification;
-- (void)_SC_sensorQueueChanged;
 - (void)_SC_cursorDidChange:(NSNotification *)notification;
 - (void)_SC_sceneGraphChanged:(id)sender;
-- (void)_SC_startTimers;
-- (void)_SC_stopTimers;
-- (void)_SC_maintainTimers;
 - (void)_SC_redraw;
++ (void)_SC_timerQueueTimerFired:(NSTimer *)timer;
++ (void)_SC_idle:(NSNotification *)notification;
++ (void)_SC_sensorQueueChanged;
++ (void)_SC_startTimers;
++ (void)_SC_stopTimers;
 @end  

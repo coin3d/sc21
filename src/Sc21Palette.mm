@@ -162,11 +162,11 @@
 // are in test interface mode.
 
 @interface SCController (IBTest)
-- (void)_SC_idle:(NSNotification *)n;
++ (void)_SC_idle:(NSNotification *)n;
 @end
 
 @implementation SCController (IBTest)
-- (void)_SC_idle:(NSNotification *)n
++ (void)_SC_idle:(NSNotification *)n
 {
   if ([NSApp isTestingInterface]) {
     SoDB::getSensorManager()->processTimerQueue();

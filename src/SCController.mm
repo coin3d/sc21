@@ -38,6 +38,7 @@
 #import <Inventor/SoDB.h>
 #import <Inventor/SoInteraction.h>
 #import <Inventor/actions/SoGLRenderAction.h>
+#import <Inventor/C/tidbits.h>
 #import <Inventor/elements/SoGLCacheContextElement.h>
 #import <Inventor/nodekits/SoNodeKit.h>
 
@@ -57,6 +58,16 @@
 */
 
 NSString * SCIdleNotification = @"_SC_IdleNotification";
+
+
+#pragma mark --- static variables ---
+
+/* 
+  "global" NSTimer instance used for sensor queue handling. 
+  This really should be a "class variable" in SCController, but
+  there is no syntax for this in Objective-C.
+*/ 
+static NSTimer * _sc_timerqueuetimer;
 
 
 #pragma mark --- callback functions ---
@@ -93,10 +104,22 @@ redraw_cb(void * user, SoSceneManager *)
 static void
 sensorqueuechanged_cb(void * data)
 {
-  SCController * controller = (SCController *)data;
-  [controller _SC_sensorQueueChanged];
+  [SCController _SC_sensorQueueChanged];
 }
 
+
+/*
+  Cleanup. This function will be called automatically when the application 
+  programmer invokes SoDB::finish(). (A good place to do this is the 
+  applicationWillTerminate: delegate function. Usually you do not need to 
+  do this though - see the API documentation for SoDB::finish() for more 
+  information.)
+*/
+
+static void atexit_cb(void)
+{
+  [SCController _SC_stopTimers]; 
+}
 
 @implementation SCController
 
@@ -144,6 +167,12 @@ sensorqueuechanged_cb(void * data)
     SoDB::init();
     SoInteraction::init();
     SoNodeKit::init();
+    [SCController _SC_startTimers]; 
+#if 0
+    // FIXME: Disabled until state of this function in Coin-2
+    // has been resolved. 20050726 kyrah.
+    cc_coin_atexit(atexit_cb);
+#endif
     initialized = YES;
   }
 }
@@ -280,7 +309,6 @@ sensorqueuechanged_cb(void * data)
 {
   SELF->drawable = newdrawable;
 
-  [self _SC_maintainTimers];
   if (SELF->drawable) {
     [self sceneManager]->scheduleRedraw();
   }
@@ -321,7 +349,6 @@ sensorqueuechanged_cb(void * data)
      name:SCRootChangedNotification
      object:sceneGraph];
   }
-  [self _SC_maintainTimers]; 
   [self _SC_sceneGraphChanged:nil];
 }
 
@@ -411,7 +438,7 @@ sensorqueuechanged_cb(void * data)
                                               green:sbcolor[1] 
                                                blue:sbcolor[2] 
                                               alpha:0.0f];
-  return color;	
+  return color;  
 }
 
 /*"
@@ -518,39 +545,33 @@ sensorqueuechanged_cb(void * data)
   SELF->hascreatedscenemanager = YES;
 
   [[NSNotificationCenter defaultCenter] 
-    addObserver:self
+    addObserver:[SCController class]
     selector:@selector(_SC_idle:) name:SCIdleNotification
-    object:self];
+    object:[SCController class]];
 
-  [self _SC_sensorQueueChanged];
+  [SCController _SC_sensorQueueChanged];
 }
 
 /*
   Timer callback function: process the timer sensor queue.
 */
 
-- (void)_SC_timerQueueTimerFired:(NSTimer *)t
++ (void)_SC_timerQueueTimerFired:(NSTimer *)t
 {
-  // SC21_DEBUG(@"timerQueueTimerFired:");
-  // The timer might fire after the view has
-  // already been destroyed...
-  if (!SELF->drawable) return; 
+  // SC21_DEBUG(@"_SC_timerQueueTimerFired:");
   SoDB::getSensorManager()->processTimerQueue();
-  [self _SC_sensorQueueChanged];
+  [SCController _SC_sensorQueueChanged];
 }
 
 /* 
   Process delay queue when application is idle. 
 */
 
-- (void)_SC_idle:(NSNotification *)notification
++ (void)_SC_idle:(NSNotification *)notification
 {
-  // We might get the notification after the view has
-  // already been destroyed...
-  if (!SELF->drawable) return; 
   SoDB::getSensorManager()->processTimerQueue();
   SoDB::getSensorManager()->processDelayQueue(TRUE);
-  [self _SC_sensorQueueChanged];
+  [SCController _SC_sensorQueueChanged];
 }
 
 /*
@@ -563,29 +584,25 @@ sensorqueuechanged_cb(void * data)
 
 // FIXME: Rename to something more appropriate... ;)
 
-- (void)_SC_sensorQueueChanged
++ (void)_SC_sensorQueueChanged
 {
-  // SC21_DEBUG(@"_sensorQueueChanged");
-  // Create timers at first invocation
-  if (!SELF->timerqueuetimer) [self _SC_startTimers];
-
   SoSensorManager * sm = SoDB::getSensorManager();
 
   // If there are any pending SoTimerQueueSensors
   SbTime nexttimeout;
   if (sm->isTimerSensorPending(nexttimeout)) {
     SbTime interval = nexttimeout - SbTime::getTimeOfDay();
-    [SELF->timerqueuetimer 
+    [_sc_timerqueuetimer 
       setFireDate:[NSDate dateWithTimeIntervalSinceNow:interval.getValue()]];
   } else {
-    [SELF->timerqueuetimer _SC_deactivate];
+    [_sc_timerqueuetimer _SC_deactivate];
   }
   
   // If there are any pending SoDelayQueueSensors
   if (sm->isDelaySensorPending()) {
     [[NSNotificationQueue defaultQueue]
       enqueueNotification:
-        [NSNotification notificationWithName:SCIdleNotification object:self]
+        [NSNotification notificationWithName:SCIdleNotification object:[SCController class]]
       postingStyle:NSPostWhenIdle 
       coalesceMask:NSNotificationCoalescingOnName
       forModes: [NSArray arrayWithObjects: 
@@ -625,24 +642,22 @@ sensorqueuechanged_cb(void * data)
 }
 
 
-- (void)_SC_startTimers
++ (void)_SC_startTimers
 {
-  if (SELF->timerqueuetimer || !SELF->drawable) return;
-  
   // The timer will be controller from _SC_sensorQueueChanged,
   // so don't activate it yet.
-  SELF->timerqueuetimer = [NSTimer scheduledTimerWithTimeInterval:1000
+  _sc_timerqueuetimer = [NSTimer scheduledTimerWithTimeInterval:1000
                                    target:self
                                    selector:@selector(_SC_timerQueueTimerFired:)
                                    userInfo:nil 
                                    repeats:YES];
-  [SELF->timerqueuetimer _SC_deactivate];
-  [[NSRunLoop currentRunLoop] addTimer:SELF->timerqueuetimer 
+  [_sc_timerqueuetimer _SC_deactivate];
+  [[NSRunLoop currentRunLoop] addTimer:_sc_timerqueuetimer 
                                forMode:NSModalPanelRunLoopMode];
-  [[NSRunLoop currentRunLoop] addTimer:SELF->timerqueuetimer 
+  [[NSRunLoop currentRunLoop] addTimer:_sc_timerqueuetimer 
                                forMode:NSEventTrackingRunLoopMode];
   
-  SoDB::getSensorManager()->setChangedCallback(sensorqueuechanged_cb, self);
+  SoDB::getSensorManager()->setChangedCallback(sensorqueuechanged_cb, NULL);
 }
 
 
@@ -651,29 +666,17 @@ sensorqueuechanged_cb(void * data)
   processing.
 */
 
-- (void)_SC_stopTimers
++ (void)_SC_stopTimers
 {
-  if (SELF->timerqueuetimer && [SELF->timerqueuetimer isValid]) {
-    [SELF->timerqueuetimer invalidate];
-    SELF->timerqueuetimer = nil;
+  if (_sc_timerqueuetimer && [_sc_timerqueuetimer isValid]) {
+    // Note that the NSRunLoop will remove and release the timer, 
+    // so we should not release the timer ourselves here. 
+    [_sc_timerqueuetimer invalidate];
+    _sc_timerqueuetimer = nil;
   }
-  SoDB::getSensorManager()->setChangedCallback(NULL, NULL);
-}
-
-
-/* 
-  Starts or stops timers based on internal state (both a scenegraph and
-  a drawable must be present to warrant having timers running).
-*/
-
-- (void)_SC_maintainTimers
-{
-  if (self->sceneGraph && SELF->drawable) {
-    [self _SC_startTimers];
-  }
-  else {
-    [self _SC_stopTimers];
-  }
+  // At this point, all Coin resources have been cleaned up already, so 
+  // don't try to set the SoSensorManager's changedCallback back to 
+  // (NULL, NULL) here!
 }
 
 
