@@ -28,8 +28,8 @@ xcodebuild -project Sc21.xcode -target "Sc21 framework" -buildstyle
 debug
 
 
-To build installer packages, Xcode 1.5 is required. The other targets
-should be buildable with any Xcode version.
+To build installer packages, Xcode 1.5 or later is required. The other 
+targets should be buildable with any Xcode version.
 
 Contact
 -------
