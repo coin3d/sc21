@@ -7,9 +7,9 @@
 	<key>CFBundleExecutable</key>
 	<string>Sc21</string>
 	<key>CFBundleGetInfoString</key>
-	<string>Part of Sc21 framework, copyright Systems in Motion AS 2003-2004</string>
+	<string>Part of Sc21 framework, copyright Systems in Motion AS 2003-2005</string>
         <key>NSHumanReadableCopyright</key>
-	<string>Copyright Systems in Motion AS 2003-2004</string>
+	<string>Copyright Systems in Motion AS 2003-2005</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.coin3d.Sc21.palette</string>
 	<key>CFBundleInfoDictionaryVersion</key>
