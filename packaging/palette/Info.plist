@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleGetInfoString</key>
-	<string>Sc21 1.0.0</string>
+	<string>Sc21 1.0.1</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.coin3d.sc21.palette.pkg</string>
 	<key>CFBundleName</key>
 	<string>Sc21 palette</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.0</string>
+	<string>1.0.1</string>
 	<key>IFMajorVersion</key>
 	<integer>0</integer>
 	<key>IFMinorVersion</key>

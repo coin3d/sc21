@@ -9,8 +9,8 @@ The installer includes:
     - the Sc21 Interface Builder palette, 
     - the Sc21 documentation
     - the Sc21 examples
-    - Coin-2.3.0 
-    - the CoinTools for Coin-2.3.0
+    - the latest version of Coin
+    - the CoinTools 
 
 By default, all of these will be installed, except for the
 CoinTools. (You only need the CoinTools if you want to use SoQt.) You
@@ -18,11 +18,9 @@ can select which components to install by choosing "Customize" in the
 installer's "Installation Type" screen.
 
 Note that the Coin and Sc21 frameworks for Mac OS 10.4 "Tiger"
-have been built with gcc 4, so they should not be used in
-combination with any earlier version of gcc. However, the
-frameworks are built with MACOS_DEPLOYMENT_TARGET=10.3, so you can
-deploy your Sc21 applications both on Tiger or the latest version
-of Panther (10.3.9) .
+have been built with gcc 4, so they should not be used in combination 
+with any earlier version of gcc. However, you can deploy your Sc21 
+applications both on Tiger or the latest version of Panther (10.3.9).
 
 The Coin and Sc21 frameworks for Mac OS 10.3 "Panther" have been
 built with gcc 3.3, and should not be used in combination with any
@@ -47,3 +45,4 @@ If you have any questions or comments, please feel free to get in
 touch with us at <coin-support@coin3d.org>.
 
 Enjoy!
+
