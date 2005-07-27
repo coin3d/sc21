@@ -1,0 +1,172 @@
+ChangeLog
+=========
+
+This is the ChangeLog file for the Sc21 module.  This file is supposed to
+be automatically generated every night.  Entries are in reversed chronological
+order.  Check also out the following ChangeLog files:
+
+
+See http://www.red-bean.com/~kfogel/cvs2cl.shtml for information about the
+cvs2cl script used to generate this file.
+
+============================================================================
+
+2005-07-27 22:15  kyrah
+
+	* Resources/framework/Info.plist,
+	Resources/framework/version.plist, Resources/palette/Info.plist,
+	Resources/palette/palette.table, Resources/palette/version.plist,
+	Resources/palette/English.lproj/Sc21Palette.nib/info.nib,
+	Resources/palette/English.lproj/Sc21Palette.nib/keyedobjects.nib,
+	packaging/examples/Info.plist:
+	
+	Bumped version number to 1.0.1
+
+2005-07-27 21:39  kyrah
+
+	* packaging/: SC21-README.txt, doc/Description.plist,
+	doc/Info.plist, examples/Description.plist,
+	framework/Description.plist, framework/Info.plist,
+	meta/Description.plist, meta/Info.plist,
+	meta/Resources/Welcome.rtf, palette/Description.plist,
+	palette/Info.plist:
+	
+	Version update.
+
+2005-07-27 15:53  kyrah
+
+	* doc/HTMLTemplate.html, doc/index.html, packaging/meta/Info.plist,
+	packaging/scripts/copyexamples.sh,
+	packaging/scripts/makesc21pkg.sh:
+	
+	Copyright update.
+
+2005-07-27 01:19  kyrah
+
+	* NEWS.txt:
+	
+	News for 1.0.1 release.
+
+2005-07-27 01:18  kyrah
+
+	* README.txt:
+	
+	Doc update.
+
+2005-07-27 00:58  kyrah
+
+	* packaging/SC21-README.txt:
+	
+	Doc update.
+
+2005-07-27 00:26  kyrah
+
+	* Resources/framework/Info.plist, Resources/palette/Info.plist,
+	examples/CustomEventHandling/AppController.h,
+	examples/CustomEventHandling/AppController.mm,
+	examples/CustomEventHandling/MyEventHandler.h,
+	examples/CustomEventHandling/MyEventHandler.mm,
+	examples/CustomEventHandling/main.m,
+	examples/NoNibViewer/AppController.h,
+	examples/NoNibViewer/AppController.mm,
+	examples/NoNibViewer/main.mm,
+	examples/Sc21FullscreenViewer/AppController.h,
+	examples/Sc21FullscreenViewer/AppController.mm,
+	examples/Sc21FullscreenViewer/main.m,
+	examples/Sc21Viewer/AppController.h,
+	examples/Sc21Viewer/AppController.mm, examples/Sc21Viewer/main.m,
+	examples/Viewtiful/AppController.h,
+	examples/Viewtiful/AppController.mm,
+	examples/Viewtiful/MyDocument.h, examples/Viewtiful/MyDocument.mm,
+	examples/Viewtiful/MyWindowController.h,
+	examples/Viewtiful/MyWindowController.mm,
+	examples/Viewtiful/main.mm, packaging/doc/Resources/Welcome.rtf,
+	packaging/examples/Resources/Welcome.rtf,
+	packaging/framework/Resources/Welcome.rtf,
+	packaging/meta/Resources/Welcome.rtf,
+	packaging/palette/Resources/Welcome.rtf, src/SCCamera.h,
+	src/SCCamera.mm, src/SCCameraP.h, src/SCCoinHandler.h,
+	src/SCCoinHandler.mm, src/SCCoinHandlerP.h, src/SCController.h,
+	src/SCController.mm, src/SCControllerInspector.h,
+	src/SCControllerInspector.mm, src/SCControllerP.h, src/SCCursors.h,
+	src/SCCursors.m, src/SCDebug.h, src/SCDebug.mm, src/SCDefines.h,
+	src/SCDrawable.h, src/SCDrawable.mdoc, src/SCEmulator.h,
+	src/SCEmulator.m, src/SCEventConverter.h, src/SCEventConverter.mm,
+	src/SCEventHandler.h, src/SCEventHandler.mm, src/SCEventHandlerP.h,
+	src/SCExaminerHandler.h, src/SCExaminerHandler.mm,
+	src/SCExaminerHandlerInspector.h, src/SCExaminerHandlerInspector.m,
+	src/SCExaminerHandlerP.h, src/SCExterns.m, src/SCInternalDefines.h,
+	src/SCMode.h, src/SCMode.m, src/SCMouseLog.h, src/SCMouseLog.m,
+	src/SCOpenGLPixelFormat.h, src/SCOpenGLPixelFormat.m,
+	src/SCOpenGLView.h, src/SCOpenGLView.m,
+	src/SCOpenGLViewInspector.h, src/SCOpenGLViewInspector.mm,
+	src/SCOpenGLViewP.h, src/SCPanMode.h, src/SCPanMode.mm,
+	src/SCRotateMode.h, src/SCRotateMode.mm, src/SCSceneGraph.h,
+	src/SCSceneGraph.mm, src/SCSceneGraphInspector.h,
+	src/SCSceneGraphInspector.mm, src/SCSceneGraphP.h,
+	src/SCSpinMode.h, src/SCSpinMode.mm, src/SCTimer.h, src/SCTimer.m,
+	src/SCUtil.h, src/SCView.h, src/SCView.mm, src/SCViewP.h,
+	src/SCZoomMode.h, src/SCZoomMode.mm, src/Sc21.h, src/Sc21Palette.h,
+	src/Sc21Palette.mm:
+	
+	Update copyright information.
+
+2005-07-26 17:51  kyrah
+
+	* src/: SCController.mm, SCControllerP.h, Sc21Palette.mm:
+	
+	Changed internal design to use static timers, to avoid potential
+	issues related to global SoSensorManager instance. This also
+	removes the need for the _SC_maintainTimers function.
+
+2005-07-22 18:15  kyrah
+
+	* src/SCController.mm:
+	
+	Doc fix.
+
+2005-07-22 17:56  kyrah
+
+	* examples/NoNibViewer/main.mm:
+	
+	Get rid of warning by adding setAppleMenu: category. Probably a bug
+	in Mac OS 10.4.
+
+2005-07-22 17:47  kyrah
+
+	* examples/CustomEventHandling/AppController.mm, src/SCCameraP.h,
+	src/SCCoinHandler.mm, src/SCCoinHandlerP.h, src/SCController.mm,
+	src/SCControllerP.h, src/SCExaminerHandler.mm,
+	src/SCExaminerHandlerInspector.m, src/SCExaminerHandlerP.h,
+	src/SCSceneGraph.mm, src/SCSceneGraphP.h, src/SCViewP.h:
+	
+	Various fixes for Mac OS 10.4 "Tiger".
+
+2004-10-05 14:12  kintel
+
+	* BUGS.txt:
+	
+	new item
+
+2004-09-28 17:22  kyrah
+
+	* THANKS.txt:
+	
+	Added Geoff (sorry I forgot'cha in the first place... :))
+
+2004-09-20 15:08  kyrah
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Current version should be 6.1, not 7, until first API change.
+
+2004-09-20 15:02  kyrah
+
+	* Sc21.xcode/project.pbxproj:
+	
+	And off we go to 1.0.1a...
+
+============================================================================
+
+See ChangeLog.v1.0.0 for change history before Sc21-1.0.0.
+

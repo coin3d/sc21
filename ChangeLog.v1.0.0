@@ -1,0 +1,5423 @@
+ChangeLog
+=========
+
+This is the ChangeLog file for the Sc21 module.  This file is supposed to
+be automatically generated every night.  Entries are in reversed chronological
+order.  Check also out the following ChangeLog files:
+
+
+See http://www.red-bean.com/~kfogel/cvs2cl.shtml for information about the
+cvs2cl script used to generate this file.
+
+============================================================================
+
+2004-09-20 01:40  kyrah
+
+	* Resources/framework/Info.plist,
+	Resources/framework/version.plist, Resources/palette/Info.plist,
+	Resources/palette/palette.table, Resources/palette/version.plist,
+	Sc21.xcode/project.pbxproj, packaging/doc/Description.plist,
+	packaging/doc/Info.plist, packaging/examples/Description.plist,
+	packaging/examples/Info.plist,
+	packaging/framework/Description.plist,
+	packaging/framework/Info.plist, packaging/meta/Description.plist,
+	packaging/meta/Info.plist, packaging/palette/Description.plist,
+	packaging/palette/Info.plist, src/SCDefines.h:
+	
+	Bumped version number to 1.0.0.
+
+2004-09-20 01:22  kyrah
+
+	* .cvsignore, examples/.cvsignore,
+	examples/CustomEventHandling/.cvsignore,
+	examples/CustomEventHandling/CustomEventHandling.xcode/.cvsignore,
+	examples/CustomEventHandling/English.lproj/.cvsignore:
+	
+	Ignore some more temporary files.
+
+2004-09-20 00:56  kyrah
+
+	* Resources/palette/English.lproj/Sc21Palette.nib/: classes.nib,
+	info.nib, keyedobjects.nib:
+	
+	Reimported public headers.
+
+2004-09-20 00:49  kyrah
+
+	* packaging/: doc/Resources/License.rtf, doc/Resources/Welcome.rtf,
+	examples/Resources/License.rtf, examples/Resources/Welcome.rtf,
+	framework/Resources/License.rtf, framework/Resources/Welcome.rtf,
+	meta/Resources/License.rtf, meta/Resources/Welcome.rtf,
+	palette/Resources/License.rtf, palette/Resources/Welcome.rtf:
+	
+	Use nicer font.
+
+2004-09-20 00:06  kyrah
+
+	* packaging/meta/Resources/Welcome.rtf:
+	
+	Updated welcome file.
+
+2004-09-19 23:58  kintel
+
+	* BUGS.txt:
+	
+	New item 002: window shadow problem
+
+2004-09-19 23:49  kintel
+
+	* examples/Sc21FullscreenViewer/AppController.mm:
+	
+	Select a nicer fullscreen context to avoid resource issues on older
+	machines
+
+2004-09-19 22:40  kyrah
+
+	* src/Sc21.h:
+	
+	Include all public header files.
+
+2004-09-19 22:26  kyrah
+
+	* src/SCExaminerHandlerInspector.m:
+	
+	Replaced NSLog by SC21_DEBUG calls.
+
+2004-09-19 22:19  kyrah
+
+	* src/SCController.mm:
+	
+	Removed unused debug output.
+
+2004-09-19 21:45  kintel
+
+	* README.txt:
+	
+	Added note about Xcode compatibility
+
+2004-09-17 23:24  kyrah
+
+	* packaging/: doc/Resources/License.rtf,
+	examples/Resources/License.rtf, framework/Resources/License.rtf,
+	meta/Resources/License.rtf, palette/Resources/License.rtf:
+	
+	Updated License.rtf files for installer packages.
+
+2004-09-17 23:04  kyrah
+
+	* packaging/: doc/Resources/Welcome.rtf,
+	examples/Resources/Welcome.rtf, framework/Resources/Welcome.rtf,
+	meta/Resources/Welcome.rtf, palette/Resources/Welcome.rtf:
+	
+	Updated Welcome.rtf files for installer packages.
+
+2004-09-17 22:32  kyrah
+
+	* src/SCView.mm:
+	
+	Declare private isInInterfaceBuilder method to kill compiler
+	warning.
+
+2004-09-17 19:34  kintel
+
+	* Resources/framework/Info.plist,
+	Resources/framework/version.plist, Resources/palette/Info.plist,
+	Resources/palette/palette.table, Resources/palette/version.plist,
+	Sc21.xcode/project.pbxproj, packaging/doc/Description.plist,
+	packaging/doc/Info.plist, packaging/examples/Description.plist,
+	packaging/examples/Info.plist,
+	packaging/framework/Description.plist,
+	packaging/framework/Info.plist, packaging/meta/Description.plist,
+	packaging/meta/Info.plist, packaging/palette/Description.plist,
+	packaging/palette/Info.plist, src/SCDefines.h:
+	
+	Bumped to version 5 = 0.9.2 (aka. Release Candidate 2)
+
+2004-09-17 18:53  kyrah
+
+	* examples/CustomEventHandling/AppController.mm:
+	
+	Bugfix: we have to ask the eventhandler, not the coinhandler, if it
+	can toggleModes.
+
+2004-09-17 18:48  kyrah
+
+	* src/SCSceneGraph.mm:
+	
+	Very minor reformatting (I find it more readable, but feel free to
+	revert.)
+
+2004-09-17 18:29  kyrah
+
+	* src/SCSceneGraph.mm:
+	
+	Doc update.
+
+2004-09-17 18:16  kintel
+
+	* src/SCSceneGraph.mm:
+	
+	Bugfix. We must set SELF->scenegraph before posting any
+	notifications
+
+2004-09-17 18:09  kintel
+
+	* src/SCSceneGraph.mm:
+	
+	Cleanup of setRoot: to resolve memory management bugs and
+	(hopefully) clarify the code a bit
+
+2004-09-17 18:08  kyrah
+
+	* examples/CustomEventHandling/: AppController.h, AppController.mm,
+	English.lproj/MainMenu.nib/classes.nib,
+	English.lproj/MainMenu.nib/info.nib,
+	English.lproj/MainMenu.nib/keyedobjects.nib:
+	
+	Use pan = middle button and zoom = right button.
+	
+	Added textbox explaining that you can use command-click to send
+	event to the scenegraph while examining. (And removed text
+	displaying the filename - the file is now displayed as window
+	title.)
+
+2004-09-17 17:54  kyrah
+
+	* examples/Sc21FullscreenViewer/English.lproj/MainMenu.nib/:
+	info.nib, keyedobjects.nib:
+	
+	Use middle button = pan and right button = zoom.
+
+2004-09-17 17:28  kyrah
+
+	* examples/Sc21Viewer/English.lproj/MainMenu.nib/: info.nib,
+	keyedobjects.nib:
+	
+	Changed keybindings to be middle button = pan and right button =
+	zoom
+
+2004-09-17 17:26  kyrah
+
+	* examples/Sc21Viewer/English.lproj/MainMenu.nib/: info.nib,
+	keyedobjects.nib:
+	
+	examples/Sc21Viewer
+
+2004-09-17 17:18  kyrah
+
+	* src/SCSceneGraph.mm:
+	
+	C++ doesn't like calling methods on NULL pointers... when will I
+	ever learn.
+
+2004-09-17 17:13  kyrah
+
+	* src/SCSceneGraph.mm:
+	
+	Refcounting quick fix.
+
+2004-09-17 17:04  kyrah
+
+	* src/SCSceneGraph.mm:
+	
+	Doc update.
+
+2004-09-17 16:55  kyrah
+
+	* src/SCSceneGraph.mm:
+	
+	Doc update.
+
+2004-09-17 16:22  kintel
+
+	*
+	examples/Sc21FullscreenViewer/Sc21FullscreenViewer.xcode/project.pb
+	xproj:
+	
+	Link against OpenGL.framework since we use CGL directly
+
+2004-09-17 16:06  kintel
+
+	* packaging/scripts/copyexamples.sh:
+	
+	Correctly set permissions when installing
+
+2004-09-17 15:27  kyrah
+
+	* examples/CustomEventHandling/AppController.h,
+	examples/CustomEventHandling/AppController.mm,
+	examples/CustomEventHandling/English.lproj/MainMenu.nib/classes.nib
+	, examples/CustomEventHandling/English.lproj/MainMenu.nib/info.nib,
+	examples/CustomEventHandling/English.lproj/MainMenu.nib/keyedobject
+	s.nib, src/SCSceneGraph.h, src/SCSceneGraph.mm:
+	
+	Changed superscenegraph creation scheme yet again:
+	
+	De-coupled the shouldCreateDefaultSuperSceneGraph and
+	createSuperSceneGraph: delegate methods. The
+	shouldCreateDefaultSuperSceneGraph method turns creation of the
+	*internal* superscenegraph on and off, and has no effect on the
+	createSuperSceneGraph: method. The createSuperSceneGraph: method is
+	always called to give the delegate the chance to do its own
+	superscenegraph addition/processing. Depending on whether an
+	internal superscenegraph has been added, createSuperSceneGraph:
+	will be called either with the original root or with the root of
+	the internal superscenegraph.
+	
+	This fixes a bug in the CustomEventHandler example, where we just
+	simply always added a light and camera (which was bogus and led to
+	problems with files that already contained a camera; we would have
+	had to copy SCSceneGraph's logic for determining whether or not we
+	should add a camera, but that sucks, too).
+	
+	This was probably the longest log message I have ever written.
+
+2004-09-17 15:08  kyrah
+
+	* examples/Sc21Viewer/AppController.mm:
+	
+	SCCouldNotReadSceneNotification renamed to SCReadErrorNotification
+
+2004-09-17 14:07  kyrah
+
+	* src/SCSceneGraph.mm:
+	
+	Remove pointless ranting.
+
+2004-09-17 13:55  kyrah
+
+	* src/: SCExterns.m, SCSceneGraph.h, SCSceneGraph.mm:
+	
+	Renamed SCCouldNotReadSceneNotification to SCReadErrorNotification.
+	
+	Updated documentation to reflect the fact that a read error does
+	not necessarily mean a read-file failure.
+
+2004-09-17 13:23  kyrah
+
+	* src/SCPanMode.mm:
+	
+	Fixed crash when trying to pan while no scene is loaded: Check if
+	SCCamera exists before trying to access SoCamera instance.
+
+2004-09-17 12:57  kyrah
+
+	* src/SCExaminerHandler.mm:
+	
+	Fixed recently introduced bug: When mouse button emulation was on,
+	the actual right or middle clicks were ignored.
+
+2004-09-17 12:40  kyrah
+
+	* examples/CustomEventHandling/AppController.mm:
+	
+	Killed compiler warning.
+
+2004-09-17 11:30  kintel
+
+	* examples/: README.txt, Models/README.txt:
+	
+	Minor updates
+
+2004-09-17 11:29  kintel
+
+	* packaging/meta/Info.plist:
+	
+	Deselect CoinTools by default
+
+2004-09-17 11:11  kyrah
+
+	* packaging/SC21-README.txt:
+	
+	Update.
+
+2004-09-17 10:50  kyrah
+
+	* LICENSE, LICENSE.txt:
+	
+	Renamed LICENSE to LICENSE.txt for double-click-ability.
+
+2004-09-17 10:49  kyrah
+
+	* THANKS:
+	
+	Renamed THANKS to THANKS.txt for double-click-ability.
+
+2004-09-17 10:45  kyrah
+
+	* THANKS.txt:
+	
+	Renamed THANKS to THANKS.txt for double-click-ability.
+
+2004-09-17 10:43  kyrah
+
+	* README, README.txt:
+	
+	Renamed README to README.txt. Update.
+
+2004-09-17 10:13  kyrah
+
+	* BUGS.txt:
+	
+	Added summary of offscreen rendering issues.
+
+2004-09-17 09:55  kyrah
+
+	* src/: SCCoinHandler.h, SCEventHandler.mm, SCExaminerHandler.h,
+	SCOpenGLView.h, SCView.h:
+	
+	Doc fixes: Always show full inheritance hierarchy and protocol
+	conformance.
+
+2004-09-17 09:39  kyrah
+
+	* src/SCDebug.h:
+	
+	Doc fix.
+
+2004-09-17 09:39  kyrah
+
+	* doc/index.html:
+	
+	Flag introduction as being non-local link
+
+2004-09-17 00:56  kyrah
+
+	* src/SCExaminerHandler.mm:
+	
+	Removed debugging output.
+
+2004-09-17 00:27  kintel
+
+	* packaging/meta/Info.plist:
+	
+	Added missing Sc21 doc.pkg
+
+2004-09-16 23:59  kintel
+
+	* packaging/scripts/copyexamples.sh:
+	
+	Removed old source files
+
+2004-09-16 23:51  kyrah
+
+	* src/SCViewP.h:
+	
+	Added private header file for SCView Cheshire pussycat.
+
+2004-09-16 23:46  kyrah
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Added private header file for SCView.  Move NSTimer extensions into
+	own files.
+
+2004-09-16 23:44  kyrah
+
+	* src/: SCController.h, SCController.mm, SCCursors.m, SCDebug.h,
+	SCDebug.mm, SCEventHandler.h, SCEventHandler.mm, SCEventHandlerP.h,
+	SCExaminerHandler.h, SCExaminerHandler.mm, SCExaminerHandlerP.h,
+	SCSceneGraph.h, SCUtil.h, SCView.h, SCView.mm:
+	
+	Removed unnecessary header includes. Cosmetics.
+
+2004-09-16 23:14  kintel
+
+	* Resources/framework/Info.plist, Resources/palette/Info.plist,
+	Resources/palette/palette.table, packaging/doc/Description.plist,
+	packaging/doc/Info.plist, packaging/examples/Description.plist,
+	packaging/examples/Info.plist,
+	packaging/framework/Description.plist,
+	packaging/framework/Info.plist, packaging/meta/Description.plist,
+	packaging/meta/Info.plist, packaging/palette/Description.plist,
+	packaging/palette/Info.plist, src/SCDefines.h:
+	
+	Release Candidate: Bumped version to 0.9.1
+
+2004-09-16 23:14  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Release Candidate: Bumped version to 4 and removed obsolete version
+	settings
+
+2004-09-16 23:08  kintel
+
+	* src/: SCExaminerHandler.mm, SCExaminerHandlerInspector.m:
+	
+	Killed warning
+
+2004-09-16 23:06  kintel
+
+	* Resources/: framework/version.plist, palette/version.plist:
+	
+	version files for the installer
+
+2004-09-16 22:42  kyrah
+
+	* src/: SCCamera.h, SCCamera.mm, SCCameraP.h, SCCoinHandler.mm,
+	SCCoinHandlerP.h, SCController.h, SCController.mm, SCControllerP.h,
+	SCExaminerHandlerInspector.h, SCExaminerHandlerInspector.m,
+	SCSceneGraph.h, SCSceneGraph.mm:
+	
+	Removed unnecessary includes. Cosmetics.
+
+2004-09-16 22:33  kyrah
+
+	* src/: SCController.mm, SCTimer.h, SCTimer.m:
+	
+	Put NSTimer extensions into separate source files.
+
+2004-09-16 22:17  kyrah
+
+	* Sc21.xcode/project.pbxproj, src/SCCoinHandler.h,
+	src/SCCoinHandler.mm:
+	
+	Added private header file for SCCoinHandler to be consistent.
+
+2004-09-16 21:14  kyrah
+
+	* THANKS:
+	
+	Added Tamer for many a nightsession spent coding together...
+
+2004-09-16 21:09  kyrah
+
+	* src/SCExaminerHandler.mm:
+	
+	Fix ugly bug in logic to determine whether we consider an event
+	handled by us or not. The bug effectively disabled mouse button
+	emulation.
+	
+	Minor reformatting of the code to fit into 80-char terminal. :)
+
+2004-09-16 18:42  kyrah
+
+	* examples/README.txt:
+	
+	Minor update.
+
+2004-09-16 18:41  kyrah
+
+	* examples/Viewtiful/: AppController.h, AppController.mm,
+	MyCoinController.h, MyCoinController.mm, MyDocument.h,
+	MyDocument.mm, MyWindowController.h, MyWindowController.mm,
+	English.lproj/MyDocument.nib/classes.nib,
+	English.lproj/MyDocument.nib/info.nib,
+	English.lproj/MyDocument.nib/keyedobjects.nib,
+	Viewtiful.xcode/project.pbxproj:
+	
+	Update and simplification.
+
+2004-09-16 17:22  kyrah
+
+	* examples/Sc21FullscreenViewer/: AppController.h,
+	AppController.mm, English.lproj/MainMenu.nib/classes.nib,
+	English.lproj/MainMenu.nib/info.nib,
+	English.lproj/MainMenu.nib/keyedobjects.nib:
+	
+	Cleanup and doc update.
+
+2004-09-16 16:29  kyrah
+
+	* examples/: CustomEventHandling/AppController.h,
+	Sc21Viewer/AppController.h:
+	
+	Doc update.
+
+2004-09-16 16:24  kyrah
+
+	* examples/NoNibViewer/AppController.h:
+	
+	Doc update.
+
+2004-09-16 16:21  kintel
+
+	*
+	Resources/palette/English.lproj/SCOpenGLViewInspector.nib/classes.n
+	ib,
+	Resources/palette/English.lproj/SCOpenGLViewInspector.nib/info.nib,
+	Resources/palette/English.lproj/SCOpenGLViewInspector.nib/keyedobje
+	cts.nib, src/SCOpenGLViewInspector.h, src/SCOpenGLViewInspector.mm:
+	
+	Removed Panther-only functionality; SCView isHidden/setHidden
+
+2004-09-16 16:00  kyrah
+
+	* src/SCCamera.mm:
+	
+	Don't compile delegate dummy implementation.
+
+2004-09-16 15:57  kyrah
+
+	* src/SCSceneGraph.mm:
+	
+	Don't compile delegate dummy implementation.
+
+2004-09-16 15:48  kyrah
+
+	* examples/CustomEventHandling/: AppController.mm,
+	MyEventHandler.h, MyEventHandler.mm:
+	
+	Doc update.
+
+2004-09-16 15:16  kyrah
+
+	* examples/CustomEventHandling/AppController.mm:
+	
+	Use path for triggering redraw, so we don't have to send root as
+	userdata.
+
+2004-09-16 15:05  kyrah
+
+	* examples/CustomEventHandling/AppController.mm:
+	
+	Use DELAYED_BLEND transparency mode.
+
+2004-09-16 15:01  kyrah
+
+	* examples/CustomEventHandling/: AppController.h, AppController.mm:
+	
+	Trigger redraw after selection.  Delete renderaction to plug memory
+	leak.  Correct contextID handling.
+
+2004-09-16 14:40  kyrah
+
+	* examples/CustomEventHandling/AppController.mm:
+	
+	Highlight selected object for demonstration.
+
+2004-09-16 14:09  kyrah
+
+	* examples/CustomEventHandling/: AppController.h, AppController.mm,
+	MyEventHandler.mm, English.lproj/MainMenu.nib/classes.nib,
+	English.lproj/MainMenu.nib/info.nib,
+	English.lproj/MainMenu.nib/keyedobjects.nib:
+	
+	Update to latest Sc21.
+
+2004-09-16 12:50  kyrah
+
+	* examples/Sc21Viewer/: AppController.h,
+	English.lproj/MainMenu.nib/classes.nib,
+	English.lproj/MainMenu.nib/info.nib,
+	English.lproj/MainMenu.nib/keyedobjects.nib:
+	
+	Removed unnecessary SCView connection (use [NSApp mainWindow]
+	instead).
+
+2004-09-16 12:50  kyrah
+
+	* examples/Sc21Viewer/AppController.mm:
+	
+	Removed unnecessary SCView connection (use [NSApp mainWindow]
+	instead).
+	
+	Added some documentation.
+
+2004-09-16 12:31  kyrah
+
+	* examples/Sc21Viewer/AppController.mm:
+	
+	Removed debug output.
+
+2004-09-15 18:37  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Turned off debug output for scripts
+
+2004-09-15 18:36  kintel
+
+	* packaging/scripts/makesc21pkg.sh:
+	
+	Removed workaround for PackageMaker's return value bug which was
+	fixed by Apple in V1.2 (Xcode 1.5)
+
+2004-09-15 17:54  kintel
+
+	* Resources/palette/SCFlyHandler.tiff, src/SCFlyHandler.h,
+	src/SCFlyHandler.mm, src/SCFlyHandlerInspector.h,
+	src/SCFlyHandlerInspector.m, src/SCFlyMode.h, src/SCFlyMode.mm:
+	
+	Temporarily moved flymode stuff to SC21-priv/Sc21-dev
+
+2004-09-15 17:48  kintel
+
+	* src/: SCExaminerController.h, SCExaminerController.mm:
+	
+	Removed obsolete files
+
+2004-09-15 15:27  kintel
+
+	* packaging/scripts/: makedmg.sh, makesc21dmg.sh:
+	
+	Removed obsolete files
+
+2004-09-15 14:57  kintel
+
+	* test.sh:
+	
+	Removed obsolete file
+
+2004-09-15 14:53  kintel
+
+	* packaging/SC21-README.txt:
+	
+	Updated compiler/deployment info
+
+2004-09-15 14:49  kintel
+
+	* packaging/SC21-README-@MACOSX_NAME@.txt:
+	
+	Removed obsolete file
+
+2004-09-15 14:41  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Removed flyhandler from palette
+
+2004-09-15 14:39  kintel
+
+	* src/Sc21.h:
+	
+	Forgot a few public headers
+
+2004-09-15 14:38  kintel
+
+	* Resources/palette/English.lproj/Sc21Palette.nib/: classes.nib,
+	info.nib, keyedobjects.nib:
+	
+	Reimported headers to catch recent API changes
+
+2004-09-15 13:49  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	SCCursors.h -> public
+
+2004-09-15 13:13  kintel
+
+	* src/Sc21.h:
+	
+	include all public headers
+
+2004-09-14 14:52  kyrah
+
+	* doc/style.css:
+	
+	Increase font size a bit so the docs are still readable at 4 AM.
+
+2004-09-14 12:03  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Added MACOSX_DEPLOYMENT_TARGET=10.2 for deployment builds, Build
+	documentation as part of meta pkg
+
+2004-09-14 12:02  kintel
+
+	* examples/:
+	CustomEventHandling/CustomEventHandling.xcode/project.pbxproj,
+	NoNibViewer/NoNibViewer.xcode/project.pbxproj,
+	Sc21FullscreenViewer/Sc21FullscreenViewer.xcode/project.pbxproj,
+	Sc21Viewer/Sc21Viewer.xcode/project.pbxproj,
+	Viewtiful/Viewtiful.xcode/project.pbxproj:
+	
+	Added MACOSX_DEPLOYMENT_TARGET=10.2 for deployment builds
+
+2004-09-14 12:01  kintel
+
+	* src/: SCCamera.mm, SCMode.h:
+	
+	Removed obsoleted FIXMEs
+
+2004-09-14 12:01  kintel
+
+	* src/SCSpinMode.mm:
+	
+	Removed debug code
+
+2004-09-14 12:00  kintel
+
+	* src/: SCController.mm, SCView.mm:
+	
+	Use of setVersion obsoleted
+
+2004-09-10 17:04  kyrah
+
+	* src/: SCController.h, SCController.mm:
+	
+	Doc update.
+
+2004-09-10 16:46  kyrah
+
+	* src/SCOpenGLPixelFormat.m:
+	
+	Doc update.
+
+2004-09-10 16:42  kyrah
+
+	* src/SCOpenGLView.m:
+	
+	Doc update.
+
+2004-09-10 16:29  kyrah
+
+	* src/: SCSceneGraph.h, SCSceneGraph.mm:
+	
+	Doc update.
+
+2004-09-10 16:09  kyrah
+
+	* src/SCView.mm:
+	
+	Doc update.
+
+2004-09-10 15:57  kyrah
+
+	* src/SCDrawable.mdoc:
+	
+	Doc update.
+
+2004-09-10 15:45  kyrah
+
+	* src/SCSceneGraph.mm:
+	
+	Changed delegate precedence rules: If the delegate implements
+	createSuperSceneGraph:, creation of the internal default
+	superscenegraph is always off.
+
+2004-09-10 15:24  kyrah
+
+	* src/SCCursors.m:
+	
+	Doc update.
+
+2004-09-10 15:21  kyrah
+
+	* src/SCCamera.h:
+	
+	Use meaningful parameter names (note that these will be picked up
+	by Autodoc and used in the autogenerated documentation, so if we
+	want to refer to the arguments in the documentation, it makes sense
+	to have real words here).
+
+2004-09-10 15:20  kyrah
+
+	* src/SCCamera.mm:
+	
+	Even more doc updates.
+
+2004-09-10 14:55  kyrah
+
+	* src/SCCoinHandler.mm:
+	
+	Doc update.
+
+2004-09-10 14:51  kyrah
+
+	* src/: SCCamera.h, SCCamera.mm:
+	
+	Doc update.
+
+2004-09-10 14:18  kyrah
+
+	* src/: SCCamera.h, SCExterns.m:
+	
+	Removed obsoleted notifications.
+
+2004-09-10 14:03  kyrah
+
+	* src/SCCamera.mm:
+	
+	Removed SCCamera* type system.
+	
+	Updated API documentation.
+
+2004-09-10 14:02  kyrah
+
+	* src/SCCamera.h:
+	
+	Removed SCCamera* type system.
+
+2004-09-08 18:43  kyrah
+
+	* src/SCCamera.mm:
+	
+	FIXME note about what root node the SoGetBoundingBoxAction should
+	be applied to.
+
+2004-09-08 17:23  kyrah
+
+	* THANKS:
+	
+	Ehre wem Ehre gebuehrt...
+
+2004-09-08 17:22  kyrah
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Update.
+
+2004-09-08 17:15  kyrah
+
+	* doc/index.html:
+	
+	Added SCCamera delegate.
+
+2004-09-08 17:14  kyrah
+
+	* src/: SCCamera.h, SCCamera.mm, SCCameraP.h:
+	
+	Rewrote how to control automatic update of the near and far
+	clipping planes. Instead of the autoclip mess, here's how it works
+	now:
+	
+	  - in the internal calculations, a fixed value is always used
+	  - if the user wants to fine-tune the clipping plane updates,
+	    she can do so via a delegate method, which will be called
+	    with the internally calculated values (similar to SoGui's
+	    autoclip callback)
+	  - the internal calculations can be turned off via
+	    setUpdatesClippingPlanes
+	    - in that case, the delegate method (if present) will
+	      be called with the original values, allowing the user
+	      to do her own calculations instead of ours
+	
+	I think this is much cleaner and "Cocoa-ish" than the previous
+	solution, while still giving advanced users all flexibility.
+
+2004-09-08 16:15  kyrah
+
+	* examples/Sc21Viewer/AppController.h:
+	
+	Show how to use notification from SCSceneGraph to report potential
+	errors when reading Inventor files.
+
+2004-09-08 16:15  kyrah
+
+	* examples/Sc21Viewer/AppController.mm:
+	
+	Ignore the previous commit msg, that was bogus. Meant to be: Show
+	how to use notification from SCSceneGraph to report potential
+	errors when reading Inventor files.
+	
+	Must... have... more... coffee...
+
+2004-09-08 16:12  kyrah
+
+	* examples/Sc21Viewer/AppController.mm:
+	
+	Sc21Viewer/AppController.h
+
+2004-09-08 13:49  kyrah
+
+	* src/SCDrawable.mdoc:
+	
+	Copyright header.
+
+2004-09-08 13:16  kyrah
+
+	* src/SCDrawable.mdoc:
+	
+	Hackaround to make Autodoc generate documentation for protocol
+	methods.
+	
+	Note that this is the official way to do this, according to AutoDoc
+	maintainer Carl E. Lindberg.
+
+2004-09-08 12:51  kyrah
+
+	* src/SCSceneGraph.mm:
+	
+	Compile fix.
+
+2004-09-07 18:03  kyrah
+
+	* src/SCSceneGraph.mm:
+	
+	Set superscenegraph to userscenegraph if no superscenegraph has
+	been created.
+
+2004-09-07 18:00  kyrah
+
+	* src/: SCSceneGraph.mm, SCSceneGraphP.h:
+	
+	Check for existance of light and camera (and post
+	SCNoLightFoundInSceneNotification/SCNoCameraFoundInSceneNotificatio
+	n) after superscenegraph creation.
+
+2004-09-07 17:45  kyrah
+
+	* src/SCSceneGraph.mm:
+	
+	Removed usage of no-longer-existing SCString category.
+
+2004-09-07 17:43  kyrah
+
+	* src/: SCString.h, SCString.mm:
+	
+	Not meant to be public... :\)
+
+2004-09-07 17:34  kyrah
+
+	* src/: SCString.h, SCString.mm:
+	
+	Category on NSString that allows for conversion of SbStrings.
+
+2004-09-07 17:31  kyrah
+
+	* src/SCExterns.m:
+	
+	Changed notification scheme for reporting errors when reading
+	files:
+	
+	  - If the file cannot be read, an SCCouldNotOpenFileNotification
+	    is posted.
+	
+	  - If SoInput cannot parse the file, an
+	    SCCouldNotReadSceneNotification
+	    is posted which contains the error message posted by SoInput
+	    in the userInfo dicitionary.
+
+2004-09-07 17:29  kyrah
+
+	* src/: SCSceneGraph.h, SCSceneGraph.mm:
+	
+	Changed notification scheme for reporting errors when reading
+	files:
+	
+	  - If the file cannot be read, an SCCouldNotOpenFileNotification
+	    is posted.
+	
+	  - If SoInput cannot parse the file, an
+	SCCouldNotReadSceneNotification
+	    is posted which contains the error message posted by SoInput
+	    in the userInfo dicitionary.
+	
+	Updated API documentation.
+
+2004-09-07 14:46  kyrah
+
+	* src/: SCView.h, SCView.mm:
+	
+	Doc update.
+
+2004-09-07 14:18  kyrah
+
+	* src/: SCExaminerHandler.h, SCExaminerHandler.mm:
+	
+	Added API documentation.
+
+2004-09-07 13:49  kyrah
+
+	* src/SCCoinHandler.mm:
+	
+	Added API documentation.
+
+2004-09-07 13:45  kyrah
+
+	* src/: SCEventHandler.h, SCEventHandler.mm:
+	
+	Added API documentation.
+
+2004-09-07 13:33  kyrah
+
+	* src/SCController.mm:
+	
+	Doc update.
+
+2004-09-07 13:15  kyrah
+
+	* src/: SCCoinHandler.h, SCCoinHandler.mm:
+	
+	Added API documentation.
+
+2004-09-07 12:34  kyrah
+
+	* src/: SCController.mm, SCController.h:
+	
+	Doc update.
+
+2004-09-06 18:31  kyrah
+
+	* src/SCController.mm:
+	
+	Doc update.
+
+2004-09-06 18:23  kyrah
+
+	* src/SCOpenGLPixelFormat.m:
+	
+	Minor doc updates.
+
+2004-09-06 18:19  kyrah
+
+	* src/: SCOpenGLView.h, SCOpenGLView.m:
+	
+	Doc update.
+
+2004-09-06 18:05  kyrah
+
+	* src/: SCDebug.h, SCDebug.mm:
+	
+	Added API documentation.
+
+2004-09-06 17:54  kyrah
+
+	* src/SCSceneGraph.mm:
+	
+	Doc clarification.
+
+2004-09-06 17:52  kyrah
+
+	* src/SCSceneGraph.mm:
+	
+	Additional doc.
+
+2004-09-06 17:35  kyrah
+
+	* src/SCSceneGraph.h:
+	
+	Documentation.
+
+2004-09-06 17:32  kyrah
+
+	* doc/HTMLTemplate.html:
+	
+	Remove tabs before method listing to match Cocoa-style.
+
+2004-09-06 17:26  kyrah
+
+	* src/: SCCamera.mm, SCController.mm, SCSceneGraph.h,
+	SCSceneGraph.mm, SCSceneGraphP.h:
+	
+	Made SCSceneGraph setSceneManager and sceneManager private.  Minor
+	doc fixes.
+
+2004-09-06 17:07  kyrah
+
+	* doc/HTMLTemplate.html:
+	
+	Don't list instance variables in documentation.
+
+2004-09-06 16:47  kyrah
+
+	* src/SCSceneGraph.mm:
+	
+	Doc fixes.
+
+2004-09-06 16:30  kyrah
+
+	* src/SCSceneGraph.mm:
+	
+	Made SCSceneGraph superSceneGraph: accessor method private.
+	
+	Added API documentation.
+
+2004-09-06 16:29  kyrah
+
+	* src/: SCCamera.mm, SCController.mm, SCSceneGraph.h,
+	SCSceneGraphP.h:
+	
+	Made SCSceneGraph superSceneGraph: accessor method private.
+
+2004-09-06 14:34  kyrah
+
+	* doc/style.css:
+	
+	Updated to match Cocoa stylesheet.
+
+2004-09-06 14:32  kyrah
+
+	* src/SCDefines.h:
+	
+	Added missing documentation.
+
+2004-09-06 13:43  kyrah
+
+	* src/: SCCursors.h, SCCursors.m:
+	
+	Added API documentation.
+
+2004-09-06 13:40  kyrah
+
+	* doc/index.html:
+	
+	Added link to introduction page, and added missing classes.
+
+2004-08-30 13:30  kyrah
+
+	* Resources/palette/SCCoinHandler.tiff:
+	
+	Updated palette image for SCCoinHandler.
+
+2004-08-30 12:45  kyrah
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Turn off -Weffc, since the devtools coming with Panther (10.3,
+	original from CD) don't recognize it.
+
+2004-08-28 00:42  kyrah
+
+	* Resources/palette/: SCController.ibclassdescription,
+	SCSceneGraph.ibclassdescription, SCView.ibclassdescription:
+	
+	Untabified.
+
+2004-08-28 00:38  kyrah
+
+	* Resources/palette/SCController.ibclassdescription,
+	Resources/palette/SCSceneGraph.ibclassdescription,
+	Resources/palette/SCView.ibclassdescription,
+	src/SCControllerInspector.mm, src/SCOpenGLViewInspector.mm,
+	src/SCSceneGraphInspector.mm, Sc21.xcode/project.pbxproj:
+	
+	Added undo support.
+
+2004-08-27 18:17  kyrah
+
+	* src/SCExaminerHandler.mm:
+	
+	Fixed bug in what events are regarded as handled by this handler:
+	
+	  - Fix check for used events to actually test for the exact flags
+	    we are using. (e.g. if we are using left-click, that does not
+	    mean we are handling alt-left!)
+	  - Apply "are we using this combination" check also for
+	    mouse-dragged events.
+
+2004-08-27 18:14  kyrah
+
+	* src/SCEventHandler.mm:
+	
+	FIXME about missing documentation.
+
+2004-08-25 14:17  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	removed obsolete install build style
+
+2004-08-10 19:40  kintel
+
+	* src/SCController.mm:
+	
+	Cleaned up timer handling
+
+2004-08-10 19:40  kintel
+
+	* src/SCControllerP.h:
+	
+	Added _SC_maintainTimers
+
+2004-08-10 19:38  kintel
+
+	* src/SCSceneGraph.mm:
+	
+	Removed obsolete addedlight/addedcamera encoding
+
+2004-08-10 19:38  kintel
+
+	* src/SCView.mm:
+	
+	We now stop timers from setDrawable:
+
+2004-08-09 20:45  kyrah
+
+	* src/SCDebug.mm:
+	
+	Missing doc.
+
+2004-08-09 20:39  kyrah
+
+	* src/: SCController.h, SCController.mm, SCControllerP.h,
+	SCView.mm:
+	
+	Make startTimers and stopTimers private.
+
+2004-08-09 20:30  kyrah
+
+	* src/: SCController.h, SCController.mm:
+	
+	Doc fixes.
+
+2004-08-09 19:55  kyrah
+
+	* src/SCEventHandling.h:
+	
+	Removed obsoleted file.
+
+2004-08-09 03:29  kintel
+
+	* src/: SCSceneGraph.h, SCSceneGraph.mm:
+	
+	Removed dataRepresentation, hasAddedLight and hasAddedCamera
+	methods
+
+2004-08-09 02:59  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Removed SCFlyHandlerInspector
+
+2004-08-09 02:53  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Disabled SC21_DEBUG (for beta release)
+
+2004-08-09 02:37  kintel
+
+	* packaging/: doc/Description.plist, examples/Description.plist,
+	framework/Description.plist, palette/Description.plist:
+	
+	Added more installer information for each pacjage
+
+2004-08-09 02:37  kintel
+
+	* examples/:
+	Sc21FullscreenViewer/English.lproj/MainMenu.nib/classes.nib,
+	Sc21FullscreenViewer/English.lproj/MainMenu.nib/info.nib,
+	Sc21FullscreenViewer/English.lproj/MainMenu.nib/keyedobjects.nib,
+	Sc21Viewer/English.lproj/MainMenu.nib/info.nib,
+	Sc21Viewer/English.lproj/MainMenu.nib/keyedobjects.nib:
+	
+	Made Alt-click emulate middle button
+
+2004-08-09 02:36  kintel
+
+	* packaging/SC21-README.txt:
+	
+	Updated resource pointers
+
+2004-08-09 02:35  kintel
+
+	* examples/README.txt:
+	
+	Updated example descriptions
+
+2004-08-09 01:50  kintel
+
+	* packaging/: doc/Resources/License.rtf,
+	examples/Resources/License.rtf, framework/Resources/License.rtf,
+	meta/Resources/License.rtf, palette/Resources/License.rtf:
+	
+	Added Sc21 to license text
+
+2004-08-09 01:37  kyrah
+
+	* doc/style.css:
+	
+	Use apple colors
+
+2004-08-09 01:25  kyrah
+
+	* doc/index.html:
+	
+	Use stylesheet
+
+2004-08-09 01:07  kintel
+
+	* doc/index.html:
+	
+	minor bugfix
+
+2004-08-09 00:44  kintel
+
+	*
+	examples/Sc21FullscreenViewer/English.lproj/MainMenu.nib/classes.ni
+	b:
+	
+	classes.nib cleanup
+
+2004-08-09 00:26  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Removed SCEventHandling
+
+2004-08-09 00:26  kintel
+
+	* Resources/palette/English.lproj/Sc21Palette.nib/: classes.nib,
+	keyedobjects.nib:
+	
+	Reimported all public headers
+
+2004-08-09 00:25  kintel
+
+	* Resources/palette/English.lproj/SCExaminerHandlerInspector.nib/:
+	info.nib, keyedobjects.nib:
+	
+	Fixed order of emulators
+
+2004-08-09 00:25  kintel
+
+	* examples/: NoNibViewer/AppController.h,
+	NoNibViewer/AppController.mm,
+	Sc21FullscreenViewer/AppController.mm, Sc21Viewer/AppController.mm:
+	
+	Fixed warnings after include cleanup
+
+2004-08-09 00:24  kintel
+
+	* examples/Viewtiful/: MyWindowController.h, MyWindowController.mm,
+	English.lproj/MyDocument.nib/classes.nib,
+	English.lproj/MyDocument.nib/info.nib,
+	English.lproj/MyDocument.nib/keyedobjects.nib:
+	
+	Adapted to new eventhandling scheme
+
+2004-08-09 00:24  kintel
+
+	* src/: SCCoinHandler.mm, SCOpenGLPixelFormat.h, SCOpenGLView.h,
+	SCSceneGraph.h, SCSceneGraph.mm, SCSceneGraphP.h, SCView.h,
+	SCView.mm:
+	
+	Cleaned up includes
+
+2004-08-08 23:28  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Moved example copying to copyexamples.sh, added packaging resources
+	for examples and doc
+
+2004-08-08 23:28  kintel
+
+	* examples/Sc21Viewer/: English.lproj/InfoPlist.strings,
+	Sc21Viewer.xcode/project.pbxproj:
+	
+	Removed InfoPlist.strings
+
+2004-08-08 23:27  kyrah
+
+	* src/: SCExterns.m, SCSceneGraph.h, SCSceneGraph.mm:
+	
+	Removed writeToFile: method
+
+2004-08-08 23:26  kintel
+
+	* packaging/scripts/copyexamples.sh:
+	
+	Script for copying correct example files
+
+2004-08-08 22:53  kintel
+
+	* doc/index.html:
+	
+	Added new eventhandlers
+
+2004-08-08 22:53  kintel
+
+	* examples/README.txt:
+	
+	Added CustomEventHandling description
+
+2004-08-08 22:53  kintel
+
+	* examples/CustomEventHandling/: AppController.h, AppController.mm,
+	CustomEventHandling_Prefix.pch, Info.plist, MyEventHandler.h,
+	MyEventHandler.mm, Sc21_app.icns, main.m, version.plist,
+	CustomEventHandling.xcode/project.pbxproj,
+	English.lproj/MainMenu.nib/classes.nib,
+	English.lproj/MainMenu.nib/data.dependency,
+	English.lproj/MainMenu.nib/info.nib,
+	English.lproj/MainMenu.nib/keyedobjects.nib:
+	
+	Added new example
+
+2004-08-08 22:47  kintel
+
+	* examples/:
+	Sc21FullscreenViewer/English.lproj/MainMenu.nib/classes.nib,
+	Sc21FullscreenViewer/English.lproj/MainMenu.nib/info.nib,
+	Sc21FullscreenViewer/English.lproj/MainMenu.nib/keyedobjects.nib,
+	Sc21Viewer/English.lproj/MainMenu.nib/classes.nib,
+	Sc21Viewer/English.lproj/MainMenu.nib/info.nib,
+	Sc21Viewer/English.lproj/MainMenu.nib/keyedobjects.nib:
+	
+	Removed mode checkbox
+
+2004-08-08 22:46  kintel
+
+	* examples/: Sc21FullscreenViewer/AppController.h,
+	Sc21Viewer/AppController.h:
+	
+	Removed obsolete mode outlet
+
+2004-08-08 22:02  kintel
+
+	* packaging/: doc/Resources/background.tiff,
+	examples/Resources/background.tiff,
+	framework/Resources/background.tiff,
+	meta/Resources/background.tiff, palette/Resources/background.tiff:
+	
+	Added new artwork
+
+2004-08-08 20:18  kintel
+
+	*
+	examples/Sc21FullscreenViewer/English.lproj/MainMenu.nib/keyedobjec
+	ts.nib:
+	
+	Use new eventhandler
+
+2004-08-08 20:17  kintel
+
+	* examples/: Sc21FullscreenViewer/AppController.h,
+	Sc21FullscreenViewer/AppController.mm, Sc21Viewer/AppController.h,
+	Sc21Viewer/AppController.mm:
+	
+	Removed old eventhandling code
+
+2004-08-08 20:15  kintel
+
+	* examples/:
+	Sc21FullscreenViewer/Sc21FullscreenViewer.xcode/project.pbxproj,
+	Sc21Viewer/Sc21Viewer.xcode/project.pbxproj,
+	Viewtiful/Viewtiful.xcode/project.pbxproj:
+	
+	Added new artwork
+
+2004-08-08 20:12  kintel
+
+	* examples/: Sc21FullscreenViewer/Sc21_app.icns,
+	Sc21FullscreenViewer/coin.icns, Sc21Viewer/Sc21_app.icns,
+	Sc21Viewer/coin.icns, Viewtiful/Sc21_app.icns, Viewtiful/coin.icns,
+	Sc21FullscreenViewer/Info.plist, Sc21Viewer/Info.plist,
+	Viewtiful/Info.plist:
+	
+	Added new artwork
+
+2004-08-08 20:10  kintel
+
+	* src/SCCoinHandler.mm:
+	
+	correct debug msg
+
+2004-08-08 20:10  kintel
+
+	* src/SCSceneGraph.mm:
+	
+	Removed debug code
+
+2004-08-08 19:42  kyrah
+
+	* src/SCExaminerHandlerInspector.m:
+	
+	Added FIXME about using tags for meny entries.
+
+2004-08-08 19:42  kyrah
+
+	* src/: SCExaminerHandler.mm, SCExaminerHandlerP.h:
+	
+	Don't swallow events for buttons that are not registered.
+
+2004-08-08 19:41  kyrah
+
+	* src/SCController.mm:
+	
+	Send update to all handlers in the eventhandler chain.
+
+2004-08-08 19:32  kintel
+
+	* Resources/palette/SCCoinHandler.tiff:
+	
+	temp. graphics for SCCoinHandler
+
+2004-08-08 19:30  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	New event handling scheme
+
+2004-08-08 19:27  kintel
+
+	* examples/Sc21Viewer/: AppController.mm,
+	English.lproj/MainMenu.nib/classes.nib,
+	English.lproj/MainMenu.nib/keyedobjects.nib:
+	
+	Adapted to new eventhandling scheme
+
+2004-08-08 19:26  kintel
+
+	* Resources/palette/: palette.table,
+	English.lproj/SCControllerInspector.nib/classes.nib,
+	English.lproj/SCControllerInspector.nib/info.nib,
+	English.lproj/SCControllerInspector.nib/keyedobjects.nib,
+	English.lproj/Sc21Palette.nib/classes.nib,
+	English.lproj/Sc21Palette.nib/keyedobjects.nib:
+	
+	Implemented new eventhandling scheme
+
+2004-08-08 19:23  kintel
+
+	* packaging/meta/Info.plist:
+	
+	Move individual packages into separate dir
+
+2004-08-08 19:19  kintel
+
+	* src/: SCCoinHandler.h, SCCoinHandler.mm, SCController.h,
+	SCController.mm, SCControllerInspector.h, SCControllerInspector.mm,
+	SCControllerP.h, SCEventHandler.h, SCEventHandler.mm,
+	SCEventHandlerP.h, SCExaminerHandler.h, SCExaminerHandler.mm,
+	SCExaminerHandlerP.h, SCExterns.m, Sc21Palette.h, Sc21Palette.mm:
+	
+	Implemented new eventhandling scheme
+
+2004-08-08 19:10  kintel
+
+	* src/SCView.mm:
+	
+	Removed obsolete SCExaminerController
+
+2004-08-08 19:10  kintel
+
+	* src/SCView.h:
+	
+	bugfix: We must tag non-id outlets
+
+2004-08-05 20:54  kintel
+
+	* examples/Sc21Viewer/English.lproj/MainMenu.nib/: info.nib,
+	keyedobjects.nib:
+	
+	Resized SCView to correct size
+
+2004-08-05 20:51  kintel
+
+	* examples/: Sc21Viewer/Sc21Viewer.xcode/project.pbxproj,
+	Sc21FullscreenViewer/Sc21FullscreenViewer.xcode/project.pbxproj:
+	
+	Added icon
+
+2004-08-05 20:50  kintel
+
+	* examples/: Sc21Viewer/coin.icns, Sc21FullscreenViewer/coin.icns:
+	
+	App icon
+
+2004-08-05 20:50  kintel
+
+	* examples/: Sc21Viewer/Info.plist,
+	Sc21FullscreenViewer/Info.plist:
+	
+	Added icon, updated bundle identifier
+
+2004-08-05 20:49  kintel
+
+	* examples/Viewtiful/Info.plist:
+	
+	updated bundle identifier
+
+2004-08-05 20:31  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Added models to examples, fixed examples dependency bug
+
+2004-08-05 20:24  kintel
+
+	* examples/Models/: README.txt, watch.wrl, textures/Watch2.jpg,
+	textures/leather.jpg:
+	
+	Added example model that we're allowed to redistribute
+
+2004-08-05 20:21  kintel
+
+	* examples/: README, README.txt:
+	
+	Renamed README -> README.txt
+
+2004-08-05 16:53  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Added targets for generating examples pkg
+
+2004-08-05 16:38  kintel
+
+	* packaging/meta/Info.plist:
+	
+	Added examples pkg
+
+2004-08-05 16:37  kintel
+
+	* packaging/examples/: Description.plist, Info.plist,
+	Resources/License.rtf, Resources/Welcome.rtf,
+	Resources/background.tiff:
+	
+	Files for examples pkg
+
+2004-08-05 15:55  kintel
+
+	* examples/README:
+	
+	Added Sc21FullscreenViewer
+
+2004-08-05 15:29  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Keep compatibility version == current version as long as we don't
+	have a stable API
+
+2004-08-05 15:28  kintel
+
+	* packaging/: doc/Info.plist, framework/Info.plist,
+	meta/Info.plist, palette/Info.plist:
+	
+	Bumped version to 0.9.0. Use org.coin3d instead of no.sim as
+	identifiers
+
+2004-08-05 15:27  kintel
+
+	* packaging/: doc/Resources/Welcome.rtf,
+	framework/Resources/Welcome.rtf, meta/Resources/Welcome.rtf,
+	palette/Resources/Welcome.rtf:
+	
+	Temp. update of welcome text
+
+2004-08-05 15:25  kintel
+
+	* Resources/framework/Info.plist, Resources/palette/Info.plist,
+	packaging/doc/Description.plist,
+	packaging/framework/Description.plist,
+	packaging/meta/Description.plist,
+	packaging/palette/Description.plist:
+	
+	Bumped version to 0.9.0
+
+2004-08-05 15:25  kintel
+
+	* Resources/palette/palette.table:
+	
+	Updated list of exported classes
+
+2004-08-05 15:24  kintel
+
+	* examples/Viewtiful/English.lproj/MyDocument.nib/: info.nib,
+	keyedobjects.nib:
+	
+	Resaved nib
+
+2004-08-05 15:24  kintel
+
+	* Resources/palette/English.lproj/Sc21Palette.nib/: classes.nib,
+	info.nib, keyedobjects.nib:
+	
+	Resynced all headers
+
+2004-08-05 14:43  kintel
+
+	* packaging/SC21-README.txt:
+	
+	Readme file for beta
+
+2004-08-05 14:35  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Temporarily removed 'Sc21 doc pkg' dependency from meta pkg
+
+2004-08-05 14:33  kintel
+
+	* src/: SCController.h, SCFlyHandler.h, SCFlyHandlerInspector.m,
+	Sc21Palette.h:
+	
+	flyhandler/eventhandler include fixes
+
+2004-08-05 14:33  kintel
+
+	* src/: SCSceneGraph.h, SCSceneGraph.mm:
+	
+	Added -dataRepresentation
+
+2004-08-05 13:58  kintel
+
+	* src/: SCController.mm, SCControllerP.h:
+	
+	Do SCEventHandling.update before updating clipping planes and
+	before rendering to make sure we render with the freshest possible
+	camera. Removed obsolete _SC_viewSizeChanged
+
+2004-08-05 13:49  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Added SCInternalDefines.h
+
+2004-08-05 13:48  kintel
+
+	* src/SCDrawable.h, src/SCView.h, src/SCView.mm,
+	examples/Sc21FullscreenViewer/AppController.h,
+	examples/Sc21FullscreenViewer/AppController.mm:
+	
+	Removed controller accessor from SCDrawable protocol
+
+2004-08-05 13:47  kintel
+
+	* src/: SCDefines.h, SCInternalDefines.h:
+	
+	Moved internal stuff to separate header
+
+2004-08-05 13:39  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Made ex-public headers private
+
+2004-08-05 13:38  kintel
+
+	* src/Sc21.h:
+	
+	Removed non-public headers
+
+2004-08-05 13:38  kintel
+
+	* Resources/palette/English.lproj/Sc21Palette.nib/classes.nib,
+	Resources/palette/English.lproj/Sc21Palette.nib/info.nib,
+	Resources/palette/English.lproj/Sc21Palette.nib/keyedobjects.nib,
+	src/Sc21Palette.h, src/Sc21Palette.mm:
+	
+	Removed flyhandler and walkhandler, fixed textfield bug
+
+2004-08-05 11:44  kintel
+
+	* examples/Sc21Viewer/English.lproj/MainMenu.nib/: info.nib,
+	keyedobjects.nib:
+	
+	Resaved nib
+
+2004-08-05 11:41  kintel
+
+	* examples/Viewtiful/English.lproj/: MainMenu.nib/classes.nib,
+	MainMenu.nib/info.nib, MainMenu.nib/keyedobjects.nib,
+	MyDocument.nib/classes.nib, MyDocument.nib/info.nib,
+	MyDocument.nib/keyedobjects.nib:
+	
+	Moved examinerhandler to nib, resaved nibs
+
+2004-08-05 11:40  kintel
+
+	* examples/Viewtiful/MyWindowController.mm:
+	
+	Moved examinerhandler to nib, connect SCScenegraph from document to
+	controller
+
+2004-08-05 11:39  kintel
+
+	* examples/Viewtiful/AppController.mm:
+	
+	autorelease MyDocument when manually instantiated
+
+2004-08-05 11:39  kintel
+
+	* examples/Viewtiful/: MyDocument.h, MyDocument.mm:
+	
+	Use an SCSceneGraph for document storage
+
+2004-08-05 11:37  kintel
+
+	* src/SCSceneGraphP.h:
+	
+	Small private method reorganization
+
+2004-08-05 11:36  kintel
+
+	* src/SCSceneGraph.mm:
+	
+	Added -loadDataRepresentation:, implemented readFromURL and
+	initWithContentsOfURL, fixed buggy ref/unref handling
+
+2004-08-05 11:34  kintel
+
+	* src/SCSceneGraph.h:
+	
+	Added -loadDataRepresentation:
+
+2004-08-05 11:33  kintel
+
+	* src/SCController.mm:
+	
+	Remove added observers when their objects are dereferenced
+
+2004-08-05 11:30  kintel
+
+	* src/SCControllerP.h:
+	
+	Removed obsolete notification
+
+2004-08-05 11:30  kintel
+
+	* src/SCView.mm:
+	
+	Use setController:nil in dealloc, remove ourselves as
+	SCCursorChanged observer when controller is removed
+
+2004-08-04 00:10  kintel
+
+	* examples/Sc21FullscreenViewer/English.lproj/MainMenu.nib/:
+	classes.nib, info.nib, keyedobjects.nib:
+	
+	Resaved nibs
+
+2004-08-04 00:10  kintel
+
+	* examples/Sc21FullscreenViewer/AppController.mm:
+	
+	Block nextEventMatchingMask:... using [NSDate distantFuture]. This
+	seems to fix the problem with posting ov idle notifications
+
+2004-08-03 23:37  kintel
+
+	* doc/HTMLTemplate.html:
+	
+	API doesn't change between minor versions, so only display this
+
+2004-08-03 23:36  kintel
+
+	* doc/index.html:
+	
+	Updated to reflect current public API
+
+2004-08-03 19:45  kintel
+
+	* src/SCSpinMode.mm:
+	
+	Bugfix: Check for NULL soCamera
+
+2004-08-03 18:32  kintel
+
+	* examples/Sc21FullscreenViewer/: AppController.h,
+	AppController.mm:
+	
+	Report size for correct display, added delaytimeout for testing
+	idle notification
+
+2004-08-03 16:12  kintel
+
+	* examples/Sc21FullscreenViewer/AppController.mm:
+	
+	Terminate on cmd-q in fullscreen mode
+
+2004-08-03 15:53  kintel
+
+	* examples/Sc21FullscreenViewer/AppController.mm:
+	
+	Go fullscreen where the window is located instead of the main
+	screen
+
+2004-08-03 15:00  kintel
+
+	* src/: SCOpenGLView.m, SCOpenGLViewP.h:
+	
+	Bugfix: Use a contextisprepared variable for handling prepareOpenGL
+
+2004-08-03 14:59  kintel
+
+	* src/SCExaminerHandlerInspector.m:
+	
+	renamed index variable to idx to avoid compiler warning
+
+2004-08-03 13:39  kyrah
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Added spinmode classes to project.
+
+2004-08-03 12:37  kintel
+
+	* src/: SCCameraP.h, SCController.mm, SCDefines.h, SCEmulator.h,
+	SCEmulator.m, SCEventHandler.h, SCEventHandler.mm,
+	SCExaminerHandler.mm, SCExterns.m, SCFlyHandler.mm, SCFlyMode.h,
+	SCFlyMode.mm, SCMode.h, SCMode.m, SCMouseLog.h, SCMouseLog.m,
+	SCOpenGLPixelFormat.m, SCPanMode.h, SCPanMode.mm, SCRotateMode.h,
+	SCRotateMode.mm, SCSceneGraph.h, SCSceneGraph.mm,
+	SCSceneGraphInspector.mm, SCSceneGraphP.h, SCSpinMode.h,
+	SCSpinMode.mm, SCUtil.h, SCView.mm, SCZoomMode.h, SCZoomMode.mm,
+	Sc21.h:
+	
+	synchronized copyright header
+
+2004-08-03 12:36  kintel
+
+	* src/SCCamera.mm:
+	
+	Autoclip the superscenegraph since it can be user generated and
+	contain geometry/transformations
+
+2004-08-03 12:27  kintel
+
+	* src/: SCSpinMode.h, SCSpinMode.mm:
+	
+	Added spin mode
+
+2004-08-03 12:24  kintel
+
+	* src/SCExaminerHandler.mm:
+	
+	Enable spin mode
+
+2004-08-03 12:09  kintel
+
+	* src/SCOpenGLView.m:
+	
+	Moved prepareOpenGL call to -lockFocus to ensure we have a valid
+	drawable
+
+2004-08-03 00:48  kyrah
+
+	* examples/Sc21Viewer/English.lproj/MainMenu.nib/: info.nib,
+	keyedobjects.nib:
+	
+	Resaved with new nib.
+
+2004-08-03 00:47  kyrah
+
+	*
+	Resources/palette/English.lproj/SCExaminerHandlerInspector.nib/keye
+	dobjects.nib, src/SCExaminerHandler.h, src/SCExaminerHandler.mm,
+	src/SCExaminerHandlerInspector.m, src/SCExaminerHandlerP.h:
+	
+	Handle disabling of rotate/zoom/pan button:
+	
+	Added disable[Rotate|Pan|Zoom]Button and
+	[rotate|pan|zoom]ButtonIsEnabled.
+	
+	Use these accessors when selecting modes in SCExaminerHandler, and
+	when choosing "none" as button in inspector.
+	
+	Also updated conflict resolution code in inspector to ignore
+	disabled modes.
+
+2004-08-03 00:41  kyrah
+
+	* src/SCController.h:
+	
+	Removed unused class forward declaration.
+
+2004-08-02 21:49  kintel
+
+	* src/SCControllerP.h:
+	
+	bugfix: modifierforcoinevent should be unsigned int, not BOOL
+
+2004-08-02 21:47  kintel
+
+	* src/SCExaminerHandler.mm:
+	
+	bugfix: Handle mouse buttons correctly when emulator is nil
+
+2004-08-02 21:47  kintel
+
+	* src/: SCExaminerHandler.h, SCExaminerHandlerP.h:
+	
+	Moved #import SCEmulator.h to private header
+
+2004-08-02 21:18  kyrah
+
+	* src/SCExaminerHandler.mm:
+	
+	Reset cursor to default when switching out of mode.
+
+2004-08-02 20:57  kyrah
+
+	* src/SCExaminerHandler.mm:
+	
+	Removed erroneously committed debugging output.
+
+2004-08-02 20:55  kyrah
+
+	* examples/Sc21Viewer/English.lproj/MainMenu.nib/: info.nib,
+	keyedobjects.nib:
+	
+	Use right mouse button for zoom by default.
+
+2004-08-02 20:55  kyrah
+
+	* src/SCExaminerHandler.mm:
+	
+	Bugfix: Report event as handled if we have used it for a mode
+	change. (Previously, mousedown events were always passed on and
+	ultimately handled by NSView, resulting in the context menu being
+	displayed.)
+
+2004-08-02 20:35  kyrah
+
+	*
+	Resources/palette/English.lproj/SCExaminerHandlerInspector.nib/clas
+	ses.nib,
+	Resources/palette/English.lproj/SCExaminerHandlerInspector.nib/info
+	.nib,
+	Resources/palette/English.lproj/SCExaminerHandlerInspector.nib/keye
+	dobjects.nib, src/SCExaminerHandlerInspector.h,
+	src/SCExaminerHandlerInspector.m:
+	
+	Bye-bye ctrl modifier. I liked you. *sniff*
+
+2004-08-02 19:25  kyrah
+
+	* Resources/palette/English.lproj/SCExaminerHandlerInspector.nib/:
+	classes.nib, info.nib, keyedobjects.nib:
+	
+	Workaround for Jaguar, which doesn't support setHidden:
+
+2004-08-02 19:23  kyrah
+
+	* src/SCExaminerHandlerInspector.m:
+	
+	Bugfix: Only check modifier clash between emulated and non-emulated
+	version of binding when non-emulated version has any modifiers.
+
+2004-08-02 18:51  kintel
+
+	* src/: SCExaminerHandler.mm, SCExaminerHandlerP.h:
+	
+	Moved private @implementation to from header to source file
+
+2004-08-02 18:29  kyrah
+
+	* src/: SCExaminerHandlerInspector.h, SCExaminerHandlerInspector.m:
+	
+	Implement workaround for Jaguar, which does not support setHidden:
+
+2004-08-02 17:14  kyrah
+
+	* examples/Sc21FullscreenViewer/AppController.mm,
+	examples/Sc21Viewer/AppController.mm,
+	examples/Viewtiful/MyWindowController.mm, src/SCDebug.h,
+	src/SCDebug.mm:
+	
+	Put debug functions as static methods into an SCDebug class to not
+	pollute global namespace.
+
+2004-08-02 15:25  kyrah
+
+	* src/: SCExaminerHandlerInspector.h, SCExaminerHandlerInspector.m:
+	
+	Improved conflict checking to cover the effects of mouse emulation
+	on modifier settings. Consider for example this case:
+	
+	  [emulate middle button] left + command
+	  [pan]   middle + alt
+	  [zoom]  left + alt + command
+	
+	which results in
+	
+	  [pan]  (left + command) + alt == zoom
+	
+	... being a conflict.
+	
+	Renamed _SC_hasConflictingBindings to _SC_conflictDescription.
+
+2004-08-02 15:19  kyrah
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Added graphics to indicate conflicts in examinerhandler settings.
+
+2004-08-02 13:34  kyrah
+
+	* Resources/palette/InspectorError.tiff,
+	Resources/palette/English.lproj/SCExaminerHandlerInspector.nib/clas
+	ses.nib,
+	Resources/palette/English.lproj/SCExaminerHandlerInspector.nib/info
+	.nib,
+	Resources/palette/English.lproj/SCExaminerHandlerInspector.nib/keye
+	dobjects.nib, src/SCExaminerHandlerInspector.h,
+	src/SCExaminerHandlerInspector.m:
+	
+	Check for conflicts in mouse/modifier bindings.
+
+2004-08-02 11:50  kyrah
+
+	* examples/Viewtiful/English.lproj/.cvsignore:
+	
+	Ignore MyDocument~.nib
+
+2004-08-02 11:49  kyrah
+
+	* examples/:
+	Sc21FullscreenViewer/English.lproj/MainMenu.nib/keyedobjects.nib,
+	Viewtiful/English.lproj/MyDocument.nib/info.nib,
+	Viewtiful/English.lproj/MyDocument.nib/keyedobjects.nib:
+	
+	Resaved with new nib.
+
+2004-08-02 03:19  kyrah
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Turn off debugging output.
+
+2004-08-02 03:18  kyrah
+
+	* examples/Sc21Viewer/English.lproj/MainMenu.nib/: info.nib,
+	keyedobjects.nib:
+	
+	Resaved with new nib.
+
+2004-08-02 03:17  kyrah
+
+	*
+	Resources/palette/English.lproj/SCExaminerHandlerInspector.nib/info
+	.nib,
+	Resources/palette/English.lproj/SCExaminerHandlerInspector.nib/keye
+	dobjects.nib, src/SCExaminerHandlerInspector.m:
+	
+	Hooked up interface for mouse button emulation.  Internal
+	restructuring.
+
+2004-08-02 03:15  kyrah
+
+	* src/SCExaminerHandlerP.h:
+	
+	SCEmulator accessors moved to private API.
+
+2004-08-02 03:14  kyrah
+
+	* src/: SCFlyHandlerInspector.m, SCSceneGraph.mm:
+	
+	Removed debugging output.
+
+2004-08-02 03:13  kyrah
+
+	* src/SCExaminerHandler.mm:
+	
+	Moved emulator accessors to private API since SCEmulator is not a
+	public class.
+	
+	Removed default setting of emulating middle mouse button by the
+	Option key. (If we want to have such a default, it should go into
+	SCEmulator.)
+
+2004-08-02 03:12  kyrah
+
+	* src/SCExaminerHandler.h:
+	
+	Moved emulator accessors to private API since SCEmulator is not a
+	public class.
+
+2004-08-02 03:11  kyrah
+
+	* src/: SCEmulator.h, SCEmulator.m:
+	
+	Added two new methods:
+	
+	  - emulateButton: (query whether a button is being emulated)
+	  - removeEmulationForButton: (complete remove button from
+	    internal dict)
+
+2004-08-02 00:14  kyrah
+
+	* Sc21.xcode/project.pbxproj, src/SCExaminerHandler.h:
+	
+	Made SCEmulator private.
+
+2004-08-02 00:00  kyrah
+
+	* src/SCExaminerHandler.mm:
+	
+	Reenable temporarily commented out destructor.
+
+2004-08-01 23:58  kyrah
+
+	* src/SCEmulator.m:
+	
+	Remove debugging output.
+
+2004-08-01 23:56  kyrah
+
+	* Resources/palette/English.lproj/Sc21Palette.nib/classes.nib,
+	Resources/palette/English.lproj/Sc21Palette.nib/keyedobjects.nib,
+	src/SCEmulator.m, src/SCExaminerHandler.mm:
+	
+	Archive SCEmulator.
+
+2004-08-01 22:15  kyrah
+
+	* src/SCExaminerHandler.mm:
+	
+	Encode emulator object.
+
+2004-08-01 22:15  kyrah
+
+	* src/SCExaminerHandlerInspector.m:
+	
+	Remove debugging output.
+
+2004-08-01 21:14  kyrah
+
+	* Resources/palette/English.lproj/Sc21Palette.nib/classes.nib,
+	Resources/palette/English.lproj/Sc21Palette.nib/info.nib,
+	Resources/palette/English.lproj/Sc21Palette.nib/keyedobjects.nib,
+	examples/Sc21Viewer/English.lproj/MainMenu.nib/classes.nib,
+	examples/Sc21Viewer/English.lproj/MainMenu.nib/info.nib,
+	examples/Sc21Viewer/English.lproj/MainMenu.nib/keyedobjects.nib:
+	
+	Renamed SCController scenegraph to sceneGraph, and eventhandler to
+	eventHandler.
+
+2004-08-01 21:07  kyrah
+
+	* src/: SCController.h, SCController.mm, SCExaminerController.mm:
+	
+	Renamed scenegraph to sceneGraph to make IB call our accessor.
+	
+	Removed now obsolete awakeFromNib method.
+
+2004-08-01 20:42  kyrah
+
+	* src/: SCController.h, SCController.mm:
+	
+	Renamed eventhandler to eventHandler.
+
+2004-08-01 20:32  kyrah
+
+	* Resources/palette/English.lproj/.cvsignore:
+	
+	Ignore examinerhandler backup files.
+
+2004-08-01 20:20  kyrah
+
+	*
+	Resources/palette/English.lproj/SCControllerInspector.nib/info.nib,
+	Resources/palette/English.lproj/SCControllerInspector.nib/keyedobje
+	cts.nib,
+	Resources/palette/English.lproj/SCExaminerHandlerInspector.nib/clas
+	ses.nib,
+	Resources/palette/English.lproj/SCExaminerHandlerInspector.nib/info
+	.nib,
+	Resources/palette/English.lproj/SCExaminerHandlerInspector.nib/keye
+	dobjects.nib,
+	Resources/palette/English.lproj/Sc21Palette.nib/classes.nib,
+	Resources/palette/English.lproj/Sc21Palette.nib/info.nib,
+	Resources/palette/English.lproj/Sc21Palette.nib/keyedobjects.nib,
+	src/SCController.h, src/SCController.mm, src/SCExaminerHandler.h,
+	src/SCExaminerHandler.mm, src/SCExaminerHandlerInspector.h,
+	src/SCExaminerHandlerInspector.m:
+	
+	Hook up examiner handler inspector.
+
+2004-08-01 20:17  kyrah
+
+	* examples/Sc21Viewer/: AppController.mm,
+	English.lproj/MainMenu.nib/classes.nib,
+	English.lproj/MainMenu.nib/info.nib,
+	English.lproj/MainMenu.nib/keyedobjects.nib:
+	
+	Put SCExaminerHandler into nib.
+
+2004-08-01 17:41  kyrah
+
+	* src/SCExaminerHandler.mm:
+	
+	Forgot to call commonInit...
+
+2004-08-01 17:05  kyrah
+
+	* src/: SCExaminerHandler.mm, SCExaminerHandlerP.h:
+	
+	Removed SCOperation abstraction layer since there is a 1:1
+	relationship between modes and operations in the examiner handler.
+
+2004-08-01 16:43  kyrah
+
+	* Sc21.xcode/project.pbxproj, src/SCEmulator.h, src/SCEmulator.m,
+	src/SCExaminerHandler.h, src/SCExaminerHandler.mm,
+	src/SCExaminerHandlerP.h:
+	
+	Disinherited SCExaminerHandler from SCEventHandler. Simplified API
+	to not be generic but only work for pan/rotate/zoom.
+	
+	Moved mouse button emulation to SCEmulator class to let other event
+	handlers use that code if they so desire.
+
+2004-08-01 02:18  kyrah
+
+	* Sc21.xcode/project.pbxproj, src/SCCamera.h, src/SCCamera.mm,
+	src/SCCameraP.h, src/SCController.h, src/SCController.mm,
+	src/SCControllerP.h, src/SCEventHandler.h, src/SCEventHandler.mm,
+	src/SCEventHandlerP.h, src/SCExaminerHandler.h,
+	src/SCExaminerHandler.mm, src/SCFlyHandler.h, src/SCFlyHandler.mm,
+	src/SCOpenGLPixelFormat.h, src/SCOpenGLPixelFormat.m,
+	src/SCOpenGLView.h, src/SCOpenGLView.m, src/SCOpenGLViewP.h,
+	src/SCSceneGraph.h, src/SCSceneGraph.mm, src/SCSceneGraphP.h,
+	src/SCView.h, src/SCView.mm:
+	
+	Changed class names of private implementation to not start with _
+	since this is disallowed by the C++ language standard:
+	
+	"Each name that begins with an underscore is reserved to the
+	implementation for use as a name in the global namespace." See e.g.
+	http://cmusearch.8m.com/cpp/clause17.html#s17.4.3.1.2 if you don't
+	believe me.
+
+2004-08-01 01:45  kyrah
+
+	* src/: SCController.mm, SCEventHandler.h, SCView.h, SCView.mm:
+	
+	Cosmetics.
+
+2004-08-01 01:43  kyrah
+
+	* Resources/palette/English.lproj/.cvsignore:
+	
+	Ignore more temporary files.
+
+2004-08-01 01:37  kyrah
+
+	* examples/: NoNibViewer/.cvsignore,
+	NoNibViewer/NoNibViewer.xcode/.cvsignore,
+	Sc21FullscreenViewer/.cvsignore,
+	Sc21FullscreenViewer/English.lproj/.cvsignore,
+	Sc21FullscreenViewer/Sc21FullscreenViewer.xcode/.cvsignore:
+	
+	Ignore temporary files.
+
+2004-08-01 00:12  kyrah
+
+	* examples/NoNibViewer/: AppController.mm, main.mm,
+	NoNibViewer.xcode/project.pbxproj:
+	
+	Update to use new eventhandling scheme.  Added missing
+	autoreleasepool.
+
+2004-07-31 23:56  kyrah
+
+	* examples/Sc21FullscreenViewer/: AppController.h,
+	AppController.mm, English.lproj/MainMenu.nib/classes.nib,
+	English.lproj/MainMenu.nib/info.nib,
+	English.lproj/MainMenu.nib/keyedobjects.nib:
+	
+	Updated to conform to SCDrawable protocol.  Put scenegraph into nib
+	file.
+
+2004-07-31 23:48  kyrah
+
+	* src/SCController.mm:
+	
+	Force a redraw when setting the drawable.
+
+2004-07-31 22:48  kyrah
+
+	* examples/Viewtiful/MyWindowController.mm:
+	
+	Use SCSceneGraph viewAll.
+
+2004-07-31 22:46  kyrah
+
+	* examples/Viewtiful/MyCoinController.mm:
+	
+	Bugfix: Override handleEvent:, not handleEventAsViewerEvent: to
+	allow toggling back from "send-to-scenegraph" mode.
+
+2004-07-31 22:30  kyrah
+
+	* examples/Sc21Viewer/: AppController.mm,
+	English.lproj/MainMenu.nib/classes.nib,
+	English.lproj/MainMenu.nib/info.nib,
+	English.lproj/MainMenu.nib/keyedobjects.nib:
+	
+	Put scenegraph into nib.
+
+2004-07-31 22:26  kyrah
+
+	* src/: SCSceneGraph.h, SCSceneGraph.mm:
+	
+	Added support for initializing from and reading from NSURL for
+	file-system access.
+	
+	Note that this just treats handling local files as NSURLs (as is
+	the recommended way for file system access in Cocoa), it does not
+	provide any actual support for downloading files over the internet.
+
+2004-07-31 17:54  kyrah
+
+	* src/SCOpenGLView.m:
+	
+	Get rid of "Invalid drawable" error message by removing the
+	explicit setView:  I think this is ok since we are making sure we
+	have the correct view in lockFocus anyway.
+
+2004-07-31 16:10  kyrah
+
+	* src/SCController.mm:
+	
+	Re-register for root-changed notification in awakeFromNib.
+	
+	Make sure the scenegraph-scenemanager connection is re-established
+	when the root of the scenegraph changes.
+
+2004-07-31 16:09  kyrah
+
+	* src/SCCamera.mm:
+	
+	Assert if there is no SoSceneManager.
+
+2004-07-31 02:26  kyrah
+
+	* src/: SCExterns.m, SCSceneGraph.h, SCSceneGraph.mm:
+	
+	Added writeToFile: method in SCSceneGraph.  When writing fails, an
+	SCCouldNotWriteFileNotification will be posted.
+	
+	Removed SCCouldNotOpenFileNotification - I think it is only our job
+	to report general failure. If somebody is interested in the actual
+	reason why reading failed, they would need more information (*why*
+	was opening insuccessful? system error message? &c.) anyway.
+
+2004-07-31 02:09  kyrah
+
+	* src/SCSceneGraph.mm:
+	
+	Restructuring.
+
+2004-07-31 02:00  kyrah
+
+	* src/SCCamera.mm:
+	
+	Get viewportregion directly from SoSceneManager.  Cosmetics:
+	Observe 80-char line width.
+
+2004-07-31 01:45  kyrah
+
+	* examples/Sc21Viewer/: AppController.h, AppController.mm,
+	English.lproj/MainMenu.nib/info.nib,
+	English.lproj/MainMenu.nib/keyedobjects.nib:
+	
+	Updated to work with new SCCamera - cannot convert camera type, use
+	SCSceneGraph viewAll
+
+2004-07-31 01:44  kyrah
+
+	* src/: SCCamera.h, SCCamera.mm, SCCameraP.h, SCController.mm,
+	SCExaminerController.h, SCExaminerController.mm, SCSceneGraph.h,
+	SCSceneGraph.mm:
+	
+	Removed scenegraph dependency in SCCamera.
+
+2004-07-31 01:23  kintel
+
+	* src/: SCController.mm, SCView.mm:
+	
+	Removed code for supporting nibs from PB1
+
+2004-07-31 00:49  kyrah
+
+	* src/SCSceneGraph.mm:
+	
+	Ref() superscenegraph created by the delegate.
+
+2004-07-30 23:42  kyrah
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Don't warn on unused variables. Moved SCExaminerController to
+	'obsoleted' group to get it out of my way.
+
+2004-07-30 23:33  kyrah
+
+	* src/: SCCamera.h, SCCamera.mm, SCSceneGraph.h, SCSceneGraph.mm,
+	SCSceneGraphP.h:
+	
+	Use SoGroup instead of SoSeparator to support reading VRML97 files.
+
+2004-07-30 23:20  kintel
+
+	* src/SCView.mm:
+	
+	bugfix: wrong event method used
+
+2004-07-30 23:15  kyrah
+
+	* src/SCExterns.m:
+	
+	Removed unusued SCRedrawNotification
+
+2004-07-30 23:03  kyrah
+
+	* src/SCView.mm:
+	
+	Cosmetics.
+
+2004-07-30 22:59  kyrah
+
+	* src/: SCController.mm, SCControllerP.h, SCExterns.m,
+	SCSceneGraph.mm, SCSceneGraphP.h:
+	
+	Don't use 'Internal' in notification name
+
+2004-07-30 22:47  kyrah
+
+	* src/: SCController.mm, SCControllerP.h, SCExterns.m,
+	SCSceneGraph.mm, SCSceneGraphP.h:
+	
+	Relay root-changed notifications through controller.
+
+2004-07-30 22:06  kyrah
+
+	* src/SCView.mm:
+	
+	Import missing headerfile. Dummy implementations of protocol
+	methods inherited from superclass.
+
+2004-07-30 22:00  kintel
+
+	* src/: SCController.h, SCController.mm, SCControllerP.h:
+	
+	Don't expose drawable as an outlet
+
+2004-07-30 21:52  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Added SCDrawable.h and SCEventHandling.h
+
+2004-07-30 21:51  kintel
+
+	* src/: SCController.h, SCController.mm, SCControllerP.h,
+	SCDrawable.h, SCEventConverter.h, SCEventConverter.mm,
+	SCEventHandler.h, SCEventHandler.mm, SCEventHandlerP.h,
+	SCEventHandling.h, SCExaminerHandler.mm, SCExterns.m,
+	SCFlyHandler.mm, SCSceneGraph.h, SCSceneGraph.mm, SCView.h,
+	SCView.mm:
+	
+	Reorganized view<->controller connections, added SCDrawable and
+	SCEventHandling protocols
+
+2004-07-30 21:48  kintel
+
+	* src/: SCController.mm, SCControllerP.h:
+	
+	Plugged memory leak; delete self-created scenemanager
+
+2004-07-30 21:47  kintel
+
+	* src/SCView.mm:
+	
+	Use  SoContextHandler::destructingContext()
+
+2004-07-29 17:22  kyrah
+
+	* src/SCController.mm:
+	
+	Allow setting the scenegraph to nil.
+
+2004-07-29 17:11  kyrah
+
+	* src/SCController.mm:
+	
+	Cosmetics.
+
+2004-07-29 16:24  kyrah
+
+	* Resources/palette/: SCController.tiff, SCExaminerHandler.tiff,
+	SCFlyHandler.tiff, SCSceneGraph.tiff, SCWalkHandler.tiff:
+	
+	Updated artwork.
+
+2004-07-29 13:25  kyrah
+
+	* src/: SCCamera.h, SCCamera.mm, SCController.h, SCController.mm,
+	SCEventConverter.mm, SCEventHandler.mm, SCExaminerHandler.mm,
+	SCFlyHandler.mm, SCOpenGLPixelFormat.h, SCOpenGLPixelFormat.m,
+	SCOpenGLView.h, SCOpenGLView.m, SCSceneGraph.h, SCSceneGraph.mm,
+	SCView.h, SCView.mm:
+	
+	Added xcode marks for structure. Some cleanup of method ordering
+	etc.
+
+2004-07-29 12:32  kyrah
+
+	* src/SCCamera.mm:
+	
+	Added FIXME comment about potential bug in camera conversion code.
+	
+	Coding style.
+	
+	Warn if somebody tries to set camera to none using convertToType.
+
+2004-07-29 12:18  kyrah
+
+	* src/: SCController.h, SCController.mm, SCControllerInspector.mm:
+	
+	API design issue: renamed BOOL accessor methods from
+	"clearColorBuffer" to "clearsColorBuffer" &c.
+
+2004-07-29 11:22  kyrah
+
+	* src/SCControllerInspector.mm:
+	
+	Use radiobuttons instead of checkbox ot control
+	handleEventsInViewer. Coding style.
+
+2004-07-29 11:20  kyrah
+
+	* Resources/palette/English.lproj/SCControllerInspector.nib/:
+	info.nib, keyedobjects.nib:
+	
+	Resaved to get rid of 'inconsistencies' warning.
+
+2004-07-29 11:18  kyrah
+
+	* src/SCExterns.m:
+	
+	Mention that SCSceneGraphChangedNotification can be posted both
+	from SCController and SCSceneGraph.
+
+2004-07-29 11:17  kyrah
+
+	* Resources/palette/English.lproj/SCSceneGraphInspector.nib/:
+	classes.nib, info.nib, keyedobjects.nib:
+	
+	Added inspector for SCSceneGraph with checkbox to control
+	superscenegraph creation.
+
+2004-07-29 11:15  kyrah
+
+	* src/: SCSceneGraph.h, SCSceneGraph.mm:
+	
+	Use inspector checkbox to control superscenegraph creation. Made
+	init (no parameters) designated initalizer that is called by all
+	other non-coder inits. Post SCSceneGraphChangedNotification on
+	setRoot:
+
+2004-07-29 11:10  kyrah
+
+	* Sc21.xcode/project.pbxproj, src/SCSceneGraphInspector.h,
+	src/SCSceneGraphInspector.mm, src/SCSceneGraphP.h:
+	
+	Added inspector for SCSceneGraph with checkbox to control
+	superscenegraph creation.
+
+2004-07-29 11:04  kyrah
+
+	* Resources/palette/SCWalkHandler.tiff:
+	
+	walkhandler image, not the final version yet.
+
+2004-07-29 09:48  kyrah
+
+	*
+	Resources/palette/English.lproj/SCControllerInspector.nib/classes.n
+	ib,
+	Resources/palette/English.lproj/SCControllerInspector.nib/info.nib,
+	Resources/palette/English.lproj/SCControllerInspector.nib/keyedobje
+	cts.nib, src/SCControllerInspector.h:
+	
+	Change eventhandling mode selection: now uses radiobutton instead
+	of checkbox.
+	
+	Removed autoclipvalue.
+
+2004-07-29 09:43  kintel
+
+	* examples/:
+	Sc21FullscreenViewer/English.lproj/MainMenu.nib/info.nib,
+	Sc21FullscreenViewer/English.lproj/MainMenu.nib/keyedobjects.nib,
+	Sc21Viewer/English.lproj/MainMenu.nib/classes.nib,
+	Sc21Viewer/English.lproj/MainMenu.nib/info.nib,
+	Sc21Viewer/English.lproj/MainMenu.nib/keyedobjects.nib,
+	Viewtiful/English.lproj/MyDocument.nib/classes.nib,
+	Viewtiful/English.lproj/MyDocument.nib/keyedobjects.nib:
+	
+	Resaved with new SCOpenGLPixelFormat
+
+2004-07-29 09:40  kintel
+
+	* src/SCOpenGLPixelFormat.m:
+	
+	Rewrote internal&nib storage to work around Cocoa's NSValue
+	decoding bug
+
+2004-07-28 19:59  kyrah
+
+	* Resources/palette/: SCController.tiff, SCExaminerHandler.tiff,
+	SCFlyHandler.tiff, SCSceneGraph.tiff,
+	English.lproj/Sc21Palette.nib/info.nib,
+	English.lproj/Sc21Palette.nib/keyedobjects.nib:
+	
+	Updated artwork.
+
+2004-07-28 13:33  kintel
+
+	* examples/Viewtiful/English.lproj/MyDocument.nib/: classes.nib,
+	info.nib, keyedobjects.nib:
+	
+	Updates after removing SCExaminerController
+
+2004-07-28 13:31  kintel
+
+	* examples/Viewtiful/coin.icns:
+	
+	New Coin logo
+
+2004-07-28 13:30  kintel
+
+	* examples/Viewtiful/MyWindowController.mm:
+	
+	Use new event handling scheme, use SCCamera's viewAll
+
+2004-07-28 13:28  kintel
+
+	* examples/Viewtiful/: MyCoinController.h, MyCoinController.mm,
+	MyExaminerController.h, MyExaminerController.mm,
+	Viewtiful.xcode/project.pbxproj:
+	
+	Renamed MyExaminerController to MyCoinController
+
+2004-07-28 13:27  kintel
+
+	* examples/: Sc21Viewer/AppController.h,
+	Viewtiful/MyWindowController.h:
+	
+	Use SCController instead of SCExaminerController
+
+2004-07-28 13:26  kintel
+
+	* examples/: Sc21FullscreenViewer/AppController.mm,
+	Sc21Viewer/AppController.mm:
+	
+	Use SCCamera's viewAll
+
+2004-07-28 13:26  kintel
+
+	* src/SCExaminerHandler.mm:
+	
+	Fixed scrollwheel bug
+
+2004-07-28 13:25  kintel
+
+	* src/Sc21.h:
+	
+	Removed SCExaminerController.h, added SCEventHandler+subclasses
+
+2004-07-28 13:24  kintel
+
+	* src/: SCController.h, SCController.mm:
+	
+	Removed -viewAll as this method is now available from SCCamera
+
+2004-07-28 13:00  kyrah
+
+	* Resources/palette/English.lproj/Sc21Palette.nib/classes.nib,
+	Resources/palette/English.lproj/Sc21Palette.nib/keyedobjects.nib,
+	Sc21.xcode/project.pbxproj,
+	examples/Sc21Viewer/Sc21Viewer.xcode/project.pbxproj,
+	src/SCFlyHandler.mm, src/SCFlyHandlerInspector.h,
+	src/SCFlyHandlerInspector.m, src/Sc21Palette.h, src/Sc21Palette.mm:
+	
+	Added draft for SCFlyHandler inspector.
+
+2004-07-28 12:55  kyrah
+
+	* Resources/palette/SCFlyHandler.tiff:
+	
+	Template graphics for SCFlyhandler.
+
+2004-07-28 12:05  kintel
+
+	* examples/Sc21FullscreenViewer/: AppController.h,
+	AppController.mm, Info.plist, Sc21FullscreenViewer_Prefix.pch,
+	main.m, version.plist, English.lproj/MainMenu.nib/classes.nib,
+	English.lproj/MainMenu.nib/data.dependency,
+	English.lproj/MainMenu.nib/info.nib,
+	English.lproj/MainMenu.nib/keyedobjects.nib,
+	Sc21FullscreenViewer.xcode/project.pbxproj:
+	
+	Added fullscreen example
+
+2004-07-27 23:41  kintel
+
+	* src/: SCView.h, SCView.mm:
+	
+	Added support for NSMouseMoved events
+
+2004-07-27 23:40  kintel
+
+	* src/: SCEventHandler.h, SCEventHandler.mm, SCEventHandlerP.h,
+	SCExaminerHandler.mm, SCFlyHandler.mm:
+	
+	Made activateMode:event:point:camera:view: private
+
+2004-07-27 23:13  kyrah
+
+	* .cvsignore:
+	
+	Ignore build directory
+
+2004-07-27 23:03  kyrah
+
+	* Resources/palette/English.lproj/.cvsignore,
+	Sc21.xcode/.cvsignore, examples/Sc21Viewer/.cvsignore,
+	examples/Sc21Viewer/English.lproj/.cvsignore,
+	examples/Sc21Viewer/Sc21Viewer.xcode/.cvsignore,
+	examples/Viewtiful/.cvsignore,
+	examples/Viewtiful/English.lproj/.cvsignore,
+	examples/Viewtiful/Viewtiful.xcode/.cvsignore:
+	
+	I'm just sick and tired of having this huge list of temporary files
+	showing up everytime I cvs update... Get out of my face!
+
+2004-07-27 22:54  kyrah
+
+	*
+	Resources/palette/English.lproj/SCExaminerHandlerInspector.nib/clas
+	ses.nib,
+	Resources/palette/English.lproj/SCExaminerHandlerInspector.nib/info
+	.nib,
+	Resources/palette/English.lproj/SCExaminerHandlerInspector.nib/keye
+	dobjects.nib,
+	Resources/palette/English.lproj/Sc21Palette.nib/classes.nib,
+	Resources/palette/English.lproj/Sc21Palette.nib/info.nib,
+	Resources/palette/English.lproj/Sc21Palette.nib/keyedobjects.nib,
+	Sc21.xcode/project.pbxproj, src/SCExaminerHandlerInspector.h,
+	src/SCExaminerHandlerInspector.m, src/Sc21Palette.h,
+	src/Sc21Palette.mm:
+	
+	Added ExaminerHandler to palette. Note that the inspector is not
+	hooked up to anything yet, but I wanted to get this into CVS for
+	backup.
+
+2004-07-27 22:49  kyrah
+
+	* Resources/: framework/curs_pan.tiff, framework/curs_rotate.tiff,
+	framework/curs_zoom.tiff, palette/SCController.tiff,
+	palette/SCSceneGraph.tiff, palette/SCView.tiff,
+	palette/Sc21Palette.tiff:
+	
+	New artwork.
+
+2004-07-27 22:49  kyrah
+
+	* Resources/palette/SCExaminerHandler.tiff:
+	
+	Placeholder until we get final artwork. Probably creates tons of
+	legal issues to put this into our CVS but what the heck.
+
+2004-07-27 22:02  kintel
+
+	* src/SCCamera.mm:
+	
+	Added support for NULL cameras, coding style fixes, removed
+	NSCoding conformance
+
+2004-07-27 21:58  kintel
+
+	* src/SCCamera.h:
+	
+	Added SCCameraNone
+
+2004-07-27 21:30  kintel
+
+	* src/SCEventHandler.mm:
+	
+	coding style, correct headers
+
+2004-07-27 21:28  kintel
+
+	* src/SCController.h:
+	
+	Removed IBOutlet that shouldn't be there
+
+2004-07-27 21:15  kintel
+
+	* src/: SCFlyHandler.mm, SCView.mm:
+	
+	Compile fix. Use new headers
+
+2004-07-27 18:40  kintel
+
+	* examples/Sc21Viewer/AppController.mm:
+	
+	Use new event handling scheme
+
+2004-07-27 18:40  kintel
+
+	* src/SCController.mm:
+	
+	Removed obsolete autoclip encoding
+
+2004-07-27 18:29  kintel
+
+	* src/: SCExaminerController.h, SCExaminerController.mm:
+	
+	Moved -viewAll to SCController, disabled all event handling
+
+2004-07-27 18:27  kintel
+
+	* src/: SCController.h, SCController.mm, SCControllerP.h:
+	
+	Added new event handling code
+
+2004-07-27 18:22  kintel
+
+	* src/SCCamera.mm:
+	
+	Always check for SELF->camera == NULL
+
+2004-07-27 18:21  kintel
+
+	* src/: SCOpenGLViewInspector.h, SCEventConverter.h:
+	
+	coding style
+
+2004-07-27 18:20  kintel
+
+	* src/SCView.h:
+	
+	Added -flagsChanged:
+
+2004-07-27 18:20  kintel
+
+	* src/SCView.mm:
+	
+	Added -flagsChanged:, swallow keyrepeats
+
+2004-07-27 18:19  kintel
+
+	* src/SCUtil.h:
+	
+	Added SC21_LOG_METHOD, removed #undef SC21_DEBUG
+
+2004-07-27 18:17  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Added event handling classes
+
+2004-07-27 18:14  kintel
+
+	* src/: SCEventHandler.h, SCEventHandler.mm, SCEventHandlerP.h,
+	SCExaminerHandler.h, SCExaminerHandler.mm, SCFlyHandler.h,
+	SCFlyHandler.mm, SCMode.h, SCMode.m, SCMouseLog.h, SCMouseLog.m,
+	SCPanMode.h, SCPanMode.mm, SCRotateMode.h, SCRotateMode.mm,
+	SCZoomMode.h, SCZoomMode.mm:
+	
+	Added event handling classes
+
+2004-07-27 18:04  kintel
+
+	* packaging/framework/Info.plist:
+	
+	Corrected bundle identifier
+
+2004-07-27 18:04  kintel
+
+	* src/SCController.mm:
+	
+	FIXME
+
+2004-07-23 14:42  kyrah
+
+	* examples/Viewtiful/: MyWindowController.mm,
+	English.lproj/MainMenu.nib/info.nib,
+	English.lproj/MainMenu.nib/keyedobjects.nib,
+	Viewtiful.xcode/project.pbxproj:
+	
+	Updated example to work with SCSceneGraph.
+
+2004-07-23 14:41  kyrah
+
+	* src/: SCSceneGraph.h, SCSceneGraph.mm, SCSceneGraphP.h:
+	
+	Bugfix: Set active camera after superscenegraph creation to make it
+	possible to supply custom camera in delegate's
+	createSuperSceneGraph: implementation.
+
+2004-07-23 11:35  kyrah
+
+	* examples/Sc21Viewer/AppController.mm:
+	
+	Fixed up toggleHeadlight and toggleCameraType
+
+2004-07-23 10:30  kyrah
+
+	* src/: SCCamera.h, SCCamera.mm, SCController.h, SCController.mm,
+	SCControllerP.h, SCCursors.m, SCExaminerController.mm,
+	SCOpenGLPixelFormat.h, SCOpenGLPixelFormat.m, SCOpenGLView.h,
+	SCOpenGLView.m, SCSceneGraph.h, SCSceneGraph.mm, SCView.h,
+	SCView.mm, Sc21.h:
+	
+	Style cleanup.
+
+2004-07-22 17:34  kyrah
+
+	* Resources/palette/English.lproj/Sc21Palette.nib/classes.nib,
+	Resources/palette/English.lproj/Sc21Palette.nib/info.nib,
+	Resources/palette/English.lproj/Sc21Palette.nib/keyedobjects.nib,
+	Sc21.xcode/project.pbxproj, src/Sc21Palette.h, src/Sc21Palette.mm:
+	
+	Added SCScenegraph to palette.
+
+2004-07-22 17:34  kyrah
+
+	* src/: SCSceneGraph.h, SCSceneGraph.mm, SCSceneGraphP.h:
+	
+	Added readFromFile: method.
+
+2004-07-22 17:33  kyrah
+
+	* src/: SCController.h, SCController.mm, SCControllerP.h,
+	SCExaminerController.mm:
+	
+	Moved scenegraph instance variable back from private implementation
+	into public controller to expose it in Interface Builder.
+
+2004-07-22 17:31  kyrah
+
+	* Resources/palette/SCSceneGraph.tiff:
+	
+	Added temporary image to represent scenegraph in palette.
+
+2004-07-19 15:49  kintel
+
+	* src/SCSceneGraph.mm:
+	
+	Use -UTF8String instead of -cString, coding style fixes
+
+2004-07-19 15:48  kintel
+
+	* src/SCSceneGraph.h:
+	
+	Added delegate catagory, coding style fixes
+
+2004-07-19 15:48  kintel
+
+	* src/SCSceneGraphP.h:
+	
+	Coding style
+
+2004-07-19 14:32  kintel
+
+	* src/SCOpenGLView.m:
+	
+	Removed duplicated code
+
+2004-07-19 14:17  kintel
+
+	* src/SCExterns.m:
+	
+	typo
+
+2004-07-19 11:32  kintel
+
+	* src/SCController.mm:
+	
+	Removed redundant initialization of clearcolorbuffer and
+	cleardepthbuffer
+
+2004-07-19 00:04  kyrah
+
+	* src/: SCController.h, SCController.mm, SCSceneGraph.h,
+	SCSceneGraph.mm, SCSceneGraphP.h:
+	
+	Added delegate for SCSceneGraph to decide on superscenegraph
+	creation
+
+2004-07-18 16:31  kyrah
+
+	* Sc21.xcode/project.pbxproj, src/SCCamera.h, src/SCCamera.mm,
+	src/SCCameraP.h, src/SCController.mm, src/SCControllerP.h,
+	src/SCDebug.h, src/SCDebug.mm, src/SCExaminerController.h,
+	src/SCExaminerController.mm, src/SCSceneGraph.h,
+	src/SCSceneGraph.mm:
+	
+	Moved autoclip value to SCCamera. (Note that I still believe this
+	shouldn't be a public attribute.)
+	
+	SCCamera cleanup:
+	
+	  - Added SCCameraP.h header file.
+	  - Removed initWithSoCamera:inSceneGraph: method (since usually
+	    you will not have the SoCamera until actually loading a file)
+	  - Added NSCoding support
+	  - Added setSceneGraph: method
+	  - Simplified internal lookup of camera parent node.
+	
+	SCDebug: Renamed SCRendererIdToString to SCRendererDescription. 
+	(Hey, we're not programming Java here!)
+
+2004-07-18 14:48  kyrah
+
+	* src/: SCExterns.m, SCSceneGraph.h, SCSceneGraph.mm,
+	SCSceneGraphP.h:
+	
+	Further cleanup: Simplified superscenegraph creation.  Added
+	notifications for when the file cannot be opened, or no valid
+	scenegraph can be read. Re-instated notifications for when light
+	and/or camera are added to the superscenegraph.
+
+2004-07-18 14:09  kyrah
+
+	* src/: SCExaminerController.mm, SCSceneGraph.h, SCSceneGraph.mm,
+	SCSceneGraphP.h:
+	
+	SCSceneGraph pimplification.
+
+2004-07-18 13:52  kyrah
+
+	* Sc21.xcode/project.pbxproj, src/SCCamera.h, src/SCCamera.mm,
+	src/SCController.mm, src/SCExterns.m, src/SCSceneGraph.h,
+	src/SCSceneGraph.mm, src/SCSceneGraphP.h:
+	
+	Cleanup.
+
+2004-07-17 02:31  kyrah
+
+	* examples/Sc21Viewer/AppController.mm:
+	
+	Use SCSceneGraph class.
+
+2004-07-17 02:30  kyrah
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Added SCSceneGraph class
+
+2004-07-17 02:29  kyrah
+
+	* src/: SCCamera.mm, SCController.h, SCController.mm,
+	SCControllerP.h, SCExaminerController.mm, SCSceneGraph.h,
+	SCSceneGraph.mm, SCUtil.h, Sc21.h:
+	
+	Added SCSceneGraph class - an abstraction for the scenegraph,
+	including the superscenegraph handling, file loading, &c.
+	
+	Note that this still needs quite some cleanup. I think it's the
+	right thing to do though.
+
+2004-07-16 14:26  kyrah
+
+	* src/SCController.mm:
+	
+	Initialize clearcolorbuffer and cleardepthbuffer in non-NIB case.
+
+2004-07-07 01:36  kyrah
+
+	* src/SCView.mm:
+	
+	Fixme note to test on Jaguar.
+
+2004-07-07 01:34  kyrah
+
+	* src/: SCView.mm, Sc21Palette.mm:
+	
+	Get rid of old hack to draw view differently when being in
+	Interface Builder design node.
+
+2004-07-02 23:51  kyrah
+
+	* examples/Sc21Viewer/English.lproj/MainMenu.nib/: info.nib,
+	keyedobjects.nib:
+	
+	Nib file update: set clearcolorbuffer attribute to YES in
+	examinercontroller inspector. (No idea why it defaults to NO
+	anyway)
+
+2004-06-29 14:51  kintel
+
+	* src/: SCCamera.h, SCCamera.mm:
+	
+	Added -translate:, -zoom: now uses the delta parameter
+
+2004-06-28 22:59  kintel
+
+	* examples/: Sc21Viewer/English.lproj/MainMenu.nib/info.nib,
+	Sc21Viewer/English.lproj/MainMenu.nib/keyedobjects.nib,
+	Viewtiful/English.lproj/MyDocument.nib/data.dependency,
+	Viewtiful/English.lproj/MyDocument.nib/info.nib,
+	Viewtiful/English.lproj/MyDocument.nib/keyedobjects.nib:
+	
+	Clear color&depth buffer
+
+2004-06-28 22:56  kintel
+
+	* src/SCController.h, src/SCController.mm, src/SCControllerP.h,
+	src/SCControllerInspector.h, src/SCControllerInspector.mm,
+	Resources/palette/English.lproj/SCControllerInspector.nib/classes.n
+	ib,
+	Resources/palette/English.lproj/SCControllerInspector.nib/keyedobje
+	cts.nib:
+	
+	Added configurable color and depth buffer clearing
+
+2004-06-28 21:57  kintel
+
+	* examples/Viewtiful/MyWindowController.mm:
+	
+	Added logic to stop animations when windows are hidden or
+	miniaturized
+
+2004-06-28 17:27  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Added missing SC21_DEBUG flag
+
+2004-06-28 17:20  kintel
+
+	* src/: SCCamera.mm, SCController.mm, SCControllerInspector.mm,
+	SCCursors.m, SCEventConverter.mm, SCExaminerController.mm,
+	SCOpenGLPixelFormat.m, SCOpenGLView.m, SCOpenGLViewInspector.mm,
+	SCView.mm, Sc21Palette.mm:
+	
+	Use SC21_DEBUG macro instead of NSLog
+
+2004-06-28 17:19  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Added SCUtil.h and SC21_DEBUG flag
+
+2004-06-28 17:18  kintel
+
+	* src/SCUtil.h:
+	
+	NSLog macro
+
+2004-06-20 16:39  kintel
+
+	* src/: SCCamera.h, SCCamera.mm, SCController.h, SCController.mm,
+	SCControllerP.h, SCDebug.h, SCOpenGLPixelFormat.h,
+	SCOpenGLPixelFormat.m, SCOpenGLView.m, SCOpenGLViewP.h, SCView.h,
+	SCView.mm, Sc21.h:
+	
+	coding style & minor fixes
+
+2004-06-16 19:39  kintel
+
+	* src/SCController.mm:
+	
+	doc update
+
+2004-06-16 19:38  kintel
+
+	* src/SCOpenGLView.m:
+	
+	Added FIXME about invalid drawable
+
+2004-06-16 19:06  kintel
+
+	* src/: SCController.h, SCController.mm, SCExaminerController.h,
+	SCExaminerController.mm:
+	
+	Moved viewAll method from SCExaminerController to SCController
+
+2004-06-16 18:54  kintel
+
+	* src/SCController.mm:
+	
+	Fixed crash-bug: Reset headlight when setting new scenegraph
+
+2004-06-15 19:45  kintel
+
+	* src/SCView.mm:
+	
+	Explicitly set @selector(display) as redrawselector, documentation
+	update
+
+2004-06-15 19:43  kintel
+
+	* src/SCView.h:
+	
+	Removed declaration of overridden method -acceptsFirstResponder
+
+2004-06-15 19:22  kintel
+
+	* src/SCOpenGLView.m:
+	
+	Enabled prepareOpenGL under Jaguar, killed and reorganized some
+	FIXMEs
+
+2004-06-15 14:46  kintel
+
+	* doc/: HTMLTemplate.html, index.html:
+	
+	Use common footer
+
+2004-06-15 14:39  kintel
+
+	* src/: SCDefines.h, SCOpenGLPixelFormat.m, SCOpenGLView.m:
+	
+	Doc update
+
+2004-06-14 18:20  kintel
+
+	* src/: SCController.mm, SCOpenGLPixelFormat.m, SCOpenGLView.m,
+	SCView.mm:
+	
+	Sync. coding/decoding of public classes
+
+2004-06-14 18:19  kintel
+
+	* src/Sc21Palette.mm:
+	
+	Added FIXME
+
+2004-06-14 18:19  kintel
+
+	* src/SCView.h:
+	
+	removed old comment
+
+2004-06-14 17:57  kintel
+
+	* Resources/palette/English.lproj/Sc21Palette.nib/keyedobjects.nib:
+	
+	Removed SCOpenGLView, SCExaminerController and test controller
+
+2004-06-10 00:30  kintel
+
+	* Resources/palette/English.lproj/:
+	SCControllerInspector.nib/info.nib,
+	SCControllerInspector.nib/keyedobjects.nib,
+	SCOpenGLViewInspector.nib/info.nib,
+	SCOpenGLViewInspector.nib/keyedobjects.nib,
+	Sc21Palette.nib/classes.nib, Sc21Palette.nib/info.nib,
+	Sc21Palette.nib/keyedobjects.nib:
+	
+	Sync with recent framework updates
+
+2004-06-10 00:29  kintel
+
+	* src/: SCView.h, SCView.mm:
+	
+	Moved controller ivar declaration back to the public class (needed
+	to IB to recognize it as an outlet)
+
+2004-06-10 00:21  kintel
+
+	* examples/: Sc21Viewer/AppController.mm,
+	Viewtiful/MyWindowController.mm:
+	
+	-SCController.dumpSceneGraph -> SCDumpSceneGraph()
+
+2004-06-10 00:20  kintel
+
+	* src/: SCController.h, SCController.mm, SCControllerP.h:
+	
+	Moved delegate ivar declaration back to the public class (needed to
+	IB to recognize it as an outlet)
+
+2004-06-10 00:18  kintel
+
+	* src/: SCController.h, SCController.mm:
+	
+	Moved dumpSceneGraph to SCDebug
+
+2004-06-10 00:16  kintel
+
+	* src/: SCDebug.h, SCDebug.mm:
+	
+	Added SCDumpSceneGraph convenience function
+
+2004-06-09 14:28  kintel
+
+	* src/: SCController.h, SCController.mm, SCControllerP.h:
+	
+	Changed superclass from NSResponder to NSObject
+
+2004-06-09 14:28  kintel
+
+	* src/: SCExaminerController.h, SCExaminerController.mm:
+	
+	Correct usage of _SC_commonInit
+
+2004-06-08 16:04  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Added SCOpenGLViewP.h
+
+2004-06-08 16:03  kintel
+
+	* src/SCView.mm:
+	
+	Fixed ugly superview hack
+
+2004-06-08 14:24  kintel
+
+	* src/: SCEventConverter.h, SCEventConverter.mm:
+	
+	Remove underscore on ivars for internal class
+
+2004-06-08 12:38  kintel
+
+	* src/SCView.mm:
+	
+	Bugfix: Correct overriding of _SC_commonInit
+
+2004-06-08 12:36  kintel
+
+	* src/SCOpenGLView.m:
+	
+	Moved private declaration to separate file
+
+2004-06-08 12:16  kintel
+
+	* src/Sc21Palette.mm:
+	
+	Compile fix
+
+2004-06-08 12:14  kintel
+
+	* src/Sc21Palette.mm:
+	
+	Use _SC_ prefix for private methods
+
+2004-06-08 12:14  kintel
+
+	* src/SCControllerP.h:
+	
+	Added missing -_SC_idle: declaration
+
+2004-06-08 12:11  kintel
+
+	* src/SCController.mm:
+	
+	_SC_ prefix for NSTimer extensions
+
+2004-06-07 16:42  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Added SCControllerP.h
+
+2004-06-07 16:42  kintel
+
+	* src/: SCCamera.h, SCCamera.mm, SCController.h, SCController.mm,
+	SCControllerP.h, SCExaminerController.mm, SCOpenGLPixelFormat.h,
+	SCOpenGLPixelFormat.m, SCOpenGLView.h, SCOpenGLView.m, SCView.h,
+	SCView.mm:
+	
+	Mjau! Say hi to the cheshire cat
+
+2004-06-04 14:32  kintel
+
+	* src/: SCExaminerController.h, SCExaminerController.mm:
+	
+	Moved some scenegraph related functionality to SCController
+
+2004-06-04 14:31  kintel
+
+	* src/: SCController.h, SCController.mm:
+	
+	Implemented calling delegate methods on -setSceneGraph:. Moved some
+	related functionality from SCExaminerController
+
+2004-06-04 13:02  kintel
+
+	* src/: SCController.h, SCController.mm:
+	
+	Added delegate&accessors
+
+2004-06-01 19:21  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	chmod fixes to support Xcode 1.2
+
+2004-05-28 13:23  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	background.tif -> background.tiff
+
+2004-05-27 15:01  kintel
+
+	* LICENSE, README, Resources/framework/Info.plist,
+	Resources/palette/Info.plist, Resources/palette/SCController.pict,
+	Resources/palette/SCController.tiff, Resources/palette/SCView.pict,
+	Resources/palette/SCView.tiff, Resources/palette/Sc21Palette.tiff,
+	Resources/palette/coin.png, Resources/palette/palette.table,
+	Sc21.xcode/project.pbxproj, examples/README,
+	examples/NoNibViewer/AppController.h,
+	examples/NoNibViewer/AppController.mm,
+	examples/NoNibViewer/build.sh, examples/NoNibViewer/main.mm,
+	examples/NoNibViewer/NoNibViewer.xcode/project.pbxproj,
+	examples/Sc21Viewer/AppController.h,
+	examples/Sc21Viewer/AppController.mm,
+	examples/Sc21Viewer/Info.plist,
+	examples/Sc21Viewer/Sc21Viewer_Prefix.pch,
+	examples/Sc21Viewer/main.m,
+	examples/Sc21Viewer/English.lproj/MainMenu.nib/data.dependency,
+	examples/Sc21Viewer/English.lproj/MainMenu.nib/info.nib,
+	examples/Sc21Viewer/English.lproj/MainMenu.nib/keyedobjects.nib,
+	examples/Sc21Viewer/Sc21Viewer.xcode/project.pbxproj,
+	examples/Viewtiful/AppController.h,
+	examples/Viewtiful/AppController.mm,
+	examples/Viewtiful/MyDocument.h, examples/Viewtiful/MyDocument.mm,
+	examples/Viewtiful/MyExaminerController.h,
+	examples/Viewtiful/MyExaminerController.mm,
+	examples/Viewtiful/MyWindowController.h,
+	examples/Viewtiful/MyWindowController.mm,
+	examples/Viewtiful/main.mm,
+	examples/Viewtiful/Viewtiful.xcode/project.pbxproj,
+	packaging/doc/Description.plist, packaging/doc/Info.plist,
+	packaging/framework/Description.plist,
+	packaging/framework/Info.plist, packaging/meta/Description.plist,
+	packaging/meta/Info.plist, packaging/palette/Description.plist,
+	packaging/palette/Info.plist, packaging/scripts/makesc21dmg.sh,
+	src/SCCamera.h, src/SCCamera.mm, src/SCController.h,
+	src/SCController.mm, src/SCControllerInspector.h,
+	src/SCControllerInspector.mm, src/SCCursors.h, src/SCCursors.m,
+	src/SCDebug.h, src/SCDebug.mm, src/SCDefines.h,
+	src/SCEventConverter.h, src/SCEventConverter.mm,
+	src/SCExaminerController.h, src/SCExaminerController.mm,
+	src/SCOpenGLPixelFormat.h, src/SCOpenGLPixelFormat.m,
+	src/SCOpenGLView.h, src/SCOpenGLView.m,
+	src/SCOpenGLViewInspector.h, src/SCOpenGLViewInspector.mm,
+	src/SCView.h, src/SCView.mm, src/Sc21.h, src/Sc21Palette.h,
+	src/Sc21Palette.mm, packaging/doc/Resources/Welcome.rtf,
+	packaging/framework/Resources/Welcome.rtf,
+	packaging/meta/Resources/Welcome.rtf,
+	packaging/palette/Resources/Welcome.rtf:
+	
+	The big case change
+
+2004-05-14 16:42  kintel
+
+	* Sc21.xcode/project.pbxproj, bin/autodoc, doc/HTMLTemplate.html,
+	doc/index.html, doc/style.css, packaging/doc/Description.plist,
+	packaging/doc/Info.plist, packaging/doc/Resources/License.rtf,
+	packaging/doc/Resources/Welcome.rtf,
+	packaging/doc/Resources/background.tiff, src/SCView.h:
+	
+	Added documentation generation and packaging to Xcode
+
+2004-05-13 23:48  kintel
+
+	* src/SCDefines.h:
+	
+	Added version numbering
+
+2004-05-13 21:53  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Added SCExterns.m and SCDefines.h
+
+2004-05-13 21:52  kintel
+
+	* src/: SCController.h, SCController.mm, SCExaminerController.h,
+	SCExaminerController.mm:
+	
+	Use new SC21_EXTERN scheme
+
+2004-05-13 21:52  kintel
+
+	* src/SCExterns.m:
+	
+	Collect all extern definitions in one file
+
+2004-05-13 21:51  kintel
+
+	* src/SCDefines.h:
+	
+	Framework-wide defines
+
+2004-05-13 20:19  kintel
+
+	* src/: SCController.h, SCController.mm:
+	
+	Added -redrawSelector and -redrawHandler
+
+2004-05-11 22:03  kintel
+
+	* Resources/palette/palette.table:
+	
+	cosmetics
+
+2004-05-11 21:49  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Do not install SCEventConverter.h
+
+2004-05-11 01:48  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Reorganized Resource subdir
+
+2004-05-11 00:18  kintel
+
+	* Resources/palette/English.lproj/InfoPlist.strings:
+	
+	Removed obsolete file
+
+2004-05-11 00:11  kintel
+
+	* src/Sc21.h:
+	
+	Removed private header
+
+2004-05-11 00:07  kintel
+
+	* src/SCView.mm:
+	
+	Disconnect ourselves from controller on dealloc@
+
+2004-05-10 12:21  kintel
+
+	* TODO.txt:
+	
+	Moved to SC21-priv
+
+2004-05-10 12:18  kintel
+
+	* Changes-PB2.txt:
+	
+	Removed obsolete file
+
+2004-05-07 17:46  kintel
+
+	* LICENSE:
+	
+	Added URL to CPEL info
+
+2004-05-07 17:43  kintel
+
+	* BUGS.txt:
+	
+	Removed fixed bug
+
+2004-05-07 16:43  kintel
+
+	* examples/Viewtiful/main.mm:
+	
+	removed stray character
+
+2004-05-07 16:39  kintel
+
+	* examples/NoNibViewer/AppController.mm:
+	
+	sync copyright header
+
+2004-05-07 16:39  kintel
+
+	* src/SCDebug.mm, src/SCOpenGLPixelFormat.m, src/SCOpenGLView.m,
+	examples/NoNibViewer/main.mm, examples/Sc21Viewer/main.m,
+	examples/Viewtiful/main.mm:
+	
+	Added copyright header
+
+2004-05-07 16:33  kintel
+
+	* examples/NoNibViewer/AppController.h:
+	
+	sync copyright header
+
+2004-05-07 16:33  kintel
+
+	* src/: SCDebug.h, SCOpenGLPixelFormat.h, SCOpenGLView.h:
+	
+	Added copyright header
+
+2004-05-07 16:29  kintel
+
+	* src/: SCController.h, SCController.mm:
+	
+	SCEventConverter.h only needed from implementation
+
+2004-05-05 12:44  kintel
+
+	* src/SCOpenGLView.m:
+	
+	notes about reshape differences wrt. NSOpenGLView
+
+2004-05-04 15:27  kintel
+
+	* src/SCOpenGLView.m:
+	
+	Static -> dynamic OpenGL initialization, updated FIXMEs on how to
+	fix properly
+
+2004-05-02 23:47  kintel
+
+	* src/: SCView.h, SCView.mm:
+	
+	Removed obsolete OpenGL functionality, documentation update
+
+2004-05-02 23:14  kintel
+
+	* src/SCController.h:
+	
+	Clarification of the NSResponder inheritance issue
+
+2004-05-02 23:09  kintel
+
+	* src/SCController.mm:
+	
+	bgcolor fix; try converting to RGB before raising exception
+
+2004-05-01 14:36  kintel
+
+	* src/SCController.mm:
+	
+	Set default transparency to smth. nicer
+
+2004-04-30 18:49  kintel
+
+	* examples/NoNibViewer/build.sh:
+	
+	Add simple build script
+
+2004-04-30 18:34  kintel
+
+	* examples/NoNibViewer/: Info.plist, version.plist:
+	
+	Removed obsolete files
+
+2004-04-30 18:33  kintel
+
+	* examples/NoNibViewer/: AppController.h, AppController.mm,
+	main.mm, NoNibViewer.xcode/project.pbxproj:
+	
+	Make this example truly no-nib
+
+2004-04-30 02:17  kintel
+
+	* src/: SCController.mm, SCExaminerController.mm:
+	
+	Correctly ref/unref scenegraph
+
+2004-04-30 02:12  kintel
+
+	* src/SCOpenGLPixelFormat.m:
+	
+	doc updates
+
+2004-04-30 02:11  kintel
+
+	* src/SCOpenGLViewInspector.mm:
+	
+	coding style
+
+2004-04-30 02:00  kintel
+
+	* src/SCOpenGLView.m:
+	
+	retain/release fixes, doc update
+
+2004-04-30 01:37  kintel
+
+	* src/Sc21Palette.mm:
+	
+	Added missing handler for SCOpenGLView, removed unnecessary reshape
+
+2004-04-30 01:23  kintel
+
+	* examples/NoNibViewer/AppController.mm:
+	
+	Quit app on window close
+
+2004-04-30 01:23  kintel
+
+	* src/SCOpenGLView.m:
+	
+	Clear view on initialization. Needed by NoNibViewer
+
+2004-04-30 00:41  kintel
+
+	* examples/Sc21Viewer/AppController.mm:
+	
+	avoid initial garbage (necessary after double clear was fixed in
+	SCView)
+
+2004-04-30 00:38  kintel
+
+	* src/SCController.mm:
+	
+	schedule a redraw after viewport changes
+
+2004-04-30 00:33  kintel
+
+	* src/: SCOpenGLView.m, SCView.mm:
+	
+	Cleaned up OpenGL state & clearing
+
+2004-04-29 23:08  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Kill parenthesis warnings, do not strip debug builds
+
+2004-04-29 23:07  kintel
+
+	* src/: SCController.h, SCController.mm:
+	
+	Cleanup and simplification of sensor queue handling; sync with
+	recent Coin changes
+
+2004-04-29 23:06  kintel
+
+	* examples/Models/basic/2cubes.iv:
+	
+	synchronize rotation speed
+
+2004-04-28 14:24  kintel
+
+	* examples/Sc21Viewer/: AppController.h, AppController.mm,
+	English.lproj/MainMenu.nib/classes.nib,
+	English.lproj/MainMenu.nib/info.nib,
+	English.lproj/MainMenu.nib/keyedobjects.nib:
+	
+	Moved menu definition to nib file, misc. cleanup
+
+2004-04-28 13:41  kintel
+
+	* Resources/palette/English.lproj/Sc21Palette.nib/: classes.nib,
+	keyedobjects.nib:
+	
+	Reread SC21 header files to sync
+
+2004-04-27 19:24  kintel
+
+	* examples/Viewtiful/: MyExaminerController.h,
+	MyExaminerController.mm, MyWindowController.h,
+	MyWindowController.mm, main.mm,
+	English.lproj/MyDocument.nib/classes.nib,
+	English.lproj/MyDocument.nib/keyedobjects.nib:
+	
+	Updated to support the new viewless SCController
+
+2004-04-27 18:20  kintel
+
+	* examples/NoNibViewer/AppController.mm:
+	
+	Updated to support the new viewless SCController
+
+2004-04-27 18:18  kintel
+
+	* src/SCView.mm:
+	
+	bugfix: initialize viewport when controller is set
+
+2004-04-27 17:58  kintel
+
+	* examples/Sc21Viewer/: AppController.h, AppController.mm,
+	English.lproj/MainMenu.nib/classes.nib,
+	English.lproj/MainMenu.nib/keyedobjects.nib:
+	
+	Updated to support the new viewless SCController
+
+2004-04-27 17:52  kintel
+
+	* src/: SCController.h, SCController.mm, SCView.mm:
+	
+	Decoupled SCView and SCController, replaced the view by a redraw
+	handler
+
+2004-04-27 13:15  kintel
+
+	* src/: SCController.h, SCController.mm, SCEventConverter.h,
+	SCEventConverter.mm, SCExaminerController.h,
+	SCExaminerController.mm, SCView.h, SCView.mm:
+	
+	Step to decouple view and controller: send view together with
+	events. Misc. related cleanup
+
+2004-04-26 20:04  kintel
+
+	* src/: SCCamera.mm, SCController.mm, SCCursors.m, SCDebug.mm,
+	SCEventConverter.mm, SCExaminerController.mm,
+	SCOpenGLPixelFormat.m, SCOpenGLView.m, SCView.mm:
+	
+	import fixes
+
+2004-04-26 19:56  kintel
+
+	* src/: SCController.h, SCExaminerController.h, SCView.h:
+	
+	import fixes
+
+2004-04-26 19:49  kintel
+
+	* src/SCOpenGLView.m:
+	
+	cleanup, mostly related to reshape/update
+
+2004-04-26 15:26  kintel
+
+	* Resources/palette/palette.table:
+	
+	Add version info to tooltip
+
+2004-04-26 15:25  kintel
+
+	* Resources/palette/English.lproj/:
+	SCOpenGLViewInspector.nib/keyedobjects.nib,
+	Sc21Palette.nib/classes.nib, Sc21Palette.nib/keyedobjects.nib:
+	
+	sync with latest SC21 headers
+
+2004-04-26 15:17  kintel
+
+	* Resources/palette/English.lproj/:
+	SCOpenGLViewInspector.nib/objects.nib, Sc21Palette.nib/objects.nib:
+	
+	Only use keyed archiving
+
+2004-04-23 18:47  kintel
+
+	* examples/Sc21Viewer/AppController.mm:
+	
+	Use SCOpenGLInfo() instead of deprecated -debugInfo
+
+2004-04-23 17:57  kintel
+
+	* examples/Sc21Viewer/AppController.mm:
+	
+	Removed deprecated call to -activate
+
+2004-04-23 11:27  kintel
+
+	* src/: SCController.h, SCController.mm:
+	
+	Final removal of -activate
+
+2004-04-23 11:22  kintel
+
+	* src/: SCController.h, SCController.mm:
+	
+	Removed -debugInfo; moved to SCDebug
+
+2004-04-22 16:01  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Added SCDebug.*
+
+2004-04-22 16:00  kintel
+
+	* src/: SCDebug.h, SCDebug.mm:
+	
+	debug routines
+
+2004-04-22 16:00  kintel
+
+	* src/: SCOpenGLPixelFormat.h, SCOpenGLPixelFormat.m:
+	
+	Conform to NSCopying
+
+2004-04-22 15:59  kintel
+
+	* src/SCOpenGLView.m:
+	
+	store automatically created pixelformat
+
+2004-04-21 17:08  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Error handling in pkg scripts
+
+2004-04-21 17:07  kintel
+
+	* packaging/scripts/makesc21pkg.sh:
+	
+	Error handling, doc
+
+2004-04-20 12:35  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Added installer background, fixed some wrong path names
+
+2004-04-20 12:16  kintel
+
+	* packaging/: framework/Resources/background.tiff, meta/Info.plist,
+	meta/Resources/background.tiff, palette/Info.plist,
+	palette/Resources/background.tiff:
+	
+	Added background image
+
+2004-04-20 00:47  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Reorganized pkg creation, meta package support, cleaned up some
+	redundant build settings
+
+2004-04-20 00:34  kintel
+
+	* packaging/: SC21_Description.plist, SC21_Info.plist, makedmg.sh,
+	makesc21dmg.sh, makesc21pkg.sh, framework/Description.plist,
+	framework/Info.plist, framework/Resources/License.rtf,
+	framework/Resources/Welcome.rtf, meta/Description.plist,
+	meta/Info.plist, meta/Resources/License.rtf,
+	meta/Resources/Welcome.rtf, palette/Description.plist,
+	palette/Info.plist, palette/Resources/License.rtf,
+	palette/Resources/Welcome.rtf, scripts/makedmg.sh,
+	scripts/makesc21dmg.sh, scripts/makesc21pkg.sh:
+	
+	Reorganized pkg creation, meta package support
+
+2004-04-09 12:35  kintel
+
+	* examples/Viewtiful/English.lproj/MyDocument.nib/: classes.nib,
+	keyedobjects.nib:
+	
+	disabled oneshot; view is now active during minimization, removed
+	"Your document contents here" text
+
+2004-04-09 12:35  kintel
+
+	* examples/Sc21Viewer/English.lproj/MainMenu.nib/: info.nib,
+	keyedobjects.nib:
+	
+	disabled oneshot; view is now active during minimization
+
+2004-04-08 20:01  kintel
+
+	* examples/Viewtiful/MyWindowController.mm:
+	
+	Removed activate call
+
+2004-04-08 19:58  kintel
+
+	* examples/NoNibViewer/AppController.mm:
+	
+	Updated menu handling, removed activate, coding style
+
+2004-04-08 19:57  kintel
+
+	* examples/NoNibViewer/AppController.h:
+	
+	controller doesn't need to be public, coding style
+
+2004-04-08 19:56  kintel
+
+	* examples/Sc21Viewer/AppController.h:
+	
+	coding style
+
+2004-04-08 19:56  kintel
+
+	* examples/Sc21Viewer/AppController.mm:
+	
+	Updated menu handling, coding style
+
+2004-04-08 19:53  kintel
+
+	* src/SCView.mm:
+	
+	Removed automatic menu creation, pass unhandles events to super
+	instead of nextResponder
+
+2004-04-08 19:49  kintel
+
+	* src/SCExaminerController.mm:
+	
+	Removed redundant right mouse handling
+
+2004-04-08 19:48  kintel
+
+	* src/SCController.mm:
+	
+	NSCoder implementation, cleaned up right mouse handling and Coin
+	initialization
+
+2004-04-08 19:45  kintel
+
+	* src/Sc21Palette.h:
+	
+	Restored static typing of outlets ;)
+
+2004-04-08 16:44  kintel
+
+	* src/Sc21Palette.mm, Sc21.xcode/project.pbxproj:
+	
+	Added SCControllerInspector
+
+2004-04-08 02:01  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	renamed SC21Inspector and palette images to more comprehensible
+	file and class names
+
+2004-04-08 01:57  kintel
+
+	* src/: SCView.h, SCView.mm:
+	
+	Changed designated initializer to conform with superclass, removed
+	redundant -becomeFirstResponder
+
+2004-04-08 01:50  kintel
+
+	* src/SCEventConverter.mm:
+	
+	Map from NSScrollWheel event to BUTTON4/BUTTON5
+
+2004-04-08 01:47  kintel
+
+	* Resources/palette/palette.table:
+	
+	Added missing classes
+
+2004-04-08 01:47  kintel
+
+	* Resources/palette/English.lproj/Sc21Palette.nib/: classes.nib,
+	info.nib, keyedobjects.nib:
+	
+	general cleanup
+
+2004-04-08 01:46  kintel
+
+	* src/: Sc21Palette.h, Sc21Palette.mm:
+	
+	support for CustomClassInspector for controllers, general cleanup
+
+2004-04-08 01:43  kintel
+
+	* src/SCOpenGLViewInspector.h, src/SCOpenGLViewInspector.mm,
+	Resources/palette/English.lproj/SCOpenGLViewInspector.nib/classes.n
+	ib,
+	Resources/palette/English.lproj/SCOpenGLViewInspector.nib/info.nib,
+	Resources/palette/English.lproj/SCOpenGLViewInspector.nib/keyedobje
+	cts.nib:
+	
+	Changed name to SCOpenGLViewInspector
+
+2004-04-07 01:05  kintel
+
+	* src/SCView.mm:
+	
+	plugged memory leak
+
+2004-04-07 00:56  kyrah
+
+	* src/SCController.mm:
+	
+	- Fixed bug in notification handling: Register as observer only for
+	  notifications posted by the SCController instance, or you'll run 
+	 into trouble in MDI applications...  - Set realtime interval to
+	1/60 of a second.  - Added NSTimer - (BOOL)isActive method.  -
+	Renamed SCIdleNotification to _SCIdleNotification.
+
+2004-04-07 00:43  kyrah
+
+	* src/SCView.mm:
+	
+	Removed unnecessary makeCurrentcontext
+
+2004-04-07 00:27  kyrah
+
+	* examples/Models/basic/: 2cubes.iv, cube.iv, enginecube.iv,
+	rotorcube.iv:
+	
+	Very basic models, nice for testing various animation modes (rotor
+	vs. engine)
+
+2004-04-06 23:53  kintel
+
+	* src/SCController.mm:
+	
+	Eliminated activate
+
+2004-04-06 23:30  kintel
+
+	* src/SCController.mm:
+	
+	small cleanup, coding style, added some FIXME's
+
+2004-04-06 18:14  kyrah
+
+	* src/: SCController.h, SCController.mm:
+	
+	Removed method for setting timer queue interval. The timer will be
+	re-scheduled based on the next pending timer event in the queue,
+	not it's interval.
+
+2004-04-06 17:37  kyrah
+
+	* src/SCController.mm:
+	
+	Remove ourselves as observer for Notifications on dealloc. Fixes
+	problem with not retaining view, as reported in last commit
+	messages.
+
+2004-04-06 17:13  kyrah
+
+	* src/SCController.mm:
+	
+	Reverse kintel's changes ref. not retaining the view, since it
+	gives me random crashes in Viewtiful. Investigating.
+
+2004-04-06 16:46  kyrah
+
+	* src/SCController.mm:
+	
+	Use NSNotificationQueue for idle processing.
+
+2004-04-06 15:06  kintel
+
+	* examples/Viewtiful/MyWindowController.mm:
+	
+	bugfix: [self init -> [super init
+
+2004-04-06 15:04  kintel
+
+	* examples/Viewtiful/MyDocument.mm:
+	
+	fixed root ref/unref bug, indentation fixes
+
+2004-04-06 15:03  kintel
+
+	* src/: SCController.h, SCController.mm, SCExaminerController.h,
+	SCExaminerController.mm:
+	
+	coding style
+
+2004-04-06 14:58  kintel
+
+	* src/SCController.mm:
+	
+	decouple view on decalloc, do not retain view to avoid cycles
+
+2004-04-06 14:56  kintel
+
+	* src/: SCController.h, SCExaminerController.h:
+	
+	Removed NSCoding declarations (by convention)
+
+2004-04-06 14:55  kintel
+
+	* src/SCView.mm:
+	
+	decouple controller on dealloc
+
+2004-04-06 14:54  kintel
+
+	* src/: SCCamera.mm, SCEventConverter.mm:
+	
+	bugfix: call super's dealloc
+
+2004-04-05 23:57  kyrah
+
+	* src/SCController.mm:
+	
+	Use - (void)startTimers and - (void)stopTimers. I think things are
+	now correct wrt. having multiple windows, changing the scenegraph
+	that is displayed, &c.
+
+2004-04-05 23:56  kyrah
+
+	* src/SCController.h:
+	
+	SCController.mm
+
+2004-04-05 23:40  kyrah
+
+	* src/SCController.mm:
+	
+	Only temporarily disable timers when scenegraph is 0, not
+	invalidate
+
+2004-04-05 23:33  kyrah
+
+	* src/SCController.mm:
+	
+	Improved sensor queue handling. Timers for timer queue and delay
+	timeout queue work. Missing: delay queue processing when
+	application is idle.
+
+2004-04-05 21:50  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Added SCCursors.* and cursor images
+
+2004-04-05 21:49  kintel
+
+	* src/SCExaminerController.mm:
+	
+	Initial cursor support
+
+2004-04-05 21:48  kintel
+
+	* src/: SCView.h, SCView.mm:
+	
+	Initial cursor handling, added missing event methods, removed
+	NSCoding declarations
+
+2004-04-05 15:51  kintel
+
+	* Sc21.xcode/project.pbxproj,
+	examples/Viewtiful/Viewtiful.xcode/project.pbxproj,
+	src/SCController.mm, src/SCExaminerController.mm,
+	src/SCOpenGLPixelFormat.m, src/SCOpenGLView.m:
+	
+	Added SC21/SC21.h
+
+2004-04-05 15:34  kintel
+
+	* examples/NoNibViewer/NoNibViewer.xcode/project.pbxproj:
+	
+	Cleaned up build settings
+
+2004-04-05 15:26  kintel
+
+	* examples/Viewtiful/English.lproj/MainMenu.nib/: info.nib,
+	keyedobjects.nib, objects.nib:
+	
+	Converted to keyed archive
+
+2004-04-05 15:25  kintel
+
+	* examples/: Sc21Viewer/English.lproj/MainMenu.nib/info.nib,
+	Sc21Viewer/English.lproj/MainMenu.nib/keyedobjects.nib,
+	Sc21Viewer/English.lproj/MainMenu.nib/objects.nib,
+	Viewtiful/English.lproj/MyDocument.nib/classes.nib,
+	Viewtiful/English.lproj/MyDocument.nib/info.nib,
+	Viewtiful/English.lproj/MyDocument.nib/keyedobjects.nib,
+	Viewtiful/English.lproj/MyDocument.nib/objects.nib:
+	
+	Converted to new class hierarchy
+
+2004-04-05 15:15  kintel
+
+	* examples/Viewtiful/Viewtiful.xcode/project.pbxproj:
+	
+	Cleaned up build settings
+
+2004-04-05 15:13  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Turned off unused parameters warning
+
+2004-04-05 15:08  kintel
+
+	* examples/Sc21Viewer/Sc21Viewer.xcode/project.pbxproj:
+	
+	build settings cleanup
+
+2004-04-05 15:01  kintel
+
+	* Resources/framework/Info.plist:
+	
+	Use SC21_VERSION
+
+2004-04-05 15:00  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	enable warnings, added SC21_VERSION
+
+2004-04-05 14:58  kintel
+
+	* Resources/palette/English.lproj/Sc21Palette.nib/:
+	keyedobjects.nib, objects.nib:
+	
+	Added SCOpenGLView
+
+2004-04-05 14:56  kintel
+
+	* src/SCOpenGLViewInspector.h, src/SCOpenGLViewInspector.mm,
+	Resources/palette/English.lproj/SCOpenGLViewInspector.nib/classes.n
+	ib,
+	Resources/palette/English.lproj/SCOpenGLViewInspector.nib/info.nib,
+	Resources/palette/English.lproj/SCOpenGLViewInspector.nib/keyedobje
+	cts.nib,
+	Resources/palette/English.lproj/SCOpenGLViewInspector.nib/objects.n
+	ib:
+	
+	Basic implementation
+
+2004-04-05 04:48  kintel
+
+	* src/: SCView.h, SCView.mm:
+	
+	Inherit from SCOpenGLView, removed colorbits/depthbits, support
+	reading of old version
+
+2004-04-05 04:45  kintel
+
+	* src/: SCOpenGLView.h, SCOpenGLView.m:
+	
+	Adapted to new SCOpenGLPixelFormat
+
+2004-04-05 04:44  kintel
+
+	* src/: SCOpenGLPixelFormat.h, SCOpenGLPixelFormat.m:
+	
+	Rewrote to become an NSOpenGLPixelFormat factory
+
+2004-04-05 04:42  kintel
+
+	* src/: SCCamera.h, SCCamera.mm:
+	
+	Coding style
+
+2004-03-28 14:18  kintel
+
+	* Resources/palette/English.lproj/:
+	SCOpenGLViewInspector.nib/classes.nib,
+	SCOpenGLViewInspector.nib/info.nib,
+	SCOpenGLViewInspector.nib/objects.nib, Sc21Palette.nib/classes.nib,
+	Sc21Palette.nib/info.nib:
+	
+	Added SC21OpenGLView, converted to 10.2 format
+
+2004-03-28 14:17  kintel
+
+	* src/: SCOpenGLViewInspector.h, SCOpenGLViewInspector.mm:
+	
+	Initial implementation
+
+2004-03-28 14:16  kintel
+
+	* src/: Sc21Palette.h, Sc21Palette.mm:
+	
+	Added SCOpenGLView
+
+2004-03-28 14:16  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	added SCOpenGL*
+
+2004-03-28 14:15  kintel
+
+	* src/SCOpenGLView.m:
+	
+	Added logging, fixed setView/prepareOpenGL issues
+
+2004-03-26 12:43  kintel
+
+	* src/: SCOpenGLPixelFormat.h, SCOpenGLPixelFormat.m,
+	SCOpenGLView.h, SCOpenGLView.m:
+	
+	Initial, untestet implementation
+
+2004-03-25 14:41  kyrah
+
+	* .cvsignore:
+	
+	guess...
+
+2004-03-23 17:03  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Added targets: install, pkg, dmg and dummy
+
+2004-03-23 17:02  kintel
+
+	* src/: SCCamera.h, SCCamera.mm, SCView.h, SCView.mm:
+	
+	Removed unused headers
+
+2004-03-17 13:43  kintel
+
+	* examples/Viewtiful/: Viewtiful_Prefix.h, Viewtiful_Prefix.pch:
+	
+	Renamed _Prefix.h to _Prefix.pch
+
+2004-03-17 13:42  kintel
+
+	* examples/Viewtiful/Viewtiful.pbproj/project.pbxproj:
+	
+	Removed old PB project
+
+2004-03-17 13:38  kintel
+
+	* examples/: NoNibViewer/NoNibViewer_Prefix.h,
+	NoNibViewer/NoNibViewer_Prefix.pch, Sc21Viewer/SC21Viewer_Prefix.h,
+	Sc21Viewer/Sc21Viewer_Prefix.pch:
+	
+	Renamed _Prefix.h to _Prefix.pch
+
+2004-03-17 13:30  kintel
+
+	* Resources/: framework/Info.plist, palette/Info.plist:
+	
+	Info.plist files
+
+2004-03-17 13:29  kintel
+
+	* Sc21.xcode/project.pbxproj:
+	
+	Xcode project file
+
+2004-03-17 13:28  kintel
+
+	* README.framework, README.palette:
+	
+	Removed old files
+
+2004-03-17 13:22  kintel
+
+	* Resources/palette/English.lproj/SCOpenGLViewInspector.nib/:
+	info.nib, objects.nib:
+	
+	Saved with new IB
+
+2004-03-17 13:22  kintel
+
+	* Resources/palette/English.lproj/Sc21Palette.nib/: info.nib,
+	objects.nib:
+	
+	Removed unused view
+
+2004-03-17 13:21  kintel
+
+	* Resources/coinlogo.tiff:
+	
+	Removed unused file
+
+2004-03-17 13:16  kintel
+
+	* src/: SC21_Prefix.h, Sc21_Prefix.pch:
+	
+	Renamed SC21_Prefix.h to SC21_Prefix.pch
+
+2004-03-17 13:11  kintel
+
+	* src/: SCOpenGLViewInspector.mm, Sc21Palette.h, Sc21Palette.mm:
+	
+	Use framework path for SC21 imports
+
+2004-03-12 15:40  kintel
+
+	* examples/Sc21Viewer/: AppController.h, AppController.mm,
+	SC21Viewer_Prefix.h, main.m, English.lproj/InfoPlist.strings,
+	English.lproj/MainMenu.nib/classes.nib,
+	English.lproj/MainMenu.nib/data.dependency,
+	English.lproj/MainMenu.nib/info.nib,
+	English.lproj/MainMenu.nib/objects.nib:
+	
+	Restored after disk crash
+
+2003-11-18 16:44  kintel
+
+	* examples/Viewtiful/Viewtiful.pbproj/project.pbxproj:
+	
+	Removed more local paths
+
+2003-11-13 14:49  kyrah
+
+	* BUGS.txt:
+	
+	Bug list. Added first item concerning viewport-setup problem
+	reported by kintel.
+
+2003-11-12 23:34  kintel
+
+	* examples/Viewtiful/Viewtiful.pbproj/project.pbxproj:
+	
+	Removed local paths
+
+2003-11-12 23:18  kintel
+
+	* examples/README:
+	
+	Added description of new examples
+
+2003-11-12 23:17  kintel
+
+	* examples/Viewtiful/: AppController.h, AppController.mm,
+	MyDocument.h, MyDocument.mm, MyExaminerController.h,
+	MyExaminerController.mm, MyWindowController.h,
+	MyWindowController.mm, Viewtiful_Prefix.h, coin.icns, main.mm,
+	English.lproj/InfoPlist.strings,
+	English.lproj/MainMenu.nib/classes.nib,
+	English.lproj/MainMenu.nib/info.nib,
+	English.lproj/MainMenu.nib/objects.nib,
+	English.lproj/MyDocument.nib/classes.nib,
+	English.lproj/MyDocument.nib/data.dependency,
+	English.lproj/MyDocument.nib/info.nib,
+	English.lproj/MyDocument.nib/objects.nib,
+	Viewtiful.pbproj/project.pbxproj:
+	
+	Initial checkin
+
+2003-11-12 22:23  kintel
+
+	* examples/NoNibViewer/: AppController.h, AppController.mm,
+	NoNibViewer_Prefix.h, main.mm:
+	
+	Initial checkin
+
+2003-11-10 18:25  kintel
+
+	* examples/README:
+	
+	typo
+
+2003-08-07 11:52  kyrah
+
+	* TODO.txt:
+	
+	Added suggestions by John Richardson for future reference
+
+2003-08-07 11:45  kyrah
+
+	* src/SCExaminerController.mm:
+	
+	Minor doc improvements
+
+2003-08-05 19:36  kyrah
+
+	* Resources/palette/English.lproj/InfoPlist.strings:
+	
+	Date tag.
+
+2003-08-05 19:35  kyrah
+
+	* src/SCExaminerController.mm:
+	
+	Bugfix: middle mouse drag means 'pan', not 'drag'
+
+2003-07-28 16:23  kyrah
+
+	* src/: SCExaminerController.h, SCExaminerController.mm:
+	
+	Pass NSPoint or float instead of NSValue * in dragging/panning/zoom
+	functions.
+
+2003-07-26 22:01  kyrah
+
+	* Resources/palette/English.lproj/InfoPlist.strings:
+	
+	Added date tag.
+
+2003-07-26 19:45  kyrah
+
+	* src/SCExaminerController.mm:
+	
+	Cleanup.
+
+2003-07-26 19:27  kyrah
+
+	* src/: SCExaminerController.h, SCExaminerController.mm:
+	
+	Renamed performeXxxingWithPoint: methods to xxxWithPoint: Doc
+	improvements: explain NSValue usage.
+
+2003-07-26 18:44  kyrah
+
+	* src/SCExaminerController.h:
+	
+	Removed handling of cursor keys as camera control
+
+2003-07-26 18:44  kyrah
+
+	* src/SCExaminerController.mm:
+	
+	Zoom in/out bugfix. Removed handling of cursor keys as camera
+	control
+
+2003-07-26 18:42  kyrah
+
+	* src/SCCamera.mm:
+	
+	Zoom in/out bugfix.
+
+2003-07-26 16:15  kyrah
+
+	* src/: SCExaminerController.h, SCExaminerController.mm:
+	
+	API changes to follow Cocoa naming conventions - renamed several  
+	methods to contain the name of the parameter:
+	
+	  startPanning:     startPanningWithPoint:
+	  startDragging:    startDraggingWithPoint:
+	  performPanning:   performPanningWithPoint:
+	  performDragging:  performDraggingWithPoint:
+	  performZoom:	    performZoomWithDelta:
+	
+	Added support for zooming by dragging the mouse while holding down
+	the shift key. Added startZoomWithPoint: and performZoomWithPoint:
+	methods.
+
+2003-07-26 16:15  kyrah
+
+	* src/SCCamera.mm:
+	
+	FIXME update.
+
+2003-07-26 15:59  kyrah
+
+	* Changelog.txt, Changes-PB2.txt:
+	
+	Changelog.txt removed to Changes-PB2
+
+2003-07-21 11:47  kyrah
+
+	* Changelog.txt, src/Sc21Palette.mm:
+	
+	Bugfix for IB crash: don't try to do Coin rendering in test
+	interface mode.
+
+2003-07-21 11:45  kyrah
+
+	* src/SCController.mm:
+	
+	Check for valid scenemanager instance.
+
+2003-07-14 23:37  kyrah
+
+	* src/: SCCamera.h, SCCamera.mm, SCController.h, SCController.mm,
+	SCEventConverter.h, SCEventConverter.mm, SCExaminerController.h,
+	SCExaminerController.mm, SCView.h, SCView.mm,
+	SCOpenGLViewInspector.h, SCOpenGLViewInspector.mm, Sc21Palette.h,
+	Sc21Palette.mm:
+	
+	Added copyright header.
+
+2003-07-14 23:18  kyrah
+
+	* TODO.txt:
+	
+	Todo list
+
+2003-07-14 23:04  kyrah
+
+	* src/: SCCamera.h, SCCamera.mm, SCController.h, SCController.mm,
+	SCEventConverter.mm, SCExaminerController.mm, SCView.mm:
+	
+	Doc updates and fixes.
+
+2003-07-14 22:30  kyrah
+
+	* src/: SCView.h, SCView.mm:
+	
+	Removed addMenuEntry: method.
+
+2003-07-14 22:23  kyrah
+
+	* src/: SCExaminerController.h, SCExaminerController.mm:
+	
+	Remove unimplemented seeking method.
+
+2003-07-14 21:28  kyrah
+
+	* src/: SCController.h, SCExaminerController.h,
+	SCExaminerController.mm, SCView.h, SCView.mm:
+	
+	Document notifications
+
+2003-07-14 21:09  kyrah
+
+	* src/: SCController.h, SCController.mm, SCExaminerController.mm:
+	
+	Removed findLightInSceneGraph and findCameraInSceneGraph from
+	public API.
+
+2003-07-14 20:55  kyrah
+
+	* src/: SCCamera.mm, SCController.h, SCController.mm:
+	
+	Removed bestValueForNearPlane:farPlane from SCController's public
+	API.
+
+2003-07-14 20:45  kyrah
+
+	* src/: SCCamera.mm, SCController.h, SCController.mm:
+	
+	Get rid of viewportRegion method.
+
+2003-07-14 20:34  kyrah
+
+	* src/SCExaminerController.mm:
+	
+	Light detection bugfix
+
+2003-07-14 20:14  kyrah
+
+	* src/SCExaminerController.mm:
+	
+	Light detection bugfix
+
+2003-07-14 19:58  kyrah
+
+	* src/: SCController.mm, SCExaminerController.mm:
+	
+	Further cleanup of setSceneGraph:
+
+2003-07-14 19:48  kintel
+
+	* src/SCController.mm:
+	
+	Minor debug info fix
+
+2003-07-14 08:25  kyrah
+
+	* src/: SCCamera.h, SCCamera.mm, SCController.h, SCController.mm,
+	SCExaminerController.h, SCExaminerController.mm:
+	
+	Major rewrite of setSceneGraph
+
+2003-07-14 07:27  kyrah
+
+	* src/SCView.mm:
+	
+	Fixme note.
+
+2003-07-14 06:32  kyrah
+
+	* src/SCController.mm:
+	
+	Sorry for the mess in the last commits, I was testing... now things
+	should work, regardless of whether you call activate before or
+	after setting the scenegraph, and regardless if you are
+	instantiating your objects programmatically or from NIB.
+
+2003-07-14 06:30  kyrah
+
+	* src/SCExaminerController.mm:
+	
+	Bugfix.
+
+2003-07-14 06:02  kyrah
+
+	* src/: SCExaminerController.mm, SCExaminerController.mm:
+	
+	????
+
+2003-07-14 05:59  kyrah
+
+	* src/: SCController.mm, SCExaminerController.mm:
+	
+	???
+
+2003-07-14 05:49  kyrah
+
+	* src/SCController.h:
+	
+	Removed awakeFromNib
+
+2003-07-14 05:44  kyrah
+
+	* src/: SCController.h, SCController.mm, SCExaminerController.mm:
+	
+	Use activate: for necessary processing, not awakeFromNib, to enable
+	creation of view and controller programmatically.
+
+2003-07-14 05:24  kyrah
+
+	* src/: SCController.h, SCExaminerController.mm:
+	
+	Added doc for awakeFromNib
+
+2003-07-14 05:24  kyrah
+
+	* src/SCView.mm:
+	
+	Remove debug output.
+
+2003-07-14 04:55  kyrah
+
+	* src/SCEventConverter.mm:
+	
+	Comment
+
+2003-07-14 04:54  kyrah
+
+	* src/: SCController.h, SCController.mm, SCExaminerController.h,
+	SCExaminerController.mm:
+	
+	Use commonInit.
+
+2003-07-14 04:53  kyrah
+
+	* src/SCCamera.mm:
+	
+	Doc update.
+
+2003-07-14 04:47  kyrah
+
+	* src/: SCView.h, SCView.mm:
+	
+	Use commonInit.
+
+2003-07-14 03:45  kyrah
+
+	* src/SCController.mm:
+	
+	Must release previously retained view.
+
+2003-07-14 03:44  kyrah
+
+	* src/: SCCamera.h, SCCamera.mm:
+	
+	Move private API out of public header. Make toggleCameraType return
+	success indicator.
+
+2003-07-14 03:43  kyrah
+
+	* src/: SCView.h, SCView.mm:
+	
+	Added controller accessor methds.
+
+2003-07-14 03:27  kyrah
+
+	* src/: SCController.h, SCController.mm:
+	
+	Added setView method.
+
+2003-07-14 03:06  kyrah
+
+	* src/: SCCamera.h, SCCamera.mm, SCController.mm:
+	
+	Add and use cameraType method
+
+2003-07-14 02:55  kyrah
+
+	* src/: SCController.h, SCController.mm:
+	
+	dumpSceneGraph should return BOOL, not try to report errors in some
+	stupid and interfering way.
+
+2003-07-14 02:55  kyrah
+
+	* src/: SCView.h, SCView.mm:
+	
+	Move private API out of public header. Remove display*
+	'convenience' methods.
+
+2003-07-14 02:39  kyrah
+
+	* src/SCController.mm:
+	
+	init coin before creating  SbDict (in eventconverter)
+
+2003-07-14 02:15  kyrah
+
+	* src/: SCCamera.h, SCCamera.mm, SCEventConverter.h,
+	SCEventConverter.mm, SCExaminerController.mm:
+	
+	Further cleanup.
+
+2003-07-14 01:16  kyrah
+
+	* src/: SCController.h, SCExaminerController.h, SCView.h,
+	SCView.mm:
+	
+	Header file cleanup.
+
+2003-07-14 00:55  kyrah
+
+	* src/: SCController.h, SCController.mm:
+	
+	Removed autoclipstrategy - the default should be good enough.
+
+2003-07-14 00:51  kyrah
+
+	* src/: SCController.h, SCController.mm:
+	
+	Remove unnecessary coinVersion method.
+
+2003-07-14 00:18  kyrah
+
+	* src/SCController.mm:
+	
+	FIXME about freak IB crash w/ timers, and disabled stopping timers
+	at dealloc for now.
+
+2003-07-13 23:15  kyrah
+
+	* examples/README:
+	
+	What is this?
+
+2003-07-13 21:37  kyrah
+
+	* src/: SCView.h, SCView.mm:
+	
+	Moved debugInfo to SCController.
+
+2003-07-13 21:36  kyrah
+
+	* src/: SCController.h, SCController.mm, SCExaminerController.h,
+	SCExaminerController.mm:
+	
+	Remove default menu actions - that's really something the app
+	programmer should set up themselves. Added notification for 'camera
+	not found' and 'light not found'. Cleanup.
+
+2003-07-13 21:34  kyrah
+
+	* src/: SCCamera.h, SCCamera.mm:
+	
+	Added SCCameraType enum.
+
+2003-07-13 19:33  kyrah
+
+	* src/SCEventConverter.mm:
+	
+	Handle right mouse button events.
+
+2003-07-13 19:33  kyrah
+
+	* src/: SCExaminerController.h, SCExaminerController.mm:
+	
+	Make handleEvent* methods return success indicator. Handle right
+	mouse button click. Bugfix: No need to explicitly show menu on
+	ctrl-click, since we normally shouldn't get that event anyway
+	unless the app programmer has overwritten menuForEvent.
+
+2003-07-13 19:27  kyrah
+
+	* src/: SCController.h, SCController.mm:
+	
+	Make handleEvent* methods return success indicator. Handle right
+	mouse button click.
+
+2003-07-13 19:27  kyrah
+
+	* src/SCCamera.mm:
+	
+	Note about possible improvement in camera handling.
+
+2003-07-13 19:25  kyrah
+
+	* src/SCView.mm:
+	
+	Pass unhandled events up the responder chain. Don't handle right
+	mouse click here, but also forward that event to controller.
+
+2003-07-13 17:14  kyrah
+
+	* src/SCExaminerController.h:
+	
+	Minor doc fix.
+
+2003-07-13 17:14  kyrah
+
+	* src/: SCController.mm, SCExaminerController.mm:
+	
+	Allow NULL argument to setSceneGraph:
+
+2003-07-13 04:36  kyrah
+
+	* src/SCExaminerController.mm:
+	
+	Cleanup of setSceneGraph.
+
+2003-07-13 04:36  kyrah
+
+	* src/SCController.mm:
+	
+	Doc fix.
+
+2003-07-13 04:17  kyrah
+
+	* src/: SCController.h, SCController.mm:
+	
+	Added notifications. Added accessor methods to control timer and
+	delay intervals.
+
+2003-07-13 04:16  kyrah
+
+	* src/: SCCamera.mm, SCExaminerController.h,
+	SCExaminerController.mm:
+	
+	Added notifications.
+
+2003-07-13 04:15  kyrah
+
+	* src/: SCView.h, SCView.mm:
+	
+	Return newly created menu item from addMenuEntry:target:action
+
+2003-07-13 02:39  kyrah
+
+	* src/: SCController.mm, SCExaminerController.mm, SCView.mm:
+	
+	Doc fix: Mention that sender argument is ignored.
+
+2003-07-13 02:35  kyrah
+
+	* src/: SCController.h, SCView.mm:
+	
+	disconnect renamed to stopTimers
+
+2003-07-13 02:35  kyrah
+
+	* src/SCController.mm:
+	
+	Slightly better sensor queue handling, and FIXME about how it
+	should really be done.
+
+2003-07-13 01:38  kyrah
+
+	* src/SCEventConverter.mm:
+	
+	Don't retain/release SCController.
+
+2003-07-13 00:13  kyrah
+
+	* src/SCCamera.mm:
+	
+	Arghcvs diff -r 1.7 SCCamera.mm! Don't leave commented out code in
+	source...
+
+2003-07-13 00:08  kyrah
+
+	* src/SCCamera.mm:
+	
+	Don't retain controller, or else the controller's retain count will
+	never get 0 (since the only place where we release the camera is in
+	controller's dealloc)
+
+2003-07-12 23:25  kyrah
+
+	* src/: SCController.h, SCController.mm, SCView.mm:
+	
+	Added disconnect.
+
+2003-07-12 20:27  kintel
+
+	* src/SCController.mm:
+	
+	Doc update
+
+2003-07-11 21:51  kyrah
+
+	* src/: SCCamera.h, SCCamera.mm, SCController.h, SCController.mm,
+	SCEventConverter.h, SCEventConverter.mm, SCExaminerController.h,
+	SCExaminerController.mm, SCView.h:
+	
+	Be consistent in variable naming: all our private, so use _
+
+2003-07-11 21:37  kyrah
+
+	* src/Sc21Palette.mm:
+	
+	Avoid IB crash bug by disabling rendering unless we are in test
+	interface mode.
+
+2003-07-11 21:15  kyrah
+
+	* src/: SCCamera.mm, SCController.h, SCController.mm:
+	
+	Use SoGroup instead of SoSeparator for root
+
+2003-07-11 21:09  kyrah
+
+	* src/: SCCamera.h, SCCamera.mm, SCController.h, SCController.mm,
+	SCExaminerController.h, SCExaminerController.mm:
+	
+	Use SoGroup instead of SoSeparator for root
+
+2003-07-11 21:04  kyrah
+
+	* src/SCController.mm:
+	
+	Remove bogus comment
+
+2003-07-11 21:01  kyrah
+
+	* src/: SCController.h, SCController.mm:
+	
+	Ugh... don't implement delegate
+	applicationShouldTerminateAfterLastWindowClosed
+
+2003-07-11 20:48  kyrah
+
+	* src/SCExaminerController.mm:
+	
+	Add headlight even if light is present in scene, since some morons
+	might put a light somewhere in the model where it doesn't actually
+	light everything... but turn off the headlight by default.
+
+2003-07-11 20:37  kyrah
+
+	* src/: SCExaminerController.h, SCExaminerController.mm:
+	
+	Add headlight only if no light is found in the scene. Disable
+	toggle headlight and toggle camera type functions of headlight
+	resp. camera are part of user scenegraph
+
+2003-07-11 20:34  kyrah
+
+	* src/: SCController.h, SCController.mm:
+	
+	Added findLightInSceneGraph method
+
+2003-07-11 19:40  kyrah
+
+	* src/: SCController.h, SCController.mm, SCExaminerController.h,
+	SCExaminerController.mm:
+	
+	Moved camera: and setCamera: from SCExaminerController to
+	SCController.
+
+2003-07-11 19:35  kyrah
+
+	* src/: SCController.h, SCController.mm, SCExaminerController.h,
+	SCExaminerController.mm:
+	
+	Camera handling fixes:	 Detect existing camera in SCController,
+	and use that if present.    Disallow type change if camera is part
+	of user scenegraph.
+
+2003-07-11 19:32  kyrah
+
+	* src/: SCCamera.h, SCCamera.mm:
+	
+	Make it possible to use camera from SCController -- use
+	SCController instead of SCExaminerController.
+
+2003-07-11 19:28  kyrah
+
+	* src/SCView.mm:
+	
+	Remove debugging output
+
+2003-07-11 17:09  kyrah
+
+	* src/SCView.mm:
+	
+	Don't exit on non-fatal error.
+
+2003-07-11 16:45  kyrah
+
+	* src/SCCamera.mm:
+	
+	Don't change cam type if cam is part of user-supplied SG. Fixed bug
+	in detection of camera was created by us
+
+2003-07-11 16:44  kyrah
+
+	* src/: SCExaminerController.h, SCExaminerController.mm:
+	
+	Added accessors for camera.
+
+2003-07-11 14:47  kyrah
+
+	* src/SCView.h:
+	
+	- (float) height and - (float) width convenience methods added.
+
+2003-07-11 14:47  kyrah
+
+	* src/SCView.mm:
+	
+	Support multiple views in application: Make context current before
+	rendering.  Get rid of flickering/artifacts by forcing buffer
+	swapping to take place at vertical monitor retrace.  - (float)
+	height and - (float) width convenience methods added.
+
+2003-07-11 14:44  kyrah
+
+	* src/SCController.mm:
+	
+	Support multiple views in document:   Set unique cache context ID
+	for render action   Explicitly call setNeedsDisplay to make sure we
+	get redraws even if   view is not active Remove unnecessary setSize
+	and setWindowSize calls (setViewportRegion takes care of both).
+
+2003-07-10 15:06  kyrah
+
+	* Resources/palette/English.lproj/InfoPlist.strings:
+	
+	Copyright info.
+
+2003-07-10 02:48  kyrah
+
+	* Resources/palette/English.lproj/Sc21Palette.nib/objects.nib:
+	
+	Resized buttons.
+
+2003-07-10 02:39  kyrah
+
+	* src/: SCController.h, SCController.mm:
+	
+	+ initCoin
+
+2003-07-09 20:43  kyrah
+
+	* README.palette:
+	
+	Now using relative paths, so disclaimer no longer needed.
+
+2003-07-09 20:42  kyrah
+
+	* Resources/coinlogo.tiff:
+	
+	Missing resource.
+
+2003-07-09 20:41  kyrah
+
+	* Resources/palette/: SCController.pict, SCExaminerController.pict,
+	SCView.pict, coin.png:
+	
+	Resources
+
+2003-07-09 20:40  kyrah
+
+	* src/Sc21Palette.mm:
+	
+	Workaround of IB bug (view not displayed in design mode
+
+2003-06-22 04:10  kyrah
+
+	* README.palette:
+	
+	Information about the palette
+
+2003-06-22 04:08  kyrah
+
+	* README.framework:
+	
+	Information about the framework
+
+2003-06-22 04:06  kyrah
+
+	* Resources/palette/English.lproj/InfoPlist.strings:
+	
+	SC21 public beta, initial release: Additional resources.
+
+2003-06-22 04:05  kyrah
+
+	* Resources/palette/: palette.table,
+	English.lproj/SCOpenGLViewInspector.nib/classes.nib,
+	English.lproj/SCOpenGLViewInspector.nib/info.nib,
+	English.lproj/SCOpenGLViewInspector.nib/objects.nib,
+	English.lproj/Sc21Palette.nib/classes.nib,
+	English.lproj/Sc21Palette.nib/info.nib,
+	English.lproj/Sc21Palette.nib/objects.nib:
+	
+	SC21 public beta, initial release: Nib resources for custom palette
+
+2003-06-22 04:00  kyrah
+
+	* src/: SC21_Prefix.h, SCOpenGLViewInspector.h,
+	SCOpenGLViewInspector.mm, Sc21Palette.h, Sc21Palette.mm:
+	
+	SC21 public beta, initial release: IB custom palette
+
+2003-06-22 03:55  kyrah
+
+	* src/: SCCamera.mm, SCController.mm, SCEventConverter.mm,
+	SCExaminerController.mm, SCView.mm, SCCamera.h, SCController.h,
+	SCEventConverter.h, SCExaminerController.h, SCView.h:
+	
+	SC21 public beta, initial release.
+
+2003-06-22 03:52  kyrah
+
+	* LICENSE, LICENSE.GPL, README:
+	
+	Basic documentation and information.
+
+2003-06-19 18:13  mortene
+
+	* README:
+	
+	Initial revision
+
