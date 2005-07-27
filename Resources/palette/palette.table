@@ -16,7 +16,7 @@
 
   <!-- Tool Tips string for the palette icon -->
   <key>ToolTips</key>
-  <string>Sc21 V1.0.0</string>
+  <string>Sc21 V1.0.1</string>
 
   <!-- a list of class names exported from palette to IB -->
   <key>ExportClasses</key>
