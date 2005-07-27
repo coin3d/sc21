@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright 2004 Systems in Motion AS, All rights reserved.
+# Copyright 2003-2005 Systems in Motion AS, All rights reserved.
 #
 # This script creates an installer package from Xcode.
 # 

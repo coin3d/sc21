@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright 2004 Systems in Motion AS, All rights reserved.
+# Copyright 2003-2005 Systems in Motion AS, All rights reserved.
 #
 
 mkdir -p $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME
