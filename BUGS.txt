@@ -51,3 +51,20 @@ are actually duplicates from Coin/BUGS.txt that are relevant to Sc21.
     <kintel@sim.no> 20041006
 
 =====================================================================
+
+004 Freak performance problems on Mac OS 10.3
+
+    Viewtiful run with the 2cubes model has very bad performance 
+    (uneven framerate), Sc21Viewer is a little bit better and 
+    FullscreenViewer is completely smooth. 
+
+    This was using the Sc21-1.0.1 release (Coin-2.4.3) on Mac OS 
+    10.3.5 (Xcode 1.5). On Mac OS 10.4.2 (Xcode 2.0) everything
+    works as expected. 
+
+    Since nothing of relevance has changed in Sc21, this is most
+    likely to be a Coin issue introduced in Coin-2.4.*
+
+    <kyrah@sim.no> 20050728, originally reported by kintel
+
+=====================================================================
