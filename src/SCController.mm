@@ -28,6 +28,7 @@
 #import <Sc21/SCController.h>
 
 #import "SCControllerP.h"
+#import "SCOffscreenRenderer.h"
 #import "SCSceneGraphP.h"
 #import "SCTimer.h"
 #import "SCUtil.h"
@@ -168,6 +169,7 @@ static void atexit_cb(void)
     SoInteraction::init();
     SoNodeKit::init();
     [SCController _SC_startTimers]; 
+    [SCOffscreenRenderer initialize];
 #if 0
     // FIXME: Disabled until state of this function in Coin-2
     // has been resolved. 20050726 kyrah.
