@@ -475,6 +475,36 @@
 			settings = {
 			};
 		};
+		3DD432D809191C9800DB8BD1 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = SCOffscreenRenderer.mm;
+			path = src/SCOffscreenRenderer.mm;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3DD432D909191C9800DB8BD1 = {
+			fileEncoding = 30;
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = SCOffscreenRenderer.h;
+			path = src/SCOffscreenRenderer.h;
+			refType = 4;
+			sourceTree = "<group>";
+		};
+		3DD432DA09191C9800DB8BD1 = {
+			fileRef = 3DD432D809191C9800DB8BD1;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		3DD432DB09191C9800DB8BD1 = {
+			fileRef = 3DD432D909191C9800DB8BD1;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		3DDD3FF006B8EE5C0038959E = {
 			children = (
 				3DDD3FF106B8EE5C0038959E,
@@ -1265,6 +1295,8 @@
 				E066292A065383D600FB6420,
 				E066292C065383D600FB6420,
 				E066292D065383D600FB6420,
+				3DD432D909191C9800DB8BD1,
+				3DD432D809191C9800DB8BD1,
 				E066292F065383D600FB6420,
 				E0662930065383D600FB6420,
 				E0662931065383D600FB6420,
@@ -1490,6 +1522,7 @@
 				3DB055D306FA2B3C00812E32,
 				3DB0563806FA2FC200812E32,
 				3D80BEA006FA387700D8BFD2,
+				3DD432DB09191C9800DB8BD1,
 			);
 			isa = PBXHeadersBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1518,6 +1551,7 @@
 				3D883EAF06BFB0CA0048CDB7,
 				E0BE123906C4136E00923172,
 				3DB0563906FA2FC200812E32,
+				3DD432DA09191C9800DB8BD1,
 			);
 			isa = PBXSourcesBuildPhase;
 			runOnlyForDeploymentPostprocessing = 0;
