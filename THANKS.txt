@@ -2,7 +2,9 @@ Many thanks to the following people for bug reports, feedback, ideas
 for improvement, etc.
 
 Tamer Fahmy
+Chao-Kuo Lin
 Carl E. Lindberg
+Michael Mandel 
 John C. Randolph
 Geoff Stahl
 Troy Stephens
