@@ -3,28 +3,6 @@ are actually duplicates from Coin/BUGS.txt that are relevant to Sc21.
 
 =====================================================================
 
-001 Offscreen rendering does not work.
-
-    Sc21 uses NSOpenGL, while Coin offscreen rendering uses AGL.  When
-    the current OpenGL context is an NSOpenGLContext (because we are
-    using Sc21, but the offscreen renderer tries to access the current
-    context using aglGetCurrentContext(), it will get NULL... Ka-Boum!
-
-    Note that it is not a problem to use AGL for offscreen rendering
-    while doing the onscreen rendering in NSOpenGL; it is really just
-    the context handling that is the issue.
-
-    The solution for this problem is to implement a more flexible
-    OpenGL context store/restore "stacking" system, using callbacks to
-    store and restore the current (onscreen) context.
-
-    See also Message-ID: <20040914110821.GC382@sim.no> and follow-ups.
-    This is also Coin bug #141.
-
-    <kyrah@sim.no> 20040917
-
-=====================================================================
-
 002 Window shadow artifacts on certain graphics cards
 
     This behavior is reproducible under both 10.2 and 10.3 on
