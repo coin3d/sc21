@@ -46,3 +46,16 @@ are actually duplicates from Coin/BUGS.txt that are relevant to Sc21.
     <kyrah@sim.no> 20050728, originally reported by kintel
 
 =====================================================================
+
+005 Problem with interaction when several windows are open.
+
+    To reproduce: Open two models in Viewtiful. In the start, 
+    interaction (e.g.  click-drag to rotate) with either of the 
+    two models is smooth. Set one of the two scenes spinning. ->
+    Interaction in the second window is very jerky. Something to
+    do with our sensor handling?
+
+    <kyrah@sim.no> 20051202
+
+=====================================================================
+
