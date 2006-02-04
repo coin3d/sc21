@@ -59,3 +59,27 @@ are actually duplicates from Coin/BUGS.txt that are relevant to Sc21.
 
 =====================================================================
 
+006 Sync to screen refresh not working?
+
+    Just noticed the typical artifacts you get when redraw is not
+    sync'ed to the vertical sync in Viewtiful. Thought this was fixed
+    in Sc21 but apparently it's either not, or not
+    properly. Investigate.
+
+    kyrah 20060124
+
+=====================================================================
+
+007 Ignore "really slow" rotation
+
+    Noticed that sometimes Viewtiful uses a lot of CPU despite doing
+    nothing (i.e. displaying an apparently non-moving scene). Looks
+    like this is due to the scene not *really* being still, just
+    spins very, very slowly (like, 1 frame/minute).
+
+    We should probably clamp on rotation speed lower than a certain
+    minimum value.
+
+    kyrah 20060124, first reported by kintel
+
+=====================================================================
