@@ -196,7 +196,9 @@ context_destruct(void * ctx)
       context_destruct
     };
 
+#if 0 // disabled before next Coin minor release
   cc_glglue_context_set_offscreen_cb_functions(&cb);
+#endif
 }
 
 @end
