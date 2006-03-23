@@ -87,6 +87,10 @@
   NSTimeInterval dt = currtime - _prevtime;
   _prevtime = currtime;
 
+  // prevent continuous scene updates when rotation angle is zero
+  const float * val = _spinrotation->getValue();
+  if (val && val[3] == 1) return;
+
   SbRotation deltaRotation = *_spinrotation;
   deltaRotation.scaleAngle(float(dt * 5.0f));
   [camera reorient:deltaRotation];
