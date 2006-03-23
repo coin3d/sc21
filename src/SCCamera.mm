@@ -259,30 +259,31 @@
     float nearval = -box.getMax()[2];
     float farval = -box.getMin()[2];
     
-    if (farval <= 0.0f) return; 	// scene completely behind us
+    if (farval > 0.0f) { // make sure scene is not completely behind us
     
-    nearval = [self _SC_bestValueForNearPlane:nearval farPlane:farval];
+      nearval = [self _SC_bestValueForNearPlane:nearval farPlane:farval];
     
-    // Add some slack around bounding box in case the scene fits exactly
-    // inside it, to avoid artifacts like the near clipping plane cutting
-    // into the model's corners when it is rotated.
-    const float SLACK = 0.001f;
-    nearval *= (1.0f - SLACK);
-    farval *= (1.0f + SLACK);
+      // Add some slack around bounding box in case the scene fits exactly
+      // inside it, to avoid artifacts like the near clipping plane cutting
+      // into the model's corners when it is rotated.
+      const float SLACK = 0.001f;
+      nearval *= (1.0f - SLACK);
+      farval *= (1.0f + SLACK);
     
-    // let the delegate method adjust the values calculated internally
-    if (self->delegate) {
-      if ([self->delegate respondsToSelector:
-           @selector(adjustNearClippingPlane:farClippingPlane:)]) {
-        
-        [self->delegate adjustNearClippingPlane:&nearval 
-         farClippingPlane:&farval];
+      // let the delegate method adjust the values calculated internally
+      if (self->delegate) {
+        if ([self->delegate respondsToSelector:
+             @selector(adjustNearClippingPlane:farClippingPlane:)]) {
+          
+          [self->delegate adjustNearClippingPlane:&nearval 
+           farClippingPlane:&farval];
+        }
       }
-    }
     
-    SELF->camera->nearDistance = nearval;
-    SELF->camera->farDistance = farval;
-
+      SELF->camera->nearDistance = nearval;
+      SELF->camera->farDistance = farval;
+    } 
+    
   } else {
     // Do not do any internal calculations, but let the user-supplied
     // delegate method do the adjustment.
