@@ -82,4 +82,9 @@ are actually duplicates from Coin/BUGS.txt that are relevant to Sc21.
 
     kyrah 20060124, first reported by kintel
 
+    UPDATE kyrah 20060323: This might actually have been the
+    same issue reported by Anton Leuski, and should be fixed
+    in revision 1.6 of SCSpinMode. I'm keeping the bug report
+    here though until we've had time to test this properly.
+
 =====================================================================
