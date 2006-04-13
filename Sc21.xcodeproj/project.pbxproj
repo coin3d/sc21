@@ -1,0 +1,2466 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3D016A6706B6EBD800AD1116 /* SCExaminerHandlerInspector.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D016A6506B6EBD800AD1116 /* SCExaminerHandlerInspector.h */; };
+		3D016A6806B6EBD800AD1116 /* SCExaminerHandlerInspector.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D016A6606B6EBD800AD1116 /* SCExaminerHandlerInspector.m */; };
+		3D016AAF06B6EDE500AD1116 /* SCExaminerHandlerInspector.nib in Resources */ = {isa = PBXBuildFile; fileRef = 3D016AAD06B6EDE500AD1116 /* SCExaminerHandlerInspector.nib */; };
+		3D016B0406B6F29E00AD1116 /* SCExaminerHandler.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3D016B0306B6F29E00AD1116 /* SCExaminerHandler.tiff */; };
+		3D02FBA006A87FE500B9760F /* SCSceneGraph.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D02FB1F06A874CB00B9760F /* SCSceneGraph.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3D02FBA106A8804200B9760F /* SCSceneGraph.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3D02FB2006A874CB00B9760F /* SCSceneGraph.mm */; };
+		3D23339406BE4C2A00AF3094 /* InspectorError.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3D23339306BE4C2A00AF3094 /* InspectorError.tiff */; };
+		3D3BEE6A06B00E43007A16DC /* SCSceneGraph.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3D3BEE6906B00E43007A16DC /* SCSceneGraph.tiff */; };
+		3D669B2E06AA974F00CB9330 /* SCSceneGraphP.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D669B2D06AA974F00CB9330 /* SCSceneGraphP.h */; };
+		3D669D2606AAB21900CB9330 /* SCCameraP.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D669D2506AAB21900CB9330 /* SCCameraP.h */; };
+		3D6AF41106AE760200225657 /* SCCursors.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D6AF40F06AE760200225657 /* SCCursors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3D6AF41206AE760200225657 /* SCCursors.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D6AF41006AE760200225657 /* SCCursors.m */; };
+		3D6AF42B06AE769B00225657 /* SCControllerP.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D6AF42706AE769B00225657 /* SCControllerP.h */; };
+		3D6AF42C06AE769B00225657 /* SCDebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D6AF42806AE769B00225657 /* SCDebug.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3D6AF42D06AE769B00225657 /* SCDebug.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3D6AF42906AE769B00225657 /* SCDebug.mm */; };
+		3D6AF42E06AE769B00225657 /* SCDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D6AF42A06AE769B00225657 /* SCDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3D6AF43006AE770400225657 /* SCExterns.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D6AF42F06AE770400225657 /* SCExterns.m */; };
+		3D80BEA006FA387700D8BFD2 /* SCViewP.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D80BE9F06FA387700D8BFD2 /* SCViewP.h */; };
+		3D883EAE06BFB0CA0048CDB7 /* SCSpinMode.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D883EAC06BFB0CA0048CDB7 /* SCSpinMode.h */; };
+		3D883EAF06BFB0CA0048CDB7 /* SCSpinMode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3D883EAD06BFB0CA0048CDB7 /* SCSpinMode.mm */; };
+		3D93ABA206EF21400049C761 /* SCDrawable.mdoc in Resources */ = {isa = PBXBuildFile; fileRef = 3D93ABA106EF21400049C761 /* SCDrawable.mdoc */; };
+		3DA8F98606DFEFB500173C27 /* SCController.ibclassdescription in Resources */ = {isa = PBXBuildFile; fileRef = 3DA8F98306DFEFB500173C27 /* SCController.ibclassdescription */; };
+		3DA8F98706DFEFB500173C27 /* SCSceneGraph.ibclassdescription in Resources */ = {isa = PBXBuildFile; fileRef = 3DA8F98406DFEFB500173C27 /* SCSceneGraph.ibclassdescription */; };
+		3DA8F98806DFEFB500173C27 /* SCView.ibclassdescription in Resources */ = {isa = PBXBuildFile; fileRef = 3DA8F98506DFEFB500173C27 /* SCView.ibclassdescription */; };
+		3DB055D306FA2B3C00812E32 /* SCCoinHandlerP.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DB055D206FA2B3C00812E32 /* SCCoinHandlerP.h */; };
+		3DB0563806FA2FC200812E32 /* SCTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DB0563606FA2FC200812E32 /* SCTimer.h */; };
+		3DB0563906FA2FC200812E32 /* SCTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DB0563706FA2FC200812E32 /* SCTimer.m */; };
+		3DC6401E06BD29CB00301065 /* SCExaminerHandlerP.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DC6401D06BD29CB00301065 /* SCExaminerHandlerP.h */; };
+		3DC6408606BD305800301065 /* SCEmulator.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DC6408406BD305800301065 /* SCEmulator.h */; settings = {ATTRIBUTES = (); }; };
+		3DC6408706BD305800301065 /* SCEmulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DC6408506BD305800301065 /* SCEmulator.m */; };
+		3DD432DA09191C9800DB8BD1 /* SCOffscreenRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3DD432D809191C9800DB8BD1 /* SCOffscreenRenderer.mm */; };
+		3DD432DB09191C9800DB8BD1 /* SCOffscreenRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DD432D909191C9800DB8BD1 /* SCOffscreenRenderer.h */; };
+		3DDD3FF206B8EE5C0038959E /* SCSceneGraphInspector.nib in Resources */ = {isa = PBXBuildFile; fileRef = 3DDD3FF006B8EE5C0038959E /* SCSceneGraphInspector.nib */; };
+		3DDD3FF706B8EE9D0038959E /* SCSceneGraphInspector.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DDD3FF506B8EE9D0038959E /* SCSceneGraphInspector.h */; };
+		3DDD3FF806B8EE9D0038959E /* SCSceneGraphInspector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3DDD3FF606B8EE9D0038959E /* SCSceneGraphInspector.mm */; };
+		3DE326EB06BC6A4900C5518B /* SCOpenGLViewP.h in Headers */ = {isa = PBXBuildFile; fileRef = 3DE326EA06BC6A4900C5518B /* SCOpenGLViewP.h */; };
+		E000676C062598DD00F49FCD /* SCControllerInspector.h in Headers */ = {isa = PBXBuildFile; fileRef = E000676A062598DD00F49FCD /* SCControllerInspector.h */; };
+		E000676D062598DD00F49FCD /* SCControllerInspector.mm in Sources */ = {isa = PBXBuildFile; fileRef = E000676B062598DD00F49FCD /* SCControllerInspector.mm */; };
+		E000678906259B3000F49FCD /* SCControllerInspector.nib in Resources */ = {isa = PBXBuildFile; fileRef = E000678706259B3000F49FCD /* SCControllerInspector.nib */; };
+		E000678B06259B5900F49FCD /* curs_pan.tiff in Resources */ = {isa = PBXBuildFile; fileRef = E057B67C0621EA210012C546 /* curs_pan.tiff */; };
+		E000678C06259B5900F49FCD /* curs_rotate.tiff in Resources */ = {isa = PBXBuildFile; fileRef = E057B6780621BC7F0012C546 /* curs_rotate.tiff */; };
+		E000678D06259B5900F49FCD /* curs_zoom.tiff in Resources */ = {isa = PBXBuildFile; fileRef = E057B67D0621EA210012C546 /* curs_zoom.tiff */; };
+		E01100A50605E5B200F93EC1 /* Sc21Palette.nib in Resources */ = {isa = PBXBuildFile; fileRef = E01100A40605E5B200F93EC1 /* Sc21Palette.nib */; };
+		E01100A70605E5B800F93EC1 /* SCOpenGLViewInspector.nib in Resources */ = {isa = PBXBuildFile; fileRef = E01100A60605E5B800F93EC1 /* SCOpenGLViewInspector.nib */; };
+		E01C24A90605E8740000C5C7 /* Sc21.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0765C60060223120099F78E /* Sc21.framework */; };
+		E01C24C40605E9650000C5C7 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0765FBE060226AD0099F78E /* OpenGL.framework */; };
+		E01C24C50605E9CB0000C5C7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E09C038906024CFB0000E227 /* Cocoa.framework */; };
+		E0547AB806073E170089FA12 /* Inventor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0547AB706073E170089FA12 /* Inventor.framework */; };
+		E0547AB906073E170089FA12 /* Inventor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0547AB706073E170089FA12 /* Inventor.framework */; };
+		E057B59B06219ADC0012C546 /* Sc21.h in Headers */ = {isa = PBXBuildFile; fileRef = E057B59A06219ADC0012C546 /* Sc21.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E0662938065383D600FB6420 /* SCEventHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = E0662923065383D600FB6420 /* SCEventHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E0662939065383D600FB6420 /* SCEventHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0662924065383D600FB6420 /* SCEventHandler.mm */; };
+		E066293E065383D600FB6420 /* SCMode.h in Headers */ = {isa = PBXBuildFile; fileRef = E0662929065383D600FB6420 /* SCMode.h */; settings = {ATTRIBUTES = (); }; };
+		E066293F065383D600FB6420 /* SCMode.m in Sources */ = {isa = PBXBuildFile; fileRef = E066292A065383D600FB6420 /* SCMode.m */; };
+		E0662941065383D600FB6420 /* SCMouseLog.h in Headers */ = {isa = PBXBuildFile; fileRef = E066292C065383D600FB6420 /* SCMouseLog.h */; settings = {ATTRIBUTES = (); }; };
+		E0662942065383D600FB6420 /* SCMouseLog.m in Sources */ = {isa = PBXBuildFile; fileRef = E066292D065383D600FB6420 /* SCMouseLog.m */; };
+		E0662944065383D600FB6420 /* SCPanMode.h in Headers */ = {isa = PBXBuildFile; fileRef = E066292F065383D600FB6420 /* SCPanMode.h */; settings = {ATTRIBUTES = (); }; };
+		E0662945065383D600FB6420 /* SCPanMode.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0662930065383D600FB6420 /* SCPanMode.mm */; };
+		E0662946065383D600FB6420 /* SCRotateMode.h in Headers */ = {isa = PBXBuildFile; fileRef = E0662931065383D600FB6420 /* SCRotateMode.h */; settings = {ATTRIBUTES = (); }; };
+		E0662947065383D600FB6420 /* SCRotateMode.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0662932065383D600FB6420 /* SCRotateMode.mm */; };
+		E066294C065383D600FB6420 /* SCUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = E0662937065383D600FB6420 /* SCUtil.h */; };
+		E080C6DB06B12B080088958C /* SCExaminerHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = E080C6D906B12B080088958C /* SCExaminerHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E080C6DC06B12B080088958C /* SCExaminerHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = E080C6DA06B12B080088958C /* SCExaminerHandler.mm */; };
+		E080C71606B132550088958C /* SCZoomMode.h in Headers */ = {isa = PBXBuildFile; fileRef = E080C71406B132550088958C /* SCZoomMode.h */; settings = {ATTRIBUTES = (); }; };
+		E080C71706B132550088958C /* SCZoomMode.mm in Sources */ = {isa = PBXBuildFile; fileRef = E080C71506B132550088958C /* SCZoomMode.mm */; };
+		E09C036B06024BEF0000E227 /* SCView.tiff in Resources */ = {isa = PBXBuildFile; fileRef = E09C036A06024BEF0000E227 /* SCView.tiff */; };
+		E09C037106024CD90000E227 /* InterfaceBuilder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E09C037006024CD90000E227 /* InterfaceBuilder.framework */; };
+		E09CFA87060249D50000E227 /* SCOpenGLViewInspector.h in Headers */ = {isa = PBXBuildFile; fileRef = E09CFA83060249D50000E227 /* SCOpenGLViewInspector.h */; };
+		E09CFA88060249D50000E227 /* SCOpenGLViewInspector.mm in Sources */ = {isa = PBXBuildFile; fileRef = E09CFA84060249D50000E227 /* SCOpenGLViewInspector.mm */; };
+		E09CFA89060249D50000E227 /* Sc21Palette.h in Headers */ = {isa = PBXBuildFile; fileRef = E09CFA85060249D50000E227 /* Sc21Palette.h */; };
+		E09CFA8A060249D50000E227 /* Sc21Palette.mm in Sources */ = {isa = PBXBuildFile; fileRef = E09CFA86060249D50000E227 /* Sc21Palette.mm */; };
+		E09CFA95060249EF0000E227 /* SCCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = E09CFA8B060249EF0000E227 /* SCCamera.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E09CFA96060249EF0000E227 /* SCCamera.mm in Sources */ = {isa = PBXBuildFile; fileRef = E09CFA8C060249EF0000E227 /* SCCamera.mm */; };
+		E09CFA97060249EF0000E227 /* SCController.h in Headers */ = {isa = PBXBuildFile; fileRef = E09CFA8D060249EF0000E227 /* SCController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E09CFA98060249EF0000E227 /* SCController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E09CFA8E060249EF0000E227 /* SCController.mm */; };
+		E09CFA99060249EF0000E227 /* SCEventConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = E09CFA8F060249EF0000E227 /* SCEventConverter.h */; settings = {ATTRIBUTES = (); }; };
+		E09CFA9A060249EF0000E227 /* SCEventConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = E09CFA90060249EF0000E227 /* SCEventConverter.mm */; };
+		E09CFA9D060249EF0000E227 /* SCView.h in Headers */ = {isa = PBXBuildFile; fileRef = E09CFA93060249EF0000E227 /* SCView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E09CFA9E060249EF0000E227 /* SCView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E09CFA94060249EF0000E227 /* SCView.mm */; };
+		E09CFAA406024AD40000E227 /* Sc21Palette.tiff in Resources */ = {isa = PBXBuildFile; fileRef = E09CFAA006024AD40000E227 /* Sc21Palette.tiff */; };
+		E09CFAA506024AD40000E227 /* SCController.tiff in Resources */ = {isa = PBXBuildFile; fileRef = E09CFAA106024AD40000E227 /* SCController.tiff */; };
+		E09CFAA706024AD40000E227 /* palette.table in Resources */ = {isa = PBXBuildFile; fileRef = E09CFAA306024AD40000E227 /* palette.table */; };
+		E0AC6A98060631AA00907ED7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E09C038906024CFB0000E227 /* Cocoa.framework */; };
+		E0BE123806C4136E00923172 /* SCCoinHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = E0BE123606C4136E00923172 /* SCCoinHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E0BE123906C4136E00923172 /* SCCoinHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0BE123706C4136E00923172 /* SCCoinHandler.mm */; };
+		E0BE12B806C419AA00923172 /* SCCoinHandler.tiff in Resources */ = {isa = PBXBuildFile; fileRef = E0BE12B706C419AA00923172 /* SCCoinHandler.tiff */; };
+		E0C2F37206F9F6D200524C32 /* version.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0C2F37106F9F6D200524C32 /* version.plist */; };
+		E0C2F37406F9F6EB00524C32 /* version.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0C2F37306F9F6EB00524C32 /* version.plist */; };
+		E0D6A23206BA6FD900FF8E28 /* SCDrawable.h in Headers */ = {isa = PBXBuildFile; fileRef = E0D6A23106BA6FD900FF8E28 /* SCDrawable.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E0E5D14D06B15F61009165C8 /* SCEventHandlerP.h in Headers */ = {isa = PBXBuildFile; fileRef = E0E5D14C06B15F61009165C8 /* SCEventHandlerP.h */; };
+		E0EB290C0613442800C54774 /* SCOpenGLPixelFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = E0EB29080613442800C54774 /* SCOpenGLPixelFormat.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E0EB290D0613442800C54774 /* SCOpenGLPixelFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EB29090613442800C54774 /* SCOpenGLPixelFormat.m */; };
+		E0EB290E0613442800C54774 /* SCOpenGLView.h in Headers */ = {isa = PBXBuildFile; fileRef = E0EB290A0613442800C54774 /* SCOpenGLView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E0EB290F0613442800C54774 /* SCOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EB290B0613442800C54774 /* SCOpenGLView.m */; };
+		E0F867AE06C254700022BF2A /* SCInternalDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = E0F867AD06C254700022BF2A /* SCInternalDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		E01C24CB0605FDCE0000C5C7 /* debug */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				PREBINDING = NO;
+				UNSTRIPPED_PRODUCT = YES;
+			};
+			name = debug;
+		};
+		E0765C54060222BB0099F78E /* Development */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_CPU = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				PREBINDING = NO;
+				UNSTRIPPED_PRODUCT = YES;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		E0765C55060222BB0099F78E /* release */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+			};
+			name = release;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXContainerItemProxy section */
+		E01100AA0605E60300F93EC1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E0765C56060222BB0099F78E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E0765C5F060223120099F78E;
+			remoteInfo = "Sc21 framework";
+		};
+		E016DA9806F6F51B00AF7EAB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E0765C56060222BB0099F78E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E0DD073F06550C23009C673A;
+			remoteInfo = "Sc21 doc pkg";
+		};
+		E03800C406551033000633F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E0765C56060222BB0099F78E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E0DD072F0654F9CA009C673A;
+			remoteInfo = "Sc21 doc";
+		};
+		E06867B10633FC9E00F702EA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E0765C56060222BB0099F78E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E09CFA55060245710000E227;
+			remoteInfo = "Sc21 palette";
+		};
+		E06867B50633FDCA00F702EA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E0765C56060222BB0099F78E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E0765C5F060223120099F78E;
+			remoteInfo = "Sc21 framework";
+		};
+		E079478A06341DF3006B5824 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E0765C56060222BB0099F78E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E056E6D70609F9FE0068145A;
+			remoteInfo = "Sc21 framework pkg";
+		};
+		E079478C06341E03006B5824 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E0765C56060222BB0099F78E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E06867AC0633FC8700F702EA;
+			remoteInfo = "Sc21 palette pkg";
+		};
+		E0F867DC06C277120022BF2A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E0765C56060222BB0099F78E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E0F867C806C2750B0022BF2A;
+			remoteInfo = "Sc21 examples";
+		};
+		E0F8680F06C282590022BF2A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E0765C56060222BB0099F78E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E0F867D006C276D40022BF2A;
+			remoteInfo = "Sc21 examples pkg";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		3D016A6506B6EBD800AD1116 /* SCExaminerHandlerInspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCExaminerHandlerInspector.h; path = src/SCExaminerHandlerInspector.h; sourceTree = "<group>"; };
+		3D016A6606B6EBD800AD1116 /* SCExaminerHandlerInspector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCExaminerHandlerInspector.m; path = src/SCExaminerHandlerInspector.m; sourceTree = "<group>"; };
+		3D016AAE06B6EDE500AD1116 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = Resources/palette/English.lproj/SCExaminerHandlerInspector.nib; sourceTree = "<group>"; };
+		3D016B0306B6F29E00AD1116 /* SCExaminerHandler.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = SCExaminerHandler.tiff; path = Resources/palette/SCExaminerHandler.tiff; sourceTree = "<group>"; };
+		3D02FB1F06A874CB00B9760F /* SCSceneGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCSceneGraph.h; path = src/SCSceneGraph.h; sourceTree = "<group>"; };
+		3D02FB2006A874CB00B9760F /* SCSceneGraph.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = SCSceneGraph.mm; path = src/SCSceneGraph.mm; sourceTree = "<group>"; };
+		3D23339306BE4C2A00AF3094 /* InspectorError.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = InspectorError.tiff; path = Resources/palette/InspectorError.tiff; sourceTree = "<group>"; };
+		3D3BEE6906B00E43007A16DC /* SCSceneGraph.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = SCSceneGraph.tiff; path = Resources/palette/SCSceneGraph.tiff; sourceTree = "<group>"; };
+		3D669B2D06AA974F00CB9330 /* SCSceneGraphP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCSceneGraphP.h; path = src/SCSceneGraphP.h; sourceTree = "<group>"; };
+		3D669D2506AAB21900CB9330 /* SCCameraP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCCameraP.h; path = src/SCCameraP.h; sourceTree = "<group>"; };
+		3D6AF40F06AE760200225657 /* SCCursors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCCursors.h; path = src/SCCursors.h; sourceTree = "<group>"; };
+		3D6AF41006AE760200225657 /* SCCursors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCCursors.m; path = src/SCCursors.m; sourceTree = "<group>"; };
+		3D6AF42706AE769B00225657 /* SCControllerP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCControllerP.h; path = src/SCControllerP.h; sourceTree = "<group>"; };
+		3D6AF42806AE769B00225657 /* SCDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCDebug.h; path = src/SCDebug.h; sourceTree = "<group>"; };
+		3D6AF42906AE769B00225657 /* SCDebug.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = SCDebug.mm; path = src/SCDebug.mm; sourceTree = "<group>"; };
+		3D6AF42A06AE769B00225657 /* SCDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCDefines.h; path = src/SCDefines.h; sourceTree = "<group>"; };
+		3D6AF42F06AE770400225657 /* SCExterns.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCExterns.m; path = src/SCExterns.m; sourceTree = "<group>"; };
+		3D80BE9F06FA387700D8BFD2 /* SCViewP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCViewP.h; path = src/SCViewP.h; sourceTree = "<group>"; };
+		3D883EAC06BFB0CA0048CDB7 /* SCSpinMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCSpinMode.h; path = src/SCSpinMode.h; sourceTree = "<group>"; };
+		3D883EAD06BFB0CA0048CDB7 /* SCSpinMode.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = SCSpinMode.mm; path = src/SCSpinMode.mm; sourceTree = "<group>"; };
+		3D93ABA106EF21400049C761 /* SCDrawable.mdoc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SCDrawable.mdoc; path = src/SCDrawable.mdoc; sourceTree = "<group>"; };
+		3DA8F98306DFEFB500173C27 /* SCController.ibclassdescription */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SCController.ibclassdescription; path = Resources/palette/SCController.ibclassdescription; sourceTree = "<group>"; };
+		3DA8F98406DFEFB500173C27 /* SCSceneGraph.ibclassdescription */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SCSceneGraph.ibclassdescription; path = Resources/palette/SCSceneGraph.ibclassdescription; sourceTree = "<group>"; };
+		3DA8F98506DFEFB500173C27 /* SCView.ibclassdescription */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SCView.ibclassdescription; path = Resources/palette/SCView.ibclassdescription; sourceTree = "<group>"; };
+		3DB055D206FA2B3C00812E32 /* SCCoinHandlerP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCCoinHandlerP.h; path = src/SCCoinHandlerP.h; sourceTree = "<group>"; };
+		3DB0563606FA2FC200812E32 /* SCTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCTimer.h; path = src/SCTimer.h; sourceTree = "<group>"; };
+		3DB0563706FA2FC200812E32 /* SCTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCTimer.m; path = src/SCTimer.m; sourceTree = "<group>"; };
+		3DC6401D06BD29CB00301065 /* SCExaminerHandlerP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCExaminerHandlerP.h; path = src/SCExaminerHandlerP.h; sourceTree = "<group>"; };
+		3DC6408406BD305800301065 /* SCEmulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCEmulator.h; path = src/SCEmulator.h; sourceTree = "<group>"; };
+		3DC6408506BD305800301065 /* SCEmulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCEmulator.m; path = src/SCEmulator.m; sourceTree = "<group>"; };
+		3DD432D809191C9800DB8BD1 /* SCOffscreenRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = SCOffscreenRenderer.mm; path = src/SCOffscreenRenderer.mm; sourceTree = "<group>"; };
+		3DD432D909191C9800DB8BD1 /* SCOffscreenRenderer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCOffscreenRenderer.h; path = src/SCOffscreenRenderer.h; sourceTree = "<group>"; };
+		3DDD3FF106B8EE5C0038959E /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = Resources/palette/English.lproj/SCSceneGraphInspector.nib; sourceTree = "<group>"; };
+		3DDD3FF506B8EE9D0038959E /* SCSceneGraphInspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCSceneGraphInspector.h; path = src/SCSceneGraphInspector.h; sourceTree = "<group>"; };
+		3DDD3FF606B8EE9D0038959E /* SCSceneGraphInspector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = SCSceneGraphInspector.mm; path = src/SCSceneGraphInspector.mm; sourceTree = "<group>"; };
+		3DE326EA06BC6A4900C5518B /* SCOpenGLViewP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCOpenGLViewP.h; path = src/SCOpenGLViewP.h; sourceTree = "<group>"; };
+		E000676A062598DD00F49FCD /* SCControllerInspector.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCControllerInspector.h; path = src/SCControllerInspector.h; sourceTree = "<group>"; };
+		E000676B062598DD00F49FCD /* SCControllerInspector.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = SCControllerInspector.mm; path = src/SCControllerInspector.mm; sourceTree = "<group>"; };
+		E000678806259B3000F49FCD /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = Resources/palette/English.lproj/SCControllerInspector.nib; sourceTree = "<group>"; };
+		E000936406C64E700068E0BF /* Description.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; path = Description.plist; sourceTree = "<group>"; };
+		E000936506C64E700068E0BF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		E000936706C64E700068E0BF /* background.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = background.tiff; sourceTree = "<group>"; };
+		E000936806C64E700068E0BF /* License.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = License.rtf; sourceTree = "<group>"; };
+		E000936906C64E700068E0BF /* Welcome.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Welcome.rtf; sourceTree = "<group>"; };
+		E000949006C64F350068E0BF /* Description.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; name = Description.plist; path = packaging/examples/Description.plist; sourceTree = SOURCE_ROOT; };
+		E000949106C64F350068E0BF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; name = Info.plist; path = packaging/examples/Info.plist; sourceTree = SOURCE_ROOT; };
+		E000949306C64F350068E0BF /* background.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = background.tiff; sourceTree = "<group>"; };
+		E000949406C64F350068E0BF /* License.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = License.rtf; sourceTree = "<group>"; };
+		E000949506C64F350068E0BF /* Welcome.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Welcome.rtf; sourceTree = "<group>"; };
+		E015841606352EBB00B4C24F /* background.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = background.tiff; sourceTree = "<group>"; };
+		E015841706352EC900B4C24F /* background.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = background.tiff; sourceTree = "<group>"; };
+		E015841806352ED300B4C24F /* background.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = background.tiff; sourceTree = "<group>"; };
+		E0242B5B06033BFF004FE05C /* Sc21_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sc21_Prefix.pch; path = src/Sc21_Prefix.pch; sourceTree = "<group>"; };
+		E0547AB706073E170089FA12 /* Inventor.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Inventor.framework; path = /Library/Frameworks/Inventor.framework; sourceTree = "<absolute>"; };
+		E056E6DA0609F9FE0068145A /* Sc21 framework.pkg */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Sc21 framework.pkg"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E057B59A06219ADC0012C546 /* Sc21.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = Sc21.h; path = src/Sc21.h; sourceTree = "<group>"; };
+		E057B6780621BC7F0012C546 /* curs_rotate.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = curs_rotate.tiff; path = Resources/framework/curs_rotate.tiff; sourceTree = "<group>"; };
+		E057B67C0621EA210012C546 /* curs_pan.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = curs_pan.tiff; path = Resources/framework/curs_pan.tiff; sourceTree = "<group>"; };
+		E057B67D0621EA210012C546 /* curs_zoom.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = curs_zoom.tiff; path = Resources/framework/curs_zoom.tiff; sourceTree = "<group>"; };
+		E0662923065383D600FB6420 /* SCEventHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCEventHandler.h; path = src/SCEventHandler.h; sourceTree = SOURCE_ROOT; };
+		E0662924065383D600FB6420 /* SCEventHandler.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = SCEventHandler.mm; path = src/SCEventHandler.mm; sourceTree = SOURCE_ROOT; };
+		E0662929065383D600FB6420 /* SCMode.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCMode.h; path = src/SCMode.h; sourceTree = SOURCE_ROOT; };
+		E066292A065383D600FB6420 /* SCMode.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SCMode.m; path = src/SCMode.m; sourceTree = SOURCE_ROOT; };
+		E066292C065383D600FB6420 /* SCMouseLog.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCMouseLog.h; path = src/SCMouseLog.h; sourceTree = SOURCE_ROOT; };
+		E066292D065383D600FB6420 /* SCMouseLog.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SCMouseLog.m; path = src/SCMouseLog.m; sourceTree = SOURCE_ROOT; };
+		E066292F065383D600FB6420 /* SCPanMode.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCPanMode.h; path = src/SCPanMode.h; sourceTree = SOURCE_ROOT; };
+		E0662930065383D600FB6420 /* SCPanMode.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = SCPanMode.mm; path = src/SCPanMode.mm; sourceTree = SOURCE_ROOT; };
+		E0662931065383D600FB6420 /* SCRotateMode.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCRotateMode.h; path = src/SCRotateMode.h; sourceTree = SOURCE_ROOT; };
+		E0662932065383D600FB6420 /* SCRotateMode.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = SCRotateMode.mm; path = src/SCRotateMode.mm; sourceTree = SOURCE_ROOT; };
+		E0662937065383D600FB6420 /* SCUtil.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCUtil.h; path = src/SCUtil.h; sourceTree = SOURCE_ROOT; };
+		E06867AF0633FC8700F702EA /* Sc21 palette.pkg */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Sc21 palette.pkg"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E070FB1E0608992200A60FCA /* makesc21pkg.sh */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; name = makesc21pkg.sh; path = packaging/scripts/makesc21pkg.sh; sourceTree = "<group>"; };
+		E0765C60060223120099F78E /* Sc21.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Sc21.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0765C62060223120099F78E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Resources/framework/Info.plist; sourceTree = "<group>"; };
+		E0765FBE060226AD0099F78E /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
+		E079478806341DCE006B5824 /* Sc21.mpkg */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Sc21.mpkg; sourceTree = BUILT_PRODUCTS_DIR; };
+		E080C6D906B12B080088958C /* SCExaminerHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCExaminerHandler.h; path = src/SCExaminerHandler.h; sourceTree = "<group>"; };
+		E080C6DA06B12B080088958C /* SCExaminerHandler.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = SCExaminerHandler.mm; path = src/SCExaminerHandler.mm; sourceTree = "<group>"; };
+		E080C71406B132550088958C /* SCZoomMode.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCZoomMode.h; path = src/SCZoomMode.h; sourceTree = "<group>"; };
+		E080C71506B132550088958C /* SCZoomMode.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = SCZoomMode.mm; path = src/SCZoomMode.mm; sourceTree = "<group>"; };
+		E09C036A06024BEF0000E227 /* SCView.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = SCView.tiff; path = Resources/palette/SCView.tiff; sourceTree = "<group>"; };
+		E09C037006024CD90000E227 /* InterfaceBuilder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = InterfaceBuilder.framework; path = /System/Library/Frameworks/InterfaceBuilder.framework; sourceTree = "<absolute>"; };
+		E09C038906024CFB0000E227 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		E09CFA56060245710000E227 /* Sc21.palette */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Sc21.palette; sourceTree = BUILT_PRODUCTS_DIR; };
+		E09CFA57060245720000E227 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Info.plist; path = Resources/palette/Info.plist; sourceTree = "<group>"; };
+		E09CFA83060249D50000E227 /* SCOpenGLViewInspector.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCOpenGLViewInspector.h; path = src/SCOpenGLViewInspector.h; sourceTree = "<group>"; };
+		E09CFA84060249D50000E227 /* SCOpenGLViewInspector.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = SCOpenGLViewInspector.mm; path = src/SCOpenGLViewInspector.mm; sourceTree = "<group>"; };
+		E09CFA85060249D50000E227 /* Sc21Palette.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = Sc21Palette.h; path = src/Sc21Palette.h; sourceTree = "<group>"; };
+		E09CFA86060249D50000E227 /* Sc21Palette.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = Sc21Palette.mm; path = src/Sc21Palette.mm; sourceTree = "<group>"; };
+		E09CFA8B060249EF0000E227 /* SCCamera.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCCamera.h; path = src/SCCamera.h; sourceTree = "<group>"; };
+		E09CFA8C060249EF0000E227 /* SCCamera.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = SCCamera.mm; path = src/SCCamera.mm; sourceTree = "<group>"; };
+		E09CFA8D060249EF0000E227 /* SCController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCController.h; path = src/SCController.h; sourceTree = "<group>"; };
+		E09CFA8E060249EF0000E227 /* SCController.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = SCController.mm; path = src/SCController.mm; sourceTree = "<group>"; };
+		E09CFA8F060249EF0000E227 /* SCEventConverter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCEventConverter.h; path = src/SCEventConverter.h; sourceTree = "<group>"; };
+		E09CFA90060249EF0000E227 /* SCEventConverter.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = SCEventConverter.mm; path = src/SCEventConverter.mm; sourceTree = "<group>"; };
+		E09CFA93060249EF0000E227 /* SCView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCView.h; path = src/SCView.h; sourceTree = "<group>"; };
+		E09CFA94060249EF0000E227 /* SCView.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = SCView.mm; path = src/SCView.mm; sourceTree = "<group>"; };
+		E09CFAA006024AD40000E227 /* Sc21Palette.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = Sc21Palette.tiff; path = Resources/palette/Sc21Palette.tiff; sourceTree = "<group>"; };
+		E09CFAA106024AD40000E227 /* SCController.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = SCController.tiff; path = Resources/palette/SCController.tiff; sourceTree = "<group>"; };
+		E09CFAA306024AD40000E227 /* palette.table */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = palette.table; path = Resources/palette/palette.table; sourceTree = "<group>"; };
+		E09CFAAB06024B130000E227 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = Resources/palette/English.lproj/SCOpenGLViewInspector.nib; sourceTree = "<group>"; };
+		E09CFAAE06024B1F0000E227 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = Resources/palette/English.lproj/Sc21Palette.nib; sourceTree = "<group>"; };
+		E0AC6A8806060F3300907ED7 /* test.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = test.sh; sourceTree = "<group>"; };
+		E0BE123606C4136E00923172 /* SCCoinHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCCoinHandler.h; path = src/SCCoinHandler.h; sourceTree = "<group>"; };
+		E0BE123706C4136E00923172 /* SCCoinHandler.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; name = SCCoinHandler.mm; path = src/SCCoinHandler.mm; sourceTree = "<group>"; };
+		E0BE12B706C419AA00923172 /* SCCoinHandler.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = SCCoinHandler.tiff; path = Resources/palette/SCCoinHandler.tiff; sourceTree = "<group>"; };
+		E0C2F37106F9F6D200524C32 /* version.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = version.plist; path = Resources/framework/version.plist; sourceTree = "<group>"; };
+		E0C2F37306F9F6EB00524C32 /* version.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = version.plist; path = Resources/palette/version.plist; sourceTree = "<group>"; };
+		E0D1CDED06343F3100269948 /* License.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = License.rtf; sourceTree = "<group>"; };
+		E0D1CDEE06343F3100269948 /* Welcome.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Welcome.rtf; sourceTree = "<group>"; };
+		E0D1CDEF06343F3100269948 /* Description.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; path = Description.plist; sourceTree = "<group>"; };
+		E0D1CDF006343F3100269948 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		E0D1CE0006343F4E00269948 /* License.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = License.rtf; sourceTree = "<group>"; };
+		E0D1CE0106343F4E00269948 /* Welcome.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Welcome.rtf; sourceTree = "<group>"; };
+		E0D1CE0206343F4E00269948 /* Description.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; path = Description.plist; sourceTree = "<group>"; };
+		E0D1CE0306343F4E00269948 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		E0D1CE0606343F5B00269948 /* License.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = License.rtf; sourceTree = "<group>"; };
+		E0D1CE0706343F5B00269948 /* Welcome.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = Welcome.rtf; sourceTree = "<group>"; };
+		E0D1CE0806343F5B00269948 /* Description.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; path = Description.plist; sourceTree = "<group>"; };
+		E0D1CE0906343F5B00269948 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		E0D6A23106BA6FD900FF8E28 /* SCDrawable.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCDrawable.h; path = src/SCDrawable.h; sourceTree = "<group>"; };
+		E0DD07320654F9CA009C673A /* Sc21 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Sc21; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0DD074206550C23009C673A /* Sc21 doc.pkg */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Sc21 doc.pkg"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0E5D14C06B15F61009165C8 /* SCEventHandlerP.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCEventHandlerP.h; path = src/SCEventHandlerP.h; sourceTree = "<group>"; };
+		E0EB29080613442800C54774 /* SCOpenGLPixelFormat.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCOpenGLPixelFormat.h; path = src/SCOpenGLPixelFormat.h; sourceTree = "<group>"; };
+		E0EB29090613442800C54774 /* SCOpenGLPixelFormat.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SCOpenGLPixelFormat.m; path = src/SCOpenGLPixelFormat.m; sourceTree = "<group>"; };
+		E0EB290A0613442800C54774 /* SCOpenGLView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCOpenGLView.h; path = src/SCOpenGLView.h; sourceTree = "<group>"; };
+		E0EB290B0613442800C54774 /* SCOpenGLView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SCOpenGLView.m; path = src/SCOpenGLView.m; sourceTree = "<group>"; };
+		E0F867AD06C254700022BF2A /* SCInternalDefines.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCInternalDefines.h; path = src/SCInternalDefines.h; sourceTree = "<group>"; };
+		E0F867CA06C2750B0022BF2A /* Sc21 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Sc21; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0F867D306C276D40022BF2A /* Sc21 examples.pkg */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Sc21 examples.pkg"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E0765C5E060223120099F78E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0AC6A98060631AA00907ED7 /* Cocoa.framework in Frameworks */,
+				E01C24C40605E9650000C5C7 /* OpenGL.framework in Frameworks */,
+				E0547AB806073E170089FA12 /* Inventor.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E09CFA54060245710000E227 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E01C24C50605E9CB0000C5C7 /* Cocoa.framework in Frameworks */,
+				E01C24A90605E8740000C5C7 /* Sc21.framework in Frameworks */,
+				E09C037106024CD90000E227 /* InterfaceBuilder.framework in Frameworks */,
+				E0547AB906073E170089FA12 /* Inventor.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E000936306C64E700068E0BF /* doc */ = {
+			isa = PBXGroup;
+			children = (
+				E000936406C64E700068E0BF /* Description.plist */,
+				E000936506C64E700068E0BF /* Info.plist */,
+				E000936606C64E700068E0BF /* Resources */,
+			);
+			name = doc;
+			path = packaging/doc;
+			sourceTree = "<group>";
+		};
+		E000936606C64E700068E0BF /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E000936706C64E700068E0BF /* background.tiff */,
+				E000936806C64E700068E0BF /* License.rtf */,
+				E000936906C64E700068E0BF /* Welcome.rtf */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		E000936F06C64E8E0068E0BF /* examples */ = {
+			isa = PBXGroup;
+			children = (
+				E000949006C64F350068E0BF /* Description.plist */,
+				E000949106C64F350068E0BF /* Info.plist */,
+				E000949206C64F350068E0BF /* Resources */,
+			);
+			path = examples;
+			sourceTree = "<group>";
+		};
+		E000949206C64F350068E0BF /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E000949306C64F350068E0BF /* background.tiff */,
+				E000949406C64F350068E0BF /* License.rtf */,
+				E000949506C64F350068E0BF /* Welcome.rtf */,
+			);
+			name = Resources;
+			path = packaging/examples/Resources;
+			sourceTree = SOURCE_ROOT;
+		};
+		E01100B40605E71200F93EC1 /* Palette */ = {
+			isa = PBXGroup;
+			children = (
+				E000676A062598DD00F49FCD /* SCControllerInspector.h */,
+				E000676B062598DD00F49FCD /* SCControllerInspector.mm */,
+				3D016A6506B6EBD800AD1116 /* SCExaminerHandlerInspector.h */,
+				3D016A6606B6EBD800AD1116 /* SCExaminerHandlerInspector.m */,
+				E09CFA83060249D50000E227 /* SCOpenGLViewInspector.h */,
+				E09CFA84060249D50000E227 /* SCOpenGLViewInspector.mm */,
+				3DDD3FF506B8EE9D0038959E /* SCSceneGraphInspector.h */,
+				3DDD3FF606B8EE9D0038959E /* SCSceneGraphInspector.mm */,
+				E09CFA85060249D50000E227 /* Sc21Palette.h */,
+				E09CFA86060249D50000E227 /* Sc21Palette.mm */,
+			);
+			name = Palette;
+			sourceTree = "<group>";
+		};
+		E01100B50605E71900F93EC1 /* Framework */ = {
+			isa = PBXGroup;
+			children = (
+				E066294D065383E000FB6420 /* private classes */,
+				E057B59A06219ADC0012C546 /* Sc21.h */,
+				E09CFA8B060249EF0000E227 /* SCCamera.h */,
+				E09CFA8C060249EF0000E227 /* SCCamera.mm */,
+				3D669D2506AAB21900CB9330 /* SCCameraP.h */,
+				E0BE123606C4136E00923172 /* SCCoinHandler.h */,
+				E0BE123706C4136E00923172 /* SCCoinHandler.mm */,
+				3DB055D206FA2B3C00812E32 /* SCCoinHandlerP.h */,
+				E09CFA8D060249EF0000E227 /* SCController.h */,
+				E09CFA8E060249EF0000E227 /* SCController.mm */,
+				3D6AF42706AE769B00225657 /* SCControllerP.h */,
+				3D6AF40F06AE760200225657 /* SCCursors.h */,
+				3D6AF41006AE760200225657 /* SCCursors.m */,
+				3D6AF42806AE769B00225657 /* SCDebug.h */,
+				3D6AF42906AE769B00225657 /* SCDebug.mm */,
+				3D6AF42A06AE769B00225657 /* SCDefines.h */,
+				E0D6A23106BA6FD900FF8E28 /* SCDrawable.h */,
+				3D93ABA106EF21400049C761 /* SCDrawable.mdoc */,
+				E0662923065383D600FB6420 /* SCEventHandler.h */,
+				E0662924065383D600FB6420 /* SCEventHandler.mm */,
+				E0E5D14C06B15F61009165C8 /* SCEventHandlerP.h */,
+				E080C6D906B12B080088958C /* SCExaminerHandler.h */,
+				E080C6DA06B12B080088958C /* SCExaminerHandler.mm */,
+				3DC6401D06BD29CB00301065 /* SCExaminerHandlerP.h */,
+				3D6AF42F06AE770400225657 /* SCExterns.m */,
+				E0EB29080613442800C54774 /* SCOpenGLPixelFormat.h */,
+				E0EB29090613442800C54774 /* SCOpenGLPixelFormat.m */,
+				E0EB290A0613442800C54774 /* SCOpenGLView.h */,
+				E0EB290B0613442800C54774 /* SCOpenGLView.m */,
+				3DE326EA06BC6A4900C5518B /* SCOpenGLViewP.h */,
+				3D02FB1F06A874CB00B9760F /* SCSceneGraph.h */,
+				3D02FB2006A874CB00B9760F /* SCSceneGraph.mm */,
+				3D669B2D06AA974F00CB9330 /* SCSceneGraphP.h */,
+				E0662937065383D600FB6420 /* SCUtil.h */,
+				E09CFA93060249EF0000E227 /* SCView.h */,
+				E09CFA94060249EF0000E227 /* SCView.mm */,
+				3D80BE9F06FA387700D8BFD2 /* SCViewP.h */,
+			);
+			name = Framework;
+			sourceTree = "<group>";
+		};
+		E066294D065383E000FB6420 /* private classes */ = {
+			isa = PBXGroup;
+			children = (
+				3DC6408406BD305800301065 /* SCEmulator.h */,
+				3DC6408506BD305800301065 /* SCEmulator.m */,
+				E09CFA8F060249EF0000E227 /* SCEventConverter.h */,
+				E09CFA90060249EF0000E227 /* SCEventConverter.mm */,
+				E0F867AD06C254700022BF2A /* SCInternalDefines.h */,
+				E0662929065383D600FB6420 /* SCMode.h */,
+				E066292A065383D600FB6420 /* SCMode.m */,
+				E066292C065383D600FB6420 /* SCMouseLog.h */,
+				E066292D065383D600FB6420 /* SCMouseLog.m */,
+				3DD432D909191C9800DB8BD1 /* SCOffscreenRenderer.h */,
+				3DD432D809191C9800DB8BD1 /* SCOffscreenRenderer.mm */,
+				E066292F065383D600FB6420 /* SCPanMode.h */,
+				E0662930065383D600FB6420 /* SCPanMode.mm */,
+				E0662931065383D600FB6420 /* SCRotateMode.h */,
+				E0662932065383D600FB6420 /* SCRotateMode.mm */,
+				3D883EAC06BFB0CA0048CDB7 /* SCSpinMode.h */,
+				3D883EAD06BFB0CA0048CDB7 /* SCSpinMode.mm */,
+				3DB0563606FA2FC200812E32 /* SCTimer.h */,
+				3DB0563706FA2FC200812E32 /* SCTimer.m */,
+				E080C71406B132550088958C /* SCZoomMode.h */,
+				E080C71506B132550088958C /* SCZoomMode.mm */,
+			);
+			name = "private classes";
+			sourceTree = "<group>";
+		};
+		E070FB1F0608992A00A60FCA /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				E070FB1E0608992200A60FCA /* makesc21pkg.sh */,
+				E0AC6A8806060F3300907ED7 /* test.sh */,
+			);
+			name = Scripts;
+			sourceTree = "<group>";
+		};
+		E0765C52060222BB0099F78E = {
+			isa = PBXGroup;
+			children = (
+				E09CFA9F060249F60000E227 /* src */,
+				E070FB1F0608992A00A60FCA /* Scripts */,
+				E09CFAB206024B510000E227 /* Resources */,
+				E09CFD9506024B5B0000E227 /* Frameworks */,
+				E0765C61060223120099F78E /* Products */,
+				E079476206340BEA006B5824 /* Packaging */,
+			);
+			sourceTree = "<group>";
+		};
+		E0765C61060223120099F78E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E0765C60060223120099F78E /* Sc21.framework */,
+				E09CFA56060245710000E227 /* Sc21.palette */,
+				E056E6DA0609F9FE0068145A /* Sc21 framework.pkg */,
+				E06867AF0633FC8700F702EA /* Sc21 palette.pkg */,
+				E079478806341DCE006B5824 /* Sc21.mpkg */,
+				E0DD07320654F9CA009C673A /* Sc21 */,
+				E0DD074206550C23009C673A /* Sc21 doc.pkg */,
+				E0F867CA06C2750B0022BF2A /* Sc21 */,
+				E0F867D306C276D40022BF2A /* Sc21 examples.pkg */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E079476206340BEA006B5824 /* Packaging */ = {
+			isa = PBXGroup;
+			children = (
+				E000936F06C64E8E0068E0BF /* examples */,
+				E000936306C64E700068E0BF /* doc */,
+				E0D1CE0406343F5B00269948 /* palette */,
+				E0D1CDFE06343F4E00269948 /* meta */,
+				E0D1CDEB06343F3100269948 /* framework */,
+			);
+			name = Packaging;
+			sourceTree = "<group>";
+		};
+		E09A0E0206660511003EE738 /* Palette */ = {
+			isa = PBXGroup;
+			children = (
+				E0C2F37306F9F6EB00524C32 /* version.plist */,
+				E09CFA57060245720000E227 /* Info.plist */,
+				E01100A40605E5B200F93EC1 /* Sc21Palette.nib */,
+				3D016AAD06B6EDE500AD1116 /* SCExaminerHandlerInspector.nib */,
+				E000678706259B3000F49FCD /* SCControllerInspector.nib */,
+				E01100A60605E5B800F93EC1 /* SCOpenGLViewInspector.nib */,
+				3DDD3FF006B8EE5C0038959E /* SCSceneGraphInspector.nib */,
+				3D23339306BE4C2A00AF3094 /* InspectorError.tiff */,
+				E09CFAA006024AD40000E227 /* Sc21Palette.tiff */,
+				E0BE12B706C419AA00923172 /* SCCoinHandler.tiff */,
+				E09CFAA106024AD40000E227 /* SCController.tiff */,
+				E09C036A06024BEF0000E227 /* SCView.tiff */,
+				3D3BEE6906B00E43007A16DC /* SCSceneGraph.tiff */,
+				3D016B0306B6F29E00AD1116 /* SCExaminerHandler.tiff */,
+				E09CFAA306024AD40000E227 /* palette.table */,
+				3DA8F98306DFEFB500173C27 /* SCController.ibclassdescription */,
+				3DA8F98406DFEFB500173C27 /* SCSceneGraph.ibclassdescription */,
+				3DA8F98506DFEFB500173C27 /* SCView.ibclassdescription */,
+			);
+			name = Palette;
+			sourceTree = "<group>";
+		};
+		E09A0E0306660514003EE738 /* Framework */ = {
+			isa = PBXGroup;
+			children = (
+				E0C2F37106F9F6D200524C32 /* version.plist */,
+				E0765C62060223120099F78E /* Info.plist */,
+				E057B67C0621EA210012C546 /* curs_pan.tiff */,
+				E057B6780621BC7F0012C546 /* curs_rotate.tiff */,
+				E057B67D0621EA210012C546 /* curs_zoom.tiff */,
+			);
+			name = Framework;
+			sourceTree = "<group>";
+		};
+		E09CFA9F060249F60000E227 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				E0242B5B06033BFF004FE05C /* Sc21_Prefix.pch */,
+				E01100B50605E71900F93EC1 /* Framework */,
+				E01100B40605E71200F93EC1 /* Palette */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		E09CFAB206024B510000E227 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E09A0E0306660514003EE738 /* Framework */,
+				E09A0E0206660511003EE738 /* Palette */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		E09CFD9506024B5B0000E227 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E0547AB706073E170089FA12 /* Inventor.framework */,
+				E09C038906024CFB0000E227 /* Cocoa.framework */,
+				E09C037006024CD90000E227 /* InterfaceBuilder.framework */,
+				E0765FBE060226AD0099F78E /* OpenGL.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E0D1CDEB06343F3100269948 /* framework */ = {
+			isa = PBXGroup;
+			children = (
+				E0D1CDEC06343F3100269948 /* Resources */,
+				E0D1CDEF06343F3100269948 /* Description.plist */,
+				E0D1CDF006343F3100269948 /* Info.plist */,
+			);
+			name = framework;
+			path = packaging/framework;
+			sourceTree = "<group>";
+		};
+		E0D1CDEC06343F3100269948 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E015841806352ED300B4C24F /* background.tiff */,
+				E0D1CDED06343F3100269948 /* License.rtf */,
+				E0D1CDEE06343F3100269948 /* Welcome.rtf */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		E0D1CDFE06343F4E00269948 /* meta */ = {
+			isa = PBXGroup;
+			children = (
+				E0D1CDFF06343F4E00269948 /* Resources */,
+				E0D1CE0206343F4E00269948 /* Description.plist */,
+				E0D1CE0306343F4E00269948 /* Info.plist */,
+			);
+			name = meta;
+			path = packaging/meta;
+			sourceTree = "<group>";
+		};
+		E0D1CDFF06343F4E00269948 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E015841706352EC900B4C24F /* background.tiff */,
+				E0D1CE0006343F4E00269948 /* License.rtf */,
+				E0D1CE0106343F4E00269948 /* Welcome.rtf */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		E0D1CE0406343F5B00269948 /* palette */ = {
+			isa = PBXGroup;
+			children = (
+				E0D1CE0506343F5B00269948 /* Resources */,
+				E0D1CE0806343F5B00269948 /* Description.plist */,
+				E0D1CE0906343F5B00269948 /* Info.plist */,
+			);
+			name = palette;
+			path = packaging/palette;
+			sourceTree = "<group>";
+		};
+		E0D1CE0506343F5B00269948 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E015841606352EBB00B4C24F /* background.tiff */,
+				E0D1CE0606343F5B00269948 /* License.rtf */,
+				E0D1CE0706343F5B00269948 /* Welcome.rtf */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		E0765C5B060223120099F78E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E057B59B06219ADC0012C546 /* Sc21.h in Headers */,
+				E09CFA95060249EF0000E227 /* SCCamera.h in Headers */,
+				E09CFA97060249EF0000E227 /* SCController.h in Headers */,
+				3DC6408606BD305800301065 /* SCEmulator.h in Headers */,
+				E09CFA99060249EF0000E227 /* SCEventConverter.h in Headers */,
+				E0EB290C0613442800C54774 /* SCOpenGLPixelFormat.h in Headers */,
+				E0EB290E0613442800C54774 /* SCOpenGLView.h in Headers */,
+				E057B59B06219ADC0012C546 /* Sc21.h in Headers */,
+				E0662938065383D600FB6420 /* SCEventHandler.h in Headers */,
+				E066293E065383D600FB6420 /* SCMode.h in Headers */,
+				E0662941065383D600FB6420 /* SCMouseLog.h in Headers */,
+				E0662944065383D600FB6420 /* SCPanMode.h in Headers */,
+				E0662946065383D600FB6420 /* SCRotateMode.h in Headers */,
+				E066294C065383D600FB6420 /* SCUtil.h in Headers */,
+				3D02FBA006A87FE500B9760F /* SCSceneGraph.h in Headers */,
+				3D669B2E06AA974F00CB9330 /* SCSceneGraphP.h in Headers */,
+				E09CFA9D060249EF0000E227 /* SCView.h in Headers */,
+				3D669D2606AAB21900CB9330 /* SCCameraP.h in Headers */,
+				3D6AF41106AE760200225657 /* SCCursors.h in Headers */,
+				3D6AF42B06AE769B00225657 /* SCControllerP.h in Headers */,
+				3D6AF42C06AE769B00225657 /* SCDebug.h in Headers */,
+				3D6AF42E06AE769B00225657 /* SCDefines.h in Headers */,
+				E080C6DB06B12B080088958C /* SCExaminerHandler.h in Headers */,
+				3DC6401E06BD29CB00301065 /* SCExaminerHandlerP.h in Headers */,
+				E080C71606B132550088958C /* SCZoomMode.h in Headers */,
+				E0E5D14D06B15F61009165C8 /* SCEventHandlerP.h in Headers */,
+				E0D6A23206BA6FD900FF8E28 /* SCDrawable.h in Headers */,
+				3DE326EB06BC6A4900C5518B /* SCOpenGLViewP.h in Headers */,
+				3D883EAE06BFB0CA0048CDB7 /* SCSpinMode.h in Headers */,
+				E0F867AE06C254700022BF2A /* SCInternalDefines.h in Headers */,
+				E0BE123806C4136E00923172 /* SCCoinHandler.h in Headers */,
+				3DB055D306FA2B3C00812E32 /* SCCoinHandlerP.h in Headers */,
+				3DB0563806FA2FC200812E32 /* SCTimer.h in Headers */,
+				3D80BEA006FA387700D8BFD2 /* SCViewP.h in Headers */,
+				3DD432DB09191C9800DB8BD1 /* SCOffscreenRenderer.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E09CFA51060245710000E227 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E09CFA87060249D50000E227 /* SCOpenGLViewInspector.h in Headers */,
+				E09CFA89060249D50000E227 /* Sc21Palette.h in Headers */,
+				E000676C062598DD00F49FCD /* SCControllerInspector.h in Headers */,
+				3D016A6706B6EBD800AD1116 /* SCExaminerHandlerInspector.h in Headers */,
+				3DDD3FF706B8EE9D0038959E /* SCSceneGraphInspector.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		E056E6D70609F9FE0068145A /* Sc21 framework pkg */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3D413FE209EEA48E0096F883 /* Build configuration list for PBXNativeTarget "Sc21 framework pkg" */;
+			buildPhases = (
+				E056E6D80609F9FE0068145A /* ShellScript */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/framework/Description.plist;
+				INFOPLIST_FILE = packaging/framework/Info.plist;
+				INSTALL_PATH = /packages;
+				PRODUCT_NAME = "$(PROJECT_NAME) framework.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/framework";
+				RESOURCE_DIR = packaging/framework/Resources;
+			};
+			dependencies = (
+				E06867B60633FDCA00F702EA /* PBXTargetDependency */,
+			);
+			name = "Sc21 framework pkg";
+			productInstallPath = /usr/local/bin;
+			productName = Untitled;
+			productReference = E056E6DA0609F9FE0068145A /* Sc21 framework.pkg */;
+			productType = "com.apple.product-type.tool";
+		};
+		E06867AC0633FC8700F702EA /* Sc21 palette pkg */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3D413FE709EEA48E0096F883 /* Build configuration list for PBXNativeTarget "Sc21 palette pkg" */;
+			buildPhases = (
+				E06867AD0633FC8700F702EA /* ShellScript */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/palette/Description.plist;
+				INFOPLIST_FILE = packaging/palette/Info.plist;
+				INSTALL_PATH = /packages;
+				PRODUCT_NAME = "$(PROJECT_NAME) palette.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/palette";
+				RESOURCE_DIR = packaging/palette/Resources;
+			};
+			dependencies = (
+				E06867B20633FC9E00F702EA /* PBXTargetDependency */,
+			);
+			name = "Sc21 palette pkg";
+			productInstallPath = /usr/local/bin;
+			productName = "Sc21 palette pkg";
+			productReference = E06867AF0633FC8700F702EA /* Sc21 palette.pkg */;
+			productType = "com.apple.product-type.tool";
+		};
+		E0765C5F060223120099F78E /* Sc21 framework */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3D413FCE09EEA48E0096F883 /* Build configuration list for PBXNativeTarget "Sc21 framework" */;
+			buildPhases = (
+				E0765C5B060223120099F78E /* Headers */,
+				E000678A06259B4B00F49FCD /* Resources */,
+				E0765C5D060223120099F78E /* Sources */,
+				E0765C5E060223120099F78E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 6.2;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/Sc21_Prefix.pch;
+				INFOPLIST_FILE = Resources/framework/Info.plist;
+				INSTALL_PATH = /Library/Frameworks;
+				INSTALL_ROOT = "$(DSTROOT)/framework";
+				OTHER_LDFLAGS = (
+					"-headerpad_max_install_names",
+					"-seg1addr",
+					0x2f000000,
+				);
+				PRODUCT_NAME = Sc21;
+			};
+			dependencies = (
+			);
+			name = "Sc21 framework";
+			productName = Sc21;
+			productReference = E0765C60060223120099F78E /* Sc21.framework */;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>Sc21</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>com.MySoftwareCompany.Sc21</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.0.1</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>3</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.framework";
+		};
+		E079478506341DCE006B5824 /* Sc21 meta pkg */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3D413FF609EEA48E0096F883 /* Build configuration list for PBXNativeTarget "Sc21 meta pkg" */;
+			buildPhases = (
+				E079478606341DCE006B5824 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/meta/Description.plist;
+				INFOPLIST_FILE = packaging/meta/Info.plist;
+				INSTALL_PATH = /;
+				PRODUCT_NAME = "$(PROJECT_NAME).mpkg";
+				PRODUCT_ROOT = "$(DSTROOT)/meta";
+				RESOURCE_DIR = packaging/meta/Resources;
+			};
+			dependencies = (
+				E079478B06341DF3006B5824 /* PBXTargetDependency */,
+				E079478D06341E03006B5824 /* PBXTargetDependency */,
+				E0F8681006C282590022BF2A /* PBXTargetDependency */,
+				E016DA9906F6F51B00AF7EAB /* PBXTargetDependency */,
+			);
+			name = "Sc21 meta pkg";
+			productInstallPath = /usr/local/bin;
+			productName = "Sc21 meta pkg";
+			productReference = E079478806341DCE006B5824 /* Sc21.mpkg */;
+			productType = "com.apple.product-type.tool";
+		};
+		E09CFA55060245710000E227 /* Sc21 palette */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3D413FD309EEA48E0096F883 /* Build configuration list for PBXNativeTarget "Sc21 palette" */;
+			buildPhases = (
+				E09CFA51060245710000E227 /* Headers */,
+				E09CFA52060245710000E227 /* Resources */,
+				E09CFA53060245710000E227 /* Sources */,
+				E09CFA54060245710000E227 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/Sc21_Prefix.pch;
+				INFOPLIST_FILE = Resources/palette/Info.plist;
+				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Palettes";
+				INSTALL_ROOT = "$(DSTROOT)/palette";
+				OTHER_LDFLAGS = "-bundle";
+				PREBINDING = NO;
+				PRODUCT_NAME = Sc21;
+				WRAPPER_EXTENSION = palette;
+			};
+			dependencies = (
+				E01100AB0605E60300F93EC1 /* PBXTargetDependency */,
+			);
+			name = "Sc21 palette";
+			productName = Sc21;
+			productReference = E09CFA56060245710000E227 /* Sc21.palette */;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>Sc21</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>CFBundleIconFile</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>com.MySoftwareCompany.Sc21</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string></string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>3</string>
+</dict>
+</plist>
+";
+			productType = "com.apple.product-type.bundle";
+		};
+		E0DD072F0654F9CA009C673A /* Sc21 doc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3D413FD809EEA48E0096F883 /* Build configuration list for PBXNativeTarget "Sc21 doc" */;
+			buildPhases = (
+				E0DD07300654F9CA009C673A /* ShellScript */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Documentation";
+				INSTALL_ROOT = "$(DSTROOT)/doc";
+				PRODUCT_NAME = Sc21;
+			};
+			dependencies = (
+			);
+			name = "Sc21 doc";
+			productInstallPath = /usr/local/bin;
+			productName = "Sc21 doc";
+			productReference = E0DD07320654F9CA009C673A /* Sc21 */;
+			productType = "com.apple.product-type.tool";
+		};
+		E0DD073F06550C23009C673A /* Sc21 doc pkg */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3D413FF109EEA48E0096F883 /* Build configuration list for PBXNativeTarget "Sc21 doc pkg" */;
+			buildPhases = (
+				E0DD074006550C23009C673A /* ShellScript */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/doc/Description.plist;
+				INFOPLIST_FILE = packaging/doc/Info.plist;
+				INSTALL_PATH = /packages;
+				PRODUCT_NAME = "$(PROJECT_NAME) doc.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/doc";
+				RESOURCE_DIR = packaging/doc/Resources;
+			};
+			dependencies = (
+				E03800C506551033000633F5 /* PBXTargetDependency */,
+			);
+			name = "Sc21 doc pkg";
+			productInstallPath = /usr/local/bin;
+			productName = "Sc21 doc pkg";
+			productReference = E0DD074206550C23009C673A /* Sc21 doc.pkg */;
+			productType = "com.apple.product-type.tool";
+		};
+		E0F867C806C2750B0022BF2A /* Sc21 examples */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3D413FDD09EEA48E0096F883 /* Build configuration list for PBXNativeTarget "Sc21 examples" */;
+			buildPhases = (
+				E0F867C906C2750B0022BF2A /* ShellScript */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Examples";
+				INSTALL_ROOT = "$(DSTROOT)/examples";
+				PRODUCT_NAME = Sc21;
+			};
+			dependencies = (
+			);
+			name = "Sc21 examples";
+			productInstallPath = /usr/local/bin;
+			productName = "Sc21 doc";
+			productReference = E0F867CA06C2750B0022BF2A /* Sc21 */;
+			productType = "com.apple.product-type.tool";
+		};
+		E0F867D006C276D40022BF2A /* Sc21 examples pkg */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3D413FEC09EEA48E0096F883 /* Build configuration list for PBXNativeTarget "Sc21 examples pkg" */;
+			buildPhases = (
+				E0F867D206C276D40022BF2A /* ShellScript */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/examples/Description.plist;
+				INFOPLIST_FILE = packaging/examples/Info.plist;
+				INSTALL_PATH = /packages;
+				PRODUCT_NAME = "$(PROJECT_NAME) examples.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/examples";
+				RESOURCE_DIR = packaging/examples/Resources;
+			};
+			dependencies = (
+				E0F867DD06C277120022BF2A /* PBXTargetDependency */,
+			);
+			name = "Sc21 examples pkg";
+			productInstallPath = /usr/local/bin;
+			productName = "Sc21 doc pkg";
+			productReference = E0F867D306C276D40022BF2A /* Sc21 examples.pkg */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E0765C56060222BB0099F78E /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 3D413FFB09EEA48E0096F883 /* Build configuration list for PBXProject "Sc21" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				E0765C54060222BB0099F78E /* Development */,
+				E0765C55060222BB0099F78E /* release */,
+				E01C24CB0605FDCE0000C5C7 /* debug */,
+			);
+			hasScannedForEncodings = 1;
+			mainGroup = E0765C52060222BB0099F78E;
+			productRefGroup = E0765C61060223120099F78E /* Products */;
+			projectDirPath = "";
+			targets = (
+				E0765C5F060223120099F78E /* Sc21 framework */,
+				E09CFA55060245710000E227 /* Sc21 palette */,
+				E0DD072F0654F9CA009C673A /* Sc21 doc */,
+				E0F867C806C2750B0022BF2A /* Sc21 examples */,
+				E056E6D70609F9FE0068145A /* Sc21 framework pkg */,
+				E06867AC0633FC8700F702EA /* Sc21 palette pkg */,
+				E0F867D006C276D40022BF2A /* Sc21 examples pkg */,
+				E0DD073F06550C23009C673A /* Sc21 doc pkg */,
+				E079478506341DCE006B5824 /* Sc21 meta pkg */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E000678A06259B4B00F49FCD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E000678B06259B5900F49FCD /* curs_pan.tiff in Resources */,
+				E000678C06259B5900F49FCD /* curs_rotate.tiff in Resources */,
+				E000678D06259B5900F49FCD /* curs_zoom.tiff in Resources */,
+				3D93ABA206EF21400049C761 /* SCDrawable.mdoc in Resources */,
+				E0C2F37206F9F6D200524C32 /* version.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E09CFA52060245710000E227 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E09CFAA406024AD40000E227 /* Sc21Palette.tiff in Resources */,
+				E09CFAA506024AD40000E227 /* SCController.tiff in Resources */,
+				E09CFAA706024AD40000E227 /* palette.table in Resources */,
+				E01100A70605E5B800F93EC1 /* SCOpenGLViewInspector.nib in Resources */,
+				E01100A50605E5B200F93EC1 /* Sc21Palette.nib in Resources */,
+				E09C036B06024BEF0000E227 /* SCView.tiff in Resources */,
+				E000678906259B3000F49FCD /* SCControllerInspector.nib in Resources */,
+				3D3BEE6A06B00E43007A16DC /* SCSceneGraph.tiff in Resources */,
+				3D016AAF06B6EDE500AD1116 /* SCExaminerHandlerInspector.nib in Resources */,
+				3D016B0406B6F29E00AD1116 /* SCExaminerHandler.tiff in Resources */,
+				3DDD3FF206B8EE5C0038959E /* SCSceneGraphInspector.nib in Resources */,
+				3D23339406BE4C2A00AF3094 /* InspectorError.tiff in Resources */,
+				E0BE12B806C419AA00923172 /* SCCoinHandler.tiff in Resources */,
+				3DA8F98606DFEFB500173C27 /* SCController.ibclassdescription in Resources */,
+				3DA8F98706DFEFB500173C27 /* SCSceneGraph.ibclassdescription in Resources */,
+				3DA8F98806DFEFB500173C27 /* SCView.ibclassdescription in Resources */,
+				E0C2F37406F9F6EB00524C32 /* version.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E056E6D80609F9FE0068145A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(PROJECT_NAME).framework",
+			);
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(PRODUCT_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Script: Sc21 framework pkg\"\n$SRCROOT/packaging/scripts/makesc21pkg.sh\nretval=$?\n#\U0013touch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit $retval";
+		};
+		E06867AD0633FC8700F702EA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(PROJECT_NAME).palette",
+			);
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(PRODUCT_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Script: Sc21 palette pkg\"\n$SRCROOT/packaging/scripts/makesc21pkg.sh\nretval=$?\n#touch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit $retval\n";
+		};
+		E079478606341DCE006B5824 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(PRODUCT_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Script: Sc21.mpkg\"\nmkdir -p $DSTROOT/meta\n$SRCROOT/packaging/scripts/makesc21pkg.sh\nretval=$?\n#touch $TARGET_BUILD_DIR/$PRODUCT_NAME\nexit $retval\n";
+		};
+		E0DD07300654F9CA009C673A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Script: Sc21 doc\"\nbin/autodoc -project src -format html -template doc/HTMLTemplate.html -copyright \"Systems in Motion AS\" -destination $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME -tree -allclasses -force\ncp doc/style.css $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME\ncp doc/index.html $INSTALL_ROOT$INSTALL_PATH/$PRODUCT_NAME\nretval=$?\nexit $retval\n";
+		};
+		E0DD074006550C23009C673A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(PRODUCT_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Script: Sc21 doc pkg\"\n$SRCROOT/packaging/scripts/makesc21pkg.sh\nretval=$?\nexit $retval";
+		};
+		E0F867C906C2750B0022BF2A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Script: Sc21 examples\"\n$SRCROOT/packaging/scripts/copyexamples.sh\nretval=$?\nexit $retval\n";
+		};
+		E0F867D206C276D40022BF2A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(PRODUCT_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Script: Sc21 examples pkg\"\n$SRCROOT/packaging/scripts/makesc21pkg.sh\nretval=$?\nexit $retval";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E0765C5D060223120099F78E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E09CFA96060249EF0000E227 /* SCCamera.mm in Sources */,
+				E09CFA98060249EF0000E227 /* SCController.mm in Sources */,
+				E09CFA9A060249EF0000E227 /* SCEventConverter.mm in Sources */,
+				E0EB290D0613442800C54774 /* SCOpenGLPixelFormat.m in Sources */,
+				E0EB290F0613442800C54774 /* SCOpenGLView.m in Sources */,
+				E0662939065383D600FB6420 /* SCEventHandler.mm in Sources */,
+				E066293F065383D600FB6420 /* SCMode.m in Sources */,
+				E0662942065383D600FB6420 /* SCMouseLog.m in Sources */,
+				E0662945065383D600FB6420 /* SCPanMode.mm in Sources */,
+				E0662947065383D600FB6420 /* SCRotateMode.mm in Sources */,
+				3D02FBA106A8804200B9760F /* SCSceneGraph.mm in Sources */,
+				E09CFA9E060249EF0000E227 /* SCView.mm in Sources */,
+				3D6AF41206AE760200225657 /* SCCursors.m in Sources */,
+				3D6AF42D06AE769B00225657 /* SCDebug.mm in Sources */,
+				3D6AF43006AE770400225657 /* SCExterns.m in Sources */,
+				E080C6DC06B12B080088958C /* SCExaminerHandler.mm in Sources */,
+				E080C71706B132550088958C /* SCZoomMode.mm in Sources */,
+				3DC6408706BD305800301065 /* SCEmulator.m in Sources */,
+				3D883EAF06BFB0CA0048CDB7 /* SCSpinMode.mm in Sources */,
+				E0BE123906C4136E00923172 /* SCCoinHandler.mm in Sources */,
+				3DB0563906FA2FC200812E32 /* SCTimer.m in Sources */,
+				3DD432DA09191C9800DB8BD1 /* SCOffscreenRenderer.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E09CFA53060245710000E227 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E09CFA88060249D50000E227 /* SCOpenGLViewInspector.mm in Sources */,
+				E09CFA8A060249D50000E227 /* Sc21Palette.mm in Sources */,
+				E000676D062598DD00F49FCD /* SCControllerInspector.mm in Sources */,
+				3D016A6806B6EBD800AD1116 /* SCExaminerHandlerInspector.m in Sources */,
+				3DDD3FF806B8EE9D0038959E /* SCSceneGraphInspector.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E01100AB0605E60300F93EC1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E0765C5F060223120099F78E /* Sc21 framework */;
+			targetProxy = E01100AA0605E60300F93EC1 /* PBXContainerItemProxy */;
+		};
+		E016DA9906F6F51B00AF7EAB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E0DD073F06550C23009C673A /* Sc21 doc pkg */;
+			targetProxy = E016DA9806F6F51B00AF7EAB /* PBXContainerItemProxy */;
+		};
+		E03800C506551033000633F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E0DD072F0654F9CA009C673A /* Sc21 doc */;
+			targetProxy = E03800C406551033000633F5 /* PBXContainerItemProxy */;
+		};
+		E06867B20633FC9E00F702EA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E09CFA55060245710000E227 /* Sc21 palette */;
+			targetProxy = E06867B10633FC9E00F702EA /* PBXContainerItemProxy */;
+		};
+		E06867B60633FDCA00F702EA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E0765C5F060223120099F78E /* Sc21 framework */;
+			targetProxy = E06867B50633FDCA00F702EA /* PBXContainerItemProxy */;
+		};
+		E079478B06341DF3006B5824 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E056E6D70609F9FE0068145A /* Sc21 framework pkg */;
+			targetProxy = E079478A06341DF3006B5824 /* PBXContainerItemProxy */;
+		};
+		E079478D06341E03006B5824 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E06867AC0633FC8700F702EA /* Sc21 palette pkg */;
+			targetProxy = E079478C06341E03006B5824 /* PBXContainerItemProxy */;
+		};
+		E0F867DD06C277120022BF2A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E0F867C806C2750B0022BF2A /* Sc21 examples */;
+			targetProxy = E0F867DC06C277120022BF2A /* PBXContainerItemProxy */;
+		};
+		E0F8681006C282590022BF2A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E0F867D006C276D40022BF2A /* Sc21 examples pkg */;
+			targetProxy = E0F8680F06C282590022BF2A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		3D016AAD06B6EDE500AD1116 /* SCExaminerHandlerInspector.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3D016AAE06B6EDE500AD1116 /* English */,
+			);
+			name = SCExaminerHandlerInspector.nib;
+			sourceTree = "<group>";
+		};
+		3DDD3FF006B8EE5C0038959E /* SCSceneGraphInspector.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3DDD3FF106B8EE5C0038959E /* English */,
+			);
+			name = SCSceneGraphInspector.nib;
+			sourceTree = "<group>";
+		};
+		E000678706259B3000F49FCD /* SCControllerInspector.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E000678806259B3000F49FCD /* English */,
+			);
+			name = SCControllerInspector.nib;
+			sourceTree = "<group>";
+		};
+		E01100A40605E5B200F93EC1 /* Sc21Palette.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E09CFAAE06024B1F0000E227 /* English */,
+			);
+			name = Sc21Palette.nib;
+			sourceTree = "<group>";
+		};
+		E01100A60605E5B800F93EC1 /* SCOpenGLViewInspector.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E09CFAAB06024B130000E227 /* English */,
+			);
+			name = SCOpenGLViewInspector.nib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3D413FCF09EEA48E0096F883 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 6.2;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_CPU = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/Sc21_Prefix.pch;
+				INFOPLIST_FILE = Resources/framework/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = /Library/Frameworks;
+				INSTALL_ROOT = "$(DSTROOT)/framework";
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-headerpad_max_install_names",
+					"-seg1addr",
+					0x2f000000,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Sc21;
+				UNSTRIPPED_PRODUCT = YES;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		3D413FD009EEA48E0096F883 /* release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DYLIB_COMPATIBILITY_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 6.2;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/Sc21_Prefix.pch;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Resources/framework/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = /Library/Frameworks;
+				INSTALL_ROOT = "$(DSTROOT)/framework";
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				OTHER_LDFLAGS = (
+					"-headerpad_max_install_names",
+					"-seg1addr",
+					0x2f000000,
+				);
+				PRODUCT_NAME = Sc21;
+			};
+			name = release;
+		};
+		3D413FD109EEA48E0096F883 /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DYLIB_COMPATIBILITY_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 6.2;
+				FRAMEWORK_VERSION = A;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/Sc21_Prefix.pch;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				INFOPLIST_FILE = Resources/framework/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = /Library/Frameworks;
+				INSTALL_ROOT = "$(DSTROOT)/framework";
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-headerpad_max_install_names",
+					"-seg1addr",
+					0x2f000000,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Sc21;
+				UNSTRIPPED_PRODUCT = YES;
+			};
+			name = debug;
+		};
+		3D413FD209EEA48E0096F883 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 6;
+				DYLIB_CURRENT_VERSION = 6.2;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/Sc21_Prefix.pch;
+				INFOPLIST_FILE = Resources/framework/Info.plist;
+				INSTALL_PATH = /Library/Frameworks;
+				INSTALL_ROOT = "$(DSTROOT)/framework";
+				OTHER_LDFLAGS = (
+					"-headerpad_max_install_names",
+					"-seg1addr",
+					0x2f000000,
+				);
+				PRODUCT_NAME = Sc21;
+			};
+			name = Default;
+		};
+		3D413FD409EEA48E0096F883 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_CPU = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/Sc21_Prefix.pch;
+				INFOPLIST_FILE = Resources/palette/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Palettes";
+				INSTALL_ROOT = "$(DSTROOT)/palette";
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				OTHER_LDFLAGS = "-bundle";
+				PREBINDING = NO;
+				PRODUCT_NAME = Sc21;
+				UNSTRIPPED_PRODUCT = YES;
+				WRAPPER_EXTENSION = palette;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		3D413FD509EEA48E0096F883 /* release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/Sc21_Prefix.pch;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Resources/palette/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Palettes";
+				INSTALL_ROOT = "$(DSTROOT)/palette";
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				OTHER_LDFLAGS = "-bundle";
+				PREBINDING = NO;
+				PRODUCT_NAME = Sc21;
+				WRAPPER_EXTENSION = palette;
+			};
+			name = release;
+		};
+		3D413FD609EEA48E0096F883 /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/Sc21_Prefix.pch;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				INFOPLIST_FILE = Resources/palette/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Palettes";
+				INSTALL_ROOT = "$(DSTROOT)/palette";
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				OTHER_LDFLAGS = "-bundle";
+				PREBINDING = NO;
+				PRODUCT_NAME = Sc21;
+				UNSTRIPPED_PRODUCT = YES;
+				WRAPPER_EXTENSION = palette;
+			};
+			name = debug;
+		};
+		3D413FD709EEA48E0096F883 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/Sc21_Prefix.pch;
+				INFOPLIST_FILE = Resources/palette/Info.plist;
+				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Palettes";
+				INSTALL_ROOT = "$(DSTROOT)/palette";
+				OTHER_LDFLAGS = "-bundle";
+				PREBINDING = NO;
+				PRODUCT_NAME = Sc21;
+				WRAPPER_EXTENSION = palette;
+			};
+			name = Default;
+		};
+		3D413FD909EEA48E0096F883 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_CPU = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Documentation";
+				INSTALL_ROOT = "$(DSTROOT)/doc";
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = Sc21;
+				UNSTRIPPED_PRODUCT = YES;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		3D413FDA09EEA48E0096F883 /* release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Documentation";
+				INSTALL_ROOT = "$(DSTROOT)/doc";
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				PRODUCT_NAME = Sc21;
+			};
+			name = release;
+		};
+		3D413FDB09EEA48E0096F883 /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Documentation";
+				INSTALL_ROOT = "$(DSTROOT)/doc";
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = Sc21;
+				UNSTRIPPED_PRODUCT = YES;
+			};
+			name = debug;
+		};
+		3D413FDC09EEA48E0096F883 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Documentation";
+				INSTALL_ROOT = "$(DSTROOT)/doc";
+				PRODUCT_NAME = Sc21;
+			};
+			name = Default;
+		};
+		3D413FDE09EEA48E0096F883 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_CPU = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Examples";
+				INSTALL_ROOT = "$(DSTROOT)/examples";
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = Sc21;
+				UNSTRIPPED_PRODUCT = YES;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		3D413FDF09EEA48E0096F883 /* release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Examples";
+				INSTALL_ROOT = "$(DSTROOT)/examples";
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				PRODUCT_NAME = Sc21;
+			};
+			name = release;
+		};
+		3D413FE009EEA48E0096F883 /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Examples";
+				INSTALL_ROOT = "$(DSTROOT)/examples";
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = Sc21;
+				UNSTRIPPED_PRODUCT = YES;
+			};
+			name = debug;
+		};
+		3D413FE109EEA48E0096F883 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Examples";
+				INSTALL_ROOT = "$(DSTROOT)/examples";
+				PRODUCT_NAME = Sc21;
+			};
+			name = Default;
+		};
+		3D413FE309EEA48E0096F883 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/framework/Description.plist;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_CPU = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = packaging/framework/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = /packages;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = "$(PROJECT_NAME) framework.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/framework";
+				RESOURCE_DIR = packaging/framework/Resources;
+				UNSTRIPPED_PRODUCT = YES;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		3D413FE409EEA48E0096F883 /* release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DESCRIPTION_PLIST_FILE = packaging/framework/Description.plist;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = packaging/framework/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = /packages;
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				PRODUCT_NAME = "$(PROJECT_NAME) framework.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/framework";
+				RESOURCE_DIR = packaging/framework/Resources;
+			};
+			name = release;
+		};
+		3D413FE509EEA48E0096F883 /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DESCRIPTION_PLIST_FILE = packaging/framework/Description.plist;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				INFOPLIST_FILE = packaging/framework/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = /packages;
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = "$(PROJECT_NAME) framework.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/framework";
+				RESOURCE_DIR = packaging/framework/Resources;
+				UNSTRIPPED_PRODUCT = YES;
+			};
+			name = debug;
+		};
+		3D413FE609EEA48E0096F883 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/framework/Description.plist;
+				INFOPLIST_FILE = packaging/framework/Info.plist;
+				INSTALL_PATH = /packages;
+				PRODUCT_NAME = "$(PROJECT_NAME) framework.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/framework";
+				RESOURCE_DIR = packaging/framework/Resources;
+			};
+			name = Default;
+		};
+		3D413FE809EEA48E0096F883 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/palette/Description.plist;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_CPU = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = packaging/palette/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = /packages;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = "$(PROJECT_NAME) palette.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/palette";
+				RESOURCE_DIR = packaging/palette/Resources;
+				UNSTRIPPED_PRODUCT = YES;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		3D413FE909EEA48E0096F883 /* release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DESCRIPTION_PLIST_FILE = packaging/palette/Description.plist;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = packaging/palette/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = /packages;
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				PRODUCT_NAME = "$(PROJECT_NAME) palette.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/palette";
+				RESOURCE_DIR = packaging/palette/Resources;
+			};
+			name = release;
+		};
+		3D413FEA09EEA48E0096F883 /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DESCRIPTION_PLIST_FILE = packaging/palette/Description.plist;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				INFOPLIST_FILE = packaging/palette/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = /packages;
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = "$(PROJECT_NAME) palette.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/palette";
+				RESOURCE_DIR = packaging/palette/Resources;
+				UNSTRIPPED_PRODUCT = YES;
+			};
+			name = debug;
+		};
+		3D413FEB09EEA48E0096F883 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/palette/Description.plist;
+				INFOPLIST_FILE = packaging/palette/Info.plist;
+				INSTALL_PATH = /packages;
+				PRODUCT_NAME = "$(PROJECT_NAME) palette.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/palette";
+				RESOURCE_DIR = packaging/palette/Resources;
+			};
+			name = Default;
+		};
+		3D413FED09EEA48E0096F883 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/examples/Description.plist;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_CPU = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = packaging/examples/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = /packages;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = "$(PROJECT_NAME) examples.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/examples";
+				RESOURCE_DIR = packaging/examples/Resources;
+				UNSTRIPPED_PRODUCT = YES;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		3D413FEE09EEA48E0096F883 /* release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DESCRIPTION_PLIST_FILE = packaging/examples/Description.plist;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = packaging/examples/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = /packages;
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				PRODUCT_NAME = "$(PROJECT_NAME) examples.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/examples";
+				RESOURCE_DIR = packaging/examples/Resources;
+			};
+			name = release;
+		};
+		3D413FEF09EEA48E0096F883 /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DESCRIPTION_PLIST_FILE = packaging/examples/Description.plist;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				INFOPLIST_FILE = packaging/examples/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = /packages;
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = "$(PROJECT_NAME) examples.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/examples";
+				RESOURCE_DIR = packaging/examples/Resources;
+				UNSTRIPPED_PRODUCT = YES;
+			};
+			name = debug;
+		};
+		3D413FF009EEA48E0096F883 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/examples/Description.plist;
+				INFOPLIST_FILE = packaging/examples/Info.plist;
+				INSTALL_PATH = /packages;
+				PRODUCT_NAME = "$(PROJECT_NAME) examples.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/examples";
+				RESOURCE_DIR = packaging/examples/Resources;
+			};
+			name = Default;
+		};
+		3D413FF209EEA48E0096F883 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/doc/Description.plist;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_CPU = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = packaging/doc/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = /packages;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = "$(PROJECT_NAME) doc.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/doc";
+				RESOURCE_DIR = packaging/doc/Resources;
+				UNSTRIPPED_PRODUCT = YES;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		3D413FF309EEA48E0096F883 /* release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DESCRIPTION_PLIST_FILE = packaging/doc/Description.plist;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = packaging/doc/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = /packages;
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				PRODUCT_NAME = "$(PROJECT_NAME) doc.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/doc";
+				RESOURCE_DIR = packaging/doc/Resources;
+			};
+			name = release;
+		};
+		3D413FF409EEA48E0096F883 /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DESCRIPTION_PLIST_FILE = packaging/doc/Description.plist;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				INFOPLIST_FILE = packaging/doc/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = /packages;
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = "$(PROJECT_NAME) doc.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/doc";
+				RESOURCE_DIR = packaging/doc/Resources;
+				UNSTRIPPED_PRODUCT = YES;
+			};
+			name = debug;
+		};
+		3D413FF509EEA48E0096F883 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/doc/Description.plist;
+				INFOPLIST_FILE = packaging/doc/Info.plist;
+				INSTALL_PATH = /packages;
+				PRODUCT_NAME = "$(PROJECT_NAME) doc.pkg";
+				PRODUCT_ROOT = "$(DSTROOT)/doc";
+				RESOURCE_DIR = packaging/doc/Resources;
+			};
+			name = Default;
+		};
+		3D413FF709EEA48E0096F883 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/meta/Description.plist;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_CPU = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = packaging/meta/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = /;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = "$(PROJECT_NAME).mpkg";
+				PRODUCT_ROOT = "$(DSTROOT)/meta";
+				RESOURCE_DIR = packaging/meta/Resources;
+				UNSTRIPPED_PRODUCT = YES;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		3D413FF809EEA48E0096F883 /* release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DESCRIPTION_PLIST_FILE = packaging/meta/Description.plist;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = packaging/meta/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = /;
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				PRODUCT_NAME = "$(PROJECT_NAME).mpkg";
+				PRODUCT_ROOT = "$(DSTROOT)/meta";
+				RESOURCE_DIR = packaging/meta/Resources;
+			};
+			name = release;
+		};
+		3D413FF909EEA48E0096F883 /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DESCRIPTION_PLIST_FILE = packaging/meta/Description.plist;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				INFOPLIST_FILE = packaging/meta/Info.plist;
+				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
+				INSTALL_PATH = /;
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = "$(PROJECT_NAME).mpkg";
+				PRODUCT_ROOT = "$(DSTROOT)/meta";
+				RESOURCE_DIR = packaging/meta/Resources;
+				UNSTRIPPED_PRODUCT = YES;
+			};
+			name = debug;
+		};
+		3D413FFA09EEA48E0096F883 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DESCRIPTION_PLIST_FILE = packaging/meta/Description.plist;
+				INFOPLIST_FILE = packaging/meta/Info.plist;
+				INSTALL_PATH = /;
+				PRODUCT_NAME = "$(PROJECT_NAME).mpkg";
+				PRODUCT_ROOT = "$(DSTROOT)/meta";
+				RESOURCE_DIR = packaging/meta/Resources;
+			};
+			name = Default;
+		};
+		3D413FFC09EEA48E0096F883 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Development;
+		};
+		3D413FFD09EEA48E0096F883 /* release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = release;
+		};
+		3D413FFE09EEA48E0096F883 /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = debug;
+		};
+		3D413FFF09EEA48E0096F883 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3D413FCE09EEA48E0096F883 /* Build configuration list for PBXNativeTarget "Sc21 framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D413FCF09EEA48E0096F883 /* Development */,
+				3D413FD009EEA48E0096F883 /* release */,
+				3D413FD109EEA48E0096F883 /* debug */,
+				3D413FD209EEA48E0096F883 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		3D413FD309EEA48E0096F883 /* Build configuration list for PBXNativeTarget "Sc21 palette" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D413FD409EEA48E0096F883 /* Development */,
+				3D413FD509EEA48E0096F883 /* release */,
+				3D413FD609EEA48E0096F883 /* debug */,
+				3D413FD709EEA48E0096F883 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		3D413FD809EEA48E0096F883 /* Build configuration list for PBXNativeTarget "Sc21 doc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D413FD909EEA48E0096F883 /* Development */,
+				3D413FDA09EEA48E0096F883 /* release */,
+				3D413FDB09EEA48E0096F883 /* debug */,
+				3D413FDC09EEA48E0096F883 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		3D413FDD09EEA48E0096F883 /* Build configuration list for PBXNativeTarget "Sc21 examples" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D413FDE09EEA48E0096F883 /* Development */,
+				3D413FDF09EEA48E0096F883 /* release */,
+				3D413FE009EEA48E0096F883 /* debug */,
+				3D413FE109EEA48E0096F883 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		3D413FE209EEA48E0096F883 /* Build configuration list for PBXNativeTarget "Sc21 framework pkg" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D413FE309EEA48E0096F883 /* Development */,
+				3D413FE409EEA48E0096F883 /* release */,
+				3D413FE509EEA48E0096F883 /* debug */,
+				3D413FE609EEA48E0096F883 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		3D413FE709EEA48E0096F883 /* Build configuration list for PBXNativeTarget "Sc21 palette pkg" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D413FE809EEA48E0096F883 /* Development */,
+				3D413FE909EEA48E0096F883 /* release */,
+				3D413FEA09EEA48E0096F883 /* debug */,
+				3D413FEB09EEA48E0096F883 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		3D413FEC09EEA48E0096F883 /* Build configuration list for PBXNativeTarget "Sc21 examples pkg" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D413FED09EEA48E0096F883 /* Development */,
+				3D413FEE09EEA48E0096F883 /* release */,
+				3D413FEF09EEA48E0096F883 /* debug */,
+				3D413FF009EEA48E0096F883 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		3D413FF109EEA48E0096F883 /* Build configuration list for PBXNativeTarget "Sc21 doc pkg" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D413FF209EEA48E0096F883 /* Development */,
+				3D413FF309EEA48E0096F883 /* release */,
+				3D413FF409EEA48E0096F883 /* debug */,
+				3D413FF509EEA48E0096F883 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		3D413FF609EEA48E0096F883 /* Build configuration list for PBXNativeTarget "Sc21 meta pkg" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D413FF709EEA48E0096F883 /* Development */,
+				3D413FF809EEA48E0096F883 /* release */,
+				3D413FF909EEA48E0096F883 /* debug */,
+				3D413FFA09EEA48E0096F883 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		3D413FFB09EEA48E0096F883 /* Build configuration list for PBXProject "Sc21" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D413FFC09EEA48E0096F883 /* Development */,
+				3D413FFD09EEA48E0096F883 /* release */,
+				3D413FFE09EEA48E0096F883 /* debug */,
+				3D413FFF09EEA48E0096F883 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E0765C56060222BB0099F78E /* Project object */;
+}
