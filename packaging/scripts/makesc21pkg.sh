@@ -58,6 +58,12 @@ if [ -z $VERBOSE ]; then
   REDIRECT='> /dev/null 2>&1'
 fi
 
-eval "/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker -build -p \"$TARGET_BUILD_DIR/$PRODUCT_NAME\" -f \"$PRODUCT_ROOT\" -r \"$SRCROOT/$RESOURCE_DIR\" -i \"$SRCROOT/$INFOPLIST_FILE\" -d \"$SRCROOT/$DESCRIPTION_PLIST_FILE\" $REDIRECT"
+eval "/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker -build -p \"$TARGET_BUILD_DIR/$PRODUCT_NAME\" -f \"$PRODUCT_ROOT\" $VERBOSE -r \"$SRCROOT/$RESOURCE_DIR\" -i \"$SRCROOT/$INFOPLIST_FILE\" -d \"$SRCROOT/$DESCRIPTION_PLIST_FILE\" $REDIRECT"
 
-exit $?;
+# FIXME: Apparently packagemaker always return 1, even if creating
+# the package was succesful -- unless -v is specified?! 20060413 kyrah
+# exit $?;
+
+echo "PackageMaker returned $? (ignored)."
+exit 0
+
