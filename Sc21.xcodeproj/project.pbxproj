@@ -369,7 +369,7 @@
 		E0D1CE0806343F5B00269948 /* Description.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; path = Description.plist; sourceTree = "<group>"; };
 		E0D1CE0906343F5B00269948 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E0D6A23106BA6FD900FF8E28 /* SCDrawable.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCDrawable.h; path = src/SCDrawable.h; sourceTree = "<group>"; };
-		E0DD07320654F9CA009C673A /* Sc21 */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.executable"; path = Sc21; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0DD07320654F9CA009C673A /* Sc21 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Sc21; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0DD074206550C23009C673A /* Sc21 doc.pkg */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Sc21 doc.pkg"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0E5D14C06B15F61009165C8 /* SCEventHandlerP.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCEventHandlerP.h; path = src/SCEventHandlerP.h; sourceTree = "<group>"; };
 		E0EB29080613442800C54774 /* SCOpenGLPixelFormat.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCOpenGLPixelFormat.h; path = src/SCOpenGLPixelFormat.h; sourceTree = "<group>"; };
@@ -1387,7 +1387,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 6;
-				DYLIB_CURRENT_VERSION = 6.2;
+				DYLIB_CURRENT_VERSION = 6.3;
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_CPU = G4;
@@ -1419,7 +1419,7 @@
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DYLIB_COMPATIBILITY_VERSION = 6;
-				DYLIB_CURRENT_VERSION = 6.2;
+				DYLIB_CURRENT_VERSION = 6.3;
 				FRAMEWORK_VERSION = A;
 				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
@@ -1462,7 +1462,7 @@
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DYLIB_COMPATIBILITY_VERSION = 6;
-				DYLIB_CURRENT_VERSION = 6.2;
+				DYLIB_CURRENT_VERSION = 6.3;
 				FRAMEWORK_VERSION = A;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1503,7 +1503,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 6;
-				DYLIB_CURRENT_VERSION = 6.2;
+				DYLIB_CURRENT_VERSION = 6.3;
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/Sc21_Prefix.pch;
