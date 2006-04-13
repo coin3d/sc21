@@ -60,7 +60,7 @@
   // distantFuture is "current time + a high number" (i.e. the actual 
   // date changes with time)
   
-  return ([self fireDate] < [NSDate dateWithTimeIntervalSinceNow:100000]);
+  return ([self fireDate] < (NSDate *)[NSDate dateWithTimeIntervalSinceNow:100000]);
 }
 
 @end
