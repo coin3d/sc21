@@ -30,7 +30,7 @@
 @implementation NSTimer (SCTimer)
 
 /*" 
-  Provide interface for deaction of NSTimer instance.
+  Provide interface for deactivation of NSTimer instance.
   
   Note: We deactivate the timer by setting its fireDate to
   "distantFuture" (cf. NSDate). IMNSHO, it is quite stupid that it is
@@ -46,21 +46,6 @@
 - (void)_SC_deactivate
 {
   [self setFireDate:[NSDate distantFuture]];
-}
-
-
-/*" 
-  Return YES if the receiver is active, NO otherwise.
-"*/
-
-- (BOOL)_SC_isActive
-{
-  // A timer is "active" if its fire date is less than 100000 seconds from now.
-  // Note that we cannot compare for "== distantFuture" here, since
-  // distantFuture is "current time + a high number" (i.e. the actual 
-  // date changes with time)
-  
-  return ([self fireDate] < (NSDate *)[NSDate dateWithTimeIntervalSinceNow:100000]);
 }
 
 @end

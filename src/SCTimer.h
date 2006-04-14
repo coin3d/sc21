@@ -29,6 +29,5 @@
 
 @interface NSTimer (SCTimer)
 - (void)_SC_deactivate;
-- (BOOL)_SC_isActive;
 @end
 
