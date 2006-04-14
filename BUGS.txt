@@ -88,3 +88,9 @@ are actually duplicates from Coin/BUGS.txt that are relevant to Sc21.
     here though until we've had time to test this properly.
 
 =====================================================================
+
+008 SCSceneGraph setRoot: should take SoNode *, not SoGroup *
+
+    This is one for the Sc21 2.0 wishlist. 
+=====================================================================
+
