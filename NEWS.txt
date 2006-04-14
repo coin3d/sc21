@@ -1,3 +1,10 @@
+New in Sc21 v1.1.0 (so far):
+* Universal Binary support
+* bugfixes:
+  - prevent bogus continuous scene updates
+  - camera handling: correct notification behaviour if the whole scene 
+    is behind the camera
+
 New in Sc21 v1.0.1 (2005-07-27):
 * support for Mac OS 10.4 "Tiger"
 * bugfixes:
