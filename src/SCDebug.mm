@@ -189,7 +189,7 @@
 {
   NSMutableString * info = [NSMutableString stringWithCapacity:1000];
   int scvals[10];
-  long nsvals[10];
+  GLint nsvals[10];
   BOOL scvalid;
   [info appendFormat:@"-------- pixelformatattribute: sc -> ns --------\n"];
   [info appendFormat:@"Virtual screens: -> %d\n", 

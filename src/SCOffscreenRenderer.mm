@@ -105,12 +105,12 @@ context_create_software(struct ctx_data * ctx)
   } 
   
   // prevent tearing artifacts by swapping buffers during vertical retrace
-  long swapInt = 1;
+  GLint swapInt = 1;
   [ctx->glcontext setValues:&swapInt forParameter:NSOpenGLCPSwapInterval];
   
-  long opaque = 0; // transparent background (set to 1 for opaque)
+  GLint opaque = 0; // transparent background (set to 1 for opaque)
   [ctx->glcontext setValues:&opaque forParameter:NSOpenGLCPSurfaceOpacity];
-  long surfaceOrder = 1;
+  GLint surfaceOrder = 1;
   [ctx->glcontext setValues:&surfaceOrder forParameter:NSOpenGLCPSurfaceOrder];
   
   NSRect bounds = NSMakeRect(0, 0, ctx->width, ctx->height);

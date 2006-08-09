@@ -86,7 +86,7 @@
 {
   if (self = [super initWithFrame:rect pixelFormat:format]) {
     // flush buffer only during the vertical retrace of the monitor
-    const long int vals[1] = {1};
+    const GLint vals[1] = {1};
     [[self openGLContext] setValues:vals forParameter:NSOpenGLCPSwapInterval];
   }
   return self;
