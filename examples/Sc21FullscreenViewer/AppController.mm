@@ -78,8 +78,8 @@
 {
   CGLContextObj cglContext;
   CGDisplayErr err;
-  long oldSwapInterval;
-  long newSwapInterval;
+  GLint oldSwapInterval;
+  GLint newSwapInterval;
 
   SCOpenGLPixelFormat * newformat = [[[SCOpenGLPixelFormat alloc] init] autorelease];
   [newformat setAttribute:NSOpenGLPFAAccelerated];
