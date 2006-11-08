@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleGetInfoString</key>
-	<string>Sc21 1.0.1 Copyright © 2003-2006 Systems in Motion AS</string>
+	<string>Sc21 1.0.2 Copyright © 2003-2006 Systems in Motion AS</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.coin3d.Sc21</string>
 	<key>CFBundleName</key>
 	<string>Sc21</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.1</string>
+	<string>1.0.2</string>
 	<key>IFMajorVersion</key>
 	<integer>0</integer>
 	<key>IFMinorVersion</key>

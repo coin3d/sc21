@@ -1,6 +1,6 @@
 Welcome!
 
-This is Sc21 1.0.1 by Systems in Motion. Double-click on Sc21.mpkg
+This is Sc21 1.0.2 by Systems in Motion. Double-click on Sc21.mpkg
 to start the installation. 
 
 The installer includes:

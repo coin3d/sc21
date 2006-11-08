@@ -5,10 +5,10 @@
 	<key>IFPkgDescriptionDeleteWarning</key>
 	<string></string>
 	<key>IFPkgDescriptionDescription</key>
-	<string>Sc21 framework 1.0.1 by Systems in Motion AS. Installed in /Library/Frameworks.</string>
+	<string>Sc21 framework 1.0.2 by Systems in Motion AS. Installed in /Library/Frameworks.</string>
 	<key>IFPkgDescriptionTitle</key>
 	<string>Sc21 framework</string>
 	<key>IFPkgDescriptionVersion</key>
-	<string>1.0.1</string>
+	<string>1.0.2</string>
 </dict>
 </plist>
