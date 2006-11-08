@@ -1,4 +1,4 @@
-New in Sc21 v1.1.0 (so far):
+New in Sc21 v1.0.2 (so far):
 * Universal Binary support
 * bugfixes:
   - prevent bogus continuous scene updates
