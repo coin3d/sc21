@@ -104,83 +104,6 @@
 		E0F867AE06C254700022BF2A /* SCInternalDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = E0F867AD06C254700022BF2A /* SCInternalDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
-/* Begin PBXBuildStyle section */
-		E01C24CB0605FDCE0000C5C7 /* debug */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				DEPLOYMENT_LOCATION = YES;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
-				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
-				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
-				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
-				GCC_WARN_SHADOW = YES;
-				GCC_WARN_SIGN_COMPARE = YES;
-				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
-				GCC_WARN_UNKNOWN_PRAGMAS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_LABEL = YES;
-				GCC_WARN_UNUSED_VALUE = YES;
-				GCC_WARN_UNUSED_VARIABLE = NO;
-				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
-				MACOSX_DEPLOYMENT_TARGET = 10.2;
-				OTHER_CFLAGS = "";
-				OTHER_CPLUSPLUSFLAGS = "";
-				PREBINDING = NO;
-				UNSTRIPPED_PRODUCT = YES;
-			};
-			name = debug;
-		};
-		E0765C54060222BB0099F78E /* Development */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_CPU = G4;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
-				OTHER_CFLAGS = "";
-				OTHER_CPLUSPLUSFLAGS = "";
-				PREBINDING = NO;
-				UNSTRIPPED_PRODUCT = YES;
-				ZERO_LINK = YES;
-			};
-			name = Development;
-		};
-		E0765C55060222BB0099F78E /* release */ = {
-			isa = PBXBuildStyle;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				DEPLOYMENT_LOCATION = YES;
-				DEPLOYMENT_POSTPROCESSING = YES;
-				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
-				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = YES;
-				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
-				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
-				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
-				GCC_WARN_SHADOW = YES;
-				GCC_WARN_SIGN_COMPARE = YES;
-				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNKNOWN_PRAGMAS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_LABEL = YES;
-				GCC_WARN_UNUSED_VALUE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INSTALL_MODE_FLAG = "u+w,og-w,a+rX";
-				MACOSX_DEPLOYMENT_TARGET = 10.2;
-			};
-			name = release;
-		};
-/* End PBXBuildStyle section */
-
 /* Begin PBXContainerItemProxy section */
 		E01100AA0605E60300F93EC1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -369,7 +292,7 @@
 		E0D1CE0806343F5B00269948 /* Description.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; path = Description.plist; sourceTree = "<group>"; };
 		E0D1CE0906343F5B00269948 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		E0D6A23106BA6FD900FF8E28 /* SCDrawable.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCDrawable.h; path = src/SCDrawable.h; sourceTree = "<group>"; };
-		E0DD07320654F9CA009C673A /* Sc21 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Sc21; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0DD07320654F9CA009C673A /* Sc21 */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.executable"; path = Sc21; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0DD074206550C23009C673A /* Sc21 doc.pkg */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Sc21 doc.pkg"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0E5D14C06B15F61009165C8 /* SCEventHandlerP.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCEventHandlerP.h; path = src/SCEventHandlerP.h; sourceTree = "<group>"; };
 		E0EB29080613442800C54774 /* SCOpenGLPixelFormat.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = SCOpenGLPixelFormat.h; path = src/SCOpenGLPixelFormat.h; sourceTree = "<group>"; };
@@ -784,14 +707,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				DESCRIPTION_PLIST_FILE = packaging/framework/Description.plist;
-				INFOPLIST_FILE = packaging/framework/Info.plist;
-				INSTALL_PATH = /packages;
-				PRODUCT_NAME = "$(PROJECT_NAME) framework.pkg";
-				PRODUCT_ROOT = "$(DSTROOT)/framework";
-				RESOURCE_DIR = packaging/framework/Resources;
-			};
 			dependencies = (
 				E06867B60633FDCA00F702EA /* PBXTargetDependency */,
 			);
@@ -809,14 +724,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				DESCRIPTION_PLIST_FILE = packaging/palette/Description.plist;
-				INFOPLIST_FILE = packaging/palette/Info.plist;
-				INSTALL_PATH = /packages;
-				PRODUCT_NAME = "$(PROJECT_NAME) palette.pkg";
-				PRODUCT_ROOT = "$(DSTROOT)/palette";
-				RESOURCE_DIR = packaging/palette/Resources;
-			};
 			dependencies = (
 				E06867B20633FC9E00F702EA /* PBXTargetDependency */,
 			);
@@ -838,52 +745,11 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				DYLIB_COMPATIBILITY_VERSION = 6;
-				DYLIB_CURRENT_VERSION = 6.2;
-				FRAMEWORK_VERSION = A;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/Sc21_Prefix.pch;
-				INFOPLIST_FILE = Resources/framework/Info.plist;
-				INSTALL_PATH = /Library/Frameworks;
-				INSTALL_ROOT = "$(DSTROOT)/framework";
-				OTHER_LDFLAGS = (
-					"-headerpad_max_install_names",
-					"-seg1addr",
-					0x2f000000,
-				);
-				PRODUCT_NAME = Sc21;
-			};
 			dependencies = (
 			);
 			name = "Sc21 framework";
 			productName = Sc21;
 			productReference = E0765C60060223120099F78E /* Sc21.framework */;
-			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
-<plist version=\"1.0\">
-<dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
-	<key>CFBundleExecutable</key>
-	<string>Sc21</string>
-	<key>CFBundleGetInfoString</key>
-	<string></string>
-	<key>CFBundleIdentifier</key>
-	<string>com.MySoftwareCompany.Sc21</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundlePackageType</key>
-	<string>FMWK</string>
-	<key>CFBundleShortVersionString</key>
-	<string>0.0.1</string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>3</string>
-</dict>
-</plist>
-";
 			productType = "com.apple.product-type.framework";
 		};
 		E079478506341DCE006B5824 /* Sc21 meta pkg */ = {
@@ -894,14 +760,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				DESCRIPTION_PLIST_FILE = packaging/meta/Description.plist;
-				INFOPLIST_FILE = packaging/meta/Info.plist;
-				INSTALL_PATH = /;
-				PRODUCT_NAME = "$(PROJECT_NAME).mpkg";
-				PRODUCT_ROOT = "$(DSTROOT)/meta";
-				RESOURCE_DIR = packaging/meta/Resources;
-			};
 			dependencies = (
 				E079478B06341DF3006B5824 /* PBXTargetDependency */,
 				E079478D06341E03006B5824 /* PBXTargetDependency */,
@@ -925,50 +783,12 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/Sc21_Prefix.pch;
-				INFOPLIST_FILE = Resources/palette/Info.plist;
-				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Palettes";
-				INSTALL_ROOT = "$(DSTROOT)/palette";
-				OTHER_LDFLAGS = "-bundle";
-				PREBINDING = NO;
-				PRODUCT_NAME = Sc21;
-				WRAPPER_EXTENSION = palette;
-			};
 			dependencies = (
 				E01100AB0605E60300F93EC1 /* PBXTargetDependency */,
 			);
 			name = "Sc21 palette";
 			productName = Sc21;
 			productReference = E09CFA56060245710000E227 /* Sc21.palette */;
-			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
-<plist version=\"1.0\">
-<dict>
-	<key>CFBundleDevelopmentRegion</key>
-	<string>English</string>
-	<key>CFBundleExecutable</key>
-	<string>Sc21</string>
-	<key>CFBundleGetInfoString</key>
-	<string></string>
-	<key>CFBundleIconFile</key>
-	<string></string>
-	<key>CFBundleIdentifier</key>
-	<string>com.MySoftwareCompany.Sc21</string>
-	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string></string>
-	<key>CFBundleSignature</key>
-	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>3</string>
-</dict>
-</plist>
-";
 			productType = "com.apple.product-type.bundle";
 		};
 		E0DD072F0654F9CA009C673A /* Sc21 doc */ = {
@@ -979,11 +799,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Documentation";
-				INSTALL_ROOT = "$(DSTROOT)/doc";
-				PRODUCT_NAME = Sc21;
-			};
 			dependencies = (
 			);
 			name = "Sc21 doc";
@@ -1000,14 +815,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				DESCRIPTION_PLIST_FILE = packaging/doc/Description.plist;
-				INFOPLIST_FILE = packaging/doc/Info.plist;
-				INSTALL_PATH = /packages;
-				PRODUCT_NAME = "$(PROJECT_NAME) doc.pkg";
-				PRODUCT_ROOT = "$(DSTROOT)/doc";
-				RESOURCE_DIR = packaging/doc/Resources;
-			};
 			dependencies = (
 				E03800C506551033000633F5 /* PBXTargetDependency */,
 			);
@@ -1025,11 +832,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				INSTALL_PATH = "$(SYSTEM_DEVELOPER_DIR)/Examples";
-				INSTALL_ROOT = "$(DSTROOT)/examples";
-				PRODUCT_NAME = Sc21;
-			};
 			dependencies = (
 			);
 			name = "Sc21 examples";
@@ -1046,14 +848,6 @@
 			);
 			buildRules = (
 			);
-			buildSettings = {
-				DESCRIPTION_PLIST_FILE = packaging/examples/Description.plist;
-				INFOPLIST_FILE = packaging/examples/Info.plist;
-				INSTALL_PATH = /packages;
-				PRODUCT_NAME = "$(PROJECT_NAME) examples.pkg";
-				PRODUCT_ROOT = "$(DSTROOT)/examples";
-				RESOURCE_DIR = packaging/examples/Resources;
-			};
 			dependencies = (
 				E0F867DD06C277120022BF2A /* PBXTargetDependency */,
 			);
@@ -1069,13 +863,6 @@
 		E0765C56060222BB0099F78E /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 3D413FFB09EEA48E0096F883 /* Build configuration list for PBXProject "Sc21" */;
-			buildSettings = {
-			};
-			buildStyles = (
-				E0765C54060222BB0099F78E /* Development */,
-				E0765C55060222BB0099F78E /* release */,
-				E01C24CB0605FDCE0000C5C7 /* debug */,
-			);
 			hasScannedForEncodings = 1;
 			mainGroup = E0765C52060222BB0099F78E;
 			productRefGroup = E0765C61060223120099F78E /* Products */;

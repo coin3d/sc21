@@ -3,7 +3,7 @@
  | This file is part of Sc21, a Cocoa user interface binding for   |
  | the Coin 3D visualization library.                              |
  |                                                                 |
- | Copyright (c) 2003-2005 Systems in Motion. All rights reserved. |
+ | Copyright (c) 2003-2006 Systems in Motion. All rights reserved. |
  |                                                                 |
  | Sc21 is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License     |
