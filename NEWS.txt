@@ -1,4 +1,4 @@
-New in Sc21 v1.0.2 (so far):
+New in Sc21 v1.0.2 (2006-11-09):
 * Universal Binary support
 * support for upcoming Mac OS 10.5 "Leopard"
 * Made framework relocatable by changing install_name to not be a full path 
