@@ -10,7 +10,7 @@ The installer includes:
     - the Sc21 documentation
     - the Sc21 examples
     - Coin 2.4.3
-    - the CoinT5ols for Coin 2.4.5
+    - the CoinTools for Coin 2.4.5
 
 By default, all of these will be installed, except for the
 CoinTools. (You only need the CoinTools if you want to use SoQt.) You
