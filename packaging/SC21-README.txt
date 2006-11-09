@@ -9,7 +9,7 @@ The installer includes:
     - the Sc21 Interface Builder palette
     - the Sc21 documentation
     - the Sc21 examples
-    - Coin 2.4.3
+    - Coin 2.4.5
     - the CoinTools for Coin 2.4.5
 
 By default, all of these will be installed, except for the
