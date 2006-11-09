@@ -10,19 +10,15 @@ The installer includes:
     - the Sc21 documentation
     - the Sc21 examples
     - Coin 2.4.3
-    - the CoinTools for Coin 2.4.3
+    - the CoinT5ols for Coin 2.4.5
 
 By default, all of these will be installed, except for the
 CoinTools. (You only need the CoinTools if you want to use SoQt.) You
 can select which components to install by choosing "Customize" in the
 installer's "Installation Type" screen.
 
-Note that due to ABI changes between gcc-3.3 and gcc-4.0, you have
-to choose the right SDK depending on what compiler version you are
-using. As a rule of thumb, this means:
-
-  - Mac OS 10.4 "Tiger"     use Sc21-*gcc4.dmg
-  - Mac OS 10.3 "Panther"   use Sc21-*gcc3.dmg
+Note that you need to use gcc-4.0 to build against Sc21 due to ABI
+changes between gcc-4.0 and earlier gcc versions.
 
 For more information, please read the relevant FAQ entries on the
 Coin/Mac website. 
