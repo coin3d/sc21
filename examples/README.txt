@@ -1,3 +1,6 @@
+Sc21 Usage Examples 
+-------------------
+
 This folder contains the following example programs demonstrating how
 you can use Sc21:
 
@@ -39,7 +42,34 @@ without using any nib files.
 Note that this way of developing applications is not recommended and
 this example is present here just as a proof of concept.
 
---
+                                --><--
+
+Important note regarding Universal Binaries:
+--------------------------------------------
+
+By default, only the native version of the examples is built. To build
+universal binaries, do the following:
+
+  - bring up the Target settings dialog (Project -> Edit Active Target)
+  - choose the "Build" tab
+  - change the Architectures setting from $(NATIE_ARCH) to "ppc i386".
+  - rebuild
+
+If you are doing this on a PowerPC machine, you also need to select
+the Universal Binaries SDK:
+
+  - bring up the Project Info dialog (Project -> Edit Project Settings)
+  - choose the "General" tab
+  - select "Mac OS 10.4 (Universal) for the "Cross-Develope Using
+    Target SDK" setting
+
+    If you haven't done so yet, you also have to create a symbolic
+    link in the Universal Binary SDK so that Inventor.framework and
+    Sc21.framework in /Library/Frameworks are found:
+
+    - sudo ln -s /Library/Frameworks /Developer/SDKs/MacOSX10.4u.sdk/
+
+                                --><--
 
 More information about Sc21 can be found at http://www.coin3d.org/mac/Sc21/
 
