@@ -1,0 +1,373 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8D15AC290486D014006FF6A4 /* Viewtiful_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCF750370BD2300C91783 /* Viewtiful_Prefix.pch */; };
+		8D15AC2D0486D014006FF6A4 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */; };
+		8D15AC2E0486D014006FF6A4 /* MyDocument.nib in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B4FDCFA73011CA2CEA /* MyDocument.nib */; };
+		8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
+		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
+		E0DD2D5206074FB7009D1EB4 /* Inventor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0DD2D5006074FB7009D1EB4 /* Inventor.framework */; };
+		E0DD2D5306074FB7009D1EB4 /* Sc21.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0DD2D5106074FB7009D1EB4 /* Sc21.framework */; };
+		E0DD303C06074FFA009D1EB4 /* AppController.h in Headers */ = {isa = PBXBuildFile; fileRef = E0DD303306074FFA009D1EB4 /* AppController.h */; };
+		E0DD303D06074FFA009D1EB4 /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0DD303406074FFA009D1EB4 /* AppController.mm */; };
+		E0DD303E06074FFA009D1EB4 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0DD303506074FFA009D1EB4 /* main.mm */; };
+		E0DD303F06074FFA009D1EB4 /* MyDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = E0DD303606074FFA009D1EB4 /* MyDocument.h */; };
+		E0DD304006074FFA009D1EB4 /* MyDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0DD303706074FFA009D1EB4 /* MyDocument.mm */; };
+		E0DD304306074FFA009D1EB4 /* MyWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = E0DD303A06074FFA009D1EB4 /* MyWindowController.h */; };
+		E0DD304406074FFA009D1EB4 /* MyWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0DD303B06074FFA009D1EB4 /* MyWindowController.mm */; };
+		E0DD304C06075027009D1EB4 /* Sc21_app.icns in Resources */ = {isa = PBXBuildFile; fileRef = E0DD304B06075027009D1EB4 /* Sc21_app.icns */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		089C1660FE840EACC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		2A37F4B5FDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MyDocument.nib; sourceTree = "<group>"; };
+		2A37F4B7FDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		32DBCF750370BD2300C91783 /* Viewtiful_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewtiful_Prefix.pch; sourceTree = "<group>"; };
+		8D15AC360486D014006FF6A4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8D15AC370486D014006FF6A4 /* Viewtiful.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Viewtiful.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E0DD2D5006074FB7009D1EB4 /* Inventor.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Inventor.framework; path = /Library/Frameworks/Inventor.framework; sourceTree = "<absolute>"; };
+		E0DD2D5106074FB7009D1EB4 /* Sc21.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sc21.framework; path = /Library/Frameworks/Sc21.framework; sourceTree = "<absolute>"; };
+		E0DD303306074FFA009D1EB4 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
+		E0DD303406074FFA009D1EB4 /* AppController.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = AppController.mm; sourceTree = "<group>"; };
+		E0DD303506074FFA009D1EB4 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		E0DD303606074FFA009D1EB4 /* MyDocument.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MyDocument.h; sourceTree = "<group>"; };
+		E0DD303706074FFA009D1EB4 /* MyDocument.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = MyDocument.mm; sourceTree = "<group>"; };
+		E0DD303A06074FFA009D1EB4 /* MyWindowController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MyWindowController.h; sourceTree = "<group>"; };
+		E0DD303B06074FFA009D1EB4 /* MyWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = MyWindowController.mm; sourceTree = "<group>"; };
+		E0DD304B06075027009D1EB4 /* Sc21_app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Sc21_app.icns; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D15AC330486D014006FF6A4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */,
+				E0DD2D5206074FB7009D1EB4 /* Inventor.framework in Frameworks */,
+				E0DD2D5306074FB7009D1EB4 /* Sc21.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E0DD2D5006074FB7009D1EB4 /* Inventor.framework */,
+				E0DD2D5106074FB7009D1EB4 /* Sc21.framework */,
+				1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A8FEA54F5311CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */,
+				2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FB0FE9D524F11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D15AC370486D014006FF6A4 /* Viewtiful.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2A37F4AAFDCFA73011CA2CEA /* Viewtiful */ = {
+			isa = PBXGroup;
+			children = (
+				2A37F4ABFDCFA73011CA2CEA /* Classes */,
+				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
+				2A37F4B8FDCFA73011CA2CEA /* Resources */,
+				2A37F4C3FDCFA73011CA2CEA /* Frameworks */,
+				19C28FB0FE9D524F11CA2CBB /* Products */,
+			);
+			name = Viewtiful;
+			sourceTree = "<group>";
+		};
+		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				E0DD303306074FFA009D1EB4 /* AppController.h */,
+				E0DD303406074FFA009D1EB4 /* AppController.mm */,
+				E0DD303606074FFA009D1EB4 /* MyDocument.h */,
+				E0DD303706074FFA009D1EB4 /* MyDocument.mm */,
+				E0DD303A06074FFA009D1EB4 /* MyWindowController.h */,
+				E0DD303B06074FFA009D1EB4 /* MyWindowController.mm */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		2A37F4AFFDCFA73011CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				E0DD303506074FFA009D1EB4 /* main.mm */,
+				32DBCF750370BD2300C91783 /* Viewtiful_Prefix.pch */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E0DD304B06075027009D1EB4 /* Sc21_app.icns */,
+				2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */,
+				2A37F4B4FDCFA73011CA2CEA /* MyDocument.nib */,
+				8D15AC360486D014006FF6A4 /* Info.plist */,
+				089C165FFE840EACC02AAC07 /* InfoPlist.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		2A37F4C3FDCFA73011CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */,
+				1058C7A8FEA54F5311CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		8D15AC280486D014006FF6A4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D15AC290486D014006FF6A4 /* Viewtiful_Prefix.pch in Headers */,
+				E0DD303C06074FFA009D1EB4 /* AppController.h in Headers */,
+				E0DD303F06074FFA009D1EB4 /* MyDocument.h in Headers */,
+				E0DD304306074FFA009D1EB4 /* MyWindowController.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		8D15AC270486D014006FF6A4 /* Viewtiful */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3D5C98EB0B03663100D281B5 /* Build configuration list for PBXNativeTarget "Viewtiful" */;
+			buildPhases = (
+				8D15AC280486D014006FF6A4 /* Headers */,
+				8D15AC2B0486D014006FF6A4 /* Resources */,
+				8D15AC300486D014006FF6A4 /* Sources */,
+				8D15AC330486D014006FF6A4 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Viewtiful;
+			productInstallPath = "$(HOME)/Applications";
+			productName = Viewtiful;
+			productReference = 8D15AC370486D014006FF6A4 /* Viewtiful.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2A37F4A9FDCFA73011CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 3D5C98EF0B03663100D281B5 /* Build configuration list for PBXProject "Viewtiful" */;
+			hasScannedForEncodings = 1;
+			mainGroup = 2A37F4AAFDCFA73011CA2CEA /* Viewtiful */;
+			projectDirPath = "";
+			targets = (
+				8D15AC270486D014006FF6A4 /* Viewtiful */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D15AC2B0486D014006FF6A4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D15AC2D0486D014006FF6A4 /* MainMenu.nib in Resources */,
+				8D15AC2E0486D014006FF6A4 /* MyDocument.nib in Resources */,
+				8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */,
+				E0DD304C06075027009D1EB4 /* Sc21_app.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D15AC300486D014006FF6A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0DD303D06074FFA009D1EB4 /* AppController.mm in Sources */,
+				E0DD303E06074FFA009D1EB4 /* main.mm in Sources */,
+				E0DD304006074FFA009D1EB4 /* MyDocument.mm in Sources */,
+				E0DD304406074FFA009D1EB4 /* MyWindowController.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C165FFE840EACC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C1660FE840EACC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		2A37F4B4FDCFA73011CA2CEA /* MyDocument.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2A37F4B5FDCFA73011CA2CEA /* English */,
+			);
+			name = MyDocument.nib;
+			sourceTree = "<group>";
+		};
+		2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2A37F4B7FDCFA73011CA2CEA /* English */,
+			);
+			name = MainMenu.nib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3D5C98EC0B03663100D281B5 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				COPY_PHASE_STRIP = NO;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Viewtiful_Prefix.pch;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				INFOPLIST_FILE = Info.plist;
+				OPTIMIZATION_CFLAGS = "-O0";
+				PRODUCT_NAME = Viewtiful;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		3D5C98ED0B03663100D281B5 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Viewtiful_Prefix.pch;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				INFOPLIST_FILE = Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 10.2;
+				PRODUCT_NAME = Viewtiful;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		3D5C98EE0B03663100D281B5 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Viewtiful_Prefix.pch;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				INFOPLIST_FILE = Info.plist;
+				PRODUCT_NAME = Viewtiful;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = app;
+			};
+			name = Default;
+		};
+		3D5C98F00B03663100D281B5 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Development;
+		};
+		3D5C98F10B03663100D281B5 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Deployment;
+		};
+		3D5C98F20B03663100D281B5 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Default;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3D5C98EB0B03663100D281B5 /* Build configuration list for PBXNativeTarget "Viewtiful" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D5C98EC0B03663100D281B5 /* Development */,
+				3D5C98ED0B03663100D281B5 /* Deployment */,
+				3D5C98EE0B03663100D281B5 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		3D5C98EF0B03663100D281B5 /* Build configuration list for PBXProject "Viewtiful" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D5C98F00B03663100D281B5 /* Development */,
+				3D5C98F10B03663100D281B5 /* Deployment */,
+				3D5C98F20B03663100D281B5 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
+}
