@@ -309,6 +309,19 @@ void error_cb(const class SoError * error, void * data)
   be !{ref()}'ed.
 "*/
 
+// FIXME: The parameter of this method should probably be of type
+// SoNode * instead of SoGroup *. Arguments for this: 
+//
+//   (1) SoSceneManager::setSceneGraph(SoNode *) 
+//   (2) allowing Coin extensions that are conceptionally a root node
+//       but don't derive from SoGroup (nodekits, app programmer
+//       creating a "group-like" node derived from SoNode)
+//
+// Since this breaks ABI, API, and source-code compatibility (code
+// relying on -root: returning an SoGroup * would need to be
+// rewritten), such a change can only go into the next major release.
+// 20061109 kyrah
+
 - (BOOL)setRoot:(SoGroup *)root
 {
   SC21_DEBUG(@"SCSceneGraph.setRoot: %p", root);
