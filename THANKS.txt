@@ -2,6 +2,7 @@ Many thanks to the following people for bug reports, feedback, ideas
 for improvement, etc.
 
 Tamer Fahmy
+Livio Isaia
 Anton Leuski
 Chao-Kuo Lin
 Carl E. Lindberg
