@@ -200,7 +200,7 @@ void error_cb(const class SoError * error, void * data)
 
 - (BOOL)readFromURL:(NSURL *)URL
 {
-  NSData * data = [URL resourceDataUsingCache:YES];
+  NSData * data = [NSData dataWithContentsOfURL:URL];
   if (data) {
     return [self loadDataRepresentation:data];
   }
