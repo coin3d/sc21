@@ -159,7 +159,7 @@ buffer_realloc(void *bufptr, size_t size)
   buffer = (char *)malloc(102400);
   buffer_size = 102400;
   out.setBuffer(buffer, buffer_size, buffer_realloc);
-  SbString hdr([header cString]);
+  SbString hdr([header UTF8String]);
   out.setHeaderString(hdr);
   SoWriteAction wra(&out);
   wra.apply([scenegraph root]);
