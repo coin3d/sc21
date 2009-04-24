@@ -3,7 +3,7 @@
  | This file is part of Sc21, a Cocoa user interface binding for   |
  | the Coin 3D visualization library.                              |
  |                                                                 |
- | Copyright (c) 2003-2006 Systems in Motion. All rights reserved. |
+ | Copyright (c) 2003-2009 Kongsberg SIM AS . All rights reserved. |
  |                                                                 |
  | Sc21 is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License     |
@@ -16,17 +16,18 @@
  |                                                                 |
  | For using Coin with software that can not be combined with the  |
  | GNU GPL, and for taking advantage of the additional benefits    |
- | of our support services, please contact Systems in Motion       |
+ | of our support services, please contact Kongsberg SIM AS        |
  | about acquiring a Coin Professional Edition License.            |
  |                                                                 |
  | See http://www.coin3d.org/mac/Sc21 for more information.        |
  |                                                                 |
- | Systems in Motion, Bygdoy Alle 5, 0257 Oslo, Norway.            |
+ | Kongsberg SIM AS , Bygdoy Alle 5, 0257 Oslo, Norway.            |
  |                                                                 |
  * =============================================================== */
 
 // FIXME: [self class] always return the actual Class of the self object.
 //        We want the class currently in scope. How?
+//        -> perhaps by calling class_copyMethodList() on each supertype?
 
 #ifdef SC21_DEBUG
 #define SC21_LOG_METHOD NSLog(@"%@.%@",[self class], NSStringFromSelector(_cmd))

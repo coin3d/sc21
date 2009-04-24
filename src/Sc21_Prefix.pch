@@ -1,6 +1,5 @@
 #ifdef __OBJC__
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKit.h>
-#import <InterfaceBuilder/InterfaceBuilder.h>
 #import <OpenGL/gl.h>
 #endif

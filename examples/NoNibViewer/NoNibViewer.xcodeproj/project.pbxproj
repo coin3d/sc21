@@ -148,9 +148,11 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 3D5C98A90B03658A00D281B5 /* Build configuration list for PBXProject "NoNibViewer" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 29B97314FDCFA39411CA2CEA /* NoNibViewer */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* NoNibViewer */,
 			);
@@ -192,7 +194,6 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = NoNibViewer_Prefix.pch;
-				OPTIMIZATION_CFLAGS = "-O0";
 				PRODUCT_NAME = NoNibViewer;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;

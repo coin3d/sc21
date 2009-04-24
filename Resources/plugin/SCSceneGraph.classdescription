@@ -1,0 +1,9 @@
+{
+  ClassName = SCSceneGraph; 
+  SuperClass = NSObject; 
+  Actions = {
+  };
+  Outlets = {
+    delegate = id;
+  };
+}

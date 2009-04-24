@@ -3,7 +3,7 @@
  | This file is part of Sc21, a Cocoa user interface binding for   |
  | the Coin 3D visualization library.                              |
  |                                                                 |
- | Copyright (c) 2003-2006 Systems in Motion. All rights reserved. |
+ | Copyright (c) 2003-2009 Kongsberg SIM AS . All rights reserved. |
  |                                                                 |
  | Sc21 is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License     |
@@ -16,12 +16,12 @@
  |                                                                 |
  | For using Coin with software that can not be combined with the  |
  | GNU GPL, and for taking advantage of the additional benefits    |
- | of our support services, please contact Systems in Motion       |
+ | of our support services, please contact Kongsberg SIM AS        |
  | about acquiring a Coin Professional Edition License.            |
  |                                                                 |
  | See http://www.coin3d.org/mac/Sc21 for more information.        |
  |                                                                 |
- | Systems in Motion, Bygdoy Alle 5, 0257 Oslo, Norway.            |
+ | Kongsberg SIM AS , Bygdoy Alle 5, 0257 Oslo, Norway.            |
  |                                                                 |
  * =============================================================== */
 
@@ -42,7 +42,7 @@
  @protected
   SCViewP * _sc_view;
  @private
-  IBOutlet SCController * controller;
+  SCController * controller;
 }
 
 /*" Initializing an SCView"*/
@@ -50,6 +50,7 @@
 - (id)initWithFrame:(NSRect)rect;
 
 /*" Accessing the controller"*/
+// FIXME -> property?
 - (SCController *)controller;
 - (void)setController:(SCController *)newcontroller;
 

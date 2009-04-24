@@ -7,30 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3D9595C906AC565C003E7F9F /* Sc21.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D9595C806AC565C003E7F9F /* Sc21.framework */; };
 		8D1107280486CEB800E47090 /* Sc21Viewer_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 32CA4F630368D1EE00C91783 /* Sc21Viewer_Prefix.pch */; };
-		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		E05D256D06074CA900C6A248 /* AppController.h in Headers */ = {isa = PBXBuildFile; fileRef = E05D256A06074CA900C6A248 /* AppController.h */; };
 		E05D256E06074CA900C6A248 /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E05D256B06074CA900C6A248 /* AppController.mm */; };
 		E05D256F06074CA900C6A248 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E05D256C06074CA900C6A248 /* main.m */; };
 		E05D267906074D0300C6A248 /* Inventor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E05D267806074D0300C6A248 /* Inventor.framework */; };
+		E0D1707A0F7AB4C9007EE18E /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0D170780F7AB4C9007EE18E /* MainMenu.xib */; };
+		E0E7CDEF0F80E05E007F289A /* Sc21.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0E7CDEE0F80E05E007F289A /* Sc21.framework */; };
 		E0F8689406C2B5B10022BF2A /* Sc21_app.icns in Resources */ = {isa = PBXBuildFile; fileRef = E0F8689306C2B5B10022BF2A /* Sc21_app.icns */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* Sc21Viewer_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sc21Viewer_Prefix.pch; sourceTree = "<group>"; };
-		3D9595C806AC565C003E7F9F /* Sc21.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sc21.framework; path = /Library/Frameworks/Sc21.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Sc21Viewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sc21Viewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E05D256A06074CA900C6A248 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		E05D256B06074CA900C6A248 /* AppController.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = AppController.mm; sourceTree = "<group>"; };
 		E05D256C06074CA900C6A248 /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E05D267806074D0300C6A248 /* Inventor.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Inventor.framework; path = /Library/Frameworks/Inventor.framework; sourceTree = "<absolute>"; };
+		E0D170790F7AB4C9007EE18E /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		E0E7CDEE0F80E05E007F289A /* Sc21.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sc21.framework; path = /Library/Frameworks/Sc21.framework; sourceTree = "<absolute>"; };
 		E0F8689306C2B5B10022BF2A /* Sc21_app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Sc21_app.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -41,7 +41,7 @@
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				E05D267906074D0300C6A248 /* Inventor.framework in Frameworks */,
-				3D9595C906AC565C003E7F9F /* Sc21.framework in Frameworks */,
+				E0E7CDEF0F80E05E007F289A /* Sc21.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,8 +60,8 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E0E7CDEE0F80E05E007F289A /* Sc21.framework */,
 				E05D267806074D0300C6A248 /* Inventor.framework */,
-				3D9595C806AC565C003E7F9F /* Sc21.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 			);
 			name = "Linked Frameworks";
@@ -110,7 +110,7 @@
 			children = (
 				E0F8689306C2B5B10022BF2A /* Sc21_app.icns */,
 				8D1107310486CEB800E47090 /* Info.plist */,
-				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
+				E0D170780F7AB4C9007EE18E /* MainMenu.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -164,9 +164,11 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 3D5C98550B0364A500D281B5 /* Build configuration list for PBXProject "Sc21Viewer" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Sc21Viewer */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* Sc21Viewer */,
 			);
@@ -178,8 +180,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
 				E0F8689406C2B5B10022BF2A /* Sc21_app.icns in Resources */,
+				E0D1707A0F7AB4C9007EE18E /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -198,12 +200,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
+		E0D170780F7AB4C9007EE18E /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				29B97319FDCFA39411CA2CEA /* English */,
+				E0D170790F7AB4C9007EE18E /* English */,
 			);
-			name = MainMenu.nib;
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

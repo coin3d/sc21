@@ -1,0 +1,9 @@
+{
+  ClassName = SCEventHandler; 
+  SuperClass = NSObject; 
+  Actions = {
+  };
+  Outlets = {
+    nextEventHandler = id;
+  };
+}

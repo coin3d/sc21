@@ -1,0 +1,9 @@
+{
+  ClassName = SCView; 
+  SuperClass = SCOpenGLView; 
+  Actions = {
+  };
+  Outlets = {
+    controller = id;
+  };
+}

@@ -3,7 +3,7 @@
  | This file is part of Sc21, a Cocoa user interface binding for   |
  | the Coin 3D visualization library.                              |
  |                                                                 |
- | Copyright (c) 2003-2006 Systems in Motion. All rights reserved. |
+ | Copyright (c) 2003-2009 Kongsberg SIM AS . All rights reserved. |
  |                                                                 |
  | Sc21 is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License     |
@@ -16,12 +16,12 @@
  |                                                                 |
  | For using Coin with software that can not be combined with the  |
  | GNU GPL, and for taking advantage of the additional benefits    |
- | of our support services, please contact Systems in Motion       |
+ | of our support services, please contact Kongsberg SIM AS        |
  | about acquiring a Coin Professional Edition License.            |
  |                                                                 |
  | See http://www.coin3d.org/mac/Sc21 for more information.        |
  |                                                                 |
- | Systems in Motion, Bygdoy Alle 5, 0257 Oslo, Norway.            |
+ | Kongsberg SIM AS , Bygdoy Alle 5, 0257 Oslo, Norway.            |
  |                                                                 |
  * =============================================================== */
 
@@ -161,16 +161,19 @@ static struct key1map KeyMap[] = {
 - (id)init
 {
   if (self = [super init]) {
-    keydict = new SbDict;
-    printabledict = new SbDict;
+    int numitems = sizeof(KeyMap)/sizeof(key1map);
+    NSMutableArray *keyarray = [NSMutableArray arrayWithCapacity:numitems];
+    NSMutableArray *soarray = [NSMutableArray arrayWithCapacity:numitems];
+    NSMutableArray *printablearray = [NSMutableArray arrayWithCapacity:numitems];
     int i = 0;
     while (KeyMap[i].nsvalue != 0) {
-      keydict->enter((unsigned long)KeyMap[i].nsvalue,
-                     (void *)KeyMap[i].sovalue);
-      printabledict->enter((unsigned long)KeyMap[i].nsvalue,
-                           (void *)(int)KeyMap[i].printable);
+      [keyarray addObject:[NSNumber numberWithChar:KeyMap[i].nsvalue]];
+      [soarray addObject:[NSNumber numberWithInt:KeyMap[i].sovalue]];
+      [printablearray addObject:[NSNumber numberWithChar:KeyMap[i].printable]];
       i++;
-    }    
+    }
+    sodict = [[NSDictionary dictionaryWithObjects:soarray forKeys:keyarray] retain];
+    printabledict = [[NSDictionary dictionaryWithObjects:printablearray forKeys:keyarray] retain];
   }
   return self;
 }
@@ -178,8 +181,8 @@ static struct key1map KeyMap[] = {
 /* Clean up after ourselves. */
 - (void)dealloc
 {
-  delete keydict;
-  delete printabledict;
+  [sodict release];
+  [printabledict release];
   [super dealloc];
 }
 
@@ -278,7 +281,7 @@ static struct key1map KeyMap[] = {
     break;
     
   default:
-    SC21_DEBUG(@"Warning: Unknown event: %d", type);
+    SC21_DEBUG(@"SCEventConverter.createSoEvent:inDrawable: Unknown event type: %d", type);
     break;
   }
 
@@ -303,11 +306,13 @@ static struct key1map KeyMap[] = {
 - (SoKeyboardEvent *)createSoKeyboardEventWithString:(NSString *)s
 {
   unsigned long c = [s characterAtIndex:0];
-  void * sokey, * printable;
   SoKeyboardEvent * ke = new SoKeyboardEvent;
-  if (keydict->find(c, sokey) && printabledict->find(c, printable)) {
-    ke->setKey((SoKeyboardEvent::Key)(int)sokey);
-    ke->setPrintableCharacter((char)(int)printable);
+  NSNumber * key = [NSNumber numberWithChar:c];
+  NSNumber * sokey = [sodict objectForKey:key];
+  NSNumber * printable = [printabledict objectForKey:key];
+  if (sokey && printable) {
+    ke->setKey((SoKeyboardEvent::Key)[sokey intValue]);
+    ke->setPrintableCharacter([printable charValue]);
   }
   else {
     ke->setKey(SoKeyboardEvent::UNDEFINED);

@@ -27,9 +27,14 @@
 
 #import <Cocoa/Cocoa.h>
 #import <Sc21/Sc21.h>
+#import <Inventor/SoDB.h>
 
 int main(int argc, const char *argv[])
 {
   [SCController initCoin];
+  
+  NSLog(@"Coin version: %s", SoDB::getVersion());
+  NSLog(@"Sc21 version: %g", Sc21VersionNumber);
+  
   return NSApplicationMain(argc, argv);
 }

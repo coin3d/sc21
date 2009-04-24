@@ -3,7 +3,7 @@
  | This file is part of Sc21, a Cocoa user interface binding for   |
  | the Coin 3D visualization library.                              |
  |                                                                 |
- | Copyright (c) 2003-2006 Systems in Motion. All rights reserved. |
+ | Copyright (c) 2003-2009 Kongsberg SIM AS . All rights reserved. |
  |                                                                 |
  | Sc21 is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License     |
@@ -16,12 +16,12 @@
  |                                                                 |
  | For using Coin with software that can not be combined with the  |
  | GNU GPL, and for taking advantage of the additional benefits    |
- | of our support services, please contact Systems in Motion       |
+ | of our support services, please contact Kongsberg SIM AS        |
  | about acquiring a Coin Professional Edition License.            |
  |                                                                 |
  | See http://www.coin3d.org/mac/Sc21 for more information.        |
  |                                                                 |
- | Systems in Motion, Bygdoy Alle 5, 0257 Oslo, Norway.            |
+ | Kongsberg SIM AS , Bygdoy Alle 5, 0257 Oslo, Norway.            |
  |                                                                 |
  * =============================================================== */
  
@@ -36,6 +36,7 @@
 #import <OpenGL/gl.h>
 
 #import <Inventor/SbTime.h>
+#import <Inventor/SbImage.h>
 #import <Inventor/SoDB.h>
 #import <Inventor/SoInteraction.h>
 #import <Inventor/actions/SoGLRenderAction.h>
@@ -122,7 +123,88 @@ static void atexit_cb(void)
   [SCController _SC_stopTimers]; 
 }
 
+/*
+ Read an image from an external file into an SbImage instance.
+ This the SbImage::addReadImageCB() callback/
+ */
+static SbBool readimage_cb(const SbString & filename, SbImage * image, void * closure)
+{
+  assert(image);
+  
+  NSImage *img = [[[NSImage alloc] initWithContentsOfFile:[NSString stringWithUTF8String:filename.getString()]] autorelease];
+  if (!img) {
+    SC21_DEBUG(@"NSImage initWithContentsOfFile: failed");
+    return FALSE;
+  }
+
+  [img setFlipped:YES]; // To force image into Coin's format
+  NSSize imgsize = [img size]; 
+  [img lockFocus];
+  NSBitmapImageRep* rep = [[[NSBitmapImageRep alloc] initWithFocusedViewRect: 
+                            NSMakeRect(0, 0, imgsize.width, imgsize.height)] autorelease]; 
+  [img unlockFocus]; 
+  if (!rep) {
+    SC21_DEBUG(@"NSBitmapImageRep initWithFocusedViewRect: failed");
+    return FALSE;
+  }
+  
+  SC21_DEBUG(@"NSBitmapImageRep created: %s %d %d %d %d %d %d %d", filename.getString(),
+             [rep bitmapFormat],
+             [rep bitsPerPixel],
+             [rep bytesPerPlane],
+             [rep bytesPerRow],
+             [rep isPlanar],
+             [rep numberOfPlanes],
+             [rep samplesPerPixel]);
+  
+  int spp = [rep samplesPerPixel];
+  int alpha = [rep hasAlpha] ? 1 : 0;
+  
+  int c;
+  if (spp < 3) c = 1; // Grayscale
+  else c = 3 + alpha;
+  
+  // FIXME: consider if we should detect grayscale with alpha (c = 2)
+  
+  SbVec2s imagesize(imgsize.width, imgsize.height);
+  image->setValue(imagesize, c, NULL);
+  unsigned char * imagebuffer = image->getValue(imagesize, c);
+  
+  if (c > 1 && [rep isPlanar]) {
+    SC21_DEBUG(@"Planar images not supported for RGB(A) images");
+    return FALSE;
+  }
+  
+  unsigned char * repdata =  [rep bitmapData];
+  if ([rep bytesPerRow] == imgsize.width * c) {
+    // Copy image directly
+    memcpy(imagebuffer, repdata, [rep bytesPerPlane]);
+  }
+  else {
+    // Iterate over rowa
+    SC21_DEBUG(@"Row size > width * components not supported");
+    return FALSE;
+  }
+  
+  return TRUE;
+}
+
 @implementation SCController
+
+#if 0 // FIXME: Hold back property implementation until this can be done properly. kintel 20090326.
+@dynamic clearsColorBuffer;
+@dynamic clearsDepthBuffer;
+@dynamic sceneGraph;
+@synthesize eventHandler;
+// FIXME: How do we document synthesized properties? kintel 20090325
+/*" 
+ Set the receiver's eventhandler, which will be the start of the
+ eventhandler chain.(See handleEvent: for more information.)
+ "*/
+/*" 
+ Returns the first eventhandler in the receiver's eventhandler chain. 
+ "*/
+#endif
 
 /*" 
   An SCController is the main component for rendering Coin scene
@@ -165,9 +247,11 @@ static void atexit_cb(void)
   // to do smth. before initializing Coin.
   static BOOL initialized = NO;
   if (!initialized) {
+    // FIXME: We should call the appropriate cleanup methods when we're done. kintel 20090325.
     SoDB::init();
     SoInteraction::init();
     SoNodeKit::init();
+    SbImage::addReadImageCB(readimage_cb, NULL);
     [SCController _SC_startTimers]; 
     [SCOffscreenRenderer initialize];
 #if 0
@@ -179,7 +263,6 @@ static void atexit_cb(void)
   }
 }
 
-
 #pragma mark --- initialization and cleanup ---
 
 /*"
@@ -190,6 +273,7 @@ static void atexit_cb(void)
 
 - (id)init
 {
+  SC21_DEBUG(@"SCController.init");
   if (self = [super init]) {
     [self _SC_commonInit];
     SELF->clearcolorbuffer = YES;
@@ -275,12 +359,11 @@ static void atexit_cb(void)
   return handled;
 }
 
-
 /*" 
-  Set the receiver's eventhandler, which will be the start of the
-  eventhandler chain.(See handleEvent: for more information.)
-"*/
-    
+ Set the receiver's eventhandler, which will be the start of the
+ eventhandler chain.(See handleEvent: for more information.)
+ "*/
+
 - (void)setEventHandler:(SCEventHandler *)handler
 {
   if (handler != self->eventHandler) {
@@ -291,14 +374,13 @@ static void atexit_cb(void)
 
 
 /*" 
-  Returns the first eventhandler in the receiver's eventhandler chain. 
-"*/
+ Returns the first eventhandler in the receiver's eventhandler chain. 
+ "*/
 
 - (SCEventHandler *)eventHandler
 {
   return self->eventHandler;
 }
-
 
 #pragma mark --- accessor methods ---
 
@@ -421,7 +503,7 @@ static void atexit_cb(void)
                 format:@"setBackgroundColor: Color not convertible to RGB"];
   }
   
-  float red, green, blue;
+  CGFloat red, green, blue;
   [color getRed:&red green:&green blue:&blue alpha:NULL];
   
   SELF->scenemanager->setBackgroundColor(SbColor(red, green, blue));

@@ -1,0 +1,13 @@
+{
+  ClassName = SCController; 
+  SuperClass = NSObject; 
+  Actions = {
+  };
+  Outlets = {
+    sceneGraph = id;
+    eventHandler = id;
+// FIXME: How can we specify custom types? kintel 20090326
+//    sceneGraph = SCSceneGraph*;
+//    eventHandler = SCEventHandler*;
+  };
+}

@@ -3,7 +3,7 @@
  | This file is part of Sc21, a Cocoa user interface binding for   |
  | the Coin 3D visualization library.                              |
  |                                                                 |
- | Copyright (c) 2003-2006 Systems in Motion. All rights reserved. |
+ | Copyright (c) 2003-2009 Kongsberg SIM AS . All rights reserved. |
  |                                                                 |
  | Sc21 is free software; you can redistribute it and/or           |
  | modify it under the terms of the GNU General Public License     |
@@ -16,12 +16,12 @@
  |                                                                 |
  | For using Coin with software that can not be combined with the  |
  | GNU GPL, and for taking advantage of the additional benefits    |
- | of our support services, please contact Systems in Motion       |
+ | of our support services, please contact Kongsberg SIM AS        |
  | about acquiring a Coin Professional Edition License.            |
  |                                                                 |
  | See http://www.coin3d.org/mac/Sc21 for more information.        |
  |                                                                 |
- | Systems in Motion, Bygdoy Alle 5, 0257 Oslo, Norway.            |
+ | Kongsberg SIM AS , Bygdoy Alle 5, 0257 Oslo, Norway.            |
  |                                                                 |
  * =============================================================== */
 
@@ -37,12 +37,20 @@
 
 @interface SCController : NSObject <NSCoding>
 {
- @protected
+@protected
   SCControllerP * _sc_controller;
- @private
-  IBOutlet SCSceneGraph * sceneGraph;
-  IBOutlet SCEventHandler * eventHandler;
+@private
+  SCSceneGraph * sceneGraph;
+  SCEventHandler * eventHandler;
 }
+
+#if 0 // FIXME: Hold back property implementation until this can be done properly. kintel 20090326.
+//@property BOOL clearsColorBuffer;
+//@property BOOL clearsDepthBuffer;
+// FIXME: Should we set retain here as well, even when we implement the setter/getter ourselves? In general, is retain done for us or is this just a hint? kintel 20090325
+//@property(retain) SCSceneGraph * sceneGraph;
+//@property(retain) SCEventHandler * eventHandler;
+#endif
 
 /*" Static initialization "*/
 + (void)initCoin;
@@ -54,6 +62,7 @@
 - (void)render;
 
 /*" Accessing the drawable "*/
+// FIXME: -> property?
 - (void)setDrawable:(id<SCDrawable>)newdrawable;
 - (id<SCDrawable>)drawable;
 
@@ -64,6 +73,7 @@
 - (SoSceneManager *)sceneManager;
 
 /*" Render settings "*/
+// FIXME: -> property?
 - (void)setBackgroundColor:(NSColor *)color;
 - (NSColor *)backgroundColor;
 - (void)setClearsColorBuffer:(BOOL)yesno;

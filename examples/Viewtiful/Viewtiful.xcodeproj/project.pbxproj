@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8D15AC290486D014006FF6A4 /* Viewtiful_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = 32DBCF750370BD2300C91783 /* Viewtiful_Prefix.pch */; };
-		8D15AC2D0486D014006FF6A4 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */; };
-		8D15AC2E0486D014006FF6A4 /* MyDocument.nib in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B4FDCFA73011CA2CEA /* MyDocument.nib */; };
 		8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		E0DD2D5206074FB7009D1EB4 /* Inventor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0DD2D5006074FB7009D1EB4 /* Inventor.framework */; };
@@ -22,13 +20,13 @@
 		E0DD304306074FFA009D1EB4 /* MyWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = E0DD303A06074FFA009D1EB4 /* MyWindowController.h */; };
 		E0DD304406074FFA009D1EB4 /* MyWindowController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0DD303B06074FFA009D1EB4 /* MyWindowController.mm */; };
 		E0DD304C06075027009D1EB4 /* Sc21_app.icns in Resources */ = {isa = PBXBuildFile; fileRef = E0DD304B06075027009D1EB4 /* Sc21_app.icns */; };
+		E0E7CE470F80E2A9007F289A /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0E7CE450F80E2A9007F289A /* MainMenu.xib */; };
+		E0E7CE4B0F80E2C3007F289A /* MyDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = E0E7CE490F80E2C3007F289A /* MyDocument.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		089C1660FE840EACC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		2A37F4B5FDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MyDocument.nib; sourceTree = "<group>"; };
-		2A37F4B7FDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32DBCF750370BD2300C91783 /* Viewtiful_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewtiful_Prefix.pch; sourceTree = "<group>"; };
@@ -44,6 +42,8 @@
 		E0DD303A06074FFA009D1EB4 /* MyWindowController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = MyWindowController.h; sourceTree = "<group>"; };
 		E0DD303B06074FFA009D1EB4 /* MyWindowController.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = MyWindowController.mm; sourceTree = "<group>"; };
 		E0DD304B06075027009D1EB4 /* Sc21_app.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Sc21_app.icns; sourceTree = "<group>"; };
+		E0E7CE460F80E2A9007F289A /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		E0E7CE4A0F80E2C3007F289A /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MyDocument.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,8 +125,8 @@
 			isa = PBXGroup;
 			children = (
 				E0DD304B06075027009D1EB4 /* Sc21_app.icns */,
-				2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */,
-				2A37F4B4FDCFA73011CA2CEA /* MyDocument.nib */,
+				E0E7CE450F80E2A9007F289A /* MainMenu.xib */,
+				E0E7CE490F80E2C3007F289A /* MyDocument.xib */,
 				8D15AC360486D014006FF6A4 /* Info.plist */,
 				089C165FFE840EACC02AAC07 /* InfoPlist.strings */,
 			);
@@ -184,9 +184,11 @@
 		2A37F4A9FDCFA73011CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 3D5C98EF0B03663100D281B5 /* Build configuration list for PBXProject "Viewtiful" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 2A37F4AAFDCFA73011CA2CEA /* Viewtiful */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				8D15AC270486D014006FF6A4 /* Viewtiful */,
 			);
@@ -198,10 +200,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D15AC2D0486D014006FF6A4 /* MainMenu.nib in Resources */,
-				8D15AC2E0486D014006FF6A4 /* MyDocument.nib in Resources */,
 				8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */,
 				E0DD304C06075027009D1EB4 /* Sc21_app.icns in Resources */,
+				E0E7CE470F80E2A9007F289A /* MainMenu.xib in Resources */,
+				E0E7CE4B0F80E2C3007F289A /* MyDocument.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,20 +232,20 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		2A37F4B4FDCFA73011CA2CEA /* MyDocument.nib */ = {
+		E0E7CE450F80E2A9007F289A /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				2A37F4B5FDCFA73011CA2CEA /* English */,
+				E0E7CE460F80E2A9007F289A /* English */,
 			);
-			name = MyDocument.nib;
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
-		2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */ = {
+		E0E7CE490F80E2C3007F289A /* MyDocument.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				2A37F4B7FDCFA73011CA2CEA /* English */,
+				E0E7CE4A0F80E2C3007F289A /* English */,
 			);
-			name = MainMenu.nib;
+			name = MyDocument.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -263,7 +265,6 @@
 				GCC_PREFIX_HEADER = Viewtiful_Prefix.pch;
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
 				INFOPLIST_FILE = Info.plist;
-				OPTIMIZATION_CFLAGS = "-O0";
 				PRODUCT_NAME = Viewtiful;
 				WARNING_CFLAGS = (
 					"-Wmost",
