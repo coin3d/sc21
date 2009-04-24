@@ -116,6 +116,10 @@
 		E09FCEA00F7556E500EB758F /* SCSceneGraphInspector.xib in Resources */ = {isa = PBXBuildFile; fileRef = E09FCE9F0F7556E500EB758F /* SCSceneGraphInspector.xib */; };
 		E09FCEA30F75570C00EB758F /* SCExaminerHandlerInspector.xib in Resources */ = {isa = PBXBuildFile; fileRef = E09FCEA20F75570C00EB758F /* SCExaminerHandlerInspector.xib */; };
 		E09FCEFA0F7560A200EB758F /* Sc21.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* Sc21.framework */; };
+		E0A7A4300FA1FD5600FCAD39 /* curs_pan.tiff in Resources */ = {isa = PBXBuildFile; fileRef = E0A7A06F0FA1FCFD00FCAD39 /* curs_pan.tiff */; };
+		E0A7A4310FA1FD5600FCAD39 /* curs_rotate.tiff in Resources */ = {isa = PBXBuildFile; fileRef = E0A7A0700FA1FCFD00FCAD39 /* curs_rotate.tiff */; };
+		E0A7A4320FA1FD5600FCAD39 /* curs_zoom.tiff in Resources */ = {isa = PBXBuildFile; fileRef = E0A7A0710FA1FCFD00FCAD39 /* curs_zoom.tiff */; };
+		E0A7A4330FA1FD5600FCAD39 /* version.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0A7A0720FA1FCFD00FCAD39 /* version.plist */; };
 		E0CF51CF0F6FFAFB00B772F3 /* SCEmulator.h in Headers */ = {isa = PBXBuildFile; fileRef = E0CF51960F6FFAFB00B772F3 /* SCEmulator.h */; };
 		E0CF51D00F6FFAFB00B772F3 /* SCEmulator.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CF51970F6FFAFB00B772F3 /* SCEmulator.m */; };
 		E0CF51D10F6FFAFB00B772F3 /* SCEventConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = E0CF51980F6FFAFB00B772F3 /* SCEventConverter.h */; };
@@ -291,6 +295,10 @@
 		E09FCE9F0F7556E500EB758F /* SCSceneGraphInspector.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCSceneGraphInspector.xib; path = Resources/plugin/SCSceneGraphInspector.xib; sourceTree = "<group>"; };
 		E09FCEA20F75570C00EB758F /* SCExaminerHandlerInspector.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SCExaminerHandlerInspector.xib; path = Resources/plugin/SCExaminerHandlerInspector.xib; sourceTree = "<group>"; };
 		E09FCEEE0F755A1B00EB758F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Resources/plugin/Info.plist; sourceTree = "<group>"; };
+		E0A7A06F0FA1FCFD00FCAD39 /* curs_pan.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = curs_pan.tiff; path = Resources/framework/curs_pan.tiff; sourceTree = "<group>"; };
+		E0A7A0700FA1FCFD00FCAD39 /* curs_rotate.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = curs_rotate.tiff; path = Resources/framework/curs_rotate.tiff; sourceTree = "<group>"; };
+		E0A7A0710FA1FCFD00FCAD39 /* curs_zoom.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = curs_zoom.tiff; path = Resources/framework/curs_zoom.tiff; sourceTree = "<group>"; };
+		E0A7A0720FA1FCFD00FCAD39 /* version.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = version.plist; path = Resources/framework/version.plist; sourceTree = "<group>"; };
 		E0CF51960F6FFAFB00B772F3 /* SCEmulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCEmulator.h; path = src/SCEmulator.h; sourceTree = "<group>"; };
 		E0CF51970F6FFAFB00B772F3 /* SCEmulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SCEmulator.m; path = src/SCEmulator.m; sourceTree = "<group>"; };
 		E0CF51980F6FFAFB00B772F3 /* SCEventConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SCEventConverter.h; path = src/SCEventConverter.h; sourceTree = "<group>"; };
@@ -410,6 +418,10 @@
 		089C1665FE841158C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E0A7A06F0FA1FCFD00FCAD39 /* curs_pan.tiff */,
+				E0A7A0700FA1FCFD00FCAD39 /* curs_rotate.tiff */,
+				E0A7A0710FA1FCFD00FCAD39 /* curs_zoom.tiff */,
+				E0A7A0720FA1FCFD00FCAD39 /* version.plist */,
 				8DC2EF5A0486A6940098B216 /* Info.plist */,
 			);
 			name = Resources;
@@ -718,6 +730,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0CF51F40F6FFAFB00B772F3 /* SCDrawable.mdoc in Resources */,
+				E0A7A4300FA1FD5600FCAD39 /* curs_pan.tiff in Resources */,
+				E0A7A4310FA1FD5600FCAD39 /* curs_rotate.tiff in Resources */,
+				E0A7A4320FA1FD5600FCAD39 /* curs_zoom.tiff in Resources */,
+				E0A7A4330FA1FD5600FCAD39 /* version.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
