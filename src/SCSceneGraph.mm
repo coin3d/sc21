@@ -45,8 +45,11 @@
 void error_cb(const class SoError * error, void * data)
 {
   SCSceneGraph * scenegraph = (SCSceneGraph *)data;
-  NSString * errstr = 
-    [NSString stringWithCString:error->getDebugString().getString()];
+  NSString * errstr = [[NSString alloc] 
+                        initWithCString: 
+                          error->getDebugString().getString()
+                        encoding:
+                          NSUTF8StringEncoding];
   [[NSNotificationCenter defaultCenter]
    postNotificationName:SCReadErrorNotification object:scenegraph
    userInfo:[NSDictionary dictionaryWithObject:errstr forKey:@"description"]];
