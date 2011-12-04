@@ -1,11 +1,4 @@
 Sc21 is Free Software; you can redistribute it and/or modify it under
-the terms of the GNU General Public License ("GPL") version 2 as
-published by the Free Software Foundation. See the file LICENSE.GPL at
+the terms of the 3-clause BSD license. See the file COPYING in
 the root directory of this distribution.
 
-For using Sc21 with software that can not be combined with the GNU
-GPL, and for taking advantage of the additional benefits of our
-support services, please contact Systems in Motion about acquiring a
-Coin Professional Edition License.
-
-For more information, see http://www.sim.no/products/Coin3D/licensing/
